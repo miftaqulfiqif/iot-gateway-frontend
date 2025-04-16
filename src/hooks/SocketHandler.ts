@@ -32,7 +32,6 @@ export const useSocketHandler = () => {
     socketRef.current?.emit("message", data);
   };
 
-  // Efek untuk membersihkan socket ketika komponen unmount
   useEffect(() => {
     startSocket(userId);
 
