@@ -1,6 +1,7 @@
-import { Message } from "./MessageModel";
-
-export interface Data {
+export type Data = {
   user_id: string;
-  data: Message;
-}
+  data: {
+    topic: string;
+    payload?: string;
+  };
+};
