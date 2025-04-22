@@ -3,8 +3,15 @@ import { useSocketHandler } from "./hooks/SocketHandler";
 import type { Devices } from "./models/DeviceModel";
 
 function App() {
-  const { userId, eventScan, devices, isScanning, eventConnectDevice } =
-    useSocketHandler();
+  const {
+    userId,
+    eventScan,
+    devices,
+    deleteDevice,
+    isScanning,
+    eventConnectDevice,
+    startDigitProIDA,
+  } = useSocketHandler();
   const [selectedDevice, setSelectedDevice] = useState<Devices | null>(null);
 
   const handleSelectDevice = (device: Devices) => {
@@ -19,7 +26,7 @@ function App() {
       <p>{`Join to Room ${userId}`}</p>
 
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 mt-4"
         disabled={isScanning}
         onClick={eventScan}
       >
@@ -70,6 +77,28 @@ function App() {
           }}
         >
           Connect Device
+        </button>
+      </div>
+
+      <div className="flex flex-row gap-4 mt-20">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+          onClick={startDigitProIDA}
+        >
+          Start Digit Pro IDA
+        </button>
+
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+          onClick={() => {
+            deleteDevice(selectedDevice?.mac || "");
+            console.log(
+              "Device deleted successfully, mac : ",
+              selectedDevice?.mac
+            );
+          }}
+        >
+          Delete Digit Pro IDA
         </button>
       </div>
     </div>

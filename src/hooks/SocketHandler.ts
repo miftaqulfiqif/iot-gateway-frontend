@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { Devices } from "../models/DeviceModel";
 import { Data } from "../models/DataModel";
+import { DigitProIDA } from "../models/DigitProIDA";
 
 const userId = "UserTest";
 const socketUrl = "http://localhost:3000";
@@ -13,7 +14,14 @@ export const useSocketHandler = () => {
   const [devices, setDevices] = useState<Devices[]>([]);
   const [isScanning, setIsScanning] = useState(false);
   const startSocket = (userId: string) => {
-    const socket = io(socketUrl);
+    const socket = io(socketUrl, {
+      // transports: ["websocket"],
+      reconnectionAttempts: 3,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnection: true,
+      rejectUnauthorized: false,
+    });
 
     if (socketRef.current) {
       console.log("⚠️ Socket already running.");
@@ -53,6 +61,18 @@ export const useSocketHandler = () => {
         }, 3000);
       });
 
+      socket.on(
+        "listen_digitproida",
+        (payload: { data_digitproida?: DigitProIDA[] }) => {
+          if (
+            payload?.data_digitproida &&
+            Array.isArray(payload.data_digitproida)
+          ) {
+            console.log("DigitProIDA(s) received:", payload.data_digitproida);
+          }
+        }
+      );
+
       socketRef.current = socket;
     } catch (error) {
       console.error("❌ Error starting socket:", error);
@@ -67,11 +87,17 @@ export const useSocketHandler = () => {
       data: { topic: "ble/start", payload: "1" },
     });
   };
+  const startDigitProIDA = () => {
+    socketRef.current?.emit("scan", <Data>{
+      user_id: userId,
+      data: { topic: "ble/start_digitproidanew", payload: "1" },
+    });
+  };
 
   const eventConnectDevice = (device: Devices) => {
-    socketRef.current?.emit("connect_device", <Data>{
+    socketRef.current?.emit("connect_device", {
       user_id: userId,
-      data: { topic: "ble/input", payload: device.mac },
+      data: { topic: "ble/input", payload: device },
     });
   };
 
@@ -97,6 +123,7 @@ export const useSocketHandler = () => {
   return {
     startSocket,
     eventScan,
+    startDigitProIDA,
     userId,
     devices,
     isScanning,
