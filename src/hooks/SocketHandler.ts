@@ -87,6 +87,22 @@ export const useSocketHandler = () => {
       data: { topic: "ble/start", payload: "1" },
     });
   };
+
+  const dummyScan = () => {
+    setIsScanning(true);
+    setTimeout(() => {
+      setDevices([
+        {
+          mac: "00:1A:2B:3C:4D:5E",
+          name: "DigitProIDA",
+          rssi: -30,
+          filteredRSSI: -30,
+          distance: 1,
+        },
+      ]);
+      setIsScanning(false);
+    }, 3000);
+  };
   const startDigitProIDA = () => {
     socketRef.current?.emit("scan", <Data>{
       user_id: userId,
@@ -129,5 +145,6 @@ export const useSocketHandler = () => {
     isScanning,
     eventConnectDevice,
     deleteDevice,
+    dummyScan,
   };
 };
