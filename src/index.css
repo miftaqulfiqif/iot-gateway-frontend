@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: Lato-Regular;
+  src: url("./assets/fonts/Lato-Regular.ttf");
+}
+
+@theme {
+  --font-latoregular: Lato-Regular;
+}
+
+* {
+  font-family: var(--font-latoregular);
+}
