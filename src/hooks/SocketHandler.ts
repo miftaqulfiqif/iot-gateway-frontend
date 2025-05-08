@@ -93,11 +93,18 @@ export const useSocketHandler = () => {
     setTimeout(() => {
       setDevices([
         {
-          mac: "00:1A:2B:3C:4D:5E",
-          name: "DigitProIDA",
+          mac: "F1:Q1:GA:NT:3N:GG",
+          name: "Digit Pro IDA",
           rssi: -30,
           filteredRSSI: -30,
           distance: 1,
+        },
+        {
+          mac: "F1:Q1:GA:NT:3N:G6",
+          name: "Digit Pro Baby",
+          rssi: -31,
+          filteredRSSI: -31,
+          distance: 2,
         },
       ]);
       setIsScanning(false);

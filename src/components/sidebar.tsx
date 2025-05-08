@@ -1,4 +1,11 @@
-import { HomeIcon, Lamp, Settings, User2 } from "lucide-react";
+import {
+  HomeIcon,
+  Lamp,
+  LogOut,
+  LogOutIcon,
+  Settings,
+  User2,
+} from "lucide-react";
 import AppSidebar from "./ui/app-sidebar";
 import { useState } from "react";
 
@@ -49,7 +56,7 @@ const Sidebar = ({ state }: SidebarProps) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row m-2 p-6 rounded-xl bg-[#4B58F4] text-white relative h-60">
+      <div className="flex flex-row m-2 p-6 rounded-xl bg-gradient-to-b from-[#6e79f4] to-[#4956F4] text-white relative h-60">
         <img
           src={doctorImg}
           alt=""
@@ -62,9 +69,9 @@ const Sidebar = ({ state }: SidebarProps) => {
           </div>
 
           <div className="flex flex-col font-bold">
-            <div className="flex flex-row gap-2 cursor-pointer hover:bg-blue-50 hover:text-black rounded-2xl px-4 py-2 w-fit">
-              <User2 />
-              <p>Account</p>
+            <div className="flex flex-row gap-2 cursor-pointer  bg-red-500  rounded-2xl px-4 py-2 w-fit">
+              <LogOut />
+              <p>Log out</p>
             </div>
           </div>
         </div>
