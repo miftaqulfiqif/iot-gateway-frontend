@@ -28,10 +28,10 @@ export const Header = ({ className, title }: NavbarProps) => {
   }, [isOpen]);
 
   return (
-    <nav className={`h-30 flex items-center ${className} `}>
-      <div className="flex flex-row justify-between w-full mx-20">
+    <nav className={`h-30 flex items-center ${className}`}>
+      <div className="flex flex-row justify-between w-full mx-10">
         <div className="flex flex-row items-center">
-          <h1 className="text-2xl font-bold">{state}</h1>
+          <p className="text-3xl font-bold">{state}</p>
         </div>
         <div className="flex flex-row gap-4 items-center">
           <div className="bg-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-full p-4 hover:bg-gray-100">

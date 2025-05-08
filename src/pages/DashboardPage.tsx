@@ -1,38 +1,38 @@
 import MainLayout from "../components/layouts/main-layout";
+import DeviceConnected from "../components/ui/device-connected";
 
 const Dashboard = () => {
+  const handleClickDevice = () => {
+    alert("OK");
+  };
   return (
-    <MainLayout title="Dashboard">
+    <MainLayout title="Dashboard" state="Dashboard">
       <div className="flex flex-col">
         <div className="grid grid-cols-2 gap-5">
-          <div className="flex flex-row gap-5 bg-white rounded-4xl p-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)] items-center">
-            <img src="" alt="" className="bg-gray-400 w-20 h-20 rounded-full" />
-            <div className="flex flex-col text-xl gap-2">
-              <p className="font-bold">IDA</p>
-              <p className="text-gray-500 text-lg">MAC : 00:1A:2B:3C:4D:5E</p>
-            </div>
-          </div>
-          <div className="flex flex-row gap-5 bg-white rounded-4xl p-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)] items-center">
-            <img src="" alt="" className="bg-gray-400 w-20 h-20 rounded-full" />
-            <div className="flex flex-col text-xl gap-2">
-              <p className="font-bold">BMI</p>
-              <p className="text-gray-500 text-lg">MAC : 00:1A:2B:3C:4D:5E</p>
-            </div>
-          </div>
-          <div className="flex flex-row gap-5 bg-white rounded-4xl p-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)] items-center">
-            <img src="" alt="" className="bg-gray-400 w-20 h-20 rounded-full" />
-            <div className="flex flex-col text-xl gap-2">
-              <p className="font-bold">Digit Pro Baby</p>
-              <p className="text-gray-500 text-lg">MAC : 00:1A:2B:3C:4D:5E</p>
-            </div>
-          </div>
-          <div className="flex flex-row gap-5 bg-white rounded-4xl p-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)] items-center">
-            <img src="" alt="" className="bg-gray-400 w-20 h-20 rounded-full" />
-            <div className="flex flex-col text-xl gap-2">
-              <p className="font-bold">Dopler</p>
-              <p className="text-gray-500 text-lg">MAC : 00:1A:2B:3C:4D:5E</p>
-            </div>
-          </div>
+          <DeviceConnected
+            deviceIcon=""
+            deviceName="Digit Pro IDA"
+            deviceSerialNumber="1S3CB03BB2DF2CC"
+            onClick={handleClickDevice}
+          />
+          <DeviceConnected
+            deviceIcon=""
+            deviceName="Digit Pro Baby"
+            deviceSerialNumber="1S3CB03JBF0F2CC"
+            onClick={handleClickDevice}
+          />
+          <DeviceConnected
+            deviceIcon=""
+            deviceName="Doppler"
+            deviceSerialNumber="1S3CB03BG20F2CC"
+            onClick={handleClickDevice}
+          />
+          <DeviceConnected
+            deviceIcon=""
+            deviceName="BMI"
+            deviceSerialNumber="F1:Q1:GA:NT:3N:GG"
+            onClick={handleClickDevice}
+          />
         </div>
       </div>
     </MainLayout>
