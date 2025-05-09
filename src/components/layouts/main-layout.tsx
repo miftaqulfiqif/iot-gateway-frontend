@@ -9,13 +9,15 @@ interface MainLayoutProps {
 }
 const MainLayout = ({ children, title, state }: MainLayoutProps) => {
   return (
-    <div className="flex flex-row h-screen w-screen">
-      <div className="p-4">
+    <div className="flex flex-row border">
+      <div className="p-4 h-screen flex flex-col">
         <Sidebar state={state} />
       </div>
       <div className="flex flex-col w-full">
         <Header title={title} />
-        <div className="p-10">{children}</div>
+        <div className="px-10 pb-20 overflow-auto h-[calc(100vh-4rem)]">
+          {children}
+        </div>
       </div>
     </div>
   );

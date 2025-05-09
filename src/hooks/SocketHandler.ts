@@ -108,7 +108,7 @@ export const useSocketHandler = () => {
         },
       ]);
       setIsScanning(false);
-    }, 3000);
+    }, 0);
   };
   const startDigitProIDA = () => {
     socketRef.current?.emit("scan", <Data>{

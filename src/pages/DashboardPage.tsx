@@ -8,30 +8,30 @@ const Dashboard = () => {
   return (
     <MainLayout title="Dashboard" state="Dashboard">
       <div className="flex flex-col">
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-3 gap-5">
           <DeviceConnected
             deviceIcon=""
             deviceName="Digit Pro IDA"
             deviceSerialNumber="1S3CB03BB2DF2CC"
-            onClick={handleClickDevice}
+            url="/device/digit-pro-ida"
           />
           <DeviceConnected
             deviceIcon=""
             deviceName="Digit Pro Baby"
             deviceSerialNumber="1S3CB03JBF0F2CC"
-            onClick={handleClickDevice}
+            url="/device/digit-pro-baby"
           />
           <DeviceConnected
             deviceIcon=""
             deviceName="Doppler"
             deviceSerialNumber="1S3CB03BG20F2CC"
-            onClick={handleClickDevice}
+            url="/device/doppler"
           />
           <DeviceConnected
             deviceIcon=""
             deviceName="BMI"
             deviceSerialNumber="F1:Q1:GA:NT:3N:GG"
-            onClick={handleClickDevice}
+            url="/device/bmi"
           />
         </div>
       </div>

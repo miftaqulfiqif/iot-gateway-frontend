@@ -4,6 +4,7 @@ import {
   LogOut,
   LogOutIcon,
   Settings,
+  Stethoscope,
   User2,
 } from "lucide-react";
 import AppSidebar from "./ui/app-sidebar";
@@ -42,6 +43,12 @@ const Sidebar = ({ state }: SidebarProps) => {
               isActive={state === "Devices"}
               url="/devices"
             />
+            <AppSidebar
+              icon={<Stethoscope />}
+              title="Measurement"
+              isActive={state === "Measurement"}
+              url="/measurement"
+            />
           </div>
         </div>
         <div className="flex flex-col gap-4">
@@ -65,7 +72,7 @@ const Sidebar = ({ state }: SidebarProps) => {
         <div className="flex flex-col justify-between">
           <div className="flex flex-col font-bold">
             <p className="">Hello ,</p>
-            <p className="text-2xl">Motherfather</p>
+            <p className="text-2xl">Yossy</p>
           </div>
 
           <div className="flex flex-col font-bold">

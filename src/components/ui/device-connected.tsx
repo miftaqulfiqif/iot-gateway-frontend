@@ -4,18 +4,24 @@ type DeviceConnectedProps = {
   deviceIcon: string;
   deviceName: string;
   deviceSerialNumber: string;
-  onClick: () => void;
+  url?: string;
 };
 const DeviceConnected = ({
   deviceIcon,
   deviceName,
   deviceSerialNumber,
-  onClick,
+  url,
 }: DeviceConnectedProps) => {
+  const handleClick = () => {
+    if (url) {
+      window.location.href = url;
+    }
+  };
+
   return (
     <div
       className="flex flex-row bg-white rounded-4xl p-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)]  justify-between cursor-pointer"
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="flex flex-row gap-5 items-center">
         <img
@@ -32,7 +38,9 @@ const DeviceConnected = ({
         <div className="bg-blue-500 p-1 rounded-full text-white">
           <Bluetooth />
         </div>
-        <p className="bg-green-300 h-fit px-4 py-1 rounded-3xl">Online</p>
+        <p className="bg-green-300 h-fit px-4 py-1 rounded-3xl text-sm">
+          Online
+        </p>
       </div>
     </div>
   );
