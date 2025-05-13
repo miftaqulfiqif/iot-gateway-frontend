@@ -1,22 +1,15 @@
+import { PatientInfo } from "@/components/ui/patient-info";
 import MainLayout from "../../components/layouts/main-layout";
 
 const MeasurementPage = () => {
   return (
     <MainLayout title="Measurement" state="Measurement">
-      <div className="flex flex-row">
-        <div className="w-1/2"></div>
+      <div className="flex flex-row gap-4">
         <div className="w-1/2">
           <p className="font-bold text-2xl">Patient Info</p>
-          <div className="flex flex-row gap-2 bg-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-3 h-fit">
-            <div className="flex flex-col gap-4 px-8 py-4">
-              <p className=" text-4xl">Miftaqul Fiqi Firmansyah</p>
-              <div className="flex flex-row gap-4 items-center">
-                <p className="bg-blue-400 px-4 py-1 rounded-full">Male</p>
-                <p className="">23 years old</p>
-              </div>
-            </div>
-          </div>
+          <PatientInfo />
         </div>
+        <div className="w-1/2 max-h-full bg-blue-500"></div>
       </div>
     </MainLayout>
   );
