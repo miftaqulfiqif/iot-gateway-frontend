@@ -1,5 +1,7 @@
+"use client";
+
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import {
   Card,
@@ -15,7 +17,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -36,16 +37,15 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function DopplerChart() {
+export function IdaChart() {
   return (
-    <Card className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+    <Card>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
             accessibilityLayer
             data={chartData}
             margin={{
-              top: 30,
               left: 12,
               right: 12,
             }}
@@ -54,33 +54,25 @@ export default function DopplerChart() {
             <XAxis
               dataKey="month"
               tickLine={false}
-              axisLine={true}
+              axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <Line
+              dataKey="desktop"
+              type="monotone"
+              stroke="#3062E5"
+              strokeWidth={2}
+              dot={true}
             />
             <Line
               dataKey="mobile"
-              type="natural"
-              stroke="blue"
+              type="monotone"
+              stroke="#94c4f7"
               strokeWidth={2}
-              dot={{
-                fill: "blue",
-              }}
-              activeDot={{
-                r: 2,
-              }}
-            >
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-              />
-            </Line>
+              dot={true}
+            />
           </LineChart>
         </ChartContainer>
       </CardContent>
