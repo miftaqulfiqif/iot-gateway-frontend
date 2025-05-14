@@ -9,7 +9,8 @@ import DeviceIDAPage from "./pages/Devices/DeviceIDAPage.tsx";
 import DeviceBMIPage from "./pages/Devices/DeviceBMIPage.tsx";
 import DeviceDigitProBabyPage from "./pages/Devices/DeviceDigitProBabyPage.tsx";
 import DeviceDopplerPage from "./pages/Devices/DeviceDopplerPage.tsx";
-import MeasurementPage from "./pages/Devices/MeasurementPage.tsx";
+import MeasurementPage from "./pages/MeasurementPage.tsx";
+import Patients from "./pages/PatientsPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/devices" element={<Devices />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/measurement" element={<MeasurementPage />} />
+        <Route path="/patients" element={<Patients />} />
 
         {/* DevicePages */}
         <Route path="/device/digit-pro-ida" element={<DeviceIDAPage />} />

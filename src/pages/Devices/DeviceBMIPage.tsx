@@ -13,11 +13,31 @@ import { BMIResult } from "@/components/ui/bmi-result";
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import bmiIcon from "@/assets/icons/bmi-white.png";
 
+const patient = {
+  name: "Miftaqul Fiqi Firmansyah",
+  age: "23",
+  gender: "male",
+  place_of_birth: "Surabaya",
+  date_of_birth: "2001-09-20 17:00:00.000",
+  address: "Jl. Kebon Jeruk, Surabaya",
+  religion: "Islam",
+  marital_status: "Single",
+  education: "S1",
+  work: "Mahasiswa",
+  phone_number: "081234567890",
+};
+const baby = {
+  name: "Alexandra Gustofano",
+  gender: "male",
+  place_of_birth: "Surabaya",
+  date_of_birth: "2025-09-20 17:00:00.000",
+};
+
 const DeviceBMIPage = () => {
   return (
-    <MainLayout title="BMI" state="Devices">
+    <MainLayout title="BMI" state="Measurement ">
       <div className="flex flex-col pb-40">
-        <div className="flex flex-row h-full gap-4 ">
+        <div className="flex flex-row h-full gap-6 ">
           <div className="w-1/2">
             {/* <div
               className="flex flex-row items-center gap-2 bg-white w-fit font-bold px-5 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
@@ -30,7 +50,7 @@ const DeviceBMIPage = () => {
             </div> */}
             <div className="w-full">
               <p className="font-bold text-2xl">Patient Info</p>
-              <PatientInfo />
+              <PatientInfo patient={patient} />
             </div>
           </div>
 

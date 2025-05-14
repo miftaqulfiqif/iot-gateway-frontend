@@ -32,24 +32,6 @@ export const BMIResult = () => {
         </div>
       </div>
 
-      {/* Weight Section */}
-      <FitnessMetricSection
-        icon={<img src={weightIcon} className="w-7 h-7" alt="bmi" />}
-        label="Weight"
-        percentage="32 %"
-        statusLabel="Overweight"
-        statusColor="bg-red-500"
-      >
-        <p className="text-justify">
-          Tips for maintaining a healthy weight. Limit portion sizes to control
-          calorie intake. Add healthy snacks throughout the day if you want to
-          gain weight. Be as physically active as possible. Talk to your doctor
-          about your weight if you think you are underweight or overweight.
-        </p>
-      </FitnessMetricSection>
-
-      <hr className="border-t-2 border-gray-300 my-2" />
-
       {/* BMI Section */}
       <FitnessMetricSection
         icon={<img src={bmiIcon} alt="bmi" className="w-7 h-7" />}

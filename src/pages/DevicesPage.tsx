@@ -17,10 +17,10 @@ function Devices() {
 
   return (
     <MainLayout title="Devices" state="Devices">
-      <div className="flex flex-col gap-5">
-        <div className="flex flex-col gap-4 mt-10">
+      <div className="flex flex-col">
+        <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between">
-            <p className="font-bold text-3xl">Devices connected</p>
+            <p className="font-bold text-2xl">Devices connected</p>
             {/* Button Add Device */}
             <div
               className="flex flex-row items-center bg-[#2B7FFF] rounded-2xl text-white font-bold py-2 px-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)] gap-2 cursor-pointer"
