@@ -6,13 +6,33 @@ import DopplerChart from "@/components/chart-doppler";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { IdaChart } from "@/components/chart-ida";
 
-import weighingIcon from "@/assets/icons/weighing-white.png";
+import weighingIcon from "@/assets/icons/pediatrics.png";
+
+const patient = {
+  name: "Miftaqul Fiqi Firmansyah",
+  age: "23",
+  gender: "male",
+  place_of_birth: "Surabaya",
+  date_of_birth: "2001-09-20 17:00:00.000",
+  address: "Jl. Kebon Jeruk, Surabaya",
+  religion: "Islam",
+  marital_status: "Single",
+  education: "S1",
+  work: "Mahasiswa",
+  phone_number: "081234567890",
+};
+const baby = {
+  name: "Alexandra Gustofano",
+  gender: "male",
+  place_of_birth: "Surabaya",
+  date_of_birth: "2025-09-20 17:00:00.000",
+};
 
 const DeviceDigitProBabyPage = () => {
   return (
-    <MainLayout title="Digit Pro Baby" state="Devices">
+    <MainLayout title="Digit Pro Baby" state="Measurement">
       <div className="flex flex-col">
-        <div className="flex flex-row h-full gap-4 ">
+        <div className="flex flex-row h-full gap-6 ">
           <div className="w-1/2">
             {/* <div
               className="flex flex-row items-center gap-2 bg-white w-fit font-bold px-5 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
@@ -25,11 +45,11 @@ const DeviceDigitProBabyPage = () => {
             </div> */}
             <div className="w-full">
               <p className="font-bold text-2xl">Patient Info</p>
-              <PatientInfo />
+              <PatientInfo patient={patient} baby={baby} />
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col justify-between">
+          <div className="w-1/2 flex flex-col">
             <p className="font-bold text-2xl">Result</p>
             <div className="w-full max-w-[600px] space-y-6 pt-3">
               <div className="bg-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row gap-10 p-8 w-full h-[200px]">

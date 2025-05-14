@@ -6,6 +6,8 @@ import {
   Settings,
   Stethoscope,
   User2,
+  UserRound,
+  UsersRound,
 } from "lucide-react";
 import AppSidebar from "./ui/app-sidebar";
 import { useState } from "react";
@@ -31,11 +33,17 @@ const Sidebar = ({ state }: SidebarProps) => {
         <div className="flex flex-col gap-4">
           <p>Menu</p>
           <div className="flex flex-col gap-4 w-full">
-            <AppSidebar
+            {/* <AppSidebar
               icon={<HomeIcon />}
               title="Dashboard"
               isActive={state === "Dashboard"}
               url="/"
+            /> */}
+            <AppSidebar
+              icon={<Stethoscope />}
+              title="Measurement"
+              isActive={state === "Measurement"}
+              url="/measurement"
             />
             <AppSidebar
               icon={<Lamp />}
@@ -44,10 +52,10 @@ const Sidebar = ({ state }: SidebarProps) => {
               url="/devices"
             />
             <AppSidebar
-              icon={<Stethoscope />}
-              title="Measurement"
-              isActive={state === "Measurement"}
-              url="/measurement"
+              icon={<UsersRound />}
+              title="Patients"
+              isActive={state === "Patients"}
+              url="/patients"
             />
           </div>
         </div>
