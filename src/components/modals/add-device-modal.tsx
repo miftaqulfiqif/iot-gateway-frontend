@@ -5,17 +5,15 @@ type Props = {
   isActive: boolean;
   setInactive: () => void;
   setBluetoothActive: () => void;
+  setWifiOrLANActive: () => void;
 };
 
 export const AddDeviceModal = ({
   isActive,
   setInactive,
   setBluetoothActive,
+  setWifiOrLANActive,
 }: Props) => {
-  const handleConfirm = () => {
-    alert("OK");
-  };
-
   return (
     <div
       onClick={setInactive}
@@ -43,7 +41,10 @@ export const AddDeviceModal = ({
             <Bluetooth className="w-10 h-10" />
             <p>Bluetooth</p>
           </div>
-          <div className="w-[300px] h-[300px] bg-blue-500 hover:bg-blue-400 rounded-2xl text-white items-center flex flex-row justify-center gap-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+          <div
+            className="w-[300px] h-[300px] bg-blue-500 hover:bg-blue-400 rounded-2xl text-white items-center flex flex-row justify-center gap-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+            onClick={setWifiOrLANActive}
+          >
             <div className="items-center flex flex-col justify-center gap-2 ">
               <Wifi className="w-10 h-10" />
               <p>Wi-Fi</p>

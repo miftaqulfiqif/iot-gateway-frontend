@@ -11,12 +11,14 @@ import DeviceDigitProBabyPage from "./pages/Devices/DeviceDigitProBabyPage.tsx";
 import DeviceDopplerPage from "./pages/Devices/DeviceDopplerPage.tsx";
 import MeasurementPage from "./pages/MeasurementPage.tsx";
 import Patients from "./pages/PatientsPage.tsx";
+import DevicePM9000Page from "./pages/Devices/DevicePM9000Page.tsx";
+import DeviceDS001Page from "./pages/Devices/DeviceDS001Page.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<MeasurementPage />} />
         <Route path="/devices" element={<Devices />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/measurement" element={<MeasurementPage />} />
@@ -30,6 +32,8 @@ createRoot(document.getElementById("root")!).render(
           element={<DeviceDigitProBabyPage />}
         />
         <Route path="/device/doppler" element={<DeviceDopplerPage />} />
+        <Route path="/device/pm-9000" element={<DevicePM9000Page />} />
+        <Route path="/device/ds-001" element={<DeviceDS001Page />} />
       </Routes>
     </Router>
   </StrictMode>

@@ -16,7 +16,7 @@ type Props = {
   setInactive: () => void;
 };
 
-export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
+export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
   const {
     userId,
     eventScan,
@@ -27,6 +27,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
     startDigitProIDA,
     dummyScan,
   } = useSocketHandler();
+
   const [selectedDevice, setSelectedDevice] = useState<Devices | null>(null);
 
   const handleSelectDevice = (device: Devices) => {
@@ -55,51 +56,14 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
         <div className="flex flex-col gap-4">
           <div className="flex flex-row items-center justify-between">
             <p className="font-bold text-xl">Connection devices</p>
-            <button
-              className="flex flex-row items-center gap-3 bg-blue-500 text-white font-bold py-2 px-4 rounded-2xl disabled:opacity-50 text-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
-              disabled={isScanning}
-              onClick={dummyScan}
-            >
-              <ScanSearch className="w-8 h-8" />
-              Scan Devices
-            </button>
           </div>
           <ul className="mt-4 space-y-2">
             <div className="flex flex-row bg-white rounded-2xl gap-4 ">
               <div className="flex flex-col w-full gap-4">
-                <p className="text-lg">Available Devices</p>
-                {devices.length > 0 ? (
-                  <ul className="space-y-3">
-                    {devices.map((device) => (
-                      <div
-                        key={device.mac}
-                        onClick={() => handleSelectDevice(device)}
-                        className={`flex px-4 py-2 items-center rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] pl-4 cursor-pointer justify-between ${
-                          selectedDevice?.mac === device.mac
-                            ? "bg-blue-100 font-semibold"
-                            : "bg-blue-100 "
-                        }`}
-                      >
-                        <div className="flex flex-row gap-3 items-center">
-                          <Cpu className="w-10 h-10" />
-                          <div className="flex flex-col">
-                            <p className="text-lg">{device.name}</p>
-                            <p className="text-sm">{device.mac}</p>
-                          </div>
-                        </div>
-                        <div className="flex flex-row gap-2 bg-green-300 px-4 py-2 rounded-full">
-                          <p>ONLINE</p>
-                        </div>
-                      </div>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-500 mx-auto my-10">
-                    {isScanning
-                      ? "Scanning..."
-                      : "No devices found, press scan button"}
-                  </p>
-                )}
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-lg p-2"
+                />
               </div>
             </div>
             <button
@@ -115,7 +79,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
               }}
               disabled={devices.length === 0}
             >
-              Connect Device
+              {isScanning ? "Scanning..." : "Connect Device"}
             </button>
           </ul>
         </div>

@@ -5,10 +5,9 @@ import { Data } from "../models/DataModel";
 import { DigitProIDAModel } from "../models/Devices/DigitProIDAModel";
 import { DopplerModel } from "@/models/Devices/DopplerModel";
 import { DigitProBabyModel } from "@/models/Devices/DigitProBabyModel";
-import { BMIModel } from "@/models/Devices/BMIModel";
 
 const userId = "UserTest";
-const socketUrl = "http://localhost:3001";
+const socketUrl = "http://localhost:3000";
 
 export const useSocketHandler = () => {
   const socketRef = useRef<Socket | null>(null);
@@ -18,29 +17,20 @@ export const useSocketHandler = () => {
   const [isScanning, setIsScanning] = useState(false);
 
   //Digit Pro IDA
-  const [weightDigitProIDA, setWeightDigitProIDA] = useState<DigitProIDAModel>({
-    babyWeight: 0,
-    adultWeight: 0,
-  });
+  const [weightDigitProIDA, setWeightDigitProIDA] = useState<
+    DigitProIDAModel[]
+  >([]);
 
   //Digit Pro Baby
-  const [weightDigitProBaby, setWeightDigitProBaby] =
-    useState<DigitProBabyModel>({
-      weight: 0,
-    });
+  const [weightDigitProBaby, setWeightDigitProBaby] = useState<
+    DigitProBabyModel[]
+  >([]);
 
   //BMI
-  const [weightBMI, setWeightBMI] = useState<BMIModel>({
-    bmiWeight: 0,
-    impedance: 0,
-  });
+  const [weightBMI, setWeightBMI] = useState(0);
 
   //Doppler
-  const [dataDoppler, setDataDoppler] = useState<DopplerModel>({
-    fhr: 0,
-    soundQuality: "",
-    batteryLevel: "",
-  });
+  const [dataDoppler, setDataDoppler] = useState<DopplerModel[]>([]);
 
   const startSocket = (userId: string) => {
     const socket = io(socketUrl, {
@@ -99,52 +89,33 @@ export const useSocketHandler = () => {
             Array.isArray(payload.data_digitproida)
           ) {
             console.log("DigitProIDA(s) received:", payload.data_digitproida);
-            setWeightDigitProIDA({
-              babyWeight: payload.data_digitproida[0].babyWeight,
-              adultWeight: payload.data_digitproida[0].adultWeight,
-            });
+            setWeightDigitProIDA(payload.data_digitproida);
           }
         }
       );
 
       //Digit Pro Baby
-      socket.on(
-        "listen_digitprobaby",
-        (payload: { data_digitprobaby?: DigitProBabyModel[] }) => {
-          console.log("DigitProBaby(s) received:", payload);
-          if (
-            payload?.data_digitprobaby &&
-            Array.isArray(payload.data_digitprobaby)
-          ) {
-            setWeightDigitProBaby({
-              weight: payload.data_digitprobaby[0].weight,
-            });
-          }
+      socket.on("listen_digitprobaby", (payload: { weight?: number }) => {
+        if (payload?.weight && Array.isArray(payload.weight)) {
+          setWeightDigitProBaby(payload.weight);
         }
-      );
+      });
 
       //BMI
-      socket.on("listen_bmi", (payload: { data_bmi?: BMIModel[] }) => {
-        if (payload?.data_bmi && Array.isArray(payload.data_bmi)) {
-          console.log("BMI(s) received:", payload.data_bmi);
-          setWeightBMI({
-            bmiWeight: payload.data_bmi[0].bmiWeight,
-            impedance: payload.data_bmi[0].impedance,
-          });
+      socket.on("listen_bmi", (payload: { bmiWeight?: number }) => {
+        if (payload?.bmiWeight) {
+          console.log("BMI(s) received:", payload.bmiWeight);
+          setWeightBMI(payload.bmiWeight);
         }
       });
 
       //Doppler
       socket.on(
         "listen_doppler",
-        (payload: { data_doppler?: DopplerModel[] }) => {
+        (payload: { data_doppler?: DopplerModel }) => {
           if (payload?.data_doppler && Array.isArray(payload.data_doppler)) {
             console.log("Doppler(s) received:", payload.data_doppler);
-            setDataDoppler({
-              fhr: payload.data_doppler[0].fhr,
-              soundQuality: payload.data_doppler[0].soundQuality,
-              batteryLevel: payload.data_doppler[0].batteryLevel,
-            });
+            setDataDoppler(payload.data_doppler);
           }
         }
       );
@@ -220,10 +191,7 @@ export const useSocketHandler = () => {
   const startDoppler = () => {
     socketRef.current?.emit("start_doppler", <Data>{
       user_id: userId,
-      data: {
-        topic: "ble/start_doppler",
-        payload: "1",
-      },
+      data: { topic: "ble/start_doppler", payload: "1" },
     });
   };
   const stopDoppler = () => {
@@ -234,21 +202,12 @@ export const useSocketHandler = () => {
   };
 
   //BMI
-  const startBmi = (
-    patientWeight: number,
-    patientAge: number,
-    patientGender: string
-  ) => {
+  const startBmi = () => {
     socketRef.current?.emit("start_bmi", <Data>{
       user_id: userId,
       data: {
         topic: "ble/start_bmi",
         payload: "1",
-        patient: {
-          weight: patientWeight,
-          age: patientAge,
-          gender: patientGender,
-        },
       },
     });
   };

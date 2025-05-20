@@ -3,8 +3,11 @@ import { useSocketHandler } from "../hooks/SocketHandler";
 import type { Devices } from "../models/DeviceModel";
 import MainLayout from "../components/layouts/main-layout";
 import { Cpu, Plus, ScanBarcode, ScanSearch } from "lucide-react";
-import { AddDeviceModal } from "@/components/add-device-modal";
-import { AddDeviceBluetooth } from "@/components/ui/add-device-bluetooth-modal";
+import { AddDeviceModal } from "@/components/modals/add-device-modal";
+import { AddDeviceBluetooth } from "@/components/modals/add-device-bluetooth-modal";
+import { AddDeviceLan } from "@/components/modals/add-device-lan-modal";
+import DeviceConnected from "@/components/ui/device-connected";
+import { DevicesConnected } from "@/components/ui/devices-connected";
 
 function Devices() {
   const [modalAddDevice, setModalAddDevice] = useState(false);
@@ -31,34 +34,11 @@ function Devices() {
             </div>
           </div>
           <div className="flex flex-row gap-4 ">
-            <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl">
-              <p className="font-bold text-xl mb-2">Digit Pro IDA</p>
-              <p>MAC Address : </p>
-              <p className="font-bold">F1:Q1:GA:NT:3N:GG</p>
-              <p>Serial number : </p>
-              <p className="font-bold">1S3CB03BB2DF2CC</p>
-            </div>
-            <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl">
-              <p className="font-bold text-xl mb-2">Digit Pro Baby</p>
-              <p>MAC Address : </p>
-              <p className="font-bold">F1:Q1:GA:NT:3N:GG</p>
-              <p>Serial number : </p>
-              <p className="font-bold">1S3CB03BB2DF2CC</p>
-            </div>
-            <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl">
-              <p className="font-bold text-xl mb-2">Doppler</p>
-              <p>MAC Address : </p>
-              <p className="font-bold">F1:Q1:GA:NT:3N:GG</p>
-              <p>Serial number : </p>
-              <p className="font-bold">1S3CB03BB2DF2CC</p>
-            </div>
-            <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl">
-              <p className="font-bold text-xl mb-2">BMI</p>
-              <p>MAC Address : </p>
-              <p className="font-bold">F1:Q1:GA:NT:3N:GG</p>
-              <p>Serial number : </p>
-              <p className="font-bold">1S3CB03BB2DF2CC</p>
-            </div>
+            <DevicesConnected
+              deviceConnection="bluetooth"
+              deviceMac="F1:Q1:GA:NT:3N:GG"
+              deviceName="Digit Pro IDA"
+            />
           </div>
         </div>
 
@@ -92,10 +72,19 @@ function Devices() {
           setModalAddDeviceBluetooth(true);
           setModalAddDevice(false);
         }}
+        setWifiOrLANActive={() => {
+          setModalAddDeviceWifiOrLan(true);
+          setModalAddDevice(false);
+        }}
       />
       <AddDeviceBluetooth
         isActive={modalAddDeviceBluetooth}
         setInactive={() => setModalAddDeviceBluetooth(false)}
+      />
+
+      <AddDeviceLan
+        isActive={modalAddDeviceWifiOrLan}
+        setInactive={() => setModalAddDeviceWifiOrLan(false)}
       />
     </MainLayout>
   );

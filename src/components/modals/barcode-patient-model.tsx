@@ -10,26 +10,19 @@ import {
 } from "lucide-react";
 import { useSocketHandler } from "@/hooks/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
-import Sidebar from "./sidebar";
+import Sidebar from "../layouts/sidebar";
 
 type Props = {
   isActive: boolean;
-  state: string;
-  openBarcodeModal: () => void;
-  openSelectModal: () => void;
+  setInactive: () => void;
   openCreateModal: () => void;
+  openBarcodeModal: () => void;
 };
 
-export const SelectPatient = ({
-  isActive,
-  state,
-  openBarcodeModal,
-  openSelectModal,
-  openCreateModal,
-}: Props) => {
+export const BarcodePatient = ({ isActive, setInactive }: Props) => {
   return (
     <div
-      onClick={openSelectModal}
+      onClick={setInactive}
       className={`fixed right-0 top-0 w-full h-full bg-transparent bg-opacity-50 z-40 transition-opacity duration-300  ${
         isActive ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
@@ -54,31 +47,31 @@ export const SelectPatient = ({
             <div className="flex flex-row gap-4 bg-[#f0f0f0] px-4 py-2 rounded-xl text-sm">
               <div
                 className={
-                  state === "barcode"
-                    ? `bg-white items-center px-4 py-2 rounded-xl shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
-                    : ` items-center px-4 py-2 rounded-xl cursor-pointer`
+                  false
+                    ? `bg-white items-center px-4 py-2 rounded-xl shadow-[0px_4px_4px_rgba(0,0,0,0.2)] cursor-pointer`
+                    : ` items-center px-4 py-2 rounded-xl cursor-pointer `
                 }
-                onClick={openBarcodeModal}
+                // onClick={openFormBarcode}
               >
                 <p className="text-blue-700 font-semibold">Scan Barcode</p>
               </div>
               <div
                 className={
-                  state === "select"
+                  true
                     ? `bg-white items-center px-4 py-2 rounded-xl shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
-                    : ` items-center px-4 py-2 rounded-xl cursor-pointer`
+                    : ` items-center px-4 py-2 rounded-xl `
                 }
-                onClick={openSelectModal}
+                // onClick={openForm}
               >
                 <p className="text-blue-700 font-semibold">Select Patient</p>
               </div>
               <div
                 className={
-                  state === "create"
+                  false
                     ? `bg-white items-center px-4 py-2 rounded-xl shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
                     : ` items-center px-4 py-2 rounded-xl cursor-pointer `
                 }
-                onClick={openCreateModal}
+                // onClick={openForm}
               >
                 <p className="text-blue-700 font-semibold">Create Patient</p>
               </div>
