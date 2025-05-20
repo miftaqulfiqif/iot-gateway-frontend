@@ -18,7 +18,6 @@ type CreateNewPatientProps = {
   openFormSelectPatient?: () => void;
   openFormBarcode?: () => void;
   buttonLoading?: boolean;
-  start?: boolean;
   patient?: Patients;
 };
 
@@ -31,7 +30,6 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     openFormSelectPatient,
     openFormBarcode,
     buttonLoading,
-    start,
     patient,
   } = props;
 
@@ -148,7 +146,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
   return (
     <div
       onClick={closeModal}
-      className={`fixed top-0 left-0 w-full h-full bg-transparent bg-opacity-50 z-40 transition-opacity duration-300 ${
+      className={`fixed top-0 left-0 w-full h-full bg-transparent bg-opacity-50 z-90 transition-opacity duration-300 ${
         form ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
       style={{ backdropFilter: "blur(5px)", background: "rgba(0, 0, 0, 0.2)" }}

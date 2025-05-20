@@ -9,11 +9,10 @@ import {
   UserRound,
   UsersRound,
 } from "lucide-react";
-import AppSidebar from "./ui/app-sidebar";
-import { useState } from "react";
+import AppSidebar from "../ui/app-sidebar";
 
-import elitechLogo from "../assets/imgs/Logo Elitech.png";
-import doctorImg from "../assets/imgs/doctor-img.png";
+import elitechLogo from "@/assets/imgs/Logo Elitech.png";
+import doctorImg from "@/assets/imgs/doctor-img.png";
 
 interface SidebarProps {
   state: string;

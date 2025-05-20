@@ -2,9 +2,9 @@ import { PatientInfo } from "@/components/ui/patient-info";
 import MainLayout from "../components/layouts/main-layout";
 import DeviceConnected from "@/components/ui/device-connected";
 import { url } from "inspector";
-import { SelectPatient } from "@/components/select-patient-modal";
+import { SelectPatient } from "@/components/modals/select-patient-modal";
 import { useState } from "react";
-import { BarcodePatient } from "@/components/barcode-patient-model";
+import { BarcodePatient } from "@/components/modals/barcode-patient-model";
 
 const patient = {
   name: "Miftaqul Fiqi Firmansyah",
@@ -53,6 +53,20 @@ const devices = [
     mac: "F1:Q1:G4:NT:EE:66",
     connection: "bluetooth",
     url: "bmi",
+  },
+  {
+    icon: "",
+    name: "PM 9000",
+    mac: "F1:Q1:G4:NT:EE:66",
+    connection: "lan",
+    url: "pm-9000",
+  },
+  {
+    icon: "",
+    name: "DS 001",
+    mac: "F1:Q1:G4:NT:EE:66",
+    connection: "wifi",
+    url: "ds-001",
   },
 ];
 

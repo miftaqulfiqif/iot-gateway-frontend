@@ -12,26 +12,30 @@ const Dashboard = () => {
           <DeviceConnected
             deviceIcon=""
             deviceName="Digit Pro IDA"
-            deviceSerialNumber="1S3CB03BB2DF2CC"
+            deviceMac="1S3CB03BB2DF2CC"
             url="/device/digit-pro-ida"
+            deviceConnection="bluetooth"
           />
           <DeviceConnected
             deviceIcon=""
             deviceName="Digit Pro Baby"
-            deviceSerialNumber="1S3CB03JBF0F2CC"
+            deviceMac="1S3CB03JBF0F2CC"
             url="/device/digit-pro-baby"
+            deviceConnection="bluetooth"
           />
           <DeviceConnected
             deviceIcon=""
             deviceName="Doppler"
-            deviceSerialNumber="1S3CB03BG20F2CC"
+            deviceMac="1S3CB03BG20F2CC"
             url="/device/doppler"
+            deviceConnection="bluetooth"
           />
           <DeviceConnected
             deviceIcon=""
             deviceName="BMI"
-            deviceSerialNumber="F1:Q1:GA:NT:3N:GG"
+            deviceMac="F1:Q1:GA:NT:3N:GG"
             url="/device/bmi"
+            deviceConnection="bluetooth"
           />
         </div>
       </div>

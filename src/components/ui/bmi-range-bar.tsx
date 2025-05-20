@@ -27,19 +27,19 @@ const BMIRangeBar: React.FC<BMIRangeBarProps> = ({ value }) => {
       {/* Colored bar */}
       <div className="flex h-4 rounded-sm overflow-hidden shadow-inner ">
         <div
-          className="bg-blue-300 rounded-sm"
+          className="bg-blue-300"
           style={{ width: `${((18.5 - min) / (max - min)) * 100}%` }}
         ></div>
         <div
-          className="bg-green-400 rounded-sm"
+          className="bg-green-400"
           style={{ width: `${((25 - 18.5) / (max - min)) * 100}%` }}
         ></div>
         <div
-          className="bg-yellow-400 rounded-sm"
+          className="bg-yellow-400"
           style={{ width: `${((30 - 25) / (max - min)) * 100}%` }}
         ></div>
         <div
-          className="bg-red-500 rounded-sm"
+          className="bg-red-500"
           style={{ width: `${((max - 30) / (max - min)) * 100}%` }}
         ></div>
       </div>
