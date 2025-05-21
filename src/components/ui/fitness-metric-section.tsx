@@ -4,9 +4,9 @@ import { ReactNode, useState } from "react";
 interface FitnessMetricSectionProps {
   icon: ReactNode;
   label: string;
-  percentage: string;
-  statusLabel: string;
-  statusColor: string;
+  percentage: number | string;
+  statusLabel?: string;
+  statusColor?: string;
   children?: ReactNode;
 }
 
