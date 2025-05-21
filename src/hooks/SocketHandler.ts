@@ -31,8 +31,19 @@ export const useSocketHandler = () => {
 
   //BMI
   const [weightBMI, setWeightBMI] = useState<BMIModel>({
-    bmiWeight: 0,
-    impedance: 0,
+    weight: 0,
+    age: 0,
+    bmi: 0,
+    bodyFat: 0,
+    muscleMass: 0,
+    water: 0,
+    visceralFat: 0,
+    boneMass: 0,
+    metabolism: 0,
+    protein: 0,
+    obesity: 0,
+    bodyAge: 0,
+    lbm: 0,
   });
 
   //Doppler
@@ -128,8 +139,19 @@ export const useSocketHandler = () => {
         if (payload?.data_bmi && Array.isArray(payload.data_bmi)) {
           console.log("BMI(s) received:", payload.data_bmi);
           setWeightBMI({
-            bmiWeight: payload.data_bmi[0].bmiWeight,
-            impedance: payload.data_bmi[0].impedance,
+            weight: payload.data_bmi[0].weight,
+            age: payload.data_bmi[0].age,
+            bmi: payload.data_bmi[0].bmi,
+            bodyFat: payload.data_bmi[0].bodyFat,
+            muscleMass: payload.data_bmi[0].muscleMass,
+            water: payload.data_bmi[0].water,
+            visceralFat: payload.data_bmi[0].visceralFat,
+            boneMass: payload.data_bmi[0].boneMass,
+            metabolism: payload.data_bmi[0].metabolism,
+            protein: payload.data_bmi[0].protein,
+            obesity: payload.data_bmi[0].obesity,
+            bodyAge: payload.data_bmi[0].bodyAge,
+            lbm: payload.data_bmi[0].lbm,
           });
         }
       });
@@ -235,7 +257,7 @@ export const useSocketHandler = () => {
 
   //BMI
   const startBmi = (
-    patientWeight: number,
+    patientHeight: number,
     patientAge: number,
     patientGender: string
   ) => {
@@ -245,7 +267,7 @@ export const useSocketHandler = () => {
         topic: "ble/start_bmi",
         payload: "1",
         patient: {
-          weight: patientWeight,
+          height: patientHeight,
           age: patientAge,
           gender: patientGender,
         },

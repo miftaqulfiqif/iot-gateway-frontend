@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import MainLayout from "../../components/layouts/main-layout";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { BMIResult } from "@/components/ui/bmi-result";
+import { BMIResult } from "@/components/ui/bmi/bmi-result";
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import bmiIcon from "@/assets/icons/bmi-white.png";
 import { useSocketHandler } from "@/hooks/SocketHandler";
@@ -24,7 +24,7 @@ const patient = {
   education: "S1",
   work: "Mahasiswa",
   phone_number: "081234567890",
-  weight: "87",
+  height: "172",
 };
 const baby = {
   name: "Alexandra Gustofano",
@@ -73,7 +73,7 @@ const DeviceBMIPage = () => {
                       <img src={weighingIcon} alt="" className="w-15 h-15" />
                       <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                         <span className="pr-2">
-                          {weightBMI.bmiWeight ? weightBMI.bmiWeight : "--"}
+                          {weightBMI.weight ? weightBMI.weight : "--"}
                         </span>
                         kg
                       </p>
@@ -92,20 +92,33 @@ const DeviceBMIPage = () => {
                       <img src={bmiIcon} alt="" className="w-15 h-15" />
                       <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                         <span className="pr-1">
-                          {weightBMI.bmiWeight ? weightBMI.bmiWeight : "--"}
+                          {weightBMI.bmi ? weightBMI.bmi : "--"}
                         </span>
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <BMIResult />
+              <BMIResult
+                BMI={weightBMI.bmi}
+                age={weightBMI.age}
+                bodyFat={weightBMI.bodyFat}
+                muscleMass={weightBMI.muscleMass}
+                water={weightBMI.water}
+                visceralFat={weightBMI.visceralFat}
+                boneMass={weightBMI.boneMass}
+                metabolism={weightBMI.metabolism}
+                protein={weightBMI.protein}
+                obesity={weightBMI.obesity}
+                bodyAge={weightBMI.bodyAge}
+                lbm={weightBMI.lbm}
+              />
             </div>
             <button
               className="flex flex-row items-center gap-2 bg-white w-fit font-bold px-5 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
               onClick={() =>
                 startBmi(
-                  parseInt(patient.weight),
+                  parseInt(patient.height),
                   parseInt(patient.age),
                   patient.gender
                 )
