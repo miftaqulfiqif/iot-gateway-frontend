@@ -33,6 +33,7 @@ export const useSocketHandler = () => {
   const [weightBMI, setWeightBMI] = useState<BMIModel>({
     weight: 0,
     age: 0,
+    impedance: 0,
     bmi: 0,
     bodyFat: 0,
     muscleMass: 0,
@@ -141,6 +142,7 @@ export const useSocketHandler = () => {
           setWeightBMI({
             weight: payload.data_bmi[0].weight,
             age: payload.data_bmi[0].age,
+            impedance: payload.data_bmi[0].impedance,
             bmi: payload.data_bmi[0].bmi,
             bodyFat: payload.data_bmi[0].bodyFat,
             muscleMass: payload.data_bmi[0].muscleMass,
