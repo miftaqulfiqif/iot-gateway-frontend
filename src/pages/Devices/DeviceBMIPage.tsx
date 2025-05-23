@@ -99,20 +99,22 @@ const DeviceBMIPage = () => {
                   </div>
                 </div>
               </div>
-              <BMIResult
-                BMI={weightBMI.bmi}
-                age={weightBMI.age}
-                bodyFat={weightBMI.bodyFat}
-                muscleMass={weightBMI.muscleMass}
-                water={weightBMI.water}
-                visceralFat={weightBMI.visceralFat}
-                boneMass={weightBMI.boneMass}
-                metabolism={weightBMI.metabolism}
-                protein={weightBMI.protein}
-                obesity={weightBMI.obesity}
-                bodyAge={weightBMI.bodyAge}
-                lbm={weightBMI.lbm}
-              />
+              {weightBMI.impedance !== 0 && (
+                <BMIResult
+                  BMI={weightBMI.bmi}
+                  age={weightBMI.age}
+                  bodyFat={weightBMI.bodyFat}
+                  muscleMass={weightBMI.muscleMass}
+                  water={weightBMI.water}
+                  visceralFat={weightBMI.visceralFat}
+                  boneMass={weightBMI.boneMass}
+                  metabolism={weightBMI.metabolism}
+                  protein={weightBMI.protein}
+                  obesity={weightBMI.obesity}
+                  bodyAge={weightBMI.bodyAge}
+                  lbm={weightBMI.lbm}
+                />
+              )}
             </div>
             <button
               className="flex flex-row items-center gap-2 bg-white w-fit font-bold px-5 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"

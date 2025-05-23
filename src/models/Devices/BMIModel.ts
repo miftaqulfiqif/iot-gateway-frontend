@@ -1,6 +1,7 @@
 export type BMIModel = {
   weight: number;
   age: number;
+  impedance: number;
   bmi: number;
   bodyFat: number;
   muscleMass: number;
