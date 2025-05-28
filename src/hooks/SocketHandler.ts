@@ -8,7 +8,7 @@ import { DigitProBabyModel } from "@/models/Devices/DigitProBabyModel";
 import { BMIModel } from "@/models/Devices/BMIModel";
 
 const userId = "UserTest";
-const socketUrl = "http://localhost:3001";
+const socketUrl = "http://localhost:3000";
 
 export const useSocketHandler = () => {
   const socketRef = useRef<Socket | null>(null);

@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/AuthContext";
 import { Bell } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -7,6 +8,7 @@ interface NavbarProps {
 }
 
 export const Header = ({ className, title }: NavbarProps) => {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState("");
 
@@ -44,10 +46,8 @@ export const Header = ({ className, title }: NavbarProps) => {
               className="w-18 h-18 rounded-full object-cover shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
             />
             <div className="flex flex-col gap-2">
-              <p className="font-bold text-xl">Miftaqul Fiqi Firmansyah</p>
-              <p className="text-gray-500 text-base">
-                miftaqulfiqi.sinkoprima@gmail.com
-              </p>
+              <p className="font-bold text-xl">{user?.name}</p>
+              <p className="text-gray-500 text-base">{user?.username}</p>
             </div>
           </div>
         </div>

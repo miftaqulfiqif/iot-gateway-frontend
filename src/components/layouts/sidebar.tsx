@@ -21,7 +21,6 @@ interface SidebarProps {
 
 const Sidebar = ({ state }: SidebarProps) => {
   const { user, logout } = useAuth();
-  console.log(user);
   return (
     <div className="flex flex-col bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]  w-72 h-full justify-between">
       <div className="flex flex-col gap-6 px-8 py-5">
@@ -82,7 +81,7 @@ const Sidebar = ({ state }: SidebarProps) => {
         <div className="flex flex-col justify-between">
           <div className="flex flex-col font-bold">
             <p className="font-semibold">Hello ,</p>
-            <p className="text-xl w-40">Miftaqul Fiqi Firmansyah</p>
+            <p className="text-xl w-40">{user?.name}</p>
           </div>
 
           <div className="flex flex-col font-bold">
