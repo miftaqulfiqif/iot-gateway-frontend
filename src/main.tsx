@@ -13,28 +13,42 @@ import MeasurementPage from "./pages/MeasurementPage.tsx";
 import Patients from "./pages/PatientsPage.tsx";
 import DevicePM9000Page from "./pages/Devices/DevicePM9000Page.tsx";
 import DeviceDS001Page from "./pages/Devices/DeviceDS001Page.tsx";
+import { LoginPage } from "./pages/auth/LoginPage.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
+import { PublicRoute } from "./routes/PublicRoute.tsx";
+import { PrivateRoute } from "./routes/PrivateRoute.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<MeasurementPage />} />
-        <Route path="/devices" element={<Devices />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/measurement" element={<MeasurementPage />} />
-        <Route path="/patients" element={<Patients />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Auth */}
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
 
-        {/* DevicePages */}
-        <Route path="/device/digit-pro-ida" element={<DeviceIDAPage />} />
-        <Route path="/device/bmi" element={<DeviceBMIPage />} />
-        <Route
-          path="/device/digit-pro-baby"
-          element={<DeviceDigitProBabyPage />}
-        />
-        <Route path="/device/doppler" element={<DeviceDopplerPage />} />
-        <Route path="/device/pm-9000" element={<DevicePM9000Page />} />
-        <Route path="/device/ds-001" element={<DeviceDS001Page />} />
-      </Routes>
-    </Router>
+          <Route element={<PrivateRoute />}>
+            {/* MainPages */}
+            <Route path="/" element={<MeasurementPage />} />
+            <Route path="/devices" element={<Devices />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/measurement" element={<MeasurementPage />} />
+            <Route path="/patients" element={<Patients />} />
+
+            {/* DevicePages */}
+            <Route path="/device/digit-pro-ida" element={<DeviceIDAPage />} />
+            <Route path="/device/bmi" element={<DeviceBMIPage />} />
+            <Route
+              path="/device/digit-pro-baby"
+              element={<DeviceDigitProBabyPage />}
+            />
+            <Route path="/device/doppler" element={<DeviceDopplerPage />} />
+            <Route path="/device/pm-9000" element={<DevicePM9000Page />} />
+            <Route path="/device/ds-001" element={<DeviceDS001Page />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   </StrictMode>
 );

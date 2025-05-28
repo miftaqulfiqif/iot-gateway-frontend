@@ -127,13 +127,16 @@ const Patients = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/patients", {
-        withCredentials: true,
-        params: {
-          page: currentPage,
-          limit: limit,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:3000/api/patients-by-hospital",
+        {
+          withCredentials: true,
+          params: {
+            page: currentPage,
+            limit: limit,
+          },
+        }
+      );
 
       setPatients(response.data.data);
       setCurrentPage(response.data.current_page);
@@ -147,7 +150,7 @@ const Patients = () => {
   const searchPatients = debounce(async (searchQuery: string) => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/patients-pagination-by-hospital",
+        "http://localhost:3000/api/patients-by-hospital",
         {
           withCredentials: true,
           params: {
