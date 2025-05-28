@@ -9,6 +9,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { Patients } from "@/models/PatientModel";
 import { BarcodeIcon, ScanBarcode, X } from "lucide-react";
+import { UsePatient } from "@/hooks/api/use-patient";
 
 type CreateNewPatientProps = {
   form: boolean;
@@ -33,71 +34,17 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     patient,
   } = props;
 
-  const updatePatient = async (patient: Patients) => {
-    try {
-      await axios
-        .patch(
-          `http://localhost:3000/api/patient/${patient.id}`,
-          {
-            name: patient.name,
-            gender: patient.gender,
-            phone: patient.phone,
-            last_education: patient.last_education,
-            place_of_birth: patient.place_of_birth,
-            date_of_birth: patient.date_of_birth,
-            work: patient.work,
-          },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          if (response.status === 200) {
-            console.log("Patient updated successfully : ", response.data);
-          }
-        })
-        .catch((error) => {
-          console.error("Error updating patient:", error);
-        });
-      fetchPatients?.();
-    } catch (error) {
-      console.error("Error updating patient:", error);
-    }
-  };
-
-  const savePatient = async (values: any) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/patients",
-        {
-          name: values.name,
-          gender: values.gender,
-          phone: values.phone,
-          last_education: values.last_education,
-          place_of_birth: values.place_of_birth,
-          date_of_birth: values.date_of_birth,
-          work: values.work,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-
-      if (response.status === 200) {
-        closeModal();
-        fetchPatients?.();
-      } else {
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
+  const { updatePatient, savePatient } = UsePatient({
+    fetchPatients,
+    closeModal,
+  });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: patient?.name || "",
       gender: patient?.gender || "",
+      address: patient?.address || "",
       phone: patient?.phone || "",
       last_education: patient?.last_education || "",
       place_of_birth: patient?.place_of_birth || "",
@@ -109,7 +56,8 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     validationSchema: yup.object().shape({
       name: yup.string().required("Name is required"),
       gender: yup.string().required("Gender is required"),
-      phone: yup.number().typeError("Phone number must be a number"),
+      address: yup.string(),
+      phone: yup.number(),
       last_education: yup.string(),
       place_of_birth: yup.string(),
       date_of_birth: yup.string().required("Date of birth is required"),
@@ -273,13 +221,13 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
             </div>
             <div className="flex flex-row gap-4 justify-between w-full">
               <InputText
-                name="work"
-                label="Work"
-                placeholder="Input work"
+                name="address"
+                label="Address"
+                placeholder="Input address"
                 onChange={formik.handleChange}
-                value={formik.values.work}
-                onTouch={formik.touched.work}
-                onError={formik.errors.work}
+                value={formik.values.address}
+                onTouch={formik.touched.address}
+                onError={formik.errors.address}
               />
             </div>
           </div>

@@ -6,7 +6,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MainLayout from "../components/layouts/main-layout";
-import DeviceConnected from "../components/ui/device-connected";
 import {
   CircleArrowLeft,
   Download,
@@ -50,300 +49,46 @@ import {
 } from "@/components/ui/pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { debounce, set, values } from "lodash";
 import type { Patients } from "@/models/PatientModel";
 import { useHistoryMeasurement } from "@/hooks/UseHistoryMeasurement";
 import axios from "axios";
 import { CreateNewPatient } from "@/components/modals/create-new-patient";
-import { AddDeviceLan } from "@/components/modals/add-device-lan-modal";
+import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
 
 const Patients = () => {
-  const { fetchAndFormatData, chartData } = useHistoryMeasurement();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [form, setForm] = useState(false);
-  // const [detail, setDetail] = useState(false);
-
-  const [patients, setPatients] = useState<Patients[]>();
-  const [patientId, setPatientId] = useState(0);
-  const [patient, setPatient] = useState<Patients[]>();
-  const [patientEdit, setPatientEdit] = useState<Patients>();
-  const selectedPatient = patients?.find((item) => item.id === patientId);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(0);
-  const [totalPage, setTotalPage] = useState(0);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
-
-  const [isDetailVisible, setIsDetailVisible] = useState(false);
-  const [animateRows, setAnimateRows] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [showHistoryTable, setShowHistoryTable] = useState(false);
-
-  const [isVisible, setIsVisible] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
-
-  const [exportOpen, setExportOpen] = useState(false);
-
-  const [totalPageHistoryMeasurement, setTotalPageHistoryMeasurement] =
-    useState(0);
-  const [currentPageHistoryMeasurement, setCurrentPageHistoryMeasurement] =
-    useState(1);
-  const [totalItemsHistoryMeasurement, setTotalItemsHistoryMeasurement] =
-    useState(0);
-  const [limitHistoryMeasurements, setLimitHistoryMeasurements] = useState(10);
-
-  const [showFilter, setShowFilter] = useState(false);
-  const [showFilterHistory, setShowFilterHistory] = useState(false);
-  const filterRef = useRef<HTMLDivElement>(null);
-
-  const [fromDate, setFromDate] = useState<string>("");
-  const [toDate, setToDate] = useState<string>("");
-  const [activeFromDate, setActiveFromDate] = useState<string>("");
-  const [activeToDate, setActiveToDate] = useState<string>("");
-
-  const deletePatient = async (id: number) => {
-    try {
-      await axios
-        .delete(`http://localhost:3000/api/patient/${id}`, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          if (response.status === 200) {
-          }
-        })
-        .catch((error) => {
-          console.error("Error deleting patient:", error);
-        })
-        .finally(() => {
-          fetchPatients();
-        });
-    } catch (error) {
-      console.error("Error deleting patient:", error);
-    }
-  };
-
-  const fetchPatients = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/patients-by-hospital",
-        {
-          withCredentials: true,
-          params: {
-            page: currentPage,
-            limit: limit,
-          },
-        }
-      );
-
-      setPatients(response.data.data);
-      setCurrentPage(response.data.current_page);
-      setTotalItems(response.data.total_items);
-      setTotalPage(response.data.total_pages);
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-    }
-  };
-
-  const searchPatients = debounce(async (searchQuery: string) => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/patients-by-hospital",
-        {
-          withCredentials: true,
-          params: {
-            page: currentPage,
-            limit: limit,
-            query: searchQuery,
-          },
-        }
-      );
-
-      console.log(response.data.total_pages);
-
-      if (response.data.total_pages < currentPage) {
-        setCurrentPage(response.data.total_pages);
-      }
-
-      setPatients(response.data.data);
-      setCurrentPage(response.data.current_page);
-      setTotalItems(response.data.total_items);
-      setTotalPage(response.data.total_pages);
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-    }
-  }, 500);
-
-  useEffect(() => {
-    if (patientId !== 0) {
-      setIsVisible(true);
-    }
-  }, [patientId]);
-
-  // useEffect(() => {
-  //   if (detail) {
-  //     setTimeout(() => setIsDetailVisible(true), 10);
-  //   } else {
-  //     setIsDetailVisible(false);
-  //     setTimeout(() => setDetail(false), 300);
-  //   }
-  // }, [detail]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (search !== "") {
-        await searchPatients(search);
-      } else {
-        await fetchPatients();
-      }
-
-      // Re-fetch detail & measurements jika sedang visible
-      if (isVisible && patientId !== 0) {
-        await fetchAndFormatData(patientId.toString());
-      }
-
-      // setDetail(false);
-      // setPatient(patients?.filter((patient) => patient.id === patientId));
-      setAnimateRows(false);
-      setTimeout(() => setAnimateRows(true), 50);
-    };
-
-    fetchData();
-
-    return () => {
-      searchPatients.cancel();
-    };
-  }, [currentPage, limit, search]);
-
-  // History Measurement
-  useEffect(() => {
-    setAnimateRows(false);
-    setTimeout(() => {
-      setAnimateRows(true);
-    }, 50);
-
-    return () => searchPatients.cancel();
-  }, [
-    currentPageHistoryMeasurement,
-    limitHistoryMeasurements,
-    activeFromDate,
-    activeToDate,
-  ]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-
-  const handleLimitChange = (value: string) => {
-    if (!isVisible) {
-      setLimit(Number(value));
-    } else {
-      setLimitHistoryMeasurements(Number(value));
-    }
-  };
-
-  const goToPage = (state: string, page: number) => {
-    if (state === "patient") {
-      if (page > 0 && page <= totalPage) {
-        setCurrentPage(page);
-      }
-    } else {
-      if (page > 0 && page <= totalPageHistoryMeasurement) {
-        setCurrentPageHistoryMeasurement(page);
-      }
-    }
-  };
-  const goToNextPage = (state: string) => {
-    if (state === "patient") {
-      if (currentPage < totalPage) {
-        setCurrentPage(currentPage + 1);
-      }
-    } else {
-      if (currentPageHistoryMeasurement < totalPageHistoryMeasurement) {
-        setCurrentPageHistoryMeasurement(currentPageHistoryMeasurement + 1);
-      }
-    }
-  };
-  const goToPreviousPage = (state: string) => {
-    if (state === "patient") {
-      if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-      }
-    } else {
-      if (currentPageHistoryMeasurement > 1) {
-        setCurrentPageHistoryMeasurement(currentPageHistoryMeasurement - 1);
-      }
-    }
-  };
-
-  const closeForm = () => {
-    setForm(false);
-  };
-
-  //Filter
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        filterRef.current &&
-        !filterRef.current.contains(event.target as Node)
-      ) {
-        setShowFilter(false);
-      }
-    };
-
-    if (showFilter) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showFilter]);
-
-  const openDetail = (id: number) => {
-    // Jika sedang terbuka dan klik item yang sama, tutup dengan animasi
-    if (isVisible && patientId === id) {
-      setIsDetailVisible(false);
-      setTimeout(() => {
-        setIsVisible(false);
-        setPatientId(0);
-      }, 300); // harus sesuai dengan duration animasi
-      return;
-    }
-
-    // Jika sedang terbuka dan klik item berbeda, tutup dulu lalu buka baru
-    if (isVisible) {
-      setIsDetailVisible(false);
-      setTimeout(() => {
-        setPatientId(id);
-        fetchAndFormatData(id.toString());
-        setPatient(patients?.filter((patient) => patient.id === id));
-        setIsDetailVisible(true);
-      }, 300);
-    } else {
-      // Jika belum terbuka, langsung buka
-      setPatientId(id);
-      fetchAndFormatData(id.toString());
-      setPatient(patients?.filter((patient) => patient.id === id));
-      setIsVisible(true);
-      setTimeout(() => {
-        setIsDetailVisible(true);
-      }, 10);
-    }
-  };
-
-  //PatientMeasurement
-  const buttonAction = (action: string, patient: Patients) => {
-    if (action === "edit") {
-      setPatientEdit(patient);
-      setForm(true);
-    } else if (action === "delete") {
-      deletePatient(patient.id);
-    }
-  };
-
+  const {
+    isVisible,
+    limit,
+    handleLimitChange,
+    filterRef,
+    setShowFilter,
+    showFilter,
+    setPatientEdit,
+    setForm,
+    search,
+    handleSearchChange,
+    patientId,
+    patients,
+    openDetail,
+    animateRows,
+    goToNextPage,
+    goToPreviousPage,
+    currentPage,
+    totalPage,
+    goToPage,
+    isDetailVisible,
+    setIsExiting,
+    setIsVisible,
+    setPatientId,
+    selectedPatient,
+    isExiting,
+    form,
+    closeForm,
+    setPatients,
+    fetchPatients,
+    patientEdit,
+    buttonAction,
+  } = UsePatientPage();
   return (
     <MainLayout title="Patients" state="Patients">
       <div className="flex flex-col">
@@ -353,11 +98,7 @@ const Patients = () => {
               <div className="flex items-center gap-2">
                 <p>Showing</p>
                 <Select
-                  value={
-                    !isVisible
-                      ? limit.toString()
-                      : limitHistoryMeasurements.toString()
-                  }
+                  value={limit.toString()}
                   onValueChange={handleLimitChange}
                 >
                   <SelectTrigger className="w-fit bg-[rgba(117,195,255,0.5)]">
@@ -386,11 +127,7 @@ const Patients = () => {
                     className="flex cursor-pointer bg-white items-center gap-2 px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]"
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (isVisible) {
-                        setShowFilterHistory((prev) => !prev);
-                      } else {
-                        setShowFilter((prev) => !prev);
-                      }
+                      setShowFilter((prev) => !prev);
                     }}
                   >
                     <Funnel className="w-5 h-5" />
@@ -425,33 +162,6 @@ const Patients = () => {
                       </div>
                     </div>
                   )}
-                </div>
-
-                {/* Export Dropdown */}
-                <div className="flex flex-col gap-2 text-sm">
-                  {/* <div
-                  className="flex cursor-pointer bg-white items-center gap-2 px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setExportOpen((prev) => !prev);
-                  }}
-                >
-                  <Download className="w-4 h-4" />
-                  <p>Export</p>
-                </div> */}
-
-                  {/* {exportOpen && patients && (
-                  <div className="absolute z-10 mt-12 min-w-[200px] rounded-xl bg-white p-4 shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
-                    {isVisible ? (
-                      <FormExportDetailPatient
-                        patient={selectedPatient}
-                        patientMeasurements={patientMeasurements}
-                      />
-                    ) : (
-                      <FormExport patients={patients} />
-                    )}
-                  </div>
-                )} */}
                 </div>
 
                 <div className="relative">
@@ -620,9 +330,7 @@ const Patients = () => {
                                         Cancel
                                       </AlertDialogCancel>
                                       <AlertDialogAction
-                                        onClick={() =>
-                                          buttonAction("delete", item)
-                                        }
+                                        onClick={() => alert("Delete")}
                                         className="bg-red-500 text-white cursor-pointer"
                                       >
                                         Delete
@@ -756,28 +464,28 @@ const Patients = () => {
                                     <p className="w-32">Phone</p>
                                     <p className="mr-2">:</p>
                                     <p className="font-semibold flex-1">
-                                      {selectedPatient?.phone}
+                                      {selectedPatient?.phone ?? "-"}
                                     </p>
                                   </div>
                                   <div className="flex flex-row items-center">
                                     <p className="w-32">Work</p>
                                     <p className="mr-2">:</p>
                                     <p className="font-semibold flex-1">
-                                      {selectedPatient?.work}
+                                      {selectedPatient?.work ?? "-"}
                                     </p>
                                   </div>
                                   <div className="flex flex-row items-center">
                                     <p className="w-32">Last Education</p>
                                     <p className="mr-2">:</p>
                                     <p className="font-semibold flex-1">
-                                      {selectedPatient?.last_education}
+                                      {selectedPatient?.last_education ?? "-"}
                                     </p>
                                   </div>
                                   <div className="flex flex-row items-center">
                                     <p className="w-32">Place of Birth</p>
                                     <p className="mr-2">:</p>
                                     <p className="font-semibold flex-1">
-                                      {selectedPatient?.place_of_birth}
+                                      {selectedPatient?.place_of_birth ?? "-"}
                                     </p>
                                   </div>
                                   <div className="flex flex-row items-center">
