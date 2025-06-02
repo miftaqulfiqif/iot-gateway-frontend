@@ -11,30 +11,19 @@ import { BMIResult } from "@/components/ui/bmi/bmi-result";
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import bmiIcon from "@/assets/icons/bmi-white.png";
 import { useSocketHandler } from "@/hooks/SocketHandler";
-
-const patient = {
-  name: "Miftaqul Fiqi Firmansyah",
-  age: "23",
-  gender: "male",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2001-09-20 17:00:00.000",
-  address: "Jl. Kebon Jeruk, Surabaya",
-  religion: "Islam",
-  marital_status: "Single",
-  education: "S1",
-  work: "Mahasiswa",
-  phone_number: "081234567890",
-  height: "172",
-};
-const baby = {
-  name: "Alexandra Gustofano",
-  gender: "male",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2025-09-20 17:00:00.000",
-};
+import { useEffect, useState } from "react";
 
 const DeviceBMIPage = () => {
   const { startBmi, weightBMI } = useSocketHandler();
+  const [patient, setPatient] = useState(null);
+
+  // Get patient from local storage
+  useEffect(() => {
+    const storedPatient = localStorage.getItem("patient");
+    if (storedPatient) {
+      setPatient(JSON.parse(storedPatient));
+    }
+  }, []);
 
   return (
     <MainLayout title="BMI" state="Measurement">

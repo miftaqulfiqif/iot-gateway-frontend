@@ -17,47 +17,35 @@ type Props = {
   baby?: any;
 };
 export const PatientInfo = ({ patient, baby }: Props) => {
-  const {
-    name,
-    age,
-    gender,
-    place_of_birth,
-    date_of_birth,
-    address,
-    religion,
-    marital_status,
-    education,
-    work,
-    phone_number,
-  } = patient;
-
   const [showDetail, setShowDetail] = useState(true);
 
   return (
     <div className="flex flex-row gap-2 bg-gradient-to-b from-[#4956F4] to-[#6e79f4]  rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-3 h-fit">
       <div className="flex flex-col gap-4 px-8 py-4 w-full">
         <div className="flex flex-row gap-4">
-          <p className=" text-3xl">{name}</p>
-          {gender === "male" ? (
+          <p className=" text-3xl">{patient?.name ?? " -- "}</p>
+          {patient?.gender === "male" ? (
             <div className="flex flex-row items-center gap-1 bg-blue-200 w-fit font-bold px-4 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-black h-fit">
               <p>Male</p>
               <Mars className="w-6 h-6" />
             </div>
-          ) : (
+          ) : patient?.gender === "female" ? (
             <div className="flex flex-row items-center gap-1 bg-pink-200 w-fit font-bold px-4 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-black h-fit">
               <p>Female</p>
               <Venus className="w-6 h-6" />
             </div>
+          ) : (
+            <></>
           )}
         </div>
         <div className="flex flex-row gap-4 items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center bg-blue-400 text-white px-2 py-1 rounded-2xl">
               <PersonStanding className="w-6 h-6" />
-              <p>173 cm</p>
+              <p>{patient?.weight ?? " -- "} cm</p>
             </div>
             <div className="flex items-center bg-blue-400 text-white px-4 py-1 rounded-2xl">
-              <p>23 years old</p>
+              <p>{patient?.age ?? " -- "} years old</p>
             </div>
           </div>
           {/* <div
@@ -79,7 +67,6 @@ export const PatientInfo = ({ patient, baby }: Props) => {
               <p>Date of Birh</p>
               <p>Address</p>
               <p>Religion</p>
-              <p>Marital status</p>
               <p>Education</p>
               <p>Work</p>
               <p>Phone number</p>
@@ -92,29 +79,33 @@ export const PatientInfo = ({ patient, baby }: Props) => {
               <p>:</p>
               <p>:</p>
               <p>:</p>
-              <p>:</p>
             </div>
             <div className="flex flex-col gap-2">
-              <p>{place_of_birth}</p>
+              <p>{patient?.place_of_birth ?? " -- "}</p>
               <p>
-                {new Date(date_of_birth).toLocaleDateString("en-GB", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {patient?.date_of_birth
+                  ? new Date(patient?.date_of_birth).toLocaleDateString(
+                      "en-GB",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )
+                  : "--"}
               </p>
-              <p>{address}</p>
-              <p>{religion}</p>
-              <p>{marital_status}</p>
-              <p>{education}</p>
-              <p>{work}</p>
-              <p>{phone_number}</p>
+              <p>{patient?.address ?? " -- "}</p>
+              <p>{patient?.religion ?? " -- "}</p>
+              <p>{patient?.last_education ?? " -- "}</p>
+              <p>{patient?.work ? patient?.work : " -- "}</p>
+              <p>{patient?.phone ?? " -- "}</p>
             </div>
           </div>
         )}
 
         <hr className="my-1 border-t-1 border-gray-300" />
 
+        {/* Section baby info */}
         {baby && (
           <div className="flex flex-col">
             <div className="flex flex-row gap-2 items-center">
@@ -125,7 +116,7 @@ export const PatientInfo = ({ patient, baby }: Props) => {
             <div className="flex flex-row gap-2">
               <img src={babyImg} alt="" className="w-50 h-50" />
               <div className="flex flex-col gap-2">
-                <p className="text-2xl">{baby.name}</p>
+                <p className="text-2xl">{baby.name ? baby.name : " -- "}</p>
                 {baby.gender === "male" ? (
                   <div className="flex flex-row items-center gap-1 bg-blue-200 w-fit font-bold px-3 py-1 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-black text-sm">
                     <p>Male</p>

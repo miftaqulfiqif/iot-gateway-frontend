@@ -1,24 +1,12 @@
 import { PatientInfo } from "@/components/ui/patient-info";
 import MainLayout from "../components/layouts/main-layout";
 import DeviceConnected from "@/components/ui/device-connected";
-import { url } from "inspector";
+import { useEffect, useState } from "react";
 import { SelectPatient } from "@/components/modals/select-patient-modal";
-import { useState } from "react";
 import { BarcodePatient } from "@/components/modals/barcode-patient-model";
+import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
+import { stat } from "fs";
 
-const patient = {
-  name: "Miftaqul Fiqi Firmansyah",
-  age: "23",
-  gender: "male",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2001-09-20 17:00:00.000",
-  address: "Jl. Kebon Jeruk, Surabaya",
-  religion: "Islam",
-  marital_status: "Single",
-  education: "S1",
-  work: "Mahasiswa",
-  phone_number: "081234567890",
-};
 const baby = {
   name: "Alexandra Gustofano",
   gender: "male",
@@ -76,45 +64,77 @@ const MeasurementPage = () => {
   const [selectModal, setSelectModal] = useState(false);
   const [createModal, setCreateModal] = useState(false);
 
+  const [patient, setPatient] = useState(null);
+
+  const [baby, setBaby] = useState(null);
+  // const [devices, setDevices] = useState([]);
+
+  // Get patient from local storage
+  useEffect(() => {
+    const storedPatient = localStorage.getItem("patient");
+    if (storedPatient) {
+      setPatient(JSON.parse(storedPatient));
+    }
+  }, []);
+
+  // Save patient to local storage
+  useEffect(() => {
+    if (patient !== null) {
+      localStorage.setItem("patient", JSON.stringify(patient));
+    }
+  }, [patient]);
+
+  // Handle state change
+  useEffect(() => {
+    setBarcodeModal(state === "barcode");
+    setSelectModal(state === "select");
+    setCreateModal(state === "create");
+  }, [state]);
+
   return (
     <MainLayout title="Measurement" state="Measurement">
       <div className="flex flex-col pb-20">
         <div className="flex flex-row gap-6">
           <div className="w-1/2">
             <p className="font-bold text-2xl">Patient Info</p>
-            {patient && <PatientInfo patient={patient} baby={baby} />}
+            <PatientInfo patient={patient} baby={baby} />
+            <button
+              onClick={() => {
+                setPatient(null);
+              }}
+              className="bg-red-500 text-white px-4 py-2 rounded"
+            >
+              Edit patient
+            </button>
           </div>
           <div className="w-1/2">
             <p className="font-bold text-2xl">Devices already to use</p>
             <div className="flex flex-col gap-4 mt-3">
-              {devices.map((device) => {
-                return (
+              {devices.length > 0 ? (
+                devices.map((devices) => (
                   <DeviceConnected
-                    deviceIcon={device.icon}
-                    deviceName={device.name}
-                    deviceMac={device.mac}
-                    deviceConnection={device.connection}
-                    url={`/device/${device.url}`}
+                    deviceIcon={devices.icon}
+                    deviceName={devices.name}
+                    deviceMac={devices.mac}
+                    deviceConnection={devices.connection}
+                    url={`/device/${devices.url}`}
                   />
-                );
-              })}
+                ))
+              ) : (
+                <p className="text-gray-500">Nothing device connected</p>
+              )}
             </div>
           </div>
         </div>
       </div>
-      {!patient && (
+      {patient === null && (
         <SelectPatient
-          isActive={patient !== undefined && patient !== null}
+          isActive={patient === null}
           state={state}
-          openBarcodeModal={() => {
-            setState("barcode");
-          }}
-          openSelectModal={() => {
-            setState("select");
-          }}
-          openCreateModal={() => {
-            setState("create");
-          }}
+          openBarcodeModal={() => setState("barcode")}
+          openSelectModal={() => setState("select")}
+          openCreateModal={() => setState("create")}
+          patientSelected={(patient) => setPatient(patient)}
         />
       )}
     </MainLayout>

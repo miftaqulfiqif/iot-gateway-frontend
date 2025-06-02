@@ -34,6 +34,7 @@ export const UsePatientPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
+  // Delete Patient
   const deletePatient = async (id: number) => {
     try {
       await axios
@@ -55,6 +56,7 @@ export const UsePatientPage = () => {
     }
   };
 
+  // Get Patient / Fetch Patient
   const fetchPatients = async () => {
     try {
       const response = await axios.get(
@@ -77,6 +79,7 @@ export const UsePatientPage = () => {
     }
   };
 
+  // Search Patients
   const searchPatients = debounce(async (searchQuery: string) => {
     try {
       const response = await axios.get(
@@ -268,5 +271,6 @@ export const UsePatientPage = () => {
     fetchPatients,
     patientEdit,
     buttonAction,
+    searchPatients,
   };
 };

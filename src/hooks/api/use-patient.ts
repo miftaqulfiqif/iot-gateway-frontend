@@ -3,13 +3,14 @@ import axios from "axios";
 
 type CreateNewPatientProps = {
   fetchPatients?: () => void;
-  closeModal: () => void;
+  closeModal?: () => void;
 };
 
 export const UsePatient = ({
   fetchPatients,
   closeModal,
 }: CreateNewPatientProps) => {
+  // Update patient
   const updatePatient = async (patient: Patients) => {
     try {
       await axios
@@ -34,6 +35,7 @@ export const UsePatient = ({
     }
   };
 
+  // Save Patient
   const savePatient = async (values: any) => {
     try {
       const response = await axios.post(
@@ -45,7 +47,7 @@ export const UsePatient = ({
       );
 
       if (response.status === 200) {
-        closeModal();
+        closeModal?.();
         fetchPatients?.();
       } else {
       }
@@ -54,5 +56,6 @@ export const UsePatient = ({
     }
   };
 
+  // Return callback
   return { updatePatient, savePatient };
 };
