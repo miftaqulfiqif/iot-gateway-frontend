@@ -15,8 +15,6 @@ export const SelectPatientContent = ({ patientSelected }: Props) => {
     patientSelected(patient);
   };
 
-  console.log(search);
-
   useEffect(() => {
     inputRef.current?.focus();
   }, []);

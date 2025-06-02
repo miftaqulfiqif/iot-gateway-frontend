@@ -26,28 +26,34 @@ import heartBeatImg from "@/assets/imgs/hear-beat.png";
 import { HeartRateDoppler } from "@/components/ui/heart-rate-doppler";
 import { ChartHeartPulse } from "@/components/chart-heart-pusle";
 import { HeartbeatChart } from "@/components/heart-beat-chart";
-
-const patient = {
-  name: "Miftaqul Fiqi Firmansyah",
-  age: "23",
-  gender: "male",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2001-09-20 17:00:00.000",
-  address: "Jl. Kebon Jeruk, Surabaya",
-  religion: "Islam",
-  marital_status: "Single",
-  education: "S1",
-  work: "Mahasiswa",
-  phone_number: "081234567890",
-};
-const baby = {
-  name: "Alexandra Gustofano",
-  gender: "male",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2025-09-20 17:00:00.000",
-};
+import { useEffect, useState } from "react";
+import { Patients } from "@/models/PatientModel";
 
 const DevicePM9000Page = () => {
+  const [patient, setPatient] = useState<Patients>({
+    id: "",
+    barcode_image: "",
+    name: "",
+    gender: "",
+    address: "",
+    phone: "",
+    work: "",
+    last_education: "",
+    place_of_birth: "",
+    date_of_birth: "",
+    religion: "",
+    weight: 0,
+    age: 0,
+  });
+
+  // Get patient from local storage
+  useEffect(() => {
+    const storedPatient = localStorage.getItem("patient");
+    if (storedPatient) {
+      setPatient(JSON.parse(storedPatient));
+    }
+  }, []);
+
   return (
     <MainLayout title="PM 9000" state="Measurement">
       <div className="flex flex-row h-full gap-6 ">
