@@ -9,20 +9,8 @@ import { IdaChart } from "@/components/chart-ida";
 import weighingIcon from "@/assets/icons/pediatrics.png";
 import tareIcon from "@/assets/icons/tare.png";
 import { useSocketHandler } from "@/hooks/SocketHandler";
+import { useEffect, useState } from "react";
 
-const patient = {
-  name: "Elicia Putri Sugandi",
-  age: "23",
-  gender: "female",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2001-09-20 17:00:00.000",
-  address: "Jl. Kebon Jeruk, Surabaya",
-  religion: "Islam",
-  marital_status: "Married",
-  education: "S1",
-  work: "Mahasiswa",
-  phone_number: "081234567890",
-};
 const baby = {
   name: "Alexandra Gustofano",
   gender: "male",
@@ -37,7 +25,17 @@ const DeviceDigitProBabyPage = () => {
     eventTareDigitProBaby,
     weightDigitProBaby,
   } = useSocketHandler();
-  // eventStartDigitProBaby();
+
+  const [patient, setPatient] = useState(null);
+  const [baby, setBaby] = useState(null);
+
+  // Get patient from local storage
+  useEffect(() => {
+    const storedPatient = localStorage.getItem("patient");
+    if (storedPatient) {
+      setPatient(JSON.parse(storedPatient));
+    }
+  }, []);
 
   return (
     <MainLayout title="Digit Pro Baby" state="Measurement">
