@@ -26,35 +26,36 @@ import battery75Icon from "@/assets/icons/battery-75.png";
 import battery100Icon from "@/assets/icons/battery-100.png";
 
 import { useSocketHandler } from "@/hooks/SocketHandler";
-
-const patient = {
-  name: "Miftaqul Fiqi Firmansyah",
-  age: "23",
-  gender: "male",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2001-09-20 17:00:00.000",
-  address: "Jl. Kebon Jeruk, Surabaya",
-  religion: "Islam",
-  marital_status: "Single",
-  education: "S1",
-  work: "Mahasiswa",
-  phone_number: "081234567890",
-};
-const baby = {
-  name: "Alexandra Gustofano",
-  gender: "male",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2025-09-20 17:00:00.000",
-};
+import { Patients } from "@/models/PatientModel";
+import { useEffect, useState } from "react";
 
 const DeviceDopplerPage = () => {
   const { startDoppler, stopDoppler, dataDoppler } = useSocketHandler();
   startDoppler();
-  // const dataDoppler = {
-  //   fhr: 120,
-  //   soundQuality: "Good",
-  //   batteryLevel: "100%",
-  // };
+
+  const [patient, setPatient] = useState<Patients>({
+    id: "",
+    barcode_image: "",
+    name: "",
+    gender: "",
+    address: "",
+    phone: "",
+    work: "",
+    last_education: "",
+    place_of_birth: "",
+    date_of_birth: "",
+    religion: "",
+    weight: 0,
+    age: 0,
+  });
+
+  // Get patient from local storage
+  useEffect(() => {
+    const storedPatient = localStorage.getItem("patient");
+    if (storedPatient) {
+      setPatient(JSON.parse(storedPatient));
+    }
+  }, []);
 
   return (
     <MainLayout title="Doppler" state="Measurement">

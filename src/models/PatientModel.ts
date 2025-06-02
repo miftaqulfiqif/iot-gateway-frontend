@@ -1,5 +1,5 @@
 export type Patients = {
-  id: number;
+  id: string;
   barcode_image: string;
   name: string;
   gender: string;

@@ -6,7 +6,6 @@ import { Cpu, Plus, ScanBarcode, ScanSearch } from "lucide-react";
 import { AddDeviceModal } from "@/components/modals/add-device-modal";
 import { AddDeviceBluetooth } from "@/components/modals/add-device-bluetooth-modal";
 import { AddDeviceLan } from "@/components/modals/add-device-lan-modal";
-import DeviceConnected from "@/components/ui/device-connected";
 import { DevicesConnected } from "@/components/ui/devices-connected";
 
 function Devices() {
@@ -33,6 +32,7 @@ function Devices() {
               <p>Add Device</p>
             </div>
           </div>
+
           <div className="flex flex-row gap-4 ">
             <DevicesConnected
               deviceConnection="bluetooth"
@@ -41,29 +41,6 @@ function Devices() {
             />
           </div>
         </div>
-
-        {/* DELETE DEVICE */}
-        {/* <div className="flex flex-row gap-4 mt-20">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-            onClick={startDigitProIDA}
-          >
-            Start Digit Pro IDA
-          </button>
-
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-            onClick={() => {
-              deleteDevice(selectedDevice?.mac || "");
-              console.log(
-                "Device deleted successfully, mac : ",
-                selectedDevice?.mac
-              );
-            }}
-          >
-            Delete Digit Pro IDA
-          </button>
-        </div> */}
       </div>
       <AddDeviceModal
         isActive={modalAddDevice}

@@ -17,19 +17,29 @@ import weighingIcon from "@/assets/icons/weighing-white.png";
 import babyWeighingIcon from "@/assets/icons/pediatrics.png";
 import { useSocketHandler } from "@/hooks/SocketHandler";
 import { useEffect, useState } from "react";
-
-const baby = {
-  name: "Alexandra Gustofano",
-  gender: "female",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2025-09-20 17:00:00.000",
-};
+import { SelectBaby } from "@/components/modals/select-baby-modal";
+import { Patients } from "@/models/PatientModel";
 
 const DeviceIDAPage = () => {
   const { startDigitProIDA, weightDigitProIDA } = useSocketHandler();
+  // Start Digit Pro IDA
   startDigitProIDA();
 
-  const [patient, setPatient] = useState(null);
+  const [patient, setPatient] = useState<Patients>({
+    id: "",
+    barcode_image: "",
+    name: "",
+    gender: "",
+    address: "",
+    phone: "",
+    work: "",
+    last_education: "",
+    place_of_birth: "",
+    date_of_birth: "",
+    religion: "",
+    weight: 0,
+    age: 0,
+  });
   const [baby, setBaby] = useState(null);
 
   // Get patient from local storage
@@ -119,6 +129,14 @@ const DeviceIDAPage = () => {
           </div>
         </div>
       </div>
+      {baby === null && (
+        <SelectBaby
+          isActive={true}
+          baby={baby}
+          babySelected={(baby) => setBaby(baby)}
+          patientId={patient.id}
+        />
+      )}
     </MainLayout>
   );
 };
