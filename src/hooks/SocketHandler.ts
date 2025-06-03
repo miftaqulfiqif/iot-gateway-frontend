@@ -6,11 +6,14 @@ import { DigitProIDAModel } from "../models/Devices/DigitProIDAModel";
 import { DopplerModel } from "@/models/Devices/DopplerModel";
 import { DigitProBabyModel } from "@/models/Devices/DigitProBabyModel";
 import { BMIModel } from "@/models/Devices/BMIModel";
+import { useAuth } from "@/context/AuthContext";
 
 const userId = "UserTest";
 const socketUrl = "http://localhost:3000";
 
 export const useSocketHandler = () => {
+  const { user } = useAuth();
+
   const socketRef = useRef<Socket | null>(null);
   const scanTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -185,7 +188,7 @@ export const useSocketHandler = () => {
     setIsScanning(true);
     socketRef.current?.emit("scan", <Data>{
       user_id: userId,
-      data: { topic: "ble/start", payload: "1" },
+      data: { topic: "IoTGateway/{ID-Unik}/Bluetooth/Scan", payload: "Start" },
     });
   };
 
@@ -195,17 +198,19 @@ export const useSocketHandler = () => {
       setDevices([
         {
           mac: "F1:Q1:GA:NT:3N:GG",
-          name: "Digit Pro IDA",
+          device: "Digit Pro IDA",
           rssi: -30,
           filteredRSSI: -30,
           distance: 1,
+          device_function: "digit_pro_ida",
         },
         {
           mac: "F1:Q1:GA:NT:3N:G6",
-          name: "Digit Pro Baby",
+          device: "Digit Pro Baby",
           rssi: -31,
           filteredRSSI: -31,
           distance: 2,
+          device_function: "digit_pro_baby",
         },
       ]);
       setIsScanning(false);
@@ -281,7 +286,11 @@ export const useSocketHandler = () => {
   const eventConnectDevice = (device: Devices) => {
     socketRef.current?.emit("connect_device", {
       user_id: userId,
-      data: { topic: "ble/input", payload: device },
+      hospital_id: user?.hospital?.id,
+      data: {
+        topic: "IoTGateway/{ID-Unik}/Bluetooth/AddDevice",
+        payload: device,
+      },
     });
   };
 

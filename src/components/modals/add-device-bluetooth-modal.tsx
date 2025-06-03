@@ -83,7 +83,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
                         <div className="flex flex-row gap-3 items-center">
                           <Cpu className="w-10 h-10" />
                           <div className="flex flex-col">
-                            <p className="text-lg">{device.name}</p>
+                            <p className="text-lg">{device.device}</p>
                             <p className="text-sm">{device.mac}</p>
                           </div>
                         </div>

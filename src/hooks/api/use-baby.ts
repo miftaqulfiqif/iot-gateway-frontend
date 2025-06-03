@@ -1,8 +1,11 @@
 import axios from "axios";
+import { useFormik } from "formik";
 import { useState } from "react";
+import * as yup from "yup";
 
 export const useBabies = (patientId: string) => {
   const [babies, setBabies] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const getBabiesByPatientId = async () => {
     try {
@@ -18,5 +21,38 @@ export const useBabies = (patientId: string) => {
     }
   };
 
-  return { getBabiesByPatientId, babies };
+  const formik = useFormik({
+    initialValues: {
+      patient_id: patientId,
+      name: "",
+      gender: "",
+      date_of_birth: "",
+      place_of_birth: "",
+    },
+    enableReinitialize: true,
+    validationSchema: yup.object().shape({
+      name: yup.string().required("Name is required"),
+      gender: yup.string().required("Gender is required"),
+      date_of_birth: yup.string().required("Date of birth is required"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        await axios.post("http://localhost:3000/api/babies", values, {
+          withCredentials: true,
+        });
+        getBabiesByPatientId();
+        setShowCreateModal(false);
+      } catch (error) {
+        console.error("Error creating baby:", error);
+      }
+    },
+  });
+
+  return {
+    getBabiesByPatientId,
+    babies,
+    formik,
+    showCreateModal,
+    setShowCreateModal,
+  };
 };

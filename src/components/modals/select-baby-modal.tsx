@@ -16,6 +16,9 @@ import Sidebar from "../layouts/sidebar";
 
 import babyImg from "@/assets/imgs/baby.png";
 import { useBabies } from "@/hooks/api/use-baby";
+import { InputText } from "../ui/input-text";
+import { InputSelect } from "../ui/input-select";
+import { InputDate } from "../ui/input-date";
 
 type Props = {
   isActive: boolean;
@@ -25,7 +28,13 @@ type Props = {
 };
 
 export const SelectBaby = ({ isActive, babySelected, patientId }: Props) => {
-  const { getBabiesByPatientId, babies } = useBabies(patientId);
+  const {
+    getBabiesByPatientId,
+    babies,
+    formik,
+    showCreateModal,
+    setShowCreateModal,
+  } = useBabies(patientId);
 
   // Fetch babies by patient id
   useEffect(() => {
@@ -60,63 +69,131 @@ export const SelectBaby = ({ isActive, babySelected, patientId }: Props) => {
         <div className="flex flex-col gap-4 h-[600px]">
           {/* Option Select Baby */}
           <div className="flex flex-row items-center justify-between">
-            <p className="font-bold text-xl">Select Baby</p>
+            {!showCreateModal ? (
+              <p className="font-bold text-xl">Select Baby</p>
+            ) : (
+              <p className="font-bold text-xl">Create Baby</p>
+            )}
+
+            {/* Button create baby */}
+            <div
+              className="cursor-pointer"
+              onClick={() => setShowCreateModal(!showCreateModal)}
+            >
+              {!showCreateModal ? "Create Baby" : "Select baby"}
+            </div>
           </div>
 
-          {/* Show Content */}
+          {/* Content */}
           <div className="w-full h-full">
-            {babies.length > 0 ? (
-              <div className="flex flex-col gap-4 overflow-x-auto pb-4">
-                {babies.map((baby: any) => (
-                  <div
-                    key={baby.id}
-                    className="flex flex-row gap-2 bg-blue-500 items-center rounded-2xl cursor-pointer p-4 min-w-[300px]"
-                    onClick={() => babySelected(baby)}
-                  >
-                    <img src={babyImg} alt="" className="w-42 h-42" />
-                    <div className="flex flex-col gap-2 text-white">
-                      <p className="text-2xl">{baby?.name || " -- "}</p>
-                      {baby?.gender === "male" ? (
-                        <div className="flex flex-row items-center gap-1 bg-blue-200 w-fit font-bold px-3 py-1 rounded-full shadow text-black text-sm">
-                          <p>Male</p>
-                          <Mars className="w-6 h-6" />
-                        </div>
-                      ) : (
-                        <div className="flex flex-row items-center gap-1 bg-pink-200 w-fit font-bold px-3 py-1 rounded-full shadow text-black text-sm">
-                          <p>Female</p>
-                          <Venus className="w-6 h-6" />
-                        </div>
-                      )}
-                      <div className="flex flex-row gap-2 text-white">
-                        <div className="flex flex-col gap-1">
-                          <p>Place of birth</p>
-                          <p>Date of birth</p>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <p>:</p>
-                          <p>:</p>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <p>{baby?.place_of_birth || " -- "}</p>
-                          <p>
-                            {baby?.date_of_birth
-                              ? new Intl.DateTimeFormat("en-GB", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }).format(new Date(baby.date_of_birth))
-                              : " -- "}
-                          </p>
+            {!showCreateModal ? (
+              babies.length > 0 ? (
+                <div className="flex flex-col gap-4 overflow-y-auto pb-4 max-h-[550px]">
+                  {babies.map((baby: any) => (
+                    <div
+                      key={baby.id}
+                      className="flex flex-row gap-2 bg-blue-500 items-center rounded-2xl cursor-pointer p-4 min-w-[300px]"
+                      onClick={() => babySelected(baby)}
+                    >
+                      <img src={babyImg} alt="" className="w-42 h-42" />
+                      <div className="flex flex-col gap-2 text-white">
+                        <p className="text-2xl">{baby?.name || " -- "}</p>
+                        {baby?.gender === "male" ? (
+                          <div className="flex flex-row items-center gap-1 bg-blue-200 w-fit font-bold px-3 py-1 rounded-full shadow text-black text-sm">
+                            <p>Male</p>
+                            <Mars className="w-6 h-6" />
+                          </div>
+                        ) : (
+                          <div className="flex flex-row items-center gap-1 bg-pink-200 w-fit font-bold px-3 py-1 rounded-full shadow text-black text-sm">
+                            <p>Female</p>
+                            <Venus className="w-6 h-6" />
+                          </div>
+                        )}
+                        <div className="flex flex-row gap-2 text-white">
+                          <div className="flex flex-col gap-1">
+                            <p>Place of birth</p>
+                            <p>Date of birth</p>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <p>:</p>
+                            <p>:</p>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <p>{baby?.place_of_birth || " -- "}</p>
+                            <p>
+                              {baby?.date_of_birth
+                                ? new Intl.DateTimeFormat("en-GB", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }).format(new Date(baby.date_of_birth))
+                                : " -- "}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-500 w-full h-full flex justify-center items-center">
+                  No babies found
+                </p>
+              )
             ) : (
-              <p className="text-center text-gray-500 w-full h-full flex justify-center items-center">
-                No babies found
-              </p>
+              <form
+                className="flex flex-col gap-4 pt-6"
+                onSubmit={formik.handleSubmit}
+              >
+                <InputText
+                  name="name"
+                  label="Name"
+                  placeholder="Input name"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                  onTouch={formik.touched.name}
+                  onError={formik.errors.name}
+                  isRequired
+                />
+                <InputSelect
+                  label="Gender"
+                  name="gender"
+                  placeholder="Select gender"
+                  option={[
+                    { value: "male", label: "Male" },
+                    { value: "female", label: "Female" },
+                  ]}
+                  onChange={(value) => formik.setFieldValue("gender", value)}
+                  value={formik.values.gender}
+                  onTouch={formik.touched.gender}
+                  onError={formik.errors.gender}
+                  isRequired
+                />
+                <InputText
+                  name="place_of_birth"
+                  label="Place of birth"
+                  placeholder="Input place of birth"
+                  onChange={formik.handleChange}
+                  value={formik.values.place_of_birth}
+                  onTouch={formik.touched.place_of_birth}
+                  onError={formik.errors.place_of_birth}
+                />
+                <InputDate
+                  name="date_of_birth"
+                  label="Date of birth"
+                  onChange={formik.handleChange}
+                  value={formik.values.date_of_birth}
+                  onTouch={formik.touched.date_of_birth}
+                  onError={formik.errors.date_of_birth}
+                  isRequired
+                />
+                <button
+                  className="w-full bg-blue-500 text-white py-2 rounded-xl cursor-pointer mt-10"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </form>
             )}
           </div>
         </div>

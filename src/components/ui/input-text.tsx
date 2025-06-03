@@ -7,7 +7,7 @@ type InputTextProps = {
   value: any;
   onTouch: any;
   onError?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   isRequired?: boolean;
 };
