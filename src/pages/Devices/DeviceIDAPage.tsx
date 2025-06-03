@@ -19,11 +19,10 @@ import { useSocketHandler } from "@/hooks/SocketHandler";
 import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
+import { CreateBaby } from "@/components/modals/create-baby-modal";
 
 const DeviceIDAPage = () => {
   const { startDigitProIDA, weightDigitProIDA } = useSocketHandler();
-  // Start Digit Pro IDA
-  startDigitProIDA();
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -49,6 +48,12 @@ const DeviceIDAPage = () => {
       setPatient(JSON.parse(storedPatient));
     }
   }, []);
+
+  // Start Digit Pro IDA
+  useEffect(() => {
+    if (!baby) return;
+    startDigitProIDA();
+  }, [baby]);
 
   return (
     <MainLayout title="Digit Pro IDA" state="Measurement">
@@ -84,7 +89,7 @@ const DeviceIDAPage = () => {
                   </div>
                   <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
-                      <img src={weighingIcon} alt="" className="w-15 h-15" />
+                      <img src={weighingIcon} alt="" className="w-12 h-12" />
                       <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                         <span className="pr-2">
                           {weightDigitProIDA.adultWeight
