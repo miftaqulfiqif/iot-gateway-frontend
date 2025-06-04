@@ -85,9 +85,9 @@ export const useSocketHandler = () => {
           setDevices((prevDevices) => {
             const newDevices = payload.devices || [];
 
-            const existingMacs = new Set(prevDevices.map((d) => d.mac));
+            const existingMacs = new Set(prevDevices.map((d) => d.id));
             const filteredNew = newDevices.filter(
-              (d) => !existingMacs.has(d.mac)
+              (d) => !existingMacs.has(d.id)
             );
 
             return [...prevDevices, ...filteredNew];
@@ -195,24 +195,24 @@ export const useSocketHandler = () => {
   const dummyScan = () => {
     setIsScanning(true);
     setTimeout(() => {
-      setDevices([
-        {
-          mac: "F1:Q1:GA:NT:3N:GG",
-          device: "Digit Pro IDA",
-          rssi: -30,
-          filteredRSSI: -30,
-          distance: 1,
-          device_function: "digit_pro_ida",
-        },
-        {
-          mac: "F1:Q1:GA:NT:3N:G6",
-          device: "Digit Pro Baby",
-          rssi: -31,
-          filteredRSSI: -31,
-          distance: 2,
-          device_function: "digit_pro_baby",
-        },
-      ]);
+      // setDevices([
+      //   {
+      //     id: "F1:Q1:GA:NT:3N:GG",
+      //     device: "Digit Pro IDA",
+      //     rssi: -30,
+      //     filteredRSSI: -30,
+      //     distance: 1,
+      //     device_function: "digit_pro_ida",
+      //   },
+      //   {
+      //     id: "F1:Q1:GA:NT:3N:G6",
+      //     device: "Digit Pro Baby",
+      //     rssi: -31,
+      //     filteredRSSI: -31,
+      //     distance: 2,
+      //     device_function: "digit_pro_baby",
+      //   },
+      // ]);
       setIsScanning(false);
     }, 5000);
   };

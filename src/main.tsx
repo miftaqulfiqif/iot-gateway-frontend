@@ -37,15 +37,24 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/patients" element={<Patients />} />
 
             {/* DevicePages */}
-            <Route path="/device/digit-pro-ida" element={<DeviceIDAPage />} />
-            <Route path="/device/bmi" element={<DeviceBMIPage />} />
+            <Route path="/device/digitpro_ida" element={<DeviceIDAPage />} />
+            <Route path="/device/digitpro_bmi" element={<DeviceBMIPage />} />
             <Route
-              path="/device/digit-pro-baby"
+              path="/device/digitpro_baby"
               element={<DeviceDigitProBabyPage />}
             />
-            <Route path="/device/doppler" element={<DeviceDopplerPage />} />
-            <Route path="/device/pm-9000" element={<DevicePM9000Page />} />
-            <Route path="/device/ds-001" element={<DeviceDS001Page />} />
+            <Route
+              path="/device/ultrasonic_pocket_doppler"
+              element={<DeviceDopplerPage />}
+            />
+            <Route
+              path="/device/pasien_monitor_9000"
+              element={<DevicePM9000Page />}
+            />
+            <Route
+              path="/device/diagnostic_station_001"
+              element={<DeviceDS001Page />}
+            />
           </Route>
         </Routes>
       </Router>
