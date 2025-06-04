@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSocketHandler } from "../hooks/SocketHandler";
 import type { Devices } from "../models/DeviceModel";
 import MainLayout from "../components/layouts/main-layout";
@@ -7,11 +7,18 @@ import { AddDeviceModal } from "@/components/modals/add-device-modal";
 import { AddDeviceBluetooth } from "@/components/modals/add-device-bluetooth-modal";
 import { AddDeviceLan } from "@/components/modals/add-device-lan-modal";
 import { DevicesConnected } from "@/components/ui/devices-connected";
+import { useDevices } from "@/hooks/api/use-device";
 
 function Devices() {
+  const { devices, getAllDevices } = useDevices();
+
   const [modalAddDevice, setModalAddDevice] = useState(false);
   const [modalAddDeviceBluetooth, setModalAddDeviceBluetooth] = useState(false);
   const [modalAddDeviceWifiOrLan, setModalAddDeviceWifiOrLan] = useState(false);
+
+  useEffect(() => {
+    getAllDevices();
+  }, []);
 
   const showAddDevice = () => {
     setModalAddDevice(true);
@@ -34,11 +41,19 @@ function Devices() {
           </div>
 
           <div className="flex flex-row gap-4 ">
-            <DevicesConnected
-              deviceConnection="bluetooth"
-              deviceMac="F1:Q1:GA:NT:3N:GG"
-              deviceName="Digit Pro IDA"
-            />
+            {devices.length > 0 ? (
+              devices.map((devices) => (
+                <DevicesConnected
+                  key={devices.id}
+                  deviceMac={devices.id}
+                  device={devices.device}
+                  deviceName={devices.name ?? devices.name ?? devices.device}
+                  deviceConnection={devices.connection}
+                />
+              ))
+            ) : (
+              <p className="text-gray-500 mx-auto">Nothing device connected</p>
+            )}
           </div>
         </div>
       </div>

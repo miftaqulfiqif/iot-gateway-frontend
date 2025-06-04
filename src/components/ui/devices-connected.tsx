@@ -1,18 +1,22 @@
 import { Bluetooth, EthernetPort, Wifi } from "lucide-react";
 
 type DevicesConnectedProps = {
+  device: string;
   deviceName: string;
   deviceMac: string;
   deviceConnection: string;
 };
 export const DevicesConnected = ({
-  deviceConnection,
-  deviceMac,
+  device,
   deviceName,
+  deviceMac,
+  deviceConnection,
 }: DevicesConnectedProps) => {
   return (
     <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl">
       <p className="font-bold text-xl mb-2">{deviceName}</p>
+      <p>Device : </p>
+      <p className="font-bold">{device}</p>
       <p>MAC Address : </p>
       <p className="font-bold">{deviceMac}</p>
       <p>Connection : </p>

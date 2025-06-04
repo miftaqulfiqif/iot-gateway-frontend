@@ -1,8 +1,12 @@
 export type Devices = {
-  mac: string;
+  id: string;
   device: string;
-  rssi: number;
-  filteredRSSI: number;
-  distance: number;
   device_function: string;
+  type: string;
+  connection: string;
+  name: string;
+  distance: number;
+  filteredRSSI: number;
+  rssi: number;
+  icon: string;
 };

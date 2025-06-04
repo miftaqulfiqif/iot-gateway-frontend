@@ -12,6 +12,7 @@ import { useSocketHandler } from "@/hooks/SocketHandler";
 import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
+import { useParams } from "react-router-dom";
 
 const DeviceDigitProBabyPage = () => {
   const {
@@ -20,6 +21,8 @@ const DeviceDigitProBabyPage = () => {
     eventTareDigitProBaby,
     weightDigitProBaby,
   } = useSocketHandler();
+
+  const { mac } = useParams<{ mac: string }>();
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
