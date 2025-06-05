@@ -1,4 +1,4 @@
-import DopplerChart from "@/components/chart-doppler";
+import DopplerChart from "@/components/chart-digit-pro-baby-realtime";
 import MainLayout from "../../components/layouts/main-layout";
 import {
   Activity,

@@ -9,13 +9,13 @@ import {
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
 import { href } from "react-router-dom";
-import DopplerChart from "@/components/chart-doppler";
+import DopplerChart from "@/components/chart-digit-pro-baby-realtime";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { IdaChart } from "@/components/chart-ida";
 
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import babyWeighingIcon from "@/assets/icons/pediatrics.png";
-import { useSocketHandler } from "@/hooks/SocketHandler";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";

@@ -1,5 +1,6 @@
 export type Devices = {
   id: string;
+  mac: string;
   device: string;
   device_function: string;
   type: string;

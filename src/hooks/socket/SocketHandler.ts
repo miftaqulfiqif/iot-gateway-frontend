@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { Devices } from "../models/DeviceModel";
-import { Data } from "../models/DataModel";
-import { DigitProIDAModel } from "../models/Devices/DigitProIDAModel";
+import { Devices } from "../../models/DeviceModel";
+import { Data } from "../../models/DataModel";
+import { DigitProIDAModel } from "../../models/Devices/DigitProIDAModel";
 import { DopplerModel } from "@/models/Devices/DopplerModel";
 import { DigitProBabyModel } from "@/models/Devices/DigitProBabyModel";
 import { BMIModel } from "@/models/Devices/BMIModel";
@@ -11,7 +11,11 @@ import { useAuth } from "@/context/AuthContext";
 const userId = "UserTest";
 const socketUrl = "http://localhost:3000";
 
-export const useSocketHandler = () => {
+interface Props {
+  macDevice?: string;
+}
+
+export const useSocketHandler = ({ macDevice }: Props = {}) => {
   const { user } = useAuth();
 
   const socketRef = useRef<Socket | null>(null);
@@ -29,8 +33,11 @@ export const useSocketHandler = () => {
   //Digit Pro Baby
   const [weightDigitProBaby, setWeightDigitProBaby] =
     useState<DigitProBabyModel>({
+      mac: "",
       weight: 0,
     });
+  const [weightDigitProBabyChartData, setWeightDigitProBabyChartData] =
+    useState<{ index: number; weight: number }[]>([]);
 
   //BMI
   const [weightBMI, setWeightBMI] = useState<BMIModel>({
@@ -126,14 +133,37 @@ export const useSocketHandler = () => {
       socket.on(
         "listen_digitprobaby",
         (payload: { data_digitprobaby?: DigitProBabyModel[] }) => {
-          console.log("DigitProBaby(s) received:", payload);
           if (
             payload?.data_digitprobaby &&
             Array.isArray(payload.data_digitprobaby)
           ) {
-            setWeightDigitProBaby({
-              weight: payload.data_digitprobaby[0].weight,
-            });
+            if (macDevice === payload.data_digitprobaby[0].mac) {
+              setWeightDigitProBaby({
+                mac: payload.data_digitprobaby[0].mac,
+                weight: payload.data_digitprobaby[0].weight,
+              });
+            }
+          }
+        }
+      );
+      socket.on(
+        "listen_digitprobaby_realtime",
+        (payload: { data_digitprobaby_realtime?: DigitProBabyModel[] }) => {
+          if (
+            payload?.data_digitprobaby_realtime &&
+            Array.isArray(payload.data_digitprobaby_realtime)
+          ) {
+            const latest = payload.data_digitprobaby_realtime[0];
+
+            if (latest.mac === macDevice) {
+              setWeightDigitProBabyChartData((prev) => {
+                const next = [
+                  ...prev,
+                  { index: prev.length, weight: latest.weight },
+                ];
+                return next.slice(-100); // Keep the last 100 entries
+              });
+            }
           }
         }
       );
@@ -188,33 +218,8 @@ export const useSocketHandler = () => {
     setIsScanning(true);
     socketRef.current?.emit("scan", <Data>{
       user_id: userId,
-      data: { topic: "IoTGateway/{ID-Unik}/Bluetooth/Scan", payload: "Start" },
+      data: { topic: "iotgateway/{id-unik}/bluetooth/scan", payload: "start" },
     });
-  };
-
-  const dummyScan = () => {
-    setIsScanning(true);
-    setTimeout(() => {
-      // setDevices([
-      //   {
-      //     id: "F1:Q1:GA:NT:3N:GG",
-      //     device: "Digit Pro IDA",
-      //     rssi: -30,
-      //     filteredRSSI: -30,
-      //     distance: 1,
-      //     device_function: "digit_pro_ida",
-      //   },
-      //   {
-      //     id: "F1:Q1:GA:NT:3N:G6",
-      //     device: "Digit Pro Baby",
-      //     rssi: -31,
-      //     filteredRSSI: -31,
-      //     distance: 2,
-      //     device_function: "digit_pro_baby",
-      //   },
-      // ]);
-      setIsScanning(false);
-    }, 5000);
   };
 
   //Digit Pro Baby
@@ -283,12 +288,13 @@ export const useSocketHandler = () => {
   };
 
   //Connect Device
-  const eventConnectDevice = (device: Devices) => {
+  const eventConnectDevice = (displayName: string, device: Devices) => {
     socketRef.current?.emit("connect_device", {
       user_id: userId,
       hospital_id: user?.hospital?.id,
+      display_name: displayName,
       data: {
-        topic: "IoTGateway/{ID-Unik}/Bluetooth/AddDevice",
+        topic: "iotgateway/{id-unik}/bluetooth/add_device",
         payload: device,
       },
     });
@@ -322,7 +328,6 @@ export const useSocketHandler = () => {
     isScanning,
     eventConnectDevice,
     deleteDevice,
-    dummyScan,
 
     //Digit Pro IDA
     startDigitProIDA,
@@ -333,6 +338,7 @@ export const useSocketHandler = () => {
     eventStopDigitProBaby,
     eventTareDigitProBaby,
     weightDigitProBaby,
+    weightDigitProBabyChartData,
 
     //BMI
     startBmi,

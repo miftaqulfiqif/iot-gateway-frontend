@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSocketHandler } from "../hooks/SocketHandler";
 import type { Devices } from "../models/DeviceModel";
 import MainLayout from "../components/layouts/main-layout";
 import { Cpu, Plus, ScanBarcode, ScanSearch } from "lucide-react";
@@ -8,6 +7,7 @@ import { AddDeviceBluetooth } from "@/components/modals/add-device-bluetooth-mod
 import { AddDeviceLan } from "@/components/modals/add-device-lan-modal";
 import { DevicesConnected } from "@/components/ui/devices-connected";
 import { useDevices } from "@/hooks/api/use-device";
+import { ConnectingDeviceModal } from "@/components/modals/connecting-device-modal";
 
 function Devices() {
   const { devices, getAllDevices } = useDevices();
@@ -15,6 +15,7 @@ function Devices() {
   const [modalAddDevice, setModalAddDevice] = useState(false);
   const [modalAddDeviceBluetooth, setModalAddDeviceBluetooth] = useState(false);
   const [modalAddDeviceWifiOrLan, setModalAddDeviceWifiOrLan] = useState(false);
+  const [modalConnectingDevice, setModalConnectingDevice] = useState(true);
 
   useEffect(() => {
     getAllDevices();

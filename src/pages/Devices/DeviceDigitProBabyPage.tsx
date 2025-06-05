@@ -2,27 +2,35 @@ import { ArrowLeft, Icon, Square, Triangle } from "lucide-react";
 import { PersonStanding, Weight } from "lucide-react";
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
-import DopplerChart from "@/components/chart-doppler";
+import DopplerChart from "@/components/chart-digit-pro-baby-realtime";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { IdaChart } from "@/components/chart-ida";
 
 import weighingIcon from "@/assets/icons/pediatrics.png";
 import tareIcon from "@/assets/icons/tare.png";
-import { useSocketHandler } from "@/hooks/SocketHandler";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
 import { useParams } from "react-router-dom";
 
 const DeviceDigitProBabyPage = () => {
+  const { mac } = useParams<{ mac: string }>();
   const {
     eventStartDigitProBaby,
     eventStopDigitProBaby,
     eventTareDigitProBaby,
     weightDigitProBaby,
-  } = useSocketHandler();
+    weightDigitProBabyChartData,
+  } = useSocketHandler({ macDevice: mac });
 
-  const { mac } = useParams<{ mac: string }>();
+  const [data, setData] = useState([
+    { weight: 100 },
+    { weight: 70 },
+    { weight: 80 },
+    { weight: 100 },
+    { weight: 90 },
+  ]);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -97,7 +105,7 @@ const DeviceDigitProBabyPage = () => {
                   </div>
                 </div>
               </div>
-              <DopplerChart />
+              <DopplerChart chartData={data} />
               <div className="flex flex-row gap-2 items-center">
                 <div
                   className="flex flex-row items-center gap-3 border-2 bg-white border-green-500 text-green-500 w-38 justify-center text-center mx-auto px-4 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
