@@ -1,48 +1,39 @@
-import { TrendingUp } from "lucide-react";
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+import { useEffect } from "react";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
+  weight: {
+    label: "Weight",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
-export default function DopplerChart() {
+type ChartData = {
+  weight: number;
+};
+
+type Props = {
+  chartData: ChartData[];
+};
+
+export default function DigitProBabyRealtimeChart({ chartData }: Props) {
+  useEffect(() => {
+    console.log(chartData);
+  }, [chartData]);
+
   return (
     <Card className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
-            accessibilityLayer
             data={chartData}
             margin={{
               top: 30,
@@ -51,28 +42,17 @@ export default function DopplerChart() {
             }}
           >
             <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={true}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Line
-              dataKey="mobile"
+              dataKey="weight"
               type="natural"
               stroke="blue"
               strokeWidth={2}
-              dot={{
-                fill: "blue",
-              }}
-              activeDot={{
-                r: 2,
-              }}
+              dot={false}
+              activeDot={{ r: 3, fill: "blue" }}
             >
               <LabelList
                 position="top"

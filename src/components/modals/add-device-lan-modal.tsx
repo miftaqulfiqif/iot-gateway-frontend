@@ -8,7 +8,6 @@ import {
   ScanSearch,
   Wifi,
 } from "lucide-react";
-import { useSocketHandler } from "@/hooks/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
 
 type Props = {
@@ -17,17 +16,6 @@ type Props = {
 };
 
 export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
-  const {
-    userId,
-    eventScan,
-    devices,
-    deleteDevice,
-    isScanning,
-    eventConnectDevice,
-    startDigitProIDA,
-    dummyScan,
-  } = useSocketHandler();
-
   const [selectedDevice, setSelectedDevice] = useState<Devices | null>(null);
 
   const handleSelectDevice = (device: Devices) => {
@@ -66,21 +54,6 @@ export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
                 />
               </div>
             </div>
-            <button
-              className={`bg-blue-500 text-white font-bold py-2 rounded-xl w-full mt-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)] ${
-                selectedDevice && devices.length > 0
-                  ? "cursor-pointer"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-              onClick={() => {
-                if (selectedDevice) {
-                  eventConnectDevice(selectedDevice);
-                }
-              }}
-              disabled={devices.length === 0}
-            >
-              {isScanning ? "Scanning..." : "Connect Device"}
-            </button>
           </ul>
         </div>
       </div>

@@ -66,21 +66,15 @@ const devices = [
 ];
 
 const MeasurementPage = () => {
-  // const { getAllDevices, devices } = useDevices();
+  const { getAllDevices, devices } = useDevices();
 
-  // useEffect(() => {
-  //   getAllDevices();
-  // }, []);
+  useEffect(() => {
+    getAllDevices();
+  }, []);
 
   const [state, setState] = useState("barcode");
-  const [barcodeModal, setBarcodeModal] = useState(false);
-  const [selectModal, setSelectModal] = useState(false);
-  const [createModal, setCreateModal] = useState(false);
-
   const [patient, setPatient] = useState(null);
-
   const [baby, setBaby] = useState(null);
-  // const [devices, setDevices] = useState([]);
 
   // Get patient from local storage
   useEffect(() => {
@@ -97,13 +91,6 @@ const MeasurementPage = () => {
     }
   }, [patient]);
 
-  // Handle state change
-  useEffect(() => {
-    setBarcodeModal(state === "barcode");
-    setSelectModal(state === "select");
-    setCreateModal(state === "create");
-  }, [state]);
-
   return (
     <MainLayout title="Measurement" state="Measurement">
       <div className="flex flex-col pb-20">
@@ -114,6 +101,7 @@ const MeasurementPage = () => {
             <button
               onClick={() => {
                 setPatient(null);
+                localStorage.removeItem("patient");
               }}
               className="bg-red-500 text-white px-4 py-2 rounded"
             >
@@ -131,7 +119,7 @@ const MeasurementPage = () => {
                     deviceName={devices.name ? devices.name : devices.device}
                     deviceMac={devices.id}
                     deviceConnection={devices.connection}
-                    url={`/device/${devices.device_function}`}
+                    url={`/device/${devices.device_function}/${devices.id}`}
                   />
                 ))
               ) : (

@@ -37,10 +37,13 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/patients" element={<Patients />} />
 
             {/* DevicePages */}
-            <Route path="/device/digitpro_ida" element={<DeviceIDAPage />} />
+            <Route
+              path="/device/digitpro_ida/:mac"
+              element={<DeviceIDAPage />}
+            />
             <Route path="/device/digitpro_bmi" element={<DeviceBMIPage />} />
             <Route
-              path="/device/digitpro_baby"
+              path="/device/digitpro_baby/:mac"
               element={<DeviceDigitProBabyPage />}
             />
             <Route

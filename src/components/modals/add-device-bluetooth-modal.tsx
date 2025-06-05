@@ -8,8 +8,9 @@ import {
   ScanSearch,
   Wifi,
 } from "lucide-react";
-import { useSocketHandler } from "@/hooks/SocketHandler";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
+import { ConnectingDeviceModal } from "./connecting-device-modal";
 
 type Props = {
   isActive: boolean;
@@ -25,13 +26,12 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
     isScanning,
     eventConnectDevice,
     startDigitProIDA,
-    dummyScan,
   } = useSocketHandler();
   const [selectedDevice, setSelectedDevice] = useState<Devices | null>(null);
+  const [connectingDevice, setConnectingDevice] = useState(false);
 
   const handleSelectDevice = (device: Devices) => {
     setSelectedDevice(device);
-    console.log("Device selected:", device);
   };
 
   return (
@@ -44,7 +44,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-2xl h-fit transition-all duration-300 ease-in-out
+        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-2xl h-[600px] transition-all duration-300 ease-in-out
         ${
           isActive
             ? "opacity-100 scale-100 translate-x-[-50%] translate-y-[-50%]"
@@ -52,7 +52,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
         }
       `}
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 h-full">
           <div className="flex flex-row items-center justify-between">
             <p className="font-bold text-xl">Connection devices</p>
             <button
@@ -64,18 +64,18 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
               Scan Devices
             </button>
           </div>
-          <ul className="mt-4 space-y-2">
-            <div className="flex flex-row bg-white rounded-2xl gap-4 ">
+          <ul className="flex flex-col gap-2 mt-4 justify-between h-full">
+            <div className="flex flex-row bg-white rounded-2xl gap-4 h-full">
               <div className="flex flex-col w-full gap-4">
                 <p className="text-lg">Available Devices</p>
                 {devices.length > 0 ? (
                   <ul className="space-y-3 max-h-80 overflow-y-auto px-2 pb-10">
                     {devices.map((device) => (
                       <div
-                        key={device.mac}
+                        key={device.id}
                         onClick={() => handleSelectDevice(device)}
                         className={`flex px-4 py-2 items-center rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] pl-4 cursor-pointer justify-between ${
-                          selectedDevice?.mac === device.mac
+                          selectedDevice?.id === device.id
                             ? "bg-blue-100 font-semibold"
                             : "bg-blue-100 "
                         }`}
@@ -110,8 +110,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
               }`}
               onClick={() => {
                 if (selectedDevice) {
-                  eventConnectDevice(selectedDevice);
-                  setInactive();
+                  setConnectingDevice(true);
                 }
               }}
               disabled={devices.length === 0}
@@ -121,6 +120,16 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
           </ul>
         </div>
       </div>
+      {/* Modal Connecting Device */}
+      {connectingDevice && (
+        <ConnectingDeviceModal
+          isActive={true}
+          setInactive={() => {
+            setConnectingDevice(false);
+          }}
+          selectedDevice={selectedDevice}
+        />
+      )}
     </div>
   );
 };

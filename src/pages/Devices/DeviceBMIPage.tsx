@@ -10,12 +10,16 @@ import { PatientInfo } from "@/components/ui/patient-info";
 import { BMIResult } from "@/components/ui/bmi/bmi-result";
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import bmiIcon from "@/assets/icons/bmi-white.png";
-import { useSocketHandler } from "@/hooks/SocketHandler";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
 
 const DeviceBMIPage = () => {
   const { startBmi, weightBMI } = useSocketHandler();
-  const [patient, setPatient] = useState(null);
+  const [patient, setPatient] = useState({
+    height: "",
+    age: "",
+    gender: "",
+  });
 
   // Get patient from local storage
   useEffect(() => {

@@ -1,4 +1,4 @@
-import DopplerChart from "@/components/chart-doppler";
+import DopplerChart from "@/components/chart-digit-pro-baby-realtime";
 import MainLayout from "../../components/layouts/main-layout";
 import {
   Activity,
@@ -25,7 +25,7 @@ import battery50Icon from "@/assets/icons/battery-50.png";
 import battery75Icon from "@/assets/icons/battery-75.png";
 import battery100Icon from "@/assets/icons/battery-100.png";
 
-import { useSocketHandler } from "@/hooks/SocketHandler";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Patients } from "@/models/PatientModel";
 import { useEffect, useState } from "react";
 
