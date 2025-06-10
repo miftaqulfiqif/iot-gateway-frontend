@@ -139,7 +139,7 @@ export const PatientInfo = ({ patient, baby }: Props) => {
                     <p>:</p>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <p>{baby.place_of_birth}</p>
+                    <p>{baby.place_of_birth ? baby.place_of_birth : " -- "} </p>
                     <p>
                       {new Date(baby.date_of_birth).toLocaleDateString(
                         "en-GB",

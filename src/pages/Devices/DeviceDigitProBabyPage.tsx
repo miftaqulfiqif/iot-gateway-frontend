@@ -2,9 +2,7 @@ import { ArrowLeft, Icon, Square, Triangle } from "lucide-react";
 import { PersonStanding, Weight } from "lucide-react";
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
-import DopplerChart from "@/components/chart-digit-pro-baby-realtime";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { IdaChart } from "@/components/chart-ida";
 
 import weighingIcon from "@/assets/icons/pediatrics.png";
 import tareIcon from "@/assets/icons/tare.png";
@@ -13,24 +11,17 @@ import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
 import { useParams } from "react-router-dom";
+import DigitProBabyRealtimeChart from "@/components/chart-digit-pro-baby-realtime";
+import { createBabyApi } from "@/hooks/api/devices/use-digit-pro-baby";
 
 const DeviceDigitProBabyPage = () => {
   const { mac } = useParams<{ mac: string }>();
+
   const {
-    eventStartDigitProBaby,
-    eventStopDigitProBaby,
     eventTareDigitProBaby,
     weightDigitProBaby,
     weightDigitProBabyChartData,
   } = useSocketHandler({ macDevice: mac });
-
-  const [data, setData] = useState([
-    { weight: 100 },
-    { weight: 70 },
-    { weight: 80 },
-    { weight: 100 },
-    { weight: 90 },
-  ]);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -47,7 +38,28 @@ const DeviceDigitProBabyPage = () => {
     weight: 0,
     age: 0,
   });
-  const [baby, setBaby] = useState(null);
+  const [baby, setBaby] = useState({
+    id: "",
+    name: "",
+  });
+
+  // Create baby
+  const handleCreateBaby = () => {
+    if (
+      !mac ||
+      !patient.id ||
+      !patient.name ||
+      !weightDigitProBaby.weight ||
+      !baby
+    )
+      return;
+    createBabyApi({
+      patient_id: patient.id,
+      baby_id: baby.id,
+      device_id: mac,
+      weight: weightDigitProBaby.weight,
+    });
+  };
 
   // Get patient from local storage
   useEffect(() => {
@@ -105,35 +117,35 @@ const DeviceDigitProBabyPage = () => {
                   </div>
                 </div>
               </div>
-              <DopplerChart chartData={data} />
+              {/* Chart Realtime */}
+              <DigitProBabyRealtimeChart
+                chartData={weightDigitProBabyChartData}
+              />
               <div className="flex flex-row gap-2 items-center">
                 <div
-                  className="flex flex-row items-center gap-3 border-2 bg-white border-green-500 text-green-500 w-38 justify-center text-center mx-auto px-4 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={eventStartDigitProBaby}
-                >
-                  <Triangle className="rotate-90 " />
-                  <p>START</p>
-                </div>
-                <div
-                  className="flex flex-row gap-3 border-2 items-center bg-white border-red-500 text-red-500 w-38 justify-center text-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={eventStopDigitProBaby}
-                >
-                  <Square className="" />
-                  <p>STOP</p>
-                </div>
-                <div
-                  className="flex flex-row gap-3 border-2 bg-white border-[#3062E5] text-[#3062E5] w-fit text-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
+                  className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
                   onClick={eventTareDigitProBaby}
                 >
-                  <img src={tareIcon} alt="" className="w-8 h-8" />
-                  <p>TARE</p>
+                  <div className="flex flex-row gap-3 mx-auto">
+                    <img src={tareIcon} alt="" className="w-8 h-8" />
+                    <p>TARE</p>
+                  </div>
+                </div>
+                <div
+                  className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
+                  onClick={handleCreateBaby}
+                >
+                  <div className="flex flex-row gap-3 mx-auto">
+                    <img src={tareIcon} alt="" className="w-8 h-8" />
+                    <p>Save</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {baby === null && (
+      {baby.id === "" && (
         <SelectBaby
           isActive={true}
           baby={baby}

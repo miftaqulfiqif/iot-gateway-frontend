@@ -1,5 +1,6 @@
 export type DopplerModel = {
-  fhr: number;
-  soundQuality: string;
-  batteryLevel: string;
+  mac?: string;
+  heart_rate: number;
+  sound_quality: string;
+  battery_level: number;
 };

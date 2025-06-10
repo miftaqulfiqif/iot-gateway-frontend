@@ -33,35 +33,41 @@ export default function DigitProBabyRealtimeChart({ chartData }: Props) {
     <Card className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <LineChart
-            data={chartData}
-            margin={{
-              top: 30,
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Line
-              dataKey="weight"
-              type="natural"
-              stroke="blue"
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 3, fill: "blue" }}
+          {chartData.length > 0 ? (
+            <LineChart
+              data={chartData}
+              margin={{
+                top: 30,
+                left: 12,
+                right: 12,
+              }}
             >
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
+              <CartesianGrid vertical={false} />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
               />
-            </Line>
-          </LineChart>
+              <Line
+                dataKey="weight"
+                type="natural"
+                stroke="blue"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 3, fill: "blue" }}
+              >
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Line>
+            </LineChart>
+          ) : (
+            <p className="text-center text-muted-foreground h-full items-center justify-center flex">
+              No data available
+            </p>
+          )}
         </ChartContainer>
       </CardContent>
     </Card>

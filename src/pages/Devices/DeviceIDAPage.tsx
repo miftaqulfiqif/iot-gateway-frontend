@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
-import { href } from "react-router-dom";
+import { href, useParams } from "react-router-dom";
 import DopplerChart from "@/components/chart-digit-pro-baby-realtime";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { IdaChart } from "@/components/chart-ida";
@@ -20,9 +20,13 @@ import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
 import { CreateBaby } from "@/components/modals/create-baby-modal";
+import { createDataDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 
 const DeviceIDAPage = () => {
-  const { startDigitProIDA, weightDigitProIDA } = useSocketHandler();
+  const { mac } = useParams();
+  const { weightDigitProIDA } = useSocketHandler({
+    macDevice: mac,
+  });
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -39,7 +43,10 @@ const DeviceIDAPage = () => {
     weight: 0,
     age: 0,
   });
-  const [baby, setBaby] = useState(null);
+  const [baby, setBaby] = useState({
+    id: "",
+    name: "",
+  });
 
   // Get patient from local storage
   useEffect(() => {
@@ -49,11 +56,25 @@ const DeviceIDAPage = () => {
     }
   }, []);
 
-  // Start Digit Pro IDA
-  useEffect(() => {
-    if (!baby) return;
-    startDigitProIDA();
-  }, [baby]);
+  // handler create daa
+  const handleCreateData = () => {
+    if (
+      !mac ||
+      !patient.id ||
+      !patient.name ||
+      !weightDigitProIDA.weight_mother ||
+      !weightDigitProIDA.weight_child ||
+      !baby
+    )
+      return;
+    createDataDigitProIDA({
+      patient_id: patient.id,
+      baby_id: baby.id,
+      device_id: mac,
+      weight_mother: weightDigitProIDA.weight_mother,
+      weight_child: weightDigitProIDA.weight_child,
+    });
+  };
 
   return (
     <MainLayout title="Digit Pro IDA" state="Measurement">
@@ -76,65 +97,75 @@ const DeviceIDAPage = () => {
           </div>
 
           <div className="w-1/2 flex flex-col justify-between">
-            <p className="font-bold text-2xl">Result</p>
-            <div className="w-full space-y-6 pt-3">
-              <div className="flex flex-row gap-4">
-                {/* Square 1 */}
-                <div className="flex-1 aspect-square bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col gap-3 p-5">
-                  <div className="flex flex-row gap-3 items-center font-semibold">
-                    <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                      <PersonStanding className="w-6 h-6" />
+            <div className="flex flex-col">
+              <p className="font-bold text-2xl">Result</p>
+              <div className="w-full space-y-6 pt-3">
+                <div className="flex flex-row gap-4">
+                  {/* Square 1 */}
+                  <div className="flex-1 aspect-square bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col gap-3 p-5">
+                    <div className="flex flex-row gap-3 items-center font-semibold">
+                      <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+                        <PersonStanding className="w-6 h-6" />
+                      </div>
+                      <p>Adult Weights</p>
                     </div>
-                    <p>Adult Weights</p>
-                  </div>
-                  <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
-                      <img src={weighingIcon} alt="" className="w-12 h-12" />
-                      <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
-                        <span className="pr-2">
-                          {weightDigitProIDA.adultWeight
-                            ? weightDigitProIDA.adultWeight
-                            : "--"}
-                        </span>
-                        Kg
-                      </p>
+                    <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
+                      <div className="flex flex-col items-center gap-4">
+                        <img src={weighingIcon} alt="" className="w-12 h-12" />
+                        <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
+                          <span className="pr-2">
+                            {weightDigitProIDA.weight_mother
+                              ? weightDigitProIDA.weight_mother
+                              : "--"}
+                          </span>
+                          Kg
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Square 2 */}
-                <div className="flex-1 aspect-square bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col gap-3 p-5">
-                  <div className="flex flex-row gap-3 items-center font-semibold">
-                    <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                      <Icon iconNode={babyPacifier} />
+                  {/* Square 2 */}
+                  <div className="flex-1 aspect-square bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col gap-3 p-5">
+                    <div className="flex flex-row gap-3 items-center font-semibold">
+                      <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+                        <Icon iconNode={babyPacifier} />
+                      </div>
+                      <p>Baby Weights</p>
                     </div>
-                    <p>Baby Weights</p>
-                  </div>
-                  <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
-                      <img
-                        src={babyWeighingIcon}
-                        alt=""
-                        className="w-15 h-15"
-                      />
-                      <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
-                        <span className="pr-2">
-                          {weightDigitProIDA.babyWeight
-                            ? weightDigitProIDA.babyWeight
-                            : "--"}
-                        </span>
-                        Kg
-                      </p>
+                    <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
+                      <div className="flex flex-col items-center gap-4">
+                        <img
+                          src={babyWeighingIcon}
+                          alt=""
+                          className="w-15 h-15"
+                        />
+                        <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
+                          <span className="pr-2">
+                            {weightDigitProIDA.weight_child
+                              ? weightDigitProIDA.weight_child
+                              : "--"}
+                          </span>
+                          Kg
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <IdaChart />
+            </div>
+            {/* <IdaChart /> */}
+            <div
+              className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
+              onClick={handleCreateData}
+            >
+              <div className="flex flex-row gap-3 mx-auto">
+                <p>Save</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      {baby === null && (
+      {baby.id === "" && (
         <SelectBaby
           isActive={true}
           baby={baby}

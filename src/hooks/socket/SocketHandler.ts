@@ -26,9 +26,16 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
 
   //Digit Pro IDA
   const [weightDigitProIDA, setWeightDigitProIDA] = useState<DigitProIDAModel>({
-    babyWeight: 0,
-    adultWeight: 0,
+    weight_mother: 0,
+    weight_child: 0,
   });
+  const [weightDigitProIDARealtime, setWeightDigitProIDARealtime] = useState<
+    {
+      index: number;
+      weight_mother: number;
+      weight_child: number;
+    }[]
+  >([]);
 
   //Digit Pro Baby
   const [weightDigitProBaby, setWeightDigitProBaby] =
@@ -59,10 +66,13 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
 
   //Doppler
   const [dataDoppler, setDataDoppler] = useState<DopplerModel>({
-    fhr: 0,
-    soundQuality: "",
-    batteryLevel: "",
+    heart_rate: 0,
+    sound_quality: "",
+    battery_level: 0,
   });
+  const [dataDopplerChartData, setDataDopplerChartData] = useState<
+    { index: number; heart_rate: number }[]
+  >([]);
 
   const startSocket = (userId: string) => {
     const socket = io(socketUrl, {
@@ -114,17 +124,45 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
 
       //Digit Pro IDA
       socket.on(
-        "listen_digitproida",
+        "listen_digitproida_result",
         (payload: { data_digitproida?: DigitProIDAModel[] }) => {
           if (
             payload?.data_digitproida &&
             Array.isArray(payload.data_digitproida)
           ) {
-            console.log("DigitProIDA(s) received:", payload.data_digitproida);
-            setWeightDigitProIDA({
-              babyWeight: payload.data_digitproida[0].babyWeight,
-              adultWeight: payload.data_digitproida[0].adultWeight,
-            });
+            if (macDevice === payload.data_digitproida[0].mac) {
+              console.log("DigitProIDA(s) received:", payload.data_digitproida);
+              setWeightDigitProIDA({
+                weight_mother: payload.data_digitproida[0].weight_mother,
+                weight_child: payload.data_digitproida[0].weight_child,
+              });
+            }
+          }
+        }
+      );
+      socket.on(
+        "listen_digitproida_realtime",
+        (payload: { data_digitproida?: DigitProIDAModel[] }) => {
+          if (
+            payload?.data_digitproida &&
+            Array.isArray(payload.data_digitproida)
+          ) {
+            const latest = payload.data_digitproida[0];
+
+            if (macDevice === payload.data_digitproida[0].mac) {
+              console.log("DigitProIDA(s) received:", payload.data_digitproida);
+              setWeightDigitProIDARealtime((prev) => {
+                const next = [
+                  ...prev,
+                  {
+                    index: prev.length,
+                    weight_mother: latest.weight_mother,
+                    weight_child: latest.weight_child,
+                  },
+                ];
+                return next.slice(-100);
+              });
+            }
           }
         }
       );
@@ -196,12 +234,21 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
         "listen_doppler",
         (payload: { data_doppler?: DopplerModel[] }) => {
           if (payload?.data_doppler && Array.isArray(payload.data_doppler)) {
-            console.log("Doppler(s) received:", payload.data_doppler);
-            setDataDoppler({
-              fhr: payload.data_doppler[0].fhr,
-              soundQuality: payload.data_doppler[0].soundQuality,
-              batteryLevel: payload.data_doppler[0].batteryLevel,
-            });
+            const latest = payload.data_doppler[0];
+            if (latest.mac === macDevice) {
+              setDataDoppler({
+                heart_rate: payload.data_doppler[0].heart_rate,
+                sound_quality: payload.data_doppler[0].sound_quality,
+                battery_level: payload.data_doppler[0].battery_level,
+              });
+              setDataDopplerChartData((prev) => {
+                const next = [
+                  ...prev,
+                  { index: prev.length, heart_rate: latest.heart_rate },
+                ];
+                return next.slice(-100); // Keep the last 100 entries
+              });
+            }
           }
         }
       );
@@ -238,7 +285,10 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
   const eventTareDigitProBaby = () => {
     socketRef.current?.emit("tare_digit_pro_baby", <Data>{
       user_id: userId,
-      data: { topic: "ble/tare_digitprobaby", payload: "1" },
+      data: {
+        topic: "iotgateway/{id-unik}/bluetooth/digitpro_baby_tare",
+        payload: "tare",
+      },
     });
   };
 
@@ -348,5 +398,6 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
     startDoppler,
     stopDoppler,
     dataDoppler,
+    dataDopplerChartData,
   };
 };

@@ -20,7 +20,7 @@ import spo2Icon from "@/assets/icons/spo2.png";
 import respIcon from "@/assets/icons/resp.png";
 import rrIcon from "@/assets/icons/lungs.png";
 
-import { HeartRateDoppler } from "@/components/ui/heart-rate-doppler";
+// import { HeartRateDoppler } from "@/components/ui/chart-doppler-realtime";
 import { useEffect, useState } from "react";
 import { Patients } from "@/models/PatientModel";
 
@@ -178,7 +178,7 @@ const DeviceDS001Page = () => {
             </div>
 
             <div className="w-full space-y-6 pt-3 ">
-              <HeartRateDoppler />
+              {/* <HeartRateDoppler /> */}
             </div>
           </div>
         </div>

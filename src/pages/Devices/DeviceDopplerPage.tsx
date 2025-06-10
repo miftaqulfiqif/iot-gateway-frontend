@@ -18,7 +18,7 @@ import { babyPacifier } from "@lucide/lab";
 
 import weighingIcon from "@/assets/icons/pediatrics.png";
 import heartBeatImg from "@/assets/imgs/hear-beat.png";
-import { HeartRateDoppler } from "@/components/ui/heart-rate-doppler";
+import DopplerHeartRateChart from "@/components/ui/chart-doppler-realtime";
 
 import battery25Icon from "@/assets/icons/battery-25.png";
 import battery50Icon from "@/assets/icons/battery-50.png";
@@ -28,10 +28,13 @@ import battery100Icon from "@/assets/icons/battery-100.png";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Patients } from "@/models/PatientModel";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const DeviceDopplerPage = () => {
-  const { startDoppler, stopDoppler, dataDoppler } = useSocketHandler();
-  startDoppler();
+  const { mac } = useParams();
+  const { dataDopplerChartData, dataDoppler } = useSocketHandler({
+    macDevice: mac,
+  });
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -86,33 +89,36 @@ const DeviceDopplerPage = () => {
                 <div className="flex flex-col items-baseline-last w-54">
                   <img src={heartBeatImg} alt="" className="w-12 absolute" />
                   <p className="text-8xl">
-                    {dataDoppler.fhr} <span className="text-sm">bpm</span>
+                    {dataDoppler.heart_rate}{" "}
+                    <span className="text-sm">bpm</span>
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col justify-end">
+              {/* <div className="flex flex-col justify-end">
                 <div className="flex flex-row items-center gap-2 bg-blue-400 px-3 py-1 rounded-full h-fit">
                   <Activity className="w-6 h-6" />
                   <p className="text-sm">310 bpm</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex flex-gap gap-8">
                 <AudioLines
                   className={`w-8 h-8 ${
-                    dataDoppler.soundQuality === "Good"
-                      ? "text-green-400"
-                      : "text-red-500"
+                    dataDoppler.sound_quality === "poor"
+                      ? "text-red-500"
+                      : dataDoppler.sound_quality === "medium"
+                      ? "text-yellow-300"
+                      : "text-green-400"
                   }`}
                 />
                 <img
                   src={
                     {
-                      "100%": battery100Icon,
-                      "75%": battery75Icon,
-                      "50%": battery50Icon,
-                      "25%": battery25Icon,
-                    }[dataDoppler.batteryLevel]
+                      100: battery100Icon,
+                      75: battery75Icon,
+                      50: battery50Icon,
+                      25: battery25Icon,
+                    }[dataDoppler.battery_level]
                   }
                   alt=""
                   className="w-8 h-8"
@@ -120,7 +126,7 @@ const DeviceDopplerPage = () => {
               </div>
             </div>
             <div className="w-full space-y-6 pt-3 ">
-              <HeartRateDoppler />
+              <DopplerHeartRateChart chartData={dataDopplerChartData} />
               {/* <div className="flex flex-row gap-4">
               Square 1
               <div className="flex-1 aspect-square bg-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col justify-center items-center gap-3 p-5">
