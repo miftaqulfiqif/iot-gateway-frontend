@@ -1,4 +1,5 @@
 export type DigitProIDAModel = {
-  babyWeight: number;
-  adultWeight: number;
+  mac?: string;
+  weight_mother: number;
+  weight_child: number;
 };

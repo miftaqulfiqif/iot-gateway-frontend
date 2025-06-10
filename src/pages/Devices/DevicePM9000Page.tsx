@@ -23,7 +23,6 @@ import respIcon from "@/assets/icons/resp.png";
 import nibpIcon from "@/assets/icons/nibp.png";
 
 import heartBeatImg from "@/assets/imgs/hear-beat.png";
-import { HeartRateDoppler } from "@/components/ui/heart-rate-doppler";
 import { ChartHeartPulse } from "@/components/chart-heart-pusle";
 import { HeartbeatChart } from "@/components/heart-beat-chart";
 import { useEffect, useState } from "react";
@@ -204,7 +203,7 @@ const DevicePM9000Page = () => {
             </div>
 
             <div className="w-full space-y-6 pt-3 ">
-              <HeartRateDoppler />
+              {/* <HeartRateDoppler /> */}
               <ChartHeartPulse />
               <HeartbeatChart />
             </div>

@@ -10,7 +10,6 @@ import {
   Venus,
   Wifi,
 } from "lucide-react";
-import { useSocketHandler } from "@/hooks/socket_handler/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
 import Sidebar from "../layouts/sidebar";
 
