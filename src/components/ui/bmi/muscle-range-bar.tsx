@@ -14,7 +14,7 @@ const MuscleRangeBar: React.FC<MuscleRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const muscleRanges = [
-    { label: "Low", color: "bg-yellow-300 text-white", from: 22, to: 31 },
+    { label: "Low", color: "bg-yellow-300 text-black", from: 22, to: 31 },
     { label: "Healthy", color: "bg-blue-400 text-white", from: 31, to: 38 },
     { label: "Excelent", color: "bg-green-400 text-white", from: 38, to: 45 },
   ];
@@ -48,8 +48,18 @@ const MuscleRangeBar: React.FC<MuscleRangeBarProps> = ({
 
       {/* Bubble */}
       <div
-        className="absolute -top-8 transform -translate-x-1/2"
-        style={{ left: `${percentage}%` }}
+        className={`absolute -top-8 ${
+          percentage <= 0
+            ? "left-0 translate-x-0"
+            : percentage >= 100
+            ? "right-0 translate-x-0"
+            : "transform -translate-x-1/2"
+        }`}
+        style={
+          percentage > 0 && percentage < 100
+            ? { left: `${percentage}%` }
+            : undefined
+        }
       >
         <div
           className={`${category.color} px-2 py-1 rounded-md shadow text-sm relative`}

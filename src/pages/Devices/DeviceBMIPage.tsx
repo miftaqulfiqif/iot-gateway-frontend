@@ -12,15 +12,20 @@ import weighingIcon from "@/assets/icons/weighing-white.png";
 import bmiIcon from "@/assets/icons/bmi-white.png";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
+import { InputHeightModal } from "@/components/modals/input-height-modal";
+import { Patients } from "@/models/PatientModel";
+import { useParams } from "react-router-dom";
+import { useToast } from "@/context/ToastContext";
 
 const DeviceBMIPage = () => {
-  const { startBmi, weightBMI } = useSocketHandler();
-  const [patient, setPatient] = useState({
-    height: "",
-    age: "",
-    gender: "",
-  });
+  const { mac } = useParams();
+  const { weightBMI } = useSocketHandler({ macDevice: mac });
 
+  const { showToast } = useToast();
+
+  console.log("weightBMI", weightBMI);
+
+  const [patient, setPatient] = useState(null);
   // Get patient from local storage
   useEffect(() => {
     const storedPatient = localStorage.getItem("patient");
@@ -49,7 +54,7 @@ const DeviceBMIPage = () => {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col justify-between">
+          <div className="w-1/2 flex flex-col">
             <p className="font-bold text-2xl">Result</p>
             <div className="w-full space-y-6 pt-3">
               <div className="flex flex-row gap-4">
@@ -92,7 +97,13 @@ const DeviceBMIPage = () => {
                   </div>
                 </div>
               </div>
-              {weightBMI.impedance !== 0 && (
+              <button
+                onClick={() => showToast("Berhasil tersimpan!", "success")}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Tampilkan Toast
+              </button>
+              {weightBMI.impedence !== 0 && (
                 <BMIResult
                   BMI={weightBMI.bmi}
                   age={weightBMI.age}
@@ -109,21 +120,16 @@ const DeviceBMIPage = () => {
                 />
               )}
             </div>
-            <button
-              className="flex flex-row items-center gap-2 bg-white w-fit font-bold px-5 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
-              onClick={() =>
-                startBmi(
-                  parseInt(patient.height),
-                  parseInt(patient.age),
-                  patient.gender
-                )
-              }
-            >
-              START
-            </button>
           </div>
         </div>
       </div>
+      {!patient?.height && (
+        <InputHeightModal
+          patientId={patient?.id}
+          isActive={true}
+          setPatient={setPatient}
+        />
+      )}
     </MainLayout>
   );
 };
