@@ -54,8 +54,18 @@ const ViceralFatRangeBar: React.FC<ViceralFatRangeBarProps> = ({
 
       {/* Bubble */}
       <div
-        className="absolute -top-8 transform -translate-x-1/2"
-        style={{ left: `${percentage}%` }}
+        className={`absolute -top-8 ${
+          percentage <= 0
+            ? "left-0 translate-x-0"
+            : percentage >= 100
+            ? "right-0 translate-x-0"
+            : "transform -translate-x-1/2"
+        }`}
+        style={
+          percentage > 0 && percentage < 100
+            ? { left: `${percentage}%` }
+            : undefined
+        }
       >
         <div
           className={`${category.color} px-2 py-1 rounded-md shadow text-sm relative`}

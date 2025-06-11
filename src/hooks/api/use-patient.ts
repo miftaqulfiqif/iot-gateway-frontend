@@ -56,6 +56,28 @@ export const UsePatient = ({
     }
   };
 
+  // Update patient height
+  const updatePatientHeight = async (patientId: string, newHeight: number) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/api/patient-update/${patientId}`,
+        {
+          height: newHeight,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        const patient = JSON.parse(localStorage.getItem("patient") || "{}");
+        patient.height = newHeight;
+        localStorage.setItem("patient", JSON.stringify(patient));
+      } else {
+      }
+    } catch (error) {}
+  };
+
   // Return callback
-  return { updatePatient, savePatient };
+  return { updatePatient, savePatient, updatePatientHeight };
 };

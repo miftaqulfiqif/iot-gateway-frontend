@@ -3,6 +3,7 @@ import {
   Lamp,
   LogOut,
   LogOutIcon,
+  ScrollText,
   Settings,
   Stethoscope,
   User2,
@@ -57,6 +58,12 @@ const Sidebar = ({ state }: SidebarProps) => {
               title="Patients"
               isActive={state === "Patients"}
               url="/patients"
+            />
+            <AppSidebar
+              icon={<ScrollText />}
+              title="Measurement Histories"
+              isActive={state === "Measurement Histories"}
+              url="/measurement-histories"
             />
           </div>
         </div>

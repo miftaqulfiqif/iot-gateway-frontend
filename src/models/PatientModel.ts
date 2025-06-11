@@ -10,6 +10,6 @@ export type Patients = {
   place_of_birth: string;
   date_of_birth: string;
   religion: string;
-  weight: number;
+  height: number;
   age: number;
 };

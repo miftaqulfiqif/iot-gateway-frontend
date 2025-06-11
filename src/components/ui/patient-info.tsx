@@ -42,7 +42,7 @@ export const PatientInfo = ({ patient, baby }: Props) => {
           <div className="flex items-center gap-3">
             <div className="flex items-center bg-blue-400 text-white px-2 py-1 rounded-2xl">
               <PersonStanding className="w-6 h-6" />
-              <p>{patient?.weight ?? " -- "} cm</p>
+              <p>{patient?.height ?? " -- "} cm</p>
             </div>
             <div className="flex items-center bg-blue-400 text-white px-4 py-1 rounded-2xl">
               <p>{patient?.age ?? " -- "} years old</p>
@@ -81,7 +81,9 @@ export const PatientInfo = ({ patient, baby }: Props) => {
               <p>:</p>
             </div>
             <div className="flex flex-col gap-2">
-              <p>{patient?.place_of_birth ?? " -- "}</p>
+              <p>
+                {patient?.place_of_birth ? patient?.place_of_birth : " -- "}
+              </p>
               <p>
                 {patient?.date_of_birth
                   ? new Date(patient?.date_of_birth).toLocaleDateString(
@@ -94,11 +96,13 @@ export const PatientInfo = ({ patient, baby }: Props) => {
                     )
                   : "--"}
               </p>
-              <p>{patient?.address ?? " -- "}</p>
-              <p>{patient?.religion ?? " -- "}</p>
-              <p>{patient?.last_education ?? " -- "}</p>
+              <p>{patient?.address ? patient?.address : " -- "}</p>
+              <p>{patient?.religion ? patient?.religion : " -- "}</p>
+              <p>
+                {patient?.last_education ? patient?.last_education : " -- "}
+              </p>
               <p>{patient?.work ? patient?.work : " -- "}</p>
-              <p>{patient?.phone ?? " -- "}</p>
+              <p>{patient?.phone ? patient?.phone : " -- "}</p>
             </div>
           </div>
         )}
