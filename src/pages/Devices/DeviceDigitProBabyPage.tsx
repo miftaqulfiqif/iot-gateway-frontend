@@ -35,7 +35,7 @@ const DeviceDigitProBabyPage = () => {
     place_of_birth: "",
     date_of_birth: "",
     religion: "",
-    weight: 0,
+    height: 0,
     age: 0,
   });
   const [baby, setBaby] = useState({
@@ -52,7 +52,7 @@ const DeviceDigitProBabyPage = () => {
       !weightDigitProBaby.weight ||
       !baby
     )
-      return;
+      return; 
     createBabyApi({
       patient_id: patient.id,
       baby_id: baby.id,

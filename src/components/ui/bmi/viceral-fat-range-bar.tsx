@@ -14,15 +14,20 @@ const ViceralFatRangeBar: React.FC<ViceralFatRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const muscleRanges = [
-    { label: "Slim", color: "bg-blue-300 text-white", from: 0, to: 1 },
-    { label: "Healthy", color: "bg-green-300 text-white", from: 1, to: 9.1 },
+    { label: "Slim", color: "bg-blue-300 text-blue-900", from: 0, to: 1 },
+    {
+      label: "Healthy",
+      color: "bg-green-300 text-green-900",
+      from: 1,
+      to: 9.1,
+    },
     {
       label: "Over",
-      color: "bg-yellow-400 text-white",
+      color: "bg-yellow-300 text-yellow-900",
       from: 9.1,
       to: 14.1,
     },
-    { label: "Obese", color: "bg-red-400 text-white", from: 14.1, to: 20 },
+    { label: "Obese", color: "bg-red-300 text-red-900", from: 14.1, to: 20 },
   ];
   const tickValues = [muscleRanges[0].from, ...muscleRanges.map((r) => r.to)];
 

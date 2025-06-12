@@ -11,10 +11,15 @@ const FatRangeBar: React.FC<FatRangeBarProps> = ({ value, onChangeValue }) => {
 
   // Definisi kategori dan rentang nilai
   const bmiRanges = [
-    { label: "Slim", color: "bg-blue-300 text-white", from: 5, to: 11 },
-    { label: "Healthy", color: "bg-green-400 text-white", from: 11, to: 17 },
-    { label: "Over", color: "bg-yellow-400 text-white", from: 17, to: 27 },
-    { label: "Obese", color: "bg-red-500 text-white", from: 27, to: 35 },
+    { label: "Slim", color: "bg-blue-300 text-blue-900", from: 5, to: 11 },
+    {
+      label: "Healthy",
+      color: "bg-green-300 text-green-900",
+      from: 11,
+      to: 17,
+    },
+    { label: "Over", color: "bg-yellow-300 text-yellow-900", from: 17, to: 27 },
+    { label: "Obese", color: "bg-red-300 text-red-900", from: 27, to: 35 },
   ];
 
   // Hitung persentase posisi nilai pengguna

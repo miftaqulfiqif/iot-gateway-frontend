@@ -47,12 +47,29 @@ export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
           </div>
           <ul className="mt-4 space-y-2">
             <div className="flex flex-row bg-white rounded-2xl gap-4 ">
-              <div className="flex flex-col w-full gap-4">
+              <form className="flex flex-col w-full gap-4">
                 <input
                   type="text"
+                  placeholder="Device name"
                   className="border border-gray-300 rounded-lg p-2"
                 />
-              </div>
+                <input
+                  type="text"
+                  placeholder="IP address"
+                  className="border border-gray-300 rounded-lg p-2"
+                />
+                <div className="flex flex-row gap-2 w-full h-10">
+                  <button type="reset" className="w-full border rounded-sm">
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white w-full rounded-sm"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
           </ul>
         </div>

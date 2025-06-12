@@ -18,25 +18,25 @@ const BodyAgeRangeBar: React.FC<BodyAgeRangeBarProps> = ({
   const bodyAgeRanges = [
     {
       label: "Young",
-      color: "bg-blue-300 text-white",
+      color: "bg-blue-300 text-blue-900",
       from: min,
       to: currentAge,
     },
     {
       label: "Normal",
-      color: "bg-green-300 text-white",
+      color: "bg-green-300 text-green-900",
       from: currentAge,
       to: currentAge + 1,
     },
     {
       label: "Older",
-      color: "bg-yellow-400 text-black",
+      color: "bg-yellow-300 text-yellow-900",
       from: currentAge + 1,
       to: currentAge + 6,
     },
     {
       label: "Over Older",
-      color: "bg-red-400 text-white",
+      color: "bg-red-300 text-red-900",
       from: currentAge + 6,
       to: max,
     },

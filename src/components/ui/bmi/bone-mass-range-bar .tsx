@@ -14,11 +14,16 @@ const BoneMassRangeBar: React.FC<BoneMassRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const boneMassRanges = [
-    { label: "Low", color: "bg-yellow-300 text-white", from: 0, to: 2.4 },
-    { label: "Healthy", color: "bg-blue-300 text-white", from: 2.4, to: 3.12 },
+    { label: "Low", color: "bg-yellow-300 text-yellow-900", from: 0, to: 2.4 },
+    {
+      label: "Healthy",
+      color: "bg-blue-300 text-blue-900",
+      from: 2.4,
+      to: 3.12,
+    },
     {
       label: "Excellent",
-      color: "bg-green-400 text-white",
+      color: "bg-green-300 text-green-900",
       from: 3.12,
       to: 5,
     },
