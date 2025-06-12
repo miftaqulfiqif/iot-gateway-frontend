@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  ArrowBigLeftDash,
   Bluetooth,
   Cpu,
   EthernetPort,
@@ -53,6 +54,16 @@ export const SelectBaby = ({ isActive, babySelected, patientId }: Props) => {
         {/* Component Sidebar */}
         <Sidebar state="Measurement" />
       </div>
+      {/* Back */}
+      <button
+        className="absolute top-4 left-82 bg-white text-black px-4 py-2 rounded-lg shadow hover:bg-gray-100 z-50"
+        onClick={() => window.history.back()}
+      >
+        <div className="flex gap-2 items-center">
+          <ArrowBigLeftDash />
+          <p>Back</p>
+        </div>
+      </button>
 
       {/* Show Modal */}
       <div

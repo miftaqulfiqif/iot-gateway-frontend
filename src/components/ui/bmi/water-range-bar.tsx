@@ -14,9 +14,24 @@ const WaterRangeBar: React.FC<WaterRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const muscleRanges = [
-    { label: "Low", color: "bg-yellow-300 text-black", from: 45, to: 53.6 },
-    { label: "Healthy", color: "bg-blue-400 text-white", from: 53.6, to: 57.1 },
-    { label: "Excelent", color: "bg-green-400 text-black", from: 57.1, to: 65 },
+    {
+      label: "Low",
+      color: "bg-yellow-300 text-yellow-900",
+      from: 45,
+      to: 53.6,
+    },
+    {
+      label: "Healthy",
+      color: "bg-blue-300 text-blue-900",
+      from: 53.6,
+      to: 57.1,
+    },
+    {
+      label: "Excelent",
+      color: "bg-green-300 text-green-900",
+      from: 57.1,
+      to: 65,
+    },
   ];
   const tickValues = [muscleRanges[0].from, ...muscleRanges.map((r) => r.to)];
 

@@ -92,7 +92,7 @@ const Patients = () => {
   return (
     <MainLayout title="Patients" state="Patients">
       <div className="flex flex-col">
-        <div className="sticky top-0 z-50 bg-[#ededf9] mb-2 mt-4">
+        <div className="sticky top-0 z-50 bg-[#ededf9] mb-2">
           <div className="flex flex-col w-full gap-4">
             <div className="flex gap-6 w-full justify-between">
               <div className="flex items-center gap-2">
@@ -296,48 +296,6 @@ const Patients = () => {
                                   <SquarePen className="w-5 h-5" />
                                   Edit
                                 </button>
-
-                                {/* Delete */}
-                                <AlertDialog>
-                                  <AlertDialogTrigger asChild>
-                                    <Trash2
-                                      className="w-7 h-7 cursor-pointer text-red-500"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                      }}
-                                    />
-                                    {/* <MdDeleteOutline
-                                  className="w-7 h-7 cursor-pointer"
-                                  color="red"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                /> */}
-                                  </AlertDialogTrigger>
-                                  <AlertDialogContent className="bg-white border-0">
-                                    <AlertDialogHeader>
-                                      <AlertDialogTitle>
-                                        Are you absolutely sure?
-                                      </AlertDialogTitle>
-                                      <AlertDialogDescription>
-                                        This action cannot be undone. This will
-                                        permanently delete this item and remove
-                                        it from our system.
-                                      </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                      <AlertDialogCancel className="border-0 text-black cursor-pointer">
-                                        Cancel
-                                      </AlertDialogCancel>
-                                      <AlertDialogAction
-                                        onClick={() => alert("Delete")}
-                                        className="bg-red-500 text-white cursor-pointer"
-                                      >
-                                        Delete
-                                      </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                  </AlertDialogContent>
-                                </AlertDialog>
                               </div>
                             </TableCell>
                           </TableRow>

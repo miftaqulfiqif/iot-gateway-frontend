@@ -41,7 +41,7 @@ function Devices() {
             </div>
           </div>
 
-          <div className="flex flex-row gap-4 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {devices.length > 0 ? (
               devices.map((devices) => (
                 <DevicesConnected
@@ -50,6 +50,7 @@ function Devices() {
                   device={devices.device}
                   deviceName={devices.name ?? devices.name ?? devices.device}
                   deviceConnection={devices.connection}
+                  deviceFunction={devices.device_function}
                 />
               ))
             ) : (

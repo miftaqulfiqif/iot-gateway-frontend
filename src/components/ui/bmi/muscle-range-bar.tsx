@@ -14,9 +14,14 @@ const MuscleRangeBar: React.FC<MuscleRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const muscleRanges = [
-    { label: "Low", color: "bg-yellow-300 text-black", from: 22, to: 31 },
-    { label: "Healthy", color: "bg-blue-400 text-white", from: 31, to: 38 },
-    { label: "Excelent", color: "bg-green-400 text-white", from: 38, to: 45 },
+    { label: "Low", color: "bg-yellow-300 text-yellow-900", from: 22, to: 31 },
+    { label: "Healthy", color: "bg-blue-300 text-blue-900", from: 31, to: 38 },
+    {
+      label: "Excelent",
+      color: "bg-green-300 text-green-900",
+      from: 38,
+      to: 45,
+    },
   ];
   const tickValues = [muscleRanges[0].from, ...muscleRanges.map((r) => r.to)];
 

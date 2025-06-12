@@ -28,8 +28,8 @@ export const InputHeightModal = ({
     console.log("Patient Id:", patientId);
     console.log("Height:", height);
     updatePatientHeight(patientId, height);
-    setPatient({ height: height });
-  };
+    setPatient((prev: any) => ({ ...prev, height }));
+  };  
 
   return (
     <div

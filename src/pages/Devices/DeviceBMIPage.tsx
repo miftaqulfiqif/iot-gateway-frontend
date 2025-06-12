@@ -97,12 +97,6 @@ const DeviceBMIPage = () => {
                   </div>
                 </div>
               </div>
-              <button
-                onClick={() => showToast("Berhasil tersimpan!", "success")}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                Tampilkan Toast
-              </button>
               {weightBMI.impedence !== 0 && (
                 <BMIResult
                   BMI={weightBMI.bmi}

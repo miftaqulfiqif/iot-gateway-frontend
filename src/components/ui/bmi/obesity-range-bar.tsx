@@ -14,17 +14,22 @@ const ObesityRangeBar: React.FC<ObesityRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const obesityRanges = [
-    { label: "Slim", color: "bg-blue-300 text-white", from: 5, to: 15 },
-    { label: "Healthy", color: "bg-green-300 text-white", from: 15, to: 30 },
+    { label: "Slim", color: "bg-blue-300 text-blue-900", from: 5, to: 15 },
+    {
+      label: "Healthy",
+      color: "bg-green-300 text-green-900",
+      from: 15,
+      to: 30,
+    },
     {
       label: "Over",
-      color: "bg-yellow-400 text-white",
+      color: "bg-yellow-300 text-yellow-900",
       from: 30,
       to: 50,
     },
     {
       label: "Obese",
-      color: "bg-red-400 text-white",
+      color: "bg-red-300 text-red-900",
       from: 50,
       to: 65,
     },

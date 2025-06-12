@@ -14,11 +14,21 @@ const MetabolismRangeBar: React.FC<MetabolismRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const metabolismRanges = [
-    { label: "Low", color: "bg-yellow-300 text-white", from: 1200, to: 1488 },
-    { label: "Healthy", color: "bg-blue-300 text-white", from: 1488, to: 1643 },
+    {
+      label: "Low",
+      color: "bg-yellow-300 text-yellow-900",
+      from: 1200,
+      to: 1488,
+    },
+    {
+      label: "Healthy",
+      color: "bg-blue-300 text-blue-900",
+      from: 1488,
+      to: 1643,
+    },
     {
       label: "Excellent",
-      color: "bg-green-400 text-white",
+      color: "bg-green-300 text-green-900",
       from: 1643,
       to: 2000,
     },

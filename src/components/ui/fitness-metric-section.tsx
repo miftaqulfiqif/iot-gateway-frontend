@@ -30,11 +30,11 @@ export const FitnessMetricSection = ({
         </div>
 
         <div className="ml-8 flex flex-row gap-9 items-center justify-between">
-          <p className="font-semibold bg-gray-200 px-3 py-2 rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+          <p className="font-semibold bg-gray-200 w-15 text-center px-3 py-2 rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
             {percentage}
           </p>
           <p
-            className={`px-4 py-1 ${statusColor} rounded-full text-white w-30 text-center`}
+            className={`px-4 py-1 ${statusColor} text-black rounded-full w-30 text-center`}
           >
             {statusLabel}
           </p>

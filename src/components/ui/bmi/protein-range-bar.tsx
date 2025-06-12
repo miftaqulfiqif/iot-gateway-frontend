@@ -14,11 +14,16 @@ const ProteinRangeBar: React.FC<ProteinRangeBarProps> = ({
 
   // Definisi kategori dan rentang nilai
   const proteinRanges = [
-    { label: "Low", color: "bg-yellow-300 text-white", from: 10, to: 16 },
-    { label: "Healthy", color: "bg-blue-300 text-white", from: 16, to: 20.1 },
+    { label: "Low", color: "bg-yellow-300 text-yellow-900", from: 10, to: 16 },
+    {
+      label: "Healthy",
+      color: "bg-blue-300 text-blue-900",
+      from: 16,
+      to: 20.1,
+    },
     {
       label: "Excellent",
-      color: "bg-green-400 text-white",
+      color: "bg-green-300 text-green-900",
       from: 20.1,
       to: 25,
     },

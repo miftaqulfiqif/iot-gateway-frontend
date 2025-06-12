@@ -15,6 +15,7 @@ import AppSidebar from "../ui/app-sidebar";
 import elitechLogo from "@/assets/imgs/Logo Elitech.png";
 import doctorImg from "@/assets/imgs/doctor-img.png";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 interface SidebarProps {
   state: string;
@@ -22,13 +23,14 @@ interface SidebarProps {
 
 const Sidebar = ({ state }: SidebarProps) => {
   const { user, logout } = useAuth();
+  const { showToast } = useToast();
   return (
     <div className="flex flex-col bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]  w-72 h-full justify-between">
       <div className="flex flex-col gap-6 px-8 py-5">
         <div className="flex flex-row items-center gap-2">
           <img
             src={elitechLogo}
-            className="w-40 object-contain mx-auto my-auto mt-2"
+            className="w-40 object-contain mx-auto my-auto mt-2 cursor-pointer"
           />
           {/* <p className="font-bold text-xl">Elitech</p> */}
         </div>
