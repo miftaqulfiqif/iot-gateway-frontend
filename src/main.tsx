@@ -61,11 +61,11 @@ createRoot(document.getElementById("root")!).render(
                 element={<DeviceDopplerPage />}
               />
               <Route
-                path="/device/pasien_monitor_9000"
+                path="/device/pasien_monitor_9000/:mac"
                 element={<DevicePM9000Page />}
               />
               <Route
-                path="/device/diagnostic_station_001"
+                path="/device/diagnostic_station_001/:mac"
                 element={<DeviceDS001Page />}
               />
             </Route>

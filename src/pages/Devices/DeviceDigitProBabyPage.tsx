@@ -1,4 +1,10 @@
-import { ArrowLeft, Icon, Square, Triangle } from "lucide-react";
+import {
+  ArrowDownToLine,
+  ArrowLeft,
+  Icon,
+  Square,
+  Triangle,
+} from "lucide-react";
 import { PersonStanding, Weight } from "lucide-react";
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
@@ -11,8 +17,22 @@ import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
 import { useParams } from "react-router-dom";
-import DigitProBabyRealtimeChart from "@/components/chart-digit-pro-baby-realtime";
+import DigitProBabyRealtimeChart from "@/components/charts/chart-digit-pro-baby-realtime";
 import { createBabyApi } from "@/hooks/api/devices/use-digit-pro-baby";
+import HistoriesDigitProBaby from "@/components/charts/chart-histories-digitpro-baby";
+
+const historiesData = [
+  { weight: 3.2, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.5, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.8, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.1, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.4, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.6, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.3, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.7, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.9, timestamp: "2025-06-05 01:46:33.803" },
+  { weight: 3.0, timestamp: "2025-06-05 01:46:33.803" },
+];
 
 const DeviceDigitProBabyPage = () => {
   const { mac } = useParams<{ mac: string }>();
@@ -22,6 +42,8 @@ const DeviceDigitProBabyPage = () => {
     weightDigitProBaby,
     weightDigitProBabyChartData,
   } = useSocketHandler({ macDevice: mac });
+
+  const [showHistories, setShowHistories] = useState(false);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -52,7 +74,7 @@ const DeviceDigitProBabyPage = () => {
       !weightDigitProBaby.weight ||
       !baby
     )
-      return; 
+      return;
     createBabyApi({
       patient_id: patient.id,
       baby_id: baby.id,
@@ -85,7 +107,16 @@ const DeviceDigitProBabyPage = () => {
             </div> */}
             <div className="w-full">
               <p className="font-bold text-2xl">Patient Info</p>
-              <PatientInfo patient={patient} baby={baby} />
+              <PatientInfo
+                patient={patient}
+                baby={baby}
+                setShowHistories={setShowHistories}
+              />
+              {showHistories && (
+                <div className="mt-6">
+                  <HistoriesDigitProBaby chartData={historiesData} />
+                </div>
+              )}
             </div>
           </div>
 
@@ -128,15 +159,15 @@ const DeviceDigitProBabyPage = () => {
                 >
                   <div className="flex flex-row gap-3 mx-auto">
                     <img src={tareIcon} alt="" className="w-8 h-8" />
-                    <p>TARE</p>
+                    <p>Tare</p>
                   </div>
                 </div>
                 <div
-                  className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
+                  className="flex flex-row border-2 bg-white border-[#09d03e] text-[#09d03e] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
                   onClick={handleCreateBaby}
                 >
-                  <div className="flex flex-row gap-3 mx-auto">
-                    <img src={tareIcon} alt="" className="w-8 h-8" />
+                  <div className="flex flex-row gap-3 mx-auto items-center">
+                    <ArrowDownToLine />
                     <p>Save</p>
                   </div>
                 </div>

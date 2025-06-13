@@ -419,6 +419,7 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
     //BMI
     startBmi,
     weightBMI,
+    setWeightBMI,
 
     //Doppler
     startDoppler,

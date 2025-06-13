@@ -17,29 +17,30 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  mother_weight: {
+    label: "Mother",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
+  baby_weight: {
+    label: "Baby",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
-export function IdaChart() {
+type ChartData = {
+  mother_weight: number;
+  baby_weight: number;
+  timestamp: string;
+};
+
+type Props = {
+  chartData: ChartData[];
+};
+
+export function HistoriesDigitProIda({ chartData }: Props) {
   return (
-    <Card>
+    <Card className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
@@ -52,22 +53,29 @@ export function IdaChart() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="timestamp"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              interval="preserveStartEnd"
+              tickFormatter={(value) => {
+                const date = new Date(value);
+                return date.toLocaleDateString("id-ID", {
+                  day: "numeric",
+                  month: "long",
+                });
+              }}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
-              dataKey="desktop"
+              dataKey="mother_weight"
               type="monotone"
               stroke="#3062E5"
               strokeWidth={2}
               dot={true}
             />
             <Line
-              dataKey="mobile"
+              dataKey="baby_weight"
               type="monotone"
               stroke="#94c4f7"
               strokeWidth={2}
