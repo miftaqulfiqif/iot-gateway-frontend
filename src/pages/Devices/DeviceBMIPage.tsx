@@ -1,8 +1,10 @@
 import {
+  ArrowDownToLine,
   ArrowLeft,
   ArrowLeftCircle,
   Icon,
   PersonStanding,
+  RotateCcw,
   Weight,
 } from "lucide-react";
 import MainLayout from "../../components/layouts/main-layout";
@@ -13,16 +15,146 @@ import bmiIcon from "@/assets/icons/bmi-white.png";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
 import { InputHeightModal } from "@/components/modals/input-height-modal";
-import { Patients } from "@/models/PatientModel";
 import { useParams } from "react-router-dom";
 import { useToast } from "@/context/ToastContext";
+import { HistoryBMI } from "@/components/tables/history-bmi";
+
+const historiesData = [
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+  {
+    weight: 3.2,
+    bmi: 3.2,
+    age: 3.2,
+    bodyFat: 3.2,
+    muscleMass: 3.2,
+    water: 3.2,
+    visceralFat: 3.2,
+    boneMass: 3.2,
+    metabolism: 3.2,
+    protein: 3.2,
+    obesity: 3.2,
+    bodyAge: 3.2,
+    lbm: 3.2,
+    timestamp: "2025-06-05 01:46:33.803",
+  },
+];
 
 const DeviceBMIPage = () => {
   const { mac } = useParams();
-  const { weightBMI } = useSocketHandler({ macDevice: mac });
+  const { weightBMI, setWeightBMI } = useSocketHandler({ macDevice: mac });
 
-  const { showToast } = useToast();
-
+  const [showHistories, setShowHistories] = useState(false);
   console.log("weightBMI", weightBMI);
 
   const [patient, setPatient] = useState(null);
@@ -36,27 +168,26 @@ const DeviceBMIPage = () => {
 
   return (
     <MainLayout title="BMI" state="Measurement">
-      <div className="flex flex-col pb-40">
-        <div className="flex flex-row h-full gap-6 ">
+      <div className="flex flex-col pb-20">
+        <div className="flex flex-row min-h-screen gap-6 ">
           <div className="w-1/2">
-            {/* <div
-              className="flex flex-row items-center gap-2 bg-white w-fit font-bold px-5 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
-              onClick={() => {
-                window.location.href = "/";
-              }}
-            >
-              <ArrowLeft />
-              <p>Back</p>
-            </div> */}
             <div className="w-full">
               <p className="font-bold text-2xl">Patient Info</p>
-              <PatientInfo patient={patient} />
+              <PatientInfo
+                patient={patient}
+                setShowHistories={setShowHistories}
+              />
+              {showHistories && (
+                <div className="overflow-x-auto mt-6 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+                  <HistoryBMI historiesData={historiesData} />
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col">
+          <div className="w-1/2">
             <p className="font-bold text-2xl">Result</p>
-            <div className="w-full space-y-6 pt-3">
+            <div className="flex flex-col gap-4 w-full pt-3 h-full">
               <div className="flex flex-row gap-4">
                 {/* Square 1 */}
                 <div className="flex-1 aspect-square bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col gap-3 p-5">
@@ -113,6 +244,33 @@ const DeviceBMIPage = () => {
                   lbm={weightBMI.lbm}
                 />
               )}
+              <div className="flex flex-row gap-2 items-center">
+                <div
+                  className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
+                  onClick={() =>
+                    setWeightBMI({
+                      ...weightBMI,
+                      weight: 0,
+                      impedence: 0,
+                      bmi: 0,
+                    })
+                  }
+                >
+                  <div className="flex flex-row gap-3 mx-auto items-center">
+                    <RotateCcw />
+                    <p>Reset</p>
+                  </div>
+                </div>
+                <div
+                  className="flex flex-row border-2 bg-white border-[#09d03e] text-[#09d03e] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
+                  onClick={() => alert("save")}
+                >
+                  <div className="flex flex-row gap-3 mx-auto items-center">
+                    <ArrowDownToLine />
+                    <p>Save</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

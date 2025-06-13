@@ -97,16 +97,11 @@ const MeasurementPage = () => {
         <div className="flex flex-row gap-6">
           <div className="w-1/2">
             <p className="font-bold text-2xl">Patient Info</p>
-            <PatientInfo patient={patient} baby={baby} />
-            <button
-              onClick={() => {
-                setPatient(null);
-                localStorage.removeItem("patient");
-              }}
-              className="bg-red-500 text-white px-4 py-2 rounded"
-            >
-              Edit patient
-            </button>
+            <PatientInfo
+              patient={patient}
+              baby={baby}
+              setPatient={setPatient}
+            />
           </div>
           <div className="w-1/2">
             <p className="font-bold text-2xl">Devices already to use</p>

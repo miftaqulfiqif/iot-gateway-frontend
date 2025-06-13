@@ -9,9 +9,9 @@ import {
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
 import { href, useParams } from "react-router-dom";
-import DopplerChart from "@/components/chart-digit-pro-baby-realtime";
+import DopplerChart from "@/components/charts/chart-digit-pro-baby-realtime";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { IdaChart } from "@/components/chart-ida";
+import { HistoriesDigitProIda } from "@/components/chart-ida";
 
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import babyWeighingIcon from "@/assets/icons/pediatrics.png";
@@ -22,11 +22,38 @@ import { Patients } from "@/models/PatientModel";
 import { CreateBaby } from "@/components/modals/create-baby-modal";
 import { createDataDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 
+const historiesData = [
+  { timestamp: "2025-06-05 01:46:33.803", mother_weight: 186, baby_weight: 80 },
+  {
+    timestamp: "2025-06-06 01:46:33.803",
+    mother_weight: 305,
+    baby_weight: 200,
+  },
+  {
+    timestamp: "2025-06-07 01:46:33.803",
+    mother_weight: 237,
+    baby_weight: 120,
+  },
+  { timestamp: "2025-06-08 01:46:33.803", mother_weight: 73, baby_weight: 190 },
+  {
+    timestamp: "2025-06-09 01:46:33.803",
+    mother_weight: 209,
+    baby_weight: 130,
+  },
+  {
+    timestamp: "2025-06-10 01:46:33.803",
+    mother_weight: 214,
+    baby_weight: 140,
+  },
+];
+
 const DeviceIDAPage = () => {
   const { mac } = useParams();
   const { weightDigitProIDA } = useSocketHandler({
     macDevice: mac,
   });
+
+  const [showHistories, setShowHistories] = useState(false);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -40,7 +67,7 @@ const DeviceIDAPage = () => {
     place_of_birth: "",
     date_of_birth: "",
     religion: "",
-    weight: 0,
+    height: 0,
     age: 0,
   });
   const [baby, setBaby] = useState({
@@ -92,7 +119,16 @@ const DeviceIDAPage = () => {
                   </div> */}
             <div className="w-full">
               <p className="font-bold text-2xl">Patient Info</p>
-              <PatientInfo patient={patient} baby={baby} />
+              <PatientInfo
+                patient={patient}
+                baby={baby}
+                setShowHistories={setShowHistories}
+              />
+              {showHistories && (
+                <div className="mt-6">
+                  <HistoriesDigitProIda chartData={historiesData} />
+                </div>
+              )}
             </div>
           </div>
 
@@ -107,7 +143,7 @@ const DeviceIDAPage = () => {
                       <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                         <PersonStanding className="w-6 h-6" />
                       </div>
-                      <p>Adult Weights</p>
+                      <p>Mother Weights</p>
                     </div>
                     <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
                       <div className="flex flex-col items-center gap-4">
@@ -152,14 +188,13 @@ const DeviceIDAPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            {/* <IdaChart /> */}
-            <div
-              className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-              onClick={handleCreateData}
-            >
-              <div className="flex flex-row gap-3 mx-auto">
-                <p>Save</p>
+              <div
+                className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer mt-6"
+                onClick={handleCreateData}
+              >
+                <div className="flex flex-row gap-3 mx-auto">
+                  <p>Save</p>
+                </div>
               </div>
             </div>
           </div>

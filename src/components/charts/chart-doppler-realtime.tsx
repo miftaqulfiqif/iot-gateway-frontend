@@ -28,7 +28,7 @@ type Props = {
   chartData: ChartData[];
 };
 
-export default function DopplerHeartRateChart({ chartData }: Props) {
+export default function ChartDopplerRealtime({ chartData }: Props) {
   React.useEffect(() => {
     console.log(chartData);
   }, [chartData]);
