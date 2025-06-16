@@ -5,6 +5,7 @@ import {
   LogOutIcon,
   ScrollText,
   Settings,
+  SquareActivity,
   Stethoscope,
   User2,
   UserRound,
@@ -23,7 +24,6 @@ interface SidebarProps {
 
 const Sidebar = ({ state }: SidebarProps) => {
   const { user, logout } = useAuth();
-  const { showToast } = useToast();
   return (
     <div className="flex flex-col bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]  w-72 h-full justify-between">
       <div className="flex flex-col gap-6 px-8 py-5">
@@ -48,6 +48,12 @@ const Sidebar = ({ state }: SidebarProps) => {
               title="Measurement"
               isActive={state === "Measurement"}
               url="/measurement"
+            />
+            <AppSidebar
+              icon={<SquareActivity />}
+              title="Patient Monitor"
+              isActive={state === "Patient Monitor"}
+              url="/patient-monitor"
             />
             <AppSidebar
               icon={<Lamp />}
