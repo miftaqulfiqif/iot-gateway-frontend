@@ -41,25 +41,19 @@ const DeviceConnected = ({
         </div>
       </div>
       <div className="flex items-center gap-2 h-fit">
-        {
-          {
-            bluetooth: (
-              <div className="bg-blue-500 p-1 rounded-full text-white">
-                <Bluetooth />
-              </div>
-            ),
-            wifi: (
-              <div className="bg-blue-500 p-1 rounded-full text-white">
-                <Wifi />
-              </div>
-            ),
-            lan: (
-              <div className="bg-blue-500 p-1 rounded-full text-white">
-                <EthernetPort />
-              </div>
-            ),
-          }[deviceConnection]
-        }
+        {deviceConnection === "bluetooth" ? (
+          <div className="bg-blue-500 p-1 rounded-full text-white">
+            <Bluetooth />
+          </div>
+        ) : deviceConnection === "wifi" ? (
+          <div className="bg-blue-500 p-1 rounded-full text-white">
+            <Wifi />
+          </div>
+        ) : (
+          <div className="bg-blue-500 p-1 rounded-full text-white">
+            <EthernetPort />
+          </div>
+        )}
         <p className="bg-green-300 h-fit px-4 py-1 rounded-3xl text-sm">
           Online
         </p>

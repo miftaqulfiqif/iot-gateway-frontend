@@ -17,7 +17,20 @@ export const DevicesConnected = ({
   return (
     <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl w-full border">
       <div className="flex flex-row gap-2 items-center">
-        {
+        {deviceConnection === "bluetooth" ? (
+          <div className="bg-blue-500 p-1 rounded-full text-white">
+            <Bluetooth />
+          </div>
+        ) : deviceConnection === "wifi" ? (
+          <div className="bg-blue-500 p-1 rounded-full text-white">
+            <Wifi />
+          </div>
+        ) : (
+          <div className="bg-blue-500 p-1 rounded-full text-white">
+            <EthernetPort />
+          </div>
+        )}
+        {/* {
           {
             bluetooth: (
               <div className="bg-blue-500 p-1 rounded-full text-white w-fit">
@@ -35,7 +48,7 @@ export const DevicesConnected = ({
               </div>
             ),
           }[deviceConnection]
-        }
+        } */}
         <p className="font-bold">{deviceConnection}</p>
       </div>
       <div className="flex flex-col h-full justify-between mt-4">
