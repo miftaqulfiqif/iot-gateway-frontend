@@ -9,6 +9,11 @@ import {
   Wifi,
 } from "lucide-react";
 import { Devices } from "@/models/DeviceModel";
+import { InputText } from "../ui/input-text";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { InputSelect } from "../ui/input-select";
+import { useToast } from "@/context/ToastContext";
 
 type Props = {
   isActive: boolean;
@@ -17,11 +22,26 @@ type Props = {
 
 export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
   const [selectedDevice, setSelectedDevice] = useState<Devices | null>(null);
+  const { showToast } = useToast();
 
-  const handleSelectDevice = (device: Devices) => {
-    setSelectedDevice(device);
-    console.log("Device selected:", device);
-  };
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      ip_address: "",
+      device_name: "",
+      device_function: "",
+    },
+    validationSchema: yup.object().shape({
+      ip_address: yup.string().required("IP address is required"),
+      device_name: yup.string(),
+      device_function: yup.string().required("Device function is required"),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+      showToast(null, "Device added successfully", "success");
+      setInactive();
+    },
+  });
 
   return (
     <div
@@ -43,23 +63,57 @@ export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-row items-center justify-between">
-            <p className="font-bold text-xl">Connection devices</p>
+            <p className="font-bold text-xl">Connection devices - WiFi / LAN</p>
           </div>
           <ul className="mt-4 space-y-2">
             <div className="flex flex-row bg-white rounded-2xl gap-4 ">
-              <form className="flex flex-col w-full gap-4">
-                <input
-                  type="text"
-                  placeholder="Device name"
-                  className="border border-gray-300 rounded-lg p-2"
+              <form
+                className="flex flex-col w-full gap-4"
+                onSubmit={formik.handleSubmit}
+              >
+                <InputText
+                  name="device_name"
+                  label="Device name"
+                  placeholder="Input device name"
+                  onChange={formik.handleChange}
+                  value={formik.values.device_name}
+                  onTouch={formik.touched.device_name}
+                  onError={formik.errors.device_name}
                 />
-                <input
-                  type="text"
-                  placeholder="IP address"
-                  className="border border-gray-300 rounded-lg p-2"
-                />
+                <div className="flex flex-row gap-4">
+                  <InputText
+                    name="ip_address"
+                    label="IP Address"
+                    placeholder="Input IP address"
+                    onChange={formik.handleChange}
+                    value={formik.values.ip_address}
+                    onTouch={formik.touched.ip_address}
+                    onError={formik.errors.ip_address}
+                    isRequired
+                  />
+                  <InputSelect
+                    name="device_function"
+                    label="Device "
+                    placeholder="Select device "
+                    option={[
+                      { value: "pasien_monitor_9000", label: "PM 9000" },
+                      { value: "diagnostic_station_001", label: "DS 001" },
+                    ]}
+                    onChange={(value) =>
+                      formik.setFieldValue("device_function", value)
+                    }
+                    value={formik.values.device_function}
+                    onTouch={formik.touched.device_function}
+                    onError={formik.errors.device_function}
+                    isRequired
+                  />
+                </div>
+
                 <div className="flex flex-row gap-2 w-full h-10">
-                  <button type="reset" className="w-full border rounded-sm">
+                  <button
+                    className="w-full border rounded-sm cursor-pointer"
+                    onClick={() => setInactive()}
+                  >
                     Cancel
                   </button>
                   <button

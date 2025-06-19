@@ -54,7 +54,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
       >
         <div className="flex flex-col gap-4 h-full">
           <div className="flex flex-row items-center justify-between">
-            <p className="font-bold text-xl">Connection devices</p>
+            <p className="font-bold text-xl">Connection devices - Bluetooth</p>
             <button
               className="flex flex-row items-center gap-3 bg-blue-500 text-white font-bold py-2 px-4 rounded-2xl disabled:opacity-50 text-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
               disabled={isScanning}
