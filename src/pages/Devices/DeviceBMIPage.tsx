@@ -168,8 +168,8 @@ const DeviceBMIPage = () => {
 
   return (
     <MainLayout title="BMI" state="Measurement">
-      <div className="flex flex-col pb-20">
-        <div className="flex flex-row min-h-screen gap-6 ">
+      <div className="flex flex-col">
+        <div className="flex flex-row gap-6">
           <div className="w-1/2">
             <div className="w-full">
               <p className="font-bold text-2xl">Patient Info</p>

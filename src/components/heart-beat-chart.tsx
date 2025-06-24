@@ -8,12 +8,16 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+type Props = {
+  className?: string;
+};
+
 type DataPoint = {
   time: number;
   value: number;
 };
 
-export const HeartbeatChart: React.FC = () => {
+export const HeartbeatChart: React.FC<Props> = ({ className }) => {
   const [data, setData] = useState<DataPoint[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -54,7 +58,7 @@ export const HeartbeatChart: React.FC = () => {
   }, [currentTime]);
 
   return (
-    <div className="w-full h-64 bg-black p-2 rounded-lg">
+    <div className={`w-full h-20 bg-black p-2 rounded-lg ${className}`}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid stroke="#333" />

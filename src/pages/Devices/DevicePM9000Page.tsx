@@ -66,18 +66,9 @@ const DevicePM9000Page = () => {
   }, []);
 
   return (
-    <MainLayout title="PM 9000" state="Measurement">
-      <div className="flex flex-col h-full gap-6 mb-20">
+    <MainLayout title="PM 9000" state="Patient Monitor">
+      <div className="flex flex-col h-full gap-6">
         <div className="w-full">
-          {/* <div
-              className="flex flex-row items-center gap-2 bg-white w-fit font-bold px-5 py-2 rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
-              onClick={() => {
-                window.location.href = "/";
-              }}
-            >
-              <ArrowLeft />
-              <p>Back</p>
-            </div> */}
           <div className="w-full">
             <p className="font-bold text-2xl">Patient Info</p>
             <PatientInfo patient={patient} isPatientMonitor />
@@ -88,12 +79,12 @@ const DevicePM9000Page = () => {
         <div className="w-full">
           <p className="font-bold text-2xl">Result</p>
           <div className="flex flex-row gap-4">
-            <div className="w-full space-y-6 pt-3 ">
+            <div className="w-full space-y-4 pt-3 ">
               <ChartDopplerRealtime chartData={chartData} />
-              <ChartHeartPulse />
-              <HeartbeatChart />
+              {/* <ChartHeartPulse className="h-96" />
+              <HeartbeatChart className="h-64" /> */}
             </div>
-            <div className="flex flex-col gap-4 pb-20 mt-3">
+            <div className="flex flex-col gap-4 pb-5 mt-3">
               <div className="flex flex-row gap-4 rounded-2xl ">
                 {/* ECG */}
                 <div className="bg-green-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-full justify-between gap-2">
@@ -106,7 +97,7 @@ const DevicePM9000Page = () => {
                         <p>ECG</p>
                       </div>
                       <div className="flex flex-row items-end">
-                        <div className="flex flex-row items-center text-6xl px-4 py-2 rounded-4xl">
+                        <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
                           <p>120</p>
                         </div>
                         <p className="text-sm pb-4">rpm</p>
@@ -129,7 +120,7 @@ const DevicePM9000Page = () => {
                         </div>
                       </div>
                       <div className="flex flex-row items-end ">
-                        <div className="flex flex-row items-center text-6xl px-4 py-2 rounded-4xl gap-2">
+                        <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl gap-2">
                           <p className="">120</p>
                         </div>
                         <p className="text-sm pb-4">%</p>
@@ -148,7 +139,7 @@ const DevicePM9000Page = () => {
                         <p>RESP </p>
                       </div>
                       <div className="flex flex-row items-end">
-                        <div className="flex flex-row items-center text-6xl px-4 py-2 rounded-4xl">
+                        <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
                           <p>120</p>
                         </div>
                       </div>
@@ -222,6 +213,7 @@ const DevicePM9000Page = () => {
                   </div>
                 </div>
               </div>
+              {/* <ChartDopplerRealtime chartData={chartData} /> */}
             </div>
           </div>
         </div>

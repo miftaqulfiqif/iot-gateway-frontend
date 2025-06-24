@@ -93,7 +93,7 @@ const DeviceDigitProBabyPage = () => {
 
   return (
     <MainLayout title="Digit Pro Baby" state="Measurement">
-      <div className="flex flex-col pb-20">
+      <div className="flex flex-col">
         <div className="flex flex-row h-full gap-6">
           <div className="w-1/2">
             {/* <div
