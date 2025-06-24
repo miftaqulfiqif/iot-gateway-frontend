@@ -18,6 +18,58 @@ import {
 } from "lucide-react";
 import spo2Icon from "@/assets/icons/spo2.png";
 import respIcon from "@/assets/icons/resp.png";
+import { PatientMonitorPM9000Section } from "@/components/sections/patient_monitor_devices/pm-9000";
+
+const pm9000 = [
+  {
+    id: "192.168.1.1",
+    name: "ACB-421",
+    patient_id: {
+      id: "1",
+      name: "Yasfa",
+      room: "ICU 1",
+    },
+    ecg: 90,
+    spo2: 95,
+    resp: 22,
+    hr: 70,
+    temp1: 34,
+    temp2: 37,
+    tempD: 39,
+  },
+  {
+    id: "192.168.1.2",
+    name: "ACB-422",
+    patient_id: {
+      id: "2",
+      name: "Bagus",
+      room: "ICU 2",
+    },
+    ecg: 90,
+    spo2: 95,
+    resp: 22,
+    hr: 70,
+    temp1: 34,
+    temp2: 37,
+    tempD: 39,
+  },
+  {
+    id: "192.168.1.3",
+    name: "ACB-423",
+    patient_id: {
+      id: "3",
+      name: "Dapit",
+      room: "ICU 3",
+    },
+    ecg: 90,
+    spo2: 95,
+    resp: 22,
+    hr: 70,
+    temp1: 34,
+    temp2: 37,
+    tempD: 39,
+  },
+];
 
 const PatientMonitorPage = () => {
   const [search, setSearch] = useState("");
@@ -141,117 +193,21 @@ const PatientMonitorPage = () => {
         {/* PM-9000 */}
         <div className="flex flex-col gap-2 px-1">
           <p className="font-bold">PM 9000</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-6">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="bg-[#EDEDF9] flex flex-col gap-2 p-4 rounded-3xl w-full h-fit shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)] text-sm"
-              >
-                <div className="flex items-center justify-between">
-                  <p className="font-bold">ACB-421</p>
-                  <button className="flex items-center gap-1 bg-blue-500 text-white justify-center py-1 px-2 rounded-sm cursor-pointer transition duration-150 hover:bg-blue-600 text-xs">
-                    <SquareArrowOutUpRight className="w-4 h-4" />
-                    <p>Detail</p>
-                  </button>
-                </div>
-                <p>Patient Name Banget </p>
-                <div className="flex flex-row w-full h-40 space-x-2 mt-4">
-                  <div className="flex flex-col w-full gap-2">
-                    {/* ECG */}
-                    <div className="bg-green-200 text-black rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-                      <div className="flex flex-row gap-2">
-                        <div className="flex flex-col">
-                          <div className="flex flex-row gap-2">
-                            <div className="bg-[#ededf9] text-green-700 rounded-sm p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                              <Activity className="w-4 h-4" />
-                            </div>
-                            <div className="flex flex-col">
-                              {/* <p className="text-xs">ECG</p> */}
-                              <div className="flex flex-row gap-1">
-                                <div className="flex flex-row items-center text-2xl rounded-4xl">
-                                  <p>200</p>
-                                </div>
-                                <p className="text-[10px]">rpm</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* SPO-2 */}
-                    <div className="bg-blue-200 text-black rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-                      <div className="flex flex-row gap-2">
-                        <div className="flex flex-col">
-                          <div className="flex flex-row gap-2">
-                            <div className="bg-[#ededf9] text-green-700 rounded-sm p-1 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                              <img src={spo2Icon} className="w-6 h-6" />
-                            </div>
-                            <div className="flex flex-col">
-                              {/* <p className="text-xs">ECG</p> */}
-                              <div className="flex flex-row gap-1">
-                                <div className="flex flex-row items-center text-2xl rounded-4xl">
-                                  <p>100</p>
-                                </div>
-                                <p className="text-xs pb-4">%</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* RESP */}
-                    <div className="bg-blue-200 text-black rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-                      <div className="flex flex-row gap-2 w-full">
-                        <div className="bg-[#ededf9] text-green-700 rounded-sm p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                          <img src={respIcon} className="w-4 h-4" />
-                        </div>
-                        <div className="flex flex-col">
-                          {/* <p className="text-xs">ECG</p> */}
-                          <div className="flex flex-row gap-1 ">
-                            <div className="flex flex-row items-end text-2xl rounded-4xl">
-                              <p>90</p>
-                            </div>
-                            <p className="text-[10px]">rpm</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-row gap-3 items-center font-semibold">
-                        <div className="bg-[#ededf9] text-yellow-500 rounded-sm p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                          <Thermometer className="w-4 h-4" />
-                        </div>
-                        <p>Temp</p>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <div className="flex flex-row items-center gap-6">
-                          <p className="w-1">T1</p>
-                          <div className="flex flex-row items-end gap-1">
-                            <p className="text-xl w-10 text-end">80</p>
-                            <p className="text-sm pb-0.5">°C</p>
-                          </div>
-                        </div>
-                        <div className="flex flex-row items-center gap-6">
-                          <p className="w-1">T2</p>
-                          <div className="flex flex-row items-end gap-1">
-                            <p className="text-xl w-10 text-end">80</p>
-                            <p className="text-sm pb-0.5">°C</p>
-                          </div>
-                        </div>
-                        <div className="flex flex-row items-center gap-6">
-                          <p className="w-1">TD</p>
-                          <div className="flex flex-row items-end gap-1">
-                            <p className="text-xl w-10 text-end">80</p>
-                            <p className="text-sm pb-0.5">°C</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 gap-6">
+            {pm9000.map((item) => (
+              <PatientMonitorPM9000Section
+                key={item.id}
+                id_device={item.id}
+                patientName={item.patient_id.name}
+                room={item.patient_id.room}
+                ecg={item.ecg}
+                spo2={item.spo2}
+                resp={item.resp}
+                hr={item.hr}
+                temp1={item.temp1}
+                temp2={item.temp2}
+                tempD={item.tempD}
+              />
             ))}
           </div>
         </div>

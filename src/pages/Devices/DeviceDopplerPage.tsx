@@ -15,7 +15,6 @@ import {
   Weight,
 } from "lucide-react";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { IdaChart } from "@/components/chart-ida";
 import { babyPacifier } from "@lucide/lab";
 
 import weighingIcon from "@/assets/icons/pediatrics.png";
@@ -65,7 +64,7 @@ const DeviceDopplerPage = () => {
 
   return (
     <MainLayout title="Doppler" state="Measurement">
-      <div className="flex flex-col pb-20">
+      <div className="flex flex-col">
         <div className="flex flex-row h-full gap-6">
           <div className="w-1/2">
             <div className="w-full">

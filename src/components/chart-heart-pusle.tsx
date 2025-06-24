@@ -9,6 +9,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+type Props = {
+  className?: string;
+};
+
 type HeartbeatData = {
   time: number;
   bpm: number;
@@ -20,7 +24,7 @@ const generateBPM = (prev: number): number => {
   return Math.max(60, Math.min(120, Math.round(newBPM))); // Normal range
 };
 
-export const ChartHeartPulse: React.FC = () => {
+export const ChartHeartPulse: React.FC<Props> = ({ className }) => {
   const [data, setData] = useState<HeartbeatData[]>([]);
   const [time, setTime] = useState(0);
 
@@ -39,12 +43,14 @@ export const ChartHeartPulse: React.FC = () => {
   }, [time]);
 
   return (
-    <div className="w-full h-64 bg-white p-4 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+    <div
+      className={`w-full h-40 bg-white py-2 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] ${className}`}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
-          <XAxis dataKey="time" />
-          <YAxis domain={[60, 120]} />
+          <XAxis dataKey="time" className="hidden" />
+          <YAxis domain={[60, 120]} className="text-xs" />
           <Tooltip />
           <Line
             type="monotone"
