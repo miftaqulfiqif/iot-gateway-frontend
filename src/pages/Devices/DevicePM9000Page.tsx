@@ -87,12 +87,12 @@ const DevicePM9000Page = () => {
             <div className="flex flex-col gap-4 pb-5 mt-3">
               <div className="flex flex-row gap-4 rounded-2xl ">
                 {/* ECG */}
-                <div className="bg-green-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-full justify-between gap-2">
+                <div className="bg-green-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-full h-fit justify-between gap-2">
                   <div className="flex flex-row gap-2">
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-row gap-3 items-center font-semibold">
-                        <div className="bg-[#ededf9] text-green-700 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                          <Activity className="w-8 h-8" />
+                        <div className="bg-[#ededf9] text-green-700 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+                          <Activity className="w-5 h-5" />
                         </div>
                         <p>ECG</p>
                       </div>
@@ -106,13 +106,13 @@ const DevicePM9000Page = () => {
                   </div>
                 </div>
                 {/* SPO2 */}
-                <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-1/3 justify-between gap-2">
+                <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-1/3 h-fit justify-between gap-2">
                   <div className="flex flex-row gap-2">
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-row gap-2 items-center">
                         <div className="flex flex-row gap-3 items-center font-semibold">
-                          <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                            <img src={spo2Icon} className="w-8 h-8" />
+                          <div className="bg-[#ededf9] text-blue-800 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+                            <img src={spo2Icon} className="w-5 h-5" />
                           </div>
                           <p>
                             Sp0<sub>2</sub>
@@ -133,8 +133,8 @@ const DevicePM9000Page = () => {
                   <div className="flex flex-row gap-2">
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-row gap-3 items-center font-semibold">
-                        <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                          <img src={respIcon} className="w-8 h-8" />
+                        <div className="bg-[#ededf9] text-blue-800 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+                          <img src={respIcon} className="w-5 h-5" />
                         </div>
                         <p>RESP </p>
                       </div>

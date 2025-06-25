@@ -12,7 +12,9 @@ export const UsePatientPage = () => {
   const [patientId, setPatientId] = useState(0);
   const [patient, setPatient] = useState<Patients[]>();
   const [patientEdit, setPatientEdit] = useState<Patients>();
-  const selectedPatient = patients?.find((item) => item.id === patientId);
+  const selectedPatient = patients?.find(
+    (item) => item.id === String(patientId)
+  );
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +37,7 @@ export const UsePatientPage = () => {
   const [isExiting, setIsExiting] = useState(false);
 
   // Delete Patient
-  const deletePatient = async (id: number) => {
+  const deletePatient = async (id: string) => {
     try {
       await axios
         .delete(`http://localhost:3000/api/patient/${id}`, {
@@ -215,14 +217,14 @@ export const UsePatientPage = () => {
       setTimeout(() => {
         setPatientId(id);
         fetchAndFormatData(id.toString());
-        setPatient(patients?.filter((patient) => patient.id === id));
+        setPatient(patients?.filter((patient) => patient.id === String(id)));
         setIsDetailVisible(true);
       }, 300);
     } else {
       // Jika belum terbuka, langsung buka
       setPatientId(id);
       fetchAndFormatData(id.toString());
-      setPatient(patients?.filter((patient) => patient.id === id));
+      setPatient(patients?.filter((patient) => patient.id === String(id)));
       setIsVisible(true);
       setTimeout(() => {
         setIsDetailVisible(true);

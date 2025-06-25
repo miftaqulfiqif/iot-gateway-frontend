@@ -54,7 +54,270 @@ import { useHistoryMeasurement } from "@/hooks/UseHistoryMeasurement";
 import axios from "axios";
 import { CreateNewPatient } from "@/components/modals/create-new-patient";
 import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
+import { TablePatients } from "@/components/tables/patients";
+import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
+import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
+import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
+import { TableHistoryDoppler } from "@/components/tables/history-doppler";
 
+const state = [
+  {
+    value: "digit-pro-baby",
+    label: "Digit Pro Baby",
+  },
+  {
+    value: "bmi",
+    label: "BMI",
+  },
+  {
+    value: "doppler",
+    label: "Doppler",
+  },
+  {
+    value: "digit-pro-ida",
+    label: "Digit Pro IDA",
+  },
+];
+
+// Dummy Data
+const dummyProBaby = [
+  {
+    id: "baby-001",
+    name: "Aisyah Putri",
+    gender: "Female",
+    date_of_birth: "2023-11-10",
+    weight: "3.2 kg",
+    timestamp: "2025-06-24 09:15",
+  },
+  {
+    id: "baby-002",
+    name: "Rizki Ramadhan",
+    gender: "Male",
+    date_of_birth: "2024-01-05",
+    weight: "3.6 kg",
+    timestamp: "2025-06-24 09:20",
+  },
+  {
+    id: "baby-003",
+    name: "Nadia Lestari",
+    gender: "Female",
+    date_of_birth: "2024-05-18",
+    weight: "3.0 kg",
+    timestamp: "2025-06-24 09:25",
+  },
+  {
+    id: "baby-004",
+    name: "Ahmad Fadil",
+    gender: "Male",
+    date_of_birth: "2023-12-22",
+    weight: "3.4 kg",
+    timestamp: "2025-06-24 09:30",
+  },
+  {
+    id: "baby-005",
+    name: "Siti Nurjanah",
+    gender: "Female",
+    date_of_birth: "2024-03-30",
+    weight: "2.9 kg",
+    timestamp: "2025-06-24 09:35",
+  },
+];
+const dummyProIDA = [
+  {
+    id: "m-001",
+    mother_name: "Ayu Lestari",
+    baby_name: "Rafi Hidayat",
+    baby_gender: "Male",
+    date_of_birth: "2024-09-15",
+    mother_weight: "58 kg",
+    baby_weight: "3.4 kg",
+    timestamp: "2025-06-24 08:30",
+  },
+  {
+    id: "m-002",
+    mother_name: "Siti Aminah",
+    baby_name: "Putri Anjani",
+    baby_gender: "Female",
+    date_of_birth: "2024-12-01",
+    mother_weight: "60 kg",
+    baby_weight: "3.0 kg",
+    timestamp: "2025-06-24 08:45",
+  },
+  {
+    id: "m-003",
+    mother_name: "Dewi Sartika",
+    baby_name: "Farhan Aditya",
+    baby_gender: "Male",
+    date_of_birth: "2025-01-10",
+    mother_weight: "62 kg",
+    baby_weight: "3.5 kg",
+    timestamp: "2025-06-24 09:00",
+  },
+  {
+    id: "m-004",
+    mother_name: "Nur Aini",
+    baby_name: "Zahra Laila",
+    baby_gender: "Female",
+    date_of_birth: "2025-02-25",
+    mother_weight: "59 kg",
+    baby_weight: "3.2 kg",
+    timestamp: "2025-06-24 09:15",
+  },
+  {
+    id: "m-005",
+    mother_name: "Mega Wulandari",
+    baby_name: "Reyhan Pratama",
+    baby_gender: "Male",
+    date_of_birth: "2024-11-07",
+    mother_weight: "61 kg",
+    baby_weight: "3.3 kg",
+    timestamp: "2025-06-24 09:30",
+  },
+];
+const dummyBMI = [
+  {
+    id: "ida-001",
+    name: "Rizky Maulana",
+    gender: "Male",
+    age: 28,
+    height: "170 cm",
+    weight: "68 kg",
+    bmi: 23.5,
+    fat: "17.2%",
+    muscle: "42.1%",
+    water: "56.8%",
+    visceral_fat: 8,
+    bone_mass: "3.1 kg",
+    metabolism: "1450 kcal",
+    protein: "17.0%",
+    obesity: "0%",
+    body_age: 26,
+    lbm: "56.3 kg",
+    timestamp: "2025-06-24 09:00",
+  },
+  {
+    id: "ida-002",
+    name: "Anisa Putri",
+    gender: "Female",
+    age: 32,
+    height: "160 cm",
+    weight: "54 kg",
+    bmi: 21.1,
+    fat: "25.5%",
+    muscle: "36.5%",
+    water: "50.3%",
+    visceral_fat: 6,
+    bone_mass: "2.7 kg",
+    metabolism: "1350 kcal",
+    protein: "16.5%",
+    obesity: "0%",
+    body_age: 30,
+    lbm: "47.5 kg",
+    timestamp: "2025-06-24 09:05",
+  },
+  {
+    id: "ida-003",
+    name: "Budi Santoso",
+    gender: "Male",
+    age: 40,
+    height: "175 cm",
+    weight: "80 kg",
+    bmi: 26.1,
+    fat: "20.3%",
+    muscle: "38.8%",
+    water: "55.1%",
+    visceral_fat: 10,
+    bone_mass: "3.5 kg",
+    metabolism: "1600 kcal",
+    protein: "17.8%",
+    obesity: "10%",
+    body_age: 43,
+    lbm: "63.7 kg",
+    timestamp: "2025-06-24 09:10",
+  },
+  {
+    id: "ida-004",
+    name: "Citra Lestari",
+    gender: "Female",
+    age: 29,
+    height: "158 cm",
+    weight: "59 kg",
+    bmi: 23.7,
+    fat: "27.0%",
+    muscle: "35.0%",
+    water: "49.5%",
+    visceral_fat: 7,
+    bone_mass: "2.8 kg",
+    metabolism: "1380 kcal",
+    protein: "16.9%",
+    obesity: "5%",
+    body_age: 31,
+    lbm: "50.4 kg",
+    timestamp: "2025-06-24 09:15",
+  },
+  {
+    id: "ida-005",
+    name: "Eko Wijaya",
+    gender: "Male",
+    age: 35,
+    height: "172 cm",
+    weight: "75 kg",
+    bmi: 25.3,
+    fat: "18.9%",
+    muscle: "40.2%",
+    water: "54.0%",
+    visceral_fat: 9,
+    bone_mass: "3.2 kg",
+    metabolism: "1550 kcal",
+    protein: "17.2%",
+    obesity: "8%",
+    body_age: 36,
+    lbm: "61.0 kg",
+    timestamp: "2025-06-24 09:20",
+  },
+];
+const dummyDoppler = [
+  {
+    id: "baby-001",
+    name: "Aisyah Putri",
+    gender: "Female",
+    date_of_birth: "2023-11-10",
+    heart_rate: "132 bpm",
+    timestamp: "2025-06-24 09:15",
+  },
+  {
+    id: "baby-002",
+    name: "Rizki Ramadhan",
+    gender: "Male",
+    date_of_birth: "2024-01-05",
+    heart_rate: "148 bpm",
+    timestamp: "2025-06-24 09:20",
+  },
+  {
+    id: "baby-003",
+    name: "Nadia Lestari",
+    gender: "Female",
+    date_of_birth: "2024-05-18",
+    heart_rate: "125 bpm",
+    timestamp: "2025-06-24 09:25",
+  },
+  {
+    id: "baby-004",
+    name: "Ahmad Fadil",
+    gender: "Male",
+    date_of_birth: "2023-12-22",
+    heart_rate: "138 bpm",
+    timestamp: "2025-06-24 09:30",
+  },
+  {
+    id: "baby-005",
+    name: "Siti Nurjanah",
+    gender: "Female",
+    date_of_birth: "2024-03-30",
+    heart_rate: "142 bpm",
+    timestamp: "2025-06-24 09:35",
+  },
+];
 const MeasurementHistoriesPage = () => {
   const {
     isVisible,
@@ -89,9 +352,37 @@ const MeasurementHistoriesPage = () => {
     patientEdit,
     buttonAction,
   } = UsePatientPage();
+
+  const stateRef = useRef(state);
+  const [selectedDevice, setSelectedDevice] = useState<string | null>(
+    "digit-pro-baby"
+  );
+
   return (
     <MainLayout title="Measurement Histories" state="Measurement Histories">
       <div className="flex flex-col">
+        {/* Filter by device */}
+        <div className="flex flex-row mb-10 gap-6">
+          {stateRef.current.map((item, index) => {
+            const isSelected = selectedDevice === item.value;
+
+            return (
+              <div
+                key={index}
+                onClick={() => setSelectedDevice(item.value)}
+                className={`flex flex-col gap-2 items-center justify-center px-4 py-2 rounded-2xl shadow-[0px_4px_4px_rgba(0,0,0,0.25)] cursor-pointer transition duration-200 ${
+                  isSelected
+                    ? "bg-blue-500 text-white"
+                    : "bg-white hover:bg-[#f0f0f0] text-black"
+                }`}
+              >
+                <div className="flex flex-row gap-2 items-center justify-center">
+                  <p className="text-sm">{item.label}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
         <div className="sticky top-0 z-50 bg-[#ededf9] mb-2">
           <div className="flex flex-col w-full gap-4">
             <div className="flex gap-6 w-full justify-between">
@@ -166,20 +457,6 @@ const MeasurementHistoriesPage = () => {
 
                 <div className="relative">
                   <div
-                    className="flex bg-[#3885FD] items-center gap-2 px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)] cursor-pointer text-white "
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPatientEdit(undefined);
-                      setForm(true);
-                    }}
-                  >
-                    <UserRoundPlus className="w-5 h-5" />
-                    <p className="text-white">Add Patient</p>
-                  </div>
-                </div>
-
-                <div className="relative">
-                  <div
                     className="bg-white rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]"
                     style={{ opacity: isVisible ? 0.5 : 1 }}
                   >
@@ -208,327 +485,57 @@ const MeasurementHistoriesPage = () => {
           <div className="flex flex-row gap-4">
             <div className="w-full">
               {/* Table */}
-              {!patientId ? (
-                <div className="w-full bg-white rounded-2xl shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
-                  <Table className="min-w-full">
-                    <TableHeader className="min-w-full">
-                      <TableRow className="h-14 ">
-                        <TableHead className="text-center font-bold">
-                          NO
-                        </TableHead>
-                        <TableHead className="text-center font-bold">
-                          Name
-                        </TableHead>
-                        <TableHead className="text-center font-bold">
-                          Phone
-                        </TableHead>
-                        <TableHead className="text-center font-bold">
-                          Gender
-                        </TableHead>
-                        <TableHead className="text-center font-bold">
-                          Place of birth
-                        </TableHead>
-                        <TableHead className="text-center font-bold">
-                          Date of Birth
-                        </TableHead>
-                        <TableHead className="text-center font-bold">
-                          Action
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {patients && patients.length > 0 ? (
-                        patients.map((item, index) => (
-                          <TableRow
-                            key={item.id}
-                            onClick={(e) => {
-                              const target = e.target as HTMLElement;
-                              if (
-                                target.closest("button") ||
-                                target.closest("[data-stop-click]")
-                              ) {
-                                return;
-                              }
-
-                              openDetail(item.id);
-                            }}
-                            className={`border-gray-300 transition-all duration-500 ease-in-out cursor-pointer ${
-                              animateRows
-                                ? "opacity-100 translate-y-0"
-                                : "opacity-0 translate-y-2"
-                            }`}
-                            style={{ transitionDelay: `${index * 50}ms` }}
-                          >
-                            <TableCell className="text-center">
-                              {index + 1}
-                            </TableCell>
-                            <TableCell className="text-left">
-                              {item.name}
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {item.phone}
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {item.gender}
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {item.place_of_birth}
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {new Intl.DateTimeFormat("id-ID", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              }).format(new Date(item.date_of_birth))}
-                            </TableCell>
-
-                            <TableCell className="text-center text-xl">
-                              <div className="flex flex-row justify-center gap-5 text-base text-white items-center">
-                                {/* Edit */}
-                                <button
-                                  className="flex flex-row items-center gap-2 bg-blue-500 px-5 py-1 rounded-full cursor-pointer"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    buttonAction("edit", item);
-                                  }}
-                                >
-                                  <SquarePen className="w-5 h-5" />
-                                  Edit
-                                </button>
-
-                                {/* Delete */}
-                                <AlertDialog>
-                                  <AlertDialogTrigger asChild>
-                                    <Trash2
-                                      className="w-7 h-7 cursor-pointer text-red-500"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                      }}
-                                    />
-                                    {/* <MdDeleteOutline
-                                  className="w-7 h-7 cursor-pointer"
-                                  color="red"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                /> */}
-                                  </AlertDialogTrigger>
-                                  <AlertDialogContent className="bg-white border-0">
-                                    <AlertDialogHeader>
-                                      <AlertDialogTitle>
-                                        Are you absolutely sure?
-                                      </AlertDialogTitle>
-                                      <AlertDialogDescription>
-                                        This action cannot be undone. This will
-                                        permanently delete this item and remove
-                                        it from our system.
-                                      </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                      <AlertDialogCancel className="border-0 text-black cursor-pointer">
-                                        Cancel
-                                      </AlertDialogCancel>
-                                      <AlertDialogAction
-                                        onClick={() => alert("Delete")}
-                                        className="bg-red-500 text-white cursor-pointer"
-                                      >
-                                        Delete
-                                      </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                  </AlertDialogContent>
-                                </AlertDialog>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={7} className="text-center">
-                            No data
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                    <TableFooter>
-                      <TableRow>
-                        <TableCell colSpan={7} className="p-4 text-center">
-                          <Pagination>
-                            <PaginationContent className="flex w-full justify-between">
-                              <PaginationItem>
-                                <PaginationPrevious
-                                  onClick={() => goToPreviousPage("patient")}
-                                  isActive={currentPage === 1}
-                                  className={
-                                    currentPage === 1
-                                      ? "pointer-events-none opacity-50"
-                                      : "cursor-pointer"
-                                  }
-                                />
-                              </PaginationItem>
-                              <PaginationItem className="flex flex-row gap-2">
-                                {[...Array(totalPage)].map((_, index) => (
-                                  <PaginationLink
-                                    key={index}
-                                    isActive={currentPage === index + 1}
-                                    onClick={() =>
-                                      goToPage("patient", index + 1)
-                                    }
-                                    className="cursor-pointer"
-                                  >
-                                    {index + 1}
-                                  </PaginationLink>
-                                ))}
-                              </PaginationItem>
-                              <PaginationItem>
-                                <PaginationNext
-                                  onClick={() => goToNextPage("patient")}
-                                  isActive={currentPage === totalPage}
-                                  className={
-                                    currentPage === totalPage
-                                      ? "pointer-events-none opacity-50"
-                                      : "cursor-pointer"
-                                  }
-                                />
-                              </PaginationItem>
-                            </PaginationContent>
-                          </Pagination>
-                        </TableCell>
-                      </TableRow>
-                    </TableFooter>
-                  </Table>
-                </div>
-              ) : (
-                <div className="">
-                  {isVisible && (
-                    <div
-                      className={`transition-all duration-300 transform ${
-                        isDetailVisible
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-4"
-                      }`}
-                    >
-                      {isVisible && (
-                        <div className="flex flex-col gap-4">
-                          <div className="flex flex-row gap-4">
-                            <div className="w-1/2 p-5 bg-white rounded-2xl shadow-[0px_4px_4px_rgba(0,0,0,0.3)] flex flex-col gap-4">
-                              <div className="flex flex-row justify-between">
-                                <div
-                                  className="flex items-center gap-2 bg-blue-200 w-fit h-fit px-4 py-2 rounded-full cursor-pointer shadow-[0px_4px_4px_rgba(0,0,0,0.3)]"
-                                  onClick={() => {
-                                    setIsExiting(true);
-                                    setTimeout(() => {
-                                      setIsExiting(false);
-                                      setIsVisible(false);
-                                      setPatientId(0);
-                                    }, 300);
-                                  }}
-                                >
-                                  <CircleArrowLeft className="w-6 h-6" />
-                                  <p className="text-lg font-semibold">
-                                    Back to list Patient
-                                  </p>
-                                </div>
-                                <img
-                                  src={selectedPatient?.barcode_image}
-                                  alt=""
-                                  className="h-15 mr-4 mt-2"
-                                />
-                              </div>
-
-                              {/* CARD DETAIL PATIENT */}
-                              <div className="flex flex-col bg-blue-200 p-4 rounded-2xl gap-2">
-                                <div className="flex gap-2">
-                                  <User2Icon />
-                                  <p className="text-xl font-semibold">
-                                    Detail Patient
-                                  </p>
-                                </div>
-
-                                <div className="bg-white p-4 rounded-xl flex flex-col gap-4">
-                                  <div className="flex flex-row items-center">
-                                    <p className="w-32">Name</p>
-                                    <p className="mr-2">:</p>
-                                    <p className="font-semibold flex-1">
-                                      {selectedPatient?.name}
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-row items-center">
-                                    <p className="w-32">Gender</p>
-                                    <p className="mr-2">:</p>
-                                    <p className="font-semibold flex-1">
-                                      {selectedPatient?.gender}
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-row items-center">
-                                    <p className="w-32">Phone</p>
-                                    <p className="mr-2">:</p>
-                                    <p className="font-semibold flex-1">
-                                      {selectedPatient?.phone ?? "-"}
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-row items-center">
-                                    <p className="w-32">Work</p>
-                                    <p className="mr-2">:</p>
-                                    <p className="font-semibold flex-1">
-                                      {selectedPatient?.work ?? "-"}
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-row items-center">
-                                    <p className="w-32">Last Education</p>
-                                    <p className="mr-2">:</p>
-                                    <p className="font-semibold flex-1">
-                                      {selectedPatient?.last_education ?? "-"}
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-row items-center">
-                                    <p className="w-32">Place of Birth</p>
-                                    <p className="mr-2">:</p>
-                                    <p className="font-semibold flex-1">
-                                      {selectedPatient?.place_of_birth ?? "-"}
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-row items-center">
-                                    <p className="w-32">Date of Birth</p>
-                                    <p className="mr-2">:</p>
-                                    <p className="font-semibold flex-1">
-                                      {selectedPatient
-                                        ? new Intl.DateTimeFormat("id-ID", {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                          }).format(
-                                            new Date(
-                                              selectedPatient?.date_of_birth
-                                            )
-                                          )
-                                        : ""}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div
-                              className={`w-1/2 bg-white rounded-2xl transition-all duration-300 ease-in-out transform ${
-                                isExiting
-                                  ? "translate-y-4 opacity-0"
-                                  : "translate-y-0 opacity-100"
-                              }`}
-                            >
-                              <div className="w-full h-full p-5 bg-white rounded-2xl shadow-[0px_4px_4px_rgba(0,0,0,0.3)] flex flex-col gap-4">
-                                <p className="text-blue-700">
-                                  History Measurement Patient
-                                </p>
-
-                                {/* <Component chartData={chartData} /> */}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+              {selectedDevice === "digit-pro-baby" && (
+                <TableHistoryDigitProBaby
+                  patients={dummyProBaby}
+                  animateRows={animateRows}
+                  buttonAction={buttonAction}
+                  openDetail={openDetail}
+                  goToPreviousPage={goToPreviousPage}
+                  goToNextPage={goToNextPage}
+                  goToPage={goToPage}
+                  currentPage={currentPage}
+                  totalPage={totalPage}
+                />
+              )}
+              {selectedDevice === "digit-pro-ida" && (
+                <TableHistoryDigitProIDA
+                  patients={dummyProIDA}
+                  animateRows={animateRows}
+                  buttonAction={buttonAction}
+                  openDetail={openDetail}
+                  goToPreviousPage={goToPreviousPage}
+                  goToNextPage={goToNextPage}
+                  goToPage={goToPage}
+                  currentPage={currentPage}
+                  totalPage={totalPage}
+                />
+              )}
+              {selectedDevice === "bmi" && (
+                <TableHistoryBMI
+                  patients={dummyBMI}
+                  animateRows={animateRows}
+                  buttonAction={buttonAction}
+                  openDetail={openDetail}
+                  goToPreviousPage={goToPreviousPage}
+                  goToNextPage={goToNextPage}
+                  goToPage={goToPage}
+                  currentPage={currentPage}
+                  totalPage={totalPage}
+                />
+              )}
+              {selectedDevice === "doppler" && (
+                <TableHistoryDoppler
+                  patients={dummyDoppler}
+                  animateRows={animateRows}
+                  buttonAction={buttonAction}
+                  openDetail={openDetail}
+                  goToPreviousPage={goToPreviousPage}
+                  goToNextPage={goToNextPage}
+                  goToPage={goToPage}
+                  currentPage={currentPage}
+                  totalPage={totalPage}
+                />
               )}
             </div>
           </div>
