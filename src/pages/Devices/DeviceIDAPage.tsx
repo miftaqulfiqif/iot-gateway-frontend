@@ -90,7 +90,7 @@ const DeviceIDAPage = () => {
       !patient.id ||
       !patient.name ||
       !weightDigitProIDA.weight_mother ||
-      !weightDigitProIDA.weight_child ||
+      !weightDigitProIDA.weight_baby ||
       !baby
     )
       return;
@@ -99,7 +99,7 @@ const DeviceIDAPage = () => {
       baby_id: baby.id,
       device_id: mac,
       weight_mother: weightDigitProIDA.weight_mother,
-      weight_child: weightDigitProIDA.weight_child,
+      weight_child: weightDigitProIDA.weight_baby,
     });
   };
 
@@ -177,8 +177,8 @@ const DeviceIDAPage = () => {
                         />
                         <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                           <span className="pr-2">
-                            {weightDigitProIDA.weight_child
-                              ? weightDigitProIDA.weight_child
+                            {weightDigitProIDA.weight_baby
+                              ? weightDigitProIDA.weight_baby
                               : "--"}
                           </span>
                           Kg
