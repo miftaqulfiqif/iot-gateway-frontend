@@ -7,15 +7,17 @@ import { DopplerModel } from "@/models/Devices/DopplerModel";
 import { DigitProBabyModel } from "@/models/Devices/DigitProBabyModel";
 import { BMIModel } from "@/models/Devices/BMIModel";
 import { useAuth } from "@/context/AuthContext";
+import { PM9000Model } from "@/models/Devices/PM9000Model";
 
 const userId = "UserTest";
 const socketUrl = "http://localhost:3000";
 
 interface Props {
   macDevice?: string;
+  ipDevice?: string;
 }
 
-export const useSocketHandler = ({ macDevice }: Props = {}) => {
+export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
   const { user } = useAuth();
 
   const socketRef = useRef<Socket | null>(null);
@@ -73,6 +75,17 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
   const [dataDopplerChartData, setDataDopplerChartData] = useState<
     { index: number; heart_rate: number }[]
   >([]);
+
+  //PM9000
+  const [dataPM9000, setDataPM9000] = useState<PM9000Model>({
+    ecg_bpm: 0,
+    ecg_bpm_spo2: 0,
+    spo2: 0,
+    resp: 0,
+    temp1: 0,
+    temp2: 0,
+    delta_temp: 0,
+  });
 
   const startSocket = (userId: string) => {
     const socket = io(socketUrl, {
@@ -279,6 +292,24 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
         }
       );
 
+      //PM-9000
+      socket.on("listen_pm9000", (payload: { data_pm9000?: PM9000Model[] }) => {
+        if (payload?.data_pm9000 && Array.isArray(payload.data_pm9000)) {
+          const latest = payload.data_pm9000[0];
+          if (latest.ip === ipDevice) {
+            setDataPM9000({
+              ecg_bpm: latest.ecg_bpm,
+              ecg_bpm_spo2: latest.ecg_bpm_spo2,
+              spo2: latest.spo2,
+              resp: latest.resp,
+              temp1: latest.temp1,
+              temp2: latest.temp2,
+              delta_temp: latest.delta_temp,
+            });
+          }
+        }
+      });
+
       socketRef.current = socket;
     } catch (error) {
       console.error("❌ Error starting socket:", error);
@@ -375,6 +406,30 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
       },
     });
   };
+  const eventConnectDeviceByIP = (
+    displayName: string,
+    ip: string,
+    device: string,
+    device_function: string,
+    connection: string,
+    type: string
+  ) => {
+    socketRef.current?.emit("connect_device_tcpip", {
+      user_id: userId,
+      hospital_id: user?.hospital?.id,
+      display_name: displayName,
+      data: {
+        topic: "iotgateway/{id-unik}/tcpip/add_device",
+        payload: {
+          ip,
+          device,
+          device_function,
+          connection,
+          type,
+        },
+      },
+    });
+  };
 
   //Delete Device
   const deleteDevice = (device_mac: string) => {
@@ -403,6 +458,7 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
     devices,
     isScanning,
     eventConnectDevice,
+    eventConnectDeviceByIP,
     deleteDevice,
 
     //Digit Pro IDA
@@ -426,6 +482,9 @@ export const useSocketHandler = ({ macDevice }: Props = {}) => {
     stopDoppler,
     dataDoppler,
     dataDopplerChartData,
+
+    //PM-9000
+    dataPM9000,
   };
 };
 

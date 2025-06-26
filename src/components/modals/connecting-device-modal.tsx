@@ -2,19 +2,29 @@ import { useEffect, useState } from "react";
 import { Cpu, X } from "lucide-react";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
+import { useDevices } from "@/hooks/api/use-device";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 type Props = {
   isActive: boolean;
-  setInactive?: () => void;
+  setInactive: () => void;
   selectedDevice?: Devices | null;
+  closeModal: () => void;
 };
 
 export const ConnectingDeviceModal = ({
   isActive,
   setInactive,
   selectedDevice,
+  closeModal,
 }: Props) => {
-  const { eventConnectDevice } = useSocketHandler();
+  const { user } = useAuth();
+  const { showToast } = useToast();
+  const { getAllDevices } = useDevices();
   const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
@@ -23,14 +33,55 @@ export const ConnectingDeviceModal = ({
     }
   }, [selectedDevice]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (selectedDevice) {
-      console.log("Connecting with name:", displayName);
-      eventConnectDevice(displayName, selectedDevice);
-      setInactive?.();
+  const handleConnectDevice = async (value: any) => {
+    try {
+      const data = {
+        id: selectedDevice?.mac,
+        hospital_id: user?.hospital?.id,
+        device: selectedDevice?.device,
+        device_function: selectedDevice?.device_function,
+        connection: selectedDevice?.connection,
+        name: value.device_name ? value.device_name : selectedDevice?.device,
+      };
+
+      console.log(data);
+      const response = await axios.post(
+        "http://localhost:3000/api/devices/connect-bluetooth",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        showToast(null, "Device connected successfully", "success");
+        getAllDevices();
+        closeModal();
+        location.reload();
+      }
+    } catch (error: any) {
+      console.error("❌ Error connecting device:", error);
+      showToast(
+        "Error",
+        error.response?.data?.message || "Failed to connect device",
+        "error"
+      );
     }
   };
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      device_name: "",
+    },
+    validationSchema: yup.object().shape({
+      device_name: yup.string(),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+      handleConnectDevice(values);
+    },
+  });
 
   return (
     <div
@@ -71,11 +122,16 @@ export const ConnectingDeviceModal = ({
         )}
 
         <p className="text-lg">Alias device name</p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-1">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="flex flex-col gap-4 mt-1"
+        >
           <input
+            name="device_name"
             type="text"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
+            value={formik.values.device_name}
+            onChange={formik.handleChange}
+            placeholder="Device name"
             className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <button
