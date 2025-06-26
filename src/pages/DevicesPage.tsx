@@ -27,7 +27,7 @@ function Devices() {
 
   return (
     <MainLayout title="Devices" state="Devices">
-      <div className="flex flex-col">
+      <div className="flex flex-col mb-5">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between">
             <p className="font-bold text-2xl">Devices connected</p>

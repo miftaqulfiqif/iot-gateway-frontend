@@ -11,6 +11,7 @@ import {
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
 import { ConnectingDeviceModal } from "./connecting-device-modal";
+import { useDevices } from "@/hooks/api/use-device";
 
 type Props = {
   isActive: boolean;
@@ -72,7 +73,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
                   <ul className="space-y-3 max-h-80 overflow-y-auto px-2 pb-10">
                     {devices.map((device) => (
                       <div
-                        key={device.id}
+                        key={device.mac}
                         onClick={() => handleSelectDevice(device)}
                         className={`flex px-4 py-2 items-center rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] pl-4 cursor-pointer justify-between ${
                           selectedDevice?.id === device.id
@@ -126,6 +127,10 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
           isActive={true}
           setInactive={() => {
             setConnectingDevice(false);
+          }}
+          closeModal={() => {
+            setConnectingDevice(false);
+            setInactive();
           }}
           selectedDevice={selectedDevice}
         />

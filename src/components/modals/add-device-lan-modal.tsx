@@ -14,6 +14,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { InputSelect } from "../ui/input-select";
 import { useToast } from "@/context/ToastContext";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
+import axios from "axios";
+import { useDevices } from "@/hooks/api/use-device";
+import { useAuth } from "@/context/AuthContext";
 
 type Props = {
   isActive: boolean;
@@ -21,25 +25,61 @@ type Props = {
 };
 
 export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
-  const [selectedDevice, setSelectedDevice] = useState<Devices | null>(null);
+  const { user } = useAuth();
   const { showToast } = useToast();
+  const { getAllDevices } = useDevices();
+
+  const handleConnectDevice = async (value: any) => {
+    try {
+      const parsed = JSON.parse(value.device_function);
+
+      const data = {
+        id: value.id,
+        device: parsed.device,
+        device_function: parsed.device_function,
+        name: parsed.name ? parsed.name : value.name,
+        hospital_id: user?.hospital?.id,
+        connection: "lan",
+      };
+
+      console.log(data);
+      const response = await axios.post(
+        "http://localhost:3000/api/devices/connect-tcpip",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        showToast(null, "Device connected successfully", "success");
+        getAllDevices();
+        setInactive();
+      }
+    } catch (error: any) {
+      console.error("❌ Error connecting device:", error);
+      showToast(
+        "Error",
+        error.response?.data?.message || "Failed to connect device",
+        "error"
+      );
+    }
+  };
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      ip_address: "",
-      device_name: "",
+      id: "",
+      name: "",
       device_function: "",
     },
     validationSchema: yup.object().shape({
-      ip_address: yup.string().required("IP address is required"),
-      device_name: yup.string(),
+      id: yup.string().required("IP address is required"),
+      name: yup.string(),
       device_function: yup.string().required("Device function is required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      showToast(null, "Device added successfully", "success");
-      setInactive();
+      handleConnectDevice(values);
     },
   });
 
@@ -72,23 +112,23 @@ export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
                 onSubmit={formik.handleSubmit}
               >
                 <InputText
-                  name="device_name"
+                  name="name"
                   label="Device name"
                   placeholder="Input device name"
                   onChange={formik.handleChange}
-                  value={formik.values.device_name}
-                  onTouch={formik.touched.device_name}
-                  onError={formik.errors.device_name}
+                  value={formik.values.name}
+                  onTouch={formik.touched.name}
+                  onError={formik.errors.name}
                 />
                 <div className="flex flex-row gap-4">
                   <InputText
-                    name="ip_address"
+                    name="id"
                     label="IP Address"
                     placeholder="Input IP address"
                     onChange={formik.handleChange}
-                    value={formik.values.ip_address}
-                    onTouch={formik.touched.ip_address}
-                    onError={formik.errors.ip_address}
+                    value={formik.values.id}
+                    onTouch={formik.touched.id}
+                    onError={formik.errors.id}
                     isRequired
                   />
                   <InputSelect
@@ -96,12 +136,24 @@ export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
                     label="Device "
                     placeholder="Select device "
                     option={[
-                      { value: "pasien_monitor_9000", label: "PM 9000" },
-                      { value: "diagnostic_station_001", label: "DS 001" },
+                      {
+                        value: JSON.stringify({
+                          device_function: "pasien_monitor_9000",
+                          device: "PM 9000",
+                        }),
+                        label: "PM 9000",
+                      },
+                      {
+                        value: JSON.stringify({
+                          device_function: "diagnostic_station_001",
+                          device: "DS 001",
+                        }),
+                        label: "DS 001",
+                      },
                     ]}
-                    onChange={(value) =>
-                      formik.setFieldValue("device_function", value)
-                    }
+                    onChange={(value) => {
+                      formik.setFieldValue("device_function", value);
+                    }}
                     value={formik.values.device_function}
                     onTouch={formik.touched.device_function}
                     onError={formik.errors.device_function}

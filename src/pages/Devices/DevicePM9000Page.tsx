@@ -26,6 +26,8 @@ import { HeartbeatChart } from "@/components/heart-beat-chart";
 import { useEffect, useState } from "react";
 import { Patients } from "@/models/PatientModel";
 import ChartDopplerRealtime from "@/components/charts/chart-doppler-realtime";
+import { data, useParams } from "react-router-dom";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 
 const chartData: { heart_rate: number }[] = [
   { heart_rate: 75 },
@@ -41,6 +43,9 @@ const chartData: { heart_rate: number }[] = [
 ];
 
 const DevicePM9000Page = () => {
+  const { ip } = useParams();
+  const { dataPM9000 } = useSocketHandler({ ipDevice: ip });
+
   const [patient, setPatient] = useState<Patients>({
     id: "",
     barcode_image: "",
@@ -64,6 +69,8 @@ const DevicePM9000Page = () => {
       setPatient(JSON.parse(storedPatient));
     }
   }, []);
+
+  console.log(dataPM9000);
 
   return (
     <MainLayout title="PM 9000" state="Patient Monitor">
