@@ -14,6 +14,7 @@ type Props = {
   setInactive: () => void;
   selectedDevice?: Devices | null;
   closeModal: () => void;
+  getAllDevices: () => void;
 };
 
 export const ConnectingDeviceModal = ({
@@ -21,10 +22,10 @@ export const ConnectingDeviceModal = ({
   setInactive,
   selectedDevice,
   closeModal,
+  getAllDevices,
 }: Props) => {
   const { user } = useAuth();
   const { showToast } = useToast();
-  const { getAllDevices } = useDevices();
   const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {

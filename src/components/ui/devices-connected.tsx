@@ -1,4 +1,12 @@
-import { Bluetooth, EthernetPort, Wifi } from "lucide-react";
+import { useDevices } from "@/hooks/api/use-device";
+import {
+  Bluetooth,
+  EllipsisVertical,
+  EthernetPort,
+  SquarePen,
+  Trash,
+  Wifi,
+} from "lucide-react";
 
 type DevicesConnectedProps = {
   device: string;
@@ -6,6 +14,7 @@ type DevicesConnectedProps = {
   deviceMac: string;
   deviceConnection: string;
   deviceFunction: string;
+  onDelete: () => void;
 };
 export const DevicesConnected = ({
   device,
@@ -13,43 +22,74 @@ export const DevicesConnected = ({
   deviceMac,
   deviceConnection,
   deviceFunction,
+  onDelete,
 }: DevicesConnectedProps) => {
+  const { deleteDevice, updateDevice } = useDevices();
   return (
     <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl w-full border">
-      <div className="flex flex-row gap-2 items-center">
-        {deviceConnection === "bluetooth" ? (
-          <div className="bg-blue-500 p-1 rounded-full text-white">
-            <Bluetooth />
+      <div className="flex flex-row gap-2 items-center justify-between">
+        <div className="flex flex-row gap-2 items-center">
+          {deviceConnection === "bluetooth" ? (
+            <div className="bg-blue-500 p-1 rounded-full text-white">
+              <Bluetooth />
+            </div>
+          ) : deviceConnection === "wifi" ? (
+            <div className="bg-blue-500 p-1 rounded-full text-white">
+              <Wifi />
+            </div>
+          ) : (
+            <div className="bg-blue-500 p-1 rounded-full text-white">
+              <EthernetPort />
+            </div>
+          )}
+          <p className="font-bold">
+            {deviceConnection === "bluetooth" ? "Bluetooth" : "TCP / IP"}
+          </p>
+        </div>
+        {/* Button Action */}
+        <div className="relative">
+          <button
+            className="flex items-center gap-1 cursor-pointer transition duration-150"
+            onClick={() => {
+              const optionsMenu = document.getElementById(
+                `options-${deviceMac}`
+              );
+              if (optionsMenu) {
+                optionsMenu.classList.toggle("hidden");
+              }
+            }}
+          >
+            <EllipsisVertical className="w-6 h-6" />
+          </button>
+          <div
+            id={`options-${deviceMac}`}
+            className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
+          >
+            <ul className="py-1">
+              <li
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  // Add edit functionality here
+                  updateDevice(deviceMac);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <SquarePen className="w-5 h-5" />
+                  Edit
+                </div>
+              </li>
+              <li
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                onClick={onDelete}
+              >
+                <div className="flex items-center gap-2 text-red-500">
+                  <Trash className="w-5 h-5" />
+                  Delete
+                </div>
+              </li>
+            </ul>
           </div>
-        ) : deviceConnection === "wifi" ? (
-          <div className="bg-blue-500 p-1 rounded-full text-white">
-            <Wifi />
-          </div>
-        ) : (
-          <div className="bg-blue-500 p-1 rounded-full text-white">
-            <EthernetPort />
-          </div>
-        )}
-        {/* {
-          {
-            bluetooth: (
-              <div className="bg-blue-500 p-1 rounded-full text-white w-fit">
-                <Bluetooth />
-              </div>
-            ),
-            wifi: (
-              <div className="bg-blue-500 p-1 rounded-full text-white w-fit">
-                <Wifi />
-              </div>
-            ),
-            lan: (
-              <div className="bg-blue-500 p-1 rounded-full text-white w-fit">
-                <EthernetPort />
-              </div>
-            ),
-          }[deviceConnection]
-        } */}
-        <p className="font-bold">{deviceConnection}</p>
+        </div>
       </div>
       <div className="flex flex-col h-full justify-between mt-4">
         <div className="flex flex-col gap-1">

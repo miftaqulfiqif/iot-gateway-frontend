@@ -16,9 +16,14 @@ import { useDevices } from "@/hooks/api/use-device";
 type Props = {
   isActive: boolean;
   setInactive: () => void;
+  getAllDevices: () => void;
 };
 
-export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
+export const AddDeviceBluetooth = ({
+  isActive,
+  setInactive,
+  getAllDevices,
+}: Props) => {
   const {
     userId,
     eventScan,
@@ -133,6 +138,7 @@ export const AddDeviceBluetooth = ({ isActive, setInactive }: Props) => {
             setInactive();
           }}
           selectedDevice={selectedDevice}
+          getAllDevices={() => getAllDevices()}
         />
       )}
     </div>
