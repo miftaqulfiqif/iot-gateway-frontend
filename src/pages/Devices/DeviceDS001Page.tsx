@@ -25,6 +25,8 @@ import rrIcon from "@/assets/icons/lungs.png";
 import { useEffect, useState } from "react";
 import { Patients } from "@/models/PatientModel";
 import { HistoryDS001 } from "@/components/tables/history-ds001";
+import { useSocketHandler } from "@/hooks/socket/SocketHandler";
+import { useParams } from "react-router-dom";
 
 const historiesData = [
   {
@@ -79,6 +81,8 @@ const historiesData = [
 ];
 
 const DeviceDS001Page = () => {
+  const { ip } = useParams();
+  const { dataDS001 } = useSocketHandler({ ipDevice: ip });
   const [patient, setPatient] = useState<Patients>({
     id: "",
     barcode_image: "",
@@ -102,6 +106,8 @@ const DeviceDS001Page = () => {
       setPatient(JSON.parse(storedPatient));
     }
   }, []);
+
+  console.log("dataDS001 : ", dataDS001);
 
   return (
     <MainLayout title="DS 001" state="Patient Monitor">
@@ -130,14 +136,20 @@ const DeviceDS001Page = () => {
                   </div>
                   <div className="flex flex-row items-end gap-4">
                     <div className="flex flex-row items-center text-6xl gap-2">
-                      <p className="">120</p>/<p>80</p>
+                      <p className="">
+                        {dataDS001?.systolic ? dataDS001.systolic : "--"}
+                      </p>
+                      /
+                      <p>{dataDS001?.diastolic ? dataDS001.diastolic : "--"}</p>
                     </div>
                     <p className="text-sm pb-2">mmHg</p>
                   </div>
                   <div className="ml-4 flex flex-row gap-4 mt-2">
                     <div className="flex flex-row w-fit text-white items-center gap-2 bg-red-400 px-3 py-1 rounded-full h-fit">
                       <Activity className="w-6 h-6" />
-                      <p className="text-sm">310 bpm</p>
+                      <p className="text-sm">
+                        {dataDS001?.mean ? dataDS001.mean : "--"} bpm
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -148,7 +160,7 @@ const DeviceDS001Page = () => {
                   <div className="flex flex-col gap-2">
                     <p className="font-semibold mx-auto">PR</p>
                     <p className="mx-auto text-2xl flex justify-center items-center h-full">
-                      80
+                      {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "--"}
                     </p>
                   </div>
                 </div>
@@ -165,7 +177,7 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end">
                       <div className="flex flex-row items-center justify-center text-6xl h-full px-4 py-2">
-                        <p>80</p>
+                        <p>{dataDS001?.temp ? dataDS001.temp : "--"}</p>
                       </div>
                       <p className="text-lg pb-4">°C</p>
                     </div>
@@ -176,7 +188,7 @@ const DeviceDS001Page = () => {
 
             <div className="flex flex-row gap-4 rounded-2xl mt-2">
               {/* SPO2 */}
-              <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-full h-full justify-between gap-2">
+              <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-1/3 h-full justify-between gap-2">
                 <div className="flex flex-row gap-2">
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-3 items-center font-semibold">
@@ -189,7 +201,9 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end ">
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl gap-2">
-                        <p className="">120</p>
+                        <p className="">
+                          {dataDS001?.spo2 ? dataDS001.spo2 : "--"}
+                        </p>
                       </div>
                       <p className="text-sm pb-4">%</p>
                     </div>
@@ -210,7 +224,7 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end">
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
-                        <p>120</p>
+                        <p>{dataDS001?.pr_spo2 ? dataDS001.pr_spo2 : "--"}</p>
                       </div>
                       <p className="text-sm pb-4">bpm</p>
                     </div>
@@ -229,7 +243,7 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end">
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
-                        <p>120</p>
+                        <p>{dataDS001?.rr ? dataDS001.rr : "--"}</p>
                       </div>
                       <p className="text-sm pb-4">rpm</p>
                     </div>
