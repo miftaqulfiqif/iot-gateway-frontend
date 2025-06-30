@@ -86,6 +86,23 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
     temp2: 0,
     delta_temp: 0,
   });
+  const [dataPM9000Nibp, setDataPM9000Nibp] = useState({
+    systolic: 0,
+    diastolic: 0,
+    mean: 0,
+  });
+
+  //DS001
+  const [dataDS001, setDataDS001] = useState({
+    systolic: 0,
+    diastolic: 0,
+    mean: 0,
+    pulse_rate: 0,
+    temp: 0,
+    spo2: 0,
+    pr_spo2: 0,
+    rr: 0,
+  });
 
   const startSocket = (userId: string) => {
     const socket = io(socketUrl, {
@@ -309,6 +326,40 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
           }
         }
       });
+      socket.on("listen_pm9000_nibp", (payload: { data_pm9000_nibp?: any }) => {
+        if (
+          payload?.data_pm9000_nibp &&
+          Array.isArray(payload.data_pm9000_nibp)
+        ) {
+          const latest = payload.data_pm9000_nibp[0];
+          if (latest.ip === ipDevice) {
+            setDataPM9000Nibp({
+              systolic: latest.systolic,
+              diastolic: latest.diastolic,
+              mean: latest.mean,
+            });
+          }
+        }
+      });
+
+      // DS-001
+      socket.on("listen_ds001", (payload: { data_ds001?: any }) => {
+        if (payload?.data_ds001 && Array.isArray(payload.data_ds001)) {
+          const latest = payload.data_ds001[0];
+          if (latest.mac === macDevice) {
+            setDataDS001({
+              systolic: latest.systolic,
+              diastolic: latest.diastolic,
+              mean: latest.mean,
+              pulse_rate: latest.pulse_rate,
+              temp: latest.temp,
+              spo2: latest.spo2,
+              pr_spo2: latest.pr_spo2,
+              rr: latest.rr,
+            });
+          }
+        }
+      });
 
       socketRef.current = socket;
     } catch (error) {
@@ -485,6 +536,10 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
 
     //PM-9000
     dataPM9000,
+    dataPM9000Nibp,
+
+    //DS-001
+    dataDS001,
   };
 };
 
