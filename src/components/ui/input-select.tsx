@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 
 type InputSelectProps = {
-  label: string;
+  label?: string;
   name: string;
   placeholder: string;
   disabled?: boolean;

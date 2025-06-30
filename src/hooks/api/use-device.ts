@@ -1,11 +1,13 @@
+import { useToast } from "@/context/ToastContext";
 import { Devices } from "@/models/DeviceModel";
 import axios from "axios";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export const useDevices = () => {
+  const { showToast } = useToast();
   const [devices, setDevices] = useState<Devices[]>([]);
 
-  const getAllDevices = async () => {
+  const getAllDevices = useCallback(async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/devices", {
         withCredentials: true,
@@ -14,10 +16,36 @@ export const useDevices = () => {
     } catch (error) {
       console.error("Error fetching babies:", error);
     }
+  }, []);
+
+  const deleteDevice = async (deviceId: string) => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/devices/disconnect/${deviceId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      showToast(null, "Device disconnected successfully", "success");
+      await getAllDevices();
+    } catch (error) {
+      console.error("Error deleting device:", error);
+      showToast(null, "Failed to disconnect device", "error");
+    }
+  };
+
+  const updateDevice = async (deviceId: string) => {
+    try {
+      alert("Device updated successfully! : " + deviceId);
+    } catch (error) {
+      console.error("Error updating device:", error);
+    }
   };
 
   return {
     getAllDevices,
     devices,
+    deleteDevice,
+    updateDevice,
   };
 };

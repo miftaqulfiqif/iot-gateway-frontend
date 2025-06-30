@@ -22,12 +22,16 @@ import { useAuth } from "@/context/AuthContext";
 type Props = {
   isActive: boolean;
   setInactive: () => void;
+  getAllDevices: () => void;
 };
 
-export const AddDeviceLan = ({ isActive, setInactive }: Props) => {
+export const AddDeviceLan = ({
+  isActive,
+  setInactive,
+  getAllDevices,
+}: Props) => {
   const { user } = useAuth();
   const { showToast } = useToast();
-  const { getAllDevices } = useDevices();
 
   const handleConnectDevice = async (value: any) => {
     try {

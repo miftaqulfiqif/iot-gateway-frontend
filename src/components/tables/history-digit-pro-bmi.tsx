@@ -138,7 +138,7 @@ export const TableHistoryBMI = ({
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Trash2
-                          className="w-7 h-7 cursor-pointer text-red-500"
+                          className="w-5 h-5 cursor-pointer text-red-500"
                           onClick={(e) => {
                             e.stopPropagation();
                           }}

@@ -10,16 +10,16 @@ import { useDevices } from "@/hooks/api/use-device";
 import { ConnectingDeviceModal } from "@/components/modals/connecting-device-modal";
 
 function Devices() {
-  const { devices, getAllDevices } = useDevices();
+  const { devices, getAllDevices, deleteDevice } = useDevices();
 
   const [modalAddDevice, setModalAddDevice] = useState(false);
   const [modalAddDeviceBluetooth, setModalAddDeviceBluetooth] = useState(false);
   const [modalAddDeviceWifiOrLan, setModalAddDeviceWifiOrLan] = useState(false);
-  const [modalConnectingDevice, setModalConnectingDevice] = useState(true);
 
+  // Get devices on mount
   useEffect(() => {
     getAllDevices();
-  }, []);
+  }, [getAllDevices]);
 
   const showAddDevice = () => {
     setModalAddDevice(true);
@@ -41,21 +41,56 @@ function Devices() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {devices.length > 0 ? (
-              devices.map((devices) => (
-                <DevicesConnected
-                  key={devices.id}
-                  deviceMac={devices.id}
-                  device={devices.device}
-                  deviceName={devices.name ?? devices.name ?? devices.device}
-                  deviceConnection={devices.connection}
-                  deviceFunction={devices.device_function}
-                />
-              ))
-            ) : (
-              <p className="text-gray-500 mx-auto">Nothing device connected</p>
-            )}
+          <div className="flex flex-col gap-2">
+            <p className="font-bold text-lg">Bluetooth</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {devices.filter((d) => d.connection === "bluetooth").length >
+              0 ? (
+                devices
+                  .filter((d) => d.connection === "bluetooth")
+                  .map((device) => (
+                    <DevicesConnected
+                      key={device.id}
+                      deviceMac={device.id}
+                      device={device.device}
+                      deviceName={device.name || device.device}
+                      deviceConnection={device.connection}
+                      deviceFunction={device.device_function}
+                      onDelete={() => deleteDevice(device.id)}
+                    />
+                  ))
+              ) : (
+                <p className="text-gray-500 mx-auto">
+                  No Bluetooth device connected
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 mt-8">
+            <p className="font-bold text-lg">TCP / IP</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {devices.filter((d) => d.connection !== "bluetooth").length >
+              0 ? (
+                devices
+                  .filter((d) => d.connection !== "bluetooth")
+                  .map((device) => (
+                    <DevicesConnected
+                      key={device.id}
+                      deviceMac={device.id}
+                      device={device.device}
+                      deviceName={device.name || device.device}
+                      deviceConnection={device.connection}
+                      deviceFunction={device.device_function}
+                      onDelete={() => deleteDevice(device.id)}
+                    />
+                  ))
+              ) : (
+                <p className="text-gray-500 mx-auto">
+                  No TCP / IP device connected
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -74,11 +109,13 @@ function Devices() {
       <AddDeviceBluetooth
         isActive={modalAddDeviceBluetooth}
         setInactive={() => setModalAddDeviceBluetooth(false)}
+        getAllDevices={getAllDevices}
       />
 
       <AddDeviceLan
         isActive={modalAddDeviceWifiOrLan}
         setInactive={() => setModalAddDeviceWifiOrLan(false)}
+        getAllDevices={getAllDevices}
       />
     </MainLayout>
   );

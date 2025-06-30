@@ -69,11 +69,15 @@ const DeviceDopplerPage = () => {
           <div className="w-1/2">
             <div className="w-full">
               <p className="font-bold text-2xl">Patient Info</p>
-              <PatientInfo
-                patient={patient}
-                setShowHistories={setShowHistories}
-              />
-              {showHistories && <HistoriesDoppler chartData={historiesData} />}
+              <div className="flex flex-col gap-6">
+                <PatientInfo
+                  patient={patient}
+                  setShowHistories={setShowHistories}
+                />
+                {showHistories && (
+                  <HistoriesDoppler chartData={historiesData} />
+                )}
+              </div>
             </div>
           </div>
 
