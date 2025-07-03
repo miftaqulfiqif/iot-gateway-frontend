@@ -59,6 +59,7 @@ import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
+import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 
 const state = [
   {
@@ -326,12 +327,8 @@ const MeasurementHistoriesPage = () => {
     filterRef,
     setShowFilter,
     showFilter,
-    setPatientEdit,
-    setForm,
     search,
     handleSearchChange,
-    patientId,
-    patients,
     openDetail,
     animateRows,
     goToNextPage,
@@ -339,17 +336,6 @@ const MeasurementHistoriesPage = () => {
     currentPage,
     totalPage,
     goToPage,
-    isDetailVisible,
-    setIsExiting,
-    setIsVisible,
-    setPatientId,
-    selectedPatient,
-    isExiting,
-    form,
-    closeForm,
-    setPatients,
-    fetchPatients,
-    patientEdit,
     buttonAction,
   } = UsePatientPage();
 
@@ -357,6 +343,8 @@ const MeasurementHistoriesPage = () => {
   const [selectedDevice, setSelectedDevice] = useState<string | null>(
     "digit-pro-baby"
   );
+
+  const { historiesDigitProIDA, getAllHistories } = useDigitProIDA();
 
   return (
     <MainLayout title="Measurement Histories" state="Measurement Histories">
@@ -500,7 +488,8 @@ const MeasurementHistoriesPage = () => {
               )}
               {selectedDevice === "digit-pro-ida" && (
                 <TableHistoryDigitProIDA
-                  patients={dummyProIDA}
+                  data={historiesDigitProIDA}
+                  fetchData={getAllHistories}
                   animateRows={animateRows}
                   buttonAction={buttonAction}
                   openDetail={openDetail}
@@ -541,13 +530,6 @@ const MeasurementHistoriesPage = () => {
           </div>
         </div>
       </div>
-      <CreateNewPatient
-        form={form}
-        closeModal={closeForm}
-        setPatient={setPatients}
-        fetchPatients={fetchPatients}
-        patient={patientEdit}
-      />
     </MainLayout>
   );
 };
