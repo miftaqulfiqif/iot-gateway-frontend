@@ -18,10 +18,25 @@ export const useDevices = () => {
     }
   }, []);
 
-  const deleteDevice = async (deviceId: string) => {
+  const deleteDeviceBluetooth = async (deviceId: string) => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/devices/disconnect/${deviceId}`,
+        `http://localhost:3000/api/devices/disconnect-ble/${deviceId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      showToast(null, "Device disconnected successfully", "success");
+      await getAllDevices();
+    } catch (error) {
+      console.error("Error deleting device:", error);
+      showToast(null, "Failed to disconnect device", "error");
+    }
+  };
+  const deleteDeviceTcpIP = async (deviceId: string) => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/devices/disconnect-tcpip/${deviceId}`,
         {
           withCredentials: true,
         }
@@ -45,7 +60,8 @@ export const useDevices = () => {
   return {
     getAllDevices,
     devices,
-    deleteDevice,
+    deleteDeviceBluetooth,
+    deleteDeviceTcpIP,
     updateDevice,
   };
 };

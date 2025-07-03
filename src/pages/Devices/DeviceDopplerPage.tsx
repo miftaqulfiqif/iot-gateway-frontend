@@ -85,13 +85,13 @@ const DeviceDopplerPage = () => {
             <p className="font-bold text-2xl">Result</p>
             <div className="flex flex-col gap-2 h-full">
               <div className="bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-8 w-full h-fit mt-3 justify-between gap-2">
-                <div className="flex flex-col gap-4 items-baseline-last">
-                  <div className="flex flex-col items-baseline-last w-54">
-                    <img src={heartBeatImg} alt="" className="w-12 absolute" />
-                    <p className="text-8xl">
-                      {dataDoppler.heart_rate}{" "}
-                      <span className="text-sm">bpm</span>
-                    </p>
+                <div className="flex flex-row w-54 gap-4">
+                  <p className="text-8xl w-38 text-end">
+                    {dataDoppler.heart_rate}
+                  </p>
+                  <div className="text-8xl">
+                    <img src={heartBeatImg} alt="" className="h-6 w-12 " />
+                    <span className="text-sm">bpm</span>
                   </div>
                 </div>
                 {/* <div className="flex flex-col justify-end">

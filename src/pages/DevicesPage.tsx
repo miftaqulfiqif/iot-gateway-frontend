@@ -10,7 +10,8 @@ import { useDevices } from "@/hooks/api/use-device";
 import { ConnectingDeviceModal } from "@/components/modals/connecting-device-modal";
 
 function Devices() {
-  const { devices, getAllDevices, deleteDevice } = useDevices();
+  const { devices, getAllDevices, deleteDeviceBluetooth, deleteDeviceTcpIP } =
+    useDevices();
 
   const [modalAddDevice, setModalAddDevice] = useState(false);
   const [modalAddDeviceBluetooth, setModalAddDeviceBluetooth] = useState(false);
@@ -56,7 +57,13 @@ function Devices() {
                       deviceName={device.name || device.device}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
-                      onDelete={() => deleteDevice(device.id)}
+                      onDelete={() => {
+                        if (device.connection === "bluetooth") {
+                          deleteDeviceBluetooth(device.id);
+                        } else {
+                          deleteDeviceTcpIP(device.id);
+                        }
+                      }}
                     />
                   ))
               ) : (
@@ -82,7 +89,13 @@ function Devices() {
                       deviceName={device.name || device.device}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
-                      onDelete={() => deleteDevice(device.id)}
+                      onDelete={() => {
+                        if (device.connection === "bluetooth") {
+                          deleteDeviceBluetooth(device.id);
+                        } else {
+                          deleteDeviceTcpIP(device.id);
+                        }
+                      }}
                     />
                   ))
               ) : (

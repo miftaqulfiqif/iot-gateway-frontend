@@ -91,7 +91,7 @@ const Sidebar = ({ state }: SidebarProps) => {
         <img
           src={doctorImg}
           alt=""
-          className="absolute bottom-0 right-0 z-20 h-70"
+          className="absolute bottom-0 right-0 z-20 h-60"
         />
         <div className="flex flex-col justify-between">
           <div className="flex flex-col font-bold">
