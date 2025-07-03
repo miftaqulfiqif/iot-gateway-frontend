@@ -273,7 +273,7 @@ const PatientMonitorPage = () => {
         {/* DS-001 */}
         <div className="flex flex-col gap-2 px-1">
           <p className="font-bold">DS 001</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
             {ds001.map((item) => (
               <PatientMonitorDS001Section
                 key={item.id}

@@ -109,7 +109,7 @@ const DevicePM9000Page = () => {
                             {dataPM9000?.ecg_bpm ? dataPM9000.ecg_bpm : "--"}
                           </p>
                         </div>
-                        <p className="text-sm pb-4">rpm</p>
+                        <p className="text-lg pb-4">rpm</p>
                       </div>
                     </div>
                   </div>
@@ -136,7 +136,7 @@ const DevicePM9000Page = () => {
                               : "--"}
                           </p>
                         </div>
-                        <p className="text-sm pb-4">%</p>
+                        <p className="text-lg pb-4">%</p>
                       </div>
                     </div>
                   </div>
@@ -198,7 +198,7 @@ const DevicePM9000Page = () => {
                               : "--"}
                           </p>
                         </div>
-                        <p className="text-sm pb-2">mmHg</p>
+                        <p className="text-lg pb-2">mmHg</p>
                       </div>
                     </div>
                   </div>
@@ -220,7 +220,7 @@ const DevicePM9000Page = () => {
                             <p className="text-3xl w-14 text-end">
                               {dataPM9000.temp1 ? dataPM9000.temp1 : "--"}
                             </p>
-                            <p className="text-sm pb-0.5">°C</p>
+                            <p className="text-lg pb-0.5">°C</p>
                           </div>
                         </div>
                         <div className="flex flex-row items-center gap-6">
@@ -230,7 +230,7 @@ const DevicePM9000Page = () => {
                               {" "}
                               {dataPM9000.temp2 ? dataPM9000.temp2 : "--"}
                             </p>
-                            <p className="text-sm pb-0.5">°C</p>
+                            <p className="text-lg pb-0.5">°C</p>
                           </div>
                         </div>
                         <div className="flex flex-row items-center gap-6">
@@ -242,7 +242,7 @@ const DevicePM9000Page = () => {
                                 ? dataPM9000.delta_temp
                                 : "--"}
                             </p>
-                            <p className="text-sm pb-0.5">°C</p>
+                            <p className="text-lg pb-0.5">°C</p>
                           </div>
                         </div>
                       </div>

@@ -142,7 +142,7 @@ const DeviceDS001Page = () => {
                       /
                       <p>{dataDS001?.diastolic ? dataDS001.diastolic : "--"}</p>
                     </div>
-                    <p className="text-sm pb-2">mmHg</p>
+                    <p className="text-lg pb-2">mmHg</p>
                   </div>
                   <div className="ml-4 flex flex-row gap-4 mt-2">
                     <div className="flex flex-row w-fit text-white items-center gap-2 bg-red-400 px-3 py-1 rounded-full h-fit">
@@ -155,11 +155,11 @@ const DeviceDS001Page = () => {
                 </div>
               </div>
               {/* PR */}
-              <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-fit justify-between gap-2">
-                <div className="flex flex-row gap-2">
+              <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-40 justify-between gap-2">
+                <div className="flex flex-row gap-2 w-full justify-center">
                   <div className="flex flex-col gap-2">
                     <p className="font-semibold mx-auto">PR</p>
-                    <p className="mx-auto text-2xl flex justify-center items-center h-full">
+                    <p className="mx-auto text-5xl flex justify-center items-center h-full">
                       {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "--"}
                     </p>
                   </div>
@@ -205,7 +205,7 @@ const DeviceDS001Page = () => {
                           {dataDS001?.spo2 ? dataDS001.spo2 : "--"}
                         </p>
                       </div>
-                      <p className="text-sm pb-4">%</p>
+                      <p className="text-lg pb-4">%</p>
                     </div>
                   </div>
                 </div>
@@ -226,7 +226,7 @@ const DeviceDS001Page = () => {
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
                         <p>{dataDS001?.pr_spo2 ? dataDS001.pr_spo2 : "--"}</p>
                       </div>
-                      <p className="text-sm pb-4">bpm</p>
+                      <p className="text-lg pb-4">bpm</p>
                     </div>
                   </div>
                 </div>
@@ -245,7 +245,7 @@ const DeviceDS001Page = () => {
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
                         <p>{dataDS001?.rr ? dataDS001.rr : "--"}</p>
                       </div>
-                      <p className="text-sm pb-4">rpm</p>
+                      <p className="text-lg pb-4">rpm</p>
                     </div>
                   </div>
                 </div>

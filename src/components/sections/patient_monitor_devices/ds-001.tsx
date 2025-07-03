@@ -56,7 +56,7 @@ export const PatientMonitorDS001Section = ({
                 </div>
                 <p>NIBP</p>
               </div>
-              <div className="flex flex-row items-end gap-4">
+              <div className="flex flex-row items-end gap-4 ml-4">
                 <div className="flex flex-row items-center text-4xl gap-2">
                   <p className="">{systolic}</p>/<p>{diastolic}</p>
                 </div>
@@ -71,11 +71,11 @@ export const PatientMonitorDS001Section = ({
             </div>
           </div>
           {/* PR */}
-          <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-20 justify-between gap-2">
-            <div className="flex flex-row gap-2 ">
+          <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-40 justify-between gap-2">
+            <div className="flex flex-row gap-2 w-full justify-center">
               <div className="flex flex-col gap-2">
                 <p className="font-semibold mx-auto">PR</p>
-                <p className="mx-auto text-2xl flex justify-center items-center h-full ">
+                <p className="mx-auto text-4xl flex justify-center items-center h-full ">
                   {pulse_rate}
                 </p>
               </div>

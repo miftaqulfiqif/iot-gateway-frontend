@@ -57,11 +57,16 @@ export const InputMultiSelect = ({
               ? option
                   .filter((opt) => value.includes(opt.value))
                   .map((opt) => opt.label)
-                  .join(", ")
+                  .slice(0, 4)
+                  .join(", ") + (value.length > 4 ? "...." : "")
               : placeholder}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-2 space-y-1">
+        <PopoverContent
+          align="end"
+          sideOffset={4}
+          className="w-full p-2 space-y-1"
+        >
           {option.map((item) => (
             <label
               key={item.value}

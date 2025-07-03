@@ -5,6 +5,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  Legend,
 } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -97,9 +98,19 @@ export default function HistoriesDigitProBMI({
                 }}
               />
 
+              <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+
               <ChartTooltip
                 cursor={true}
                 content={<ChartTooltipContent indicator="line" />}
+              />
+              <Legend
+                verticalAlign="bottom"
+                align="center"
+                layout="horizontal"
+                formatter={(value) =>
+                  chartConfig[value as keyof typeof chartConfig]?.label || value
+                }
               />
 
               {selectedVariables.map((v) =>

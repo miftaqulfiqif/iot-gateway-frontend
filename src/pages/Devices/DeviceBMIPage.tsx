@@ -190,6 +190,9 @@ const DeviceBMIPage = () => {
   const { weightBMI, setWeightBMI } = useSocketHandler({ macDevice: mac });
 
   const [variabel, setVariabel] = useState<string[]>([]);
+  const mainVariables = variabel.filter((v) => v !== "metabolism");
+  const showMetabolism = variabel.includes("metabolism");
+
   const [showHistories, setShowHistories] = useState(false);
   console.log("weightBMI", weightBMI);
 
@@ -204,7 +207,7 @@ const DeviceBMIPage = () => {
 
   return (
     <MainLayout title="BMI" state="Measurement">
-      <div className="flex flex-col">
+      <div className="flex flex-col pb-5">
         <div className="flex flex-row gap-6">
           <div className="w-1/2">
             <div className="w-full">
@@ -214,8 +217,11 @@ const DeviceBMIPage = () => {
                 setShowHistories={setShowHistories}
               />
               {showHistories && (
-                <div className="overflow-x-auto mt-6 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-                  <div className="flex justify-end mb-2">
+                <div className="flex flex-col gap-2 mt-6 rounded-2xl">
+                  <p>Measurement histories last 10 times</p>
+                  <HistoryBMI historiesData={historiesData.slice(0, 10)} />
+                  <div className="flex items-center justify-between mb-2">
+                    <p>Select variable to show chart</p>
                     <div className="w-fit">
                       <InputMultiSelect
                         name="histories"
@@ -239,12 +245,24 @@ const DeviceBMIPage = () => {
                       />
                     </div>
                   </div>
-                  <HistoryBMI historiesData={historiesData.slice(0, 10)} />
-                  {variabel.length > 0 && (
-                    <HistoriesDigitProBMI
-                      chartData={historiesData.slice(0, 10)}
-                      selectedVariables={variabel}
-                    />
+                  {mainVariables.length > 0 && (
+                    <div className="">
+                      <p>Chart of {mainVariables.join(", ")}</p>
+                      <HistoriesDigitProBMI
+                        chartData={historiesData.slice(0, 10)}
+                        selectedVariables={mainVariables}
+                      />
+                    </div>
+                  )}
+
+                  {showMetabolism && (
+                    <div className="mt-2">
+                      <p>Metabolism</p>
+                      <HistoriesDigitProBMI
+                        chartData={historiesData.slice(0, 10)}
+                        selectedVariables={["metabolism"]}
+                      />
+                    </div>
                   )}
                 </div>
               )}
@@ -253,7 +271,7 @@ const DeviceBMIPage = () => {
 
           <div className="w-1/2">
             <p className="font-bold text-2xl">Result</p>
-            <div className="flex flex-col gap-4 w-full pt-3 h-full">
+            <div className="flex flex-col gap-4 w-full pt-3">
               <div className="flex flex-row gap-4">
                 {/* Square 1 */}
                 <div className="flex-1 aspect-square bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col gap-3 p-5">
@@ -263,7 +281,7 @@ const DeviceBMIPage = () => {
                     </div>
                     <p>Weights</p>
                   </div>
-                  <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
+                  <div className="h-full border-2 rounded-full flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
                       <img src={weighingIcon} alt="" className="w-15 h-15" />
                       <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
@@ -282,7 +300,7 @@ const DeviceBMIPage = () => {
                     </div>
                     <p>BMI</p>
                   </div>
-                  <div className="aspect-square w-full border-2 rounded-full flex items-center justify-center">
+                  <div className="h-full border-2 rounded-full flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
                       <img src={bmiIcon} alt="" className="w-15 h-15" />
                       <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">

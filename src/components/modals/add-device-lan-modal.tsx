@@ -32,6 +32,7 @@ export const AddDeviceLan = ({
 }: Props) => {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const [ipSegments, setIpSegments] = useState(["", "", "", ""]);
 
   const handleConnectDevice = async (value: any) => {
     try {
@@ -70,6 +71,22 @@ export const AddDeviceLan = ({
     }
   };
 
+  const handleIpChange = (index: number, value: string) => {
+    if (!/^\d{0,3}$/.test(value)) return; // hanya angka dan max 3 digit
+    const newSegments = [...ipSegments];
+    newSegments[index] = value;
+    setIpSegments(newSegments);
+
+    // Auto focus ke input berikutnya
+    if (value.length === 3 && index < 3) {
+      const nextInput = document.getElementById(`ip-segment-${index + 1}`);
+      nextInput?.focus();
+    }
+
+    // Update formik value
+    formik.setFieldValue("id", newSegments.join("."));
+  };
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -78,7 +95,19 @@ export const AddDeviceLan = ({
       device_function: "",
     },
     validationSchema: yup.object().shape({
-      id: yup.string().required("IP address is required"),
+      id: yup
+        .string()
+        .required("IP address is required")
+        .test("is-valid-ip", "Invalid IP address format", (value) => {
+          if (!value) return false;
+          const segments = value.split(".");
+          if (segments.length !== 4) return false;
+
+          return segments.every((seg) => {
+            const num = Number(seg);
+            return /^\d+$/.test(seg) && num >= 0 && num <= 255;
+          });
+        }),
       name: yup.string(),
       device_function: yup.string().required("Device function is required"),
     }),
@@ -125,16 +154,37 @@ export const AddDeviceLan = ({
                   onError={formik.errors.name}
                 />
                 <div className="flex flex-row gap-4">
-                  <InputText
-                    name="id"
-                    label="IP Address"
-                    placeholder="Input IP address"
-                    onChange={formik.handleChange}
-                    value={formik.values.id}
-                    onTouch={formik.touched.id}
-                    onError={formik.errors.id}
-                    isRequired
-                  />
+                  <div className="flex flex-col w-full">
+                    <label className="text-lg ml-1 mb-2">
+                      IP Address <span className="text-red-500">*</span>
+                    </label>
+                    <div className="flex items-center">
+                      {ipSegments.map((segment, i) => (
+                        <div key={i} className="flex items-center">
+                          <input
+                            id={`ip-segment-${i}`}
+                            type="text"
+                            inputMode="numeric"
+                            maxLength={3}
+                            className="bg-gray-100 text-sm px-4 py-2 rounded-lg w-16 text-center disabled:bg-slate-200 focus:outline-none"
+                            value={segment}
+                            onChange={(e) => handleIpChange(i, e.target.value)}
+                          />
+                          {i < 3 && (
+                            <span className="mx-1 text-lg font-semibold">
+                              .
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {formik.touched.id && formik.errors.id && (
+                      <p className="text-sm text-red-500 mt-1">
+                        {formik.errors.id}
+                      </p>
+                    )}
+                  </div>
+
                   <InputSelect
                     name="device_function"
                     label="Device "
