@@ -20,30 +20,38 @@ import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
 import { CreateBaby } from "@/components/modals/create-baby-modal";
-import { createDataDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
+import { useToast } from "@/context/ToastContext";
 
 const historiesData = [
-  { timestamp: "2025-06-05 01:46:33.803", mother_weight: 186, baby_weight: 80 },
+  {
+    timestamp: "2025-06-05 01:46:33.803",
+    weight_mother: 186,
+    weight_child: 80,
+  },
   {
     timestamp: "2025-06-06 01:46:33.803",
-    mother_weight: 305,
-    baby_weight: 200,
+    weight_mother: 305,
+    weight_child: 200,
   },
   {
     timestamp: "2025-06-07 01:46:33.803",
-    mother_weight: 237,
-    baby_weight: 120,
+    weight_mother: 237,
+    weight_child: 120,
   },
-  { timestamp: "2025-06-08 01:46:33.803", mother_weight: 73, baby_weight: 190 },
+  {
+    timestamp: "2025-06-08 01:46:33.803",
+    weight_mother: 73,
+    weight_child: 190,
+  },
   {
     timestamp: "2025-06-09 01:46:33.803",
-    mother_weight: 209,
-    baby_weight: 130,
+    weight_mother: 209,
+    weight_child: 130,
   },
   {
     timestamp: "2025-06-10 01:46:33.803",
-    mother_weight: 214,
-    baby_weight: 140,
+    weight_mother: 214,
+    weight_child: 140,
   },
 ];
 
@@ -52,6 +60,7 @@ const DeviceIDAPage = () => {
   const { weightDigitProIDA } = useSocketHandler({
     macDevice: mac,
   });
+  const { showToast } = useToast();
 
   const [showHistories, setShowHistories] = useState(false);
 
@@ -90,17 +99,18 @@ const DeviceIDAPage = () => {
       !patient.id ||
       !patient.name ||
       !weightDigitProIDA.weight_mother ||
-      !weightDigitProIDA.weight_baby ||
+      !weightDigitProIDA.weight_child ||
       !baby
     )
       return;
-    createDataDigitProIDA({
-      patient_id: patient.id,
-      baby_id: baby.id,
-      device_id: mac,
-      weight_mother: weightDigitProIDA.weight_mother,
-      weight_child: weightDigitProIDA.weight_baby,
-    });
+    // createDataDigitProIDA({
+    //   patient_id: patient.id,
+    //   baby_id: baby.id,
+    //   device_id: mac,
+    //   weight_mother: weightDigitProIDA.weight_mother,
+    //   weight_child: weightDigitProIDA.weight_child,
+    //   showToast,
+    // });
   };
 
   return (
@@ -177,8 +187,8 @@ const DeviceIDAPage = () => {
                         />
                         <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                           <span className="pr-2">
-                            {weightDigitProIDA.weight_baby
-                              ? weightDigitProIDA.weight_baby
+                            {weightDigitProIDA.weight_child
+                              ? weightDigitProIDA.weight_child
                               : "--"}
                           </span>
                           Kg
@@ -189,7 +199,11 @@ const DeviceIDAPage = () => {
                 </div>
               </div>
               <div
-                className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer mt-6"
+                className={`flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl mt-6 ${
+                  weightDigitProIDA.weight_child === 0
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
                 onClick={handleCreateData}
               >
                 <div className="flex flex-row gap-3 mx-auto">

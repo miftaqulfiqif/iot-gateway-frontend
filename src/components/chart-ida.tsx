@@ -29,8 +29,8 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 type ChartData = {
-  mother_weight: number;
-  baby_weight: number;
+  weight_mother: number;
+  weight_child: number;
   timestamp: string;
 };
 

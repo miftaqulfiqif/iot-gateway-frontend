@@ -7,29 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  CircleArrowLeft,
-  Download,
-  Funnel,
-  Search,
-  SquarePen,
-  Trash2,
-  User2Icon,
-  UserRoundPlus,
-} from "lucide-react";
+import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogDescription,
   AlertDialogTitle,
-} from "@radix-ui/react-alert-dialog";
+} from "@/components/ui/alert-dialog";
 import {
   Pagination,
   PaginationContent,
@@ -39,8 +28,17 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import { useEffect } from "react";
+
+// Utility function to format date
+const formatDate = (dateStr: string) =>
+  format(new Date(dateStr), "d MMMM yyyy, HH:mm", { locale: id });
+
 type Props = {
-  patients: any;
+  data: any[];
+  fetchData: () => void;
   animateRows: boolean;
   buttonAction: (action: string, patient: any) => void;
   openDetail: (id: number) => void;
@@ -52,7 +50,8 @@ type Props = {
 };
 
 export const TableHistoryDigitProIDA = ({
-  patients,
+  data,
+  fetchData,
   animateRows,
   buttonAction,
   openDetail,
@@ -62,15 +61,18 @@ export const TableHistoryDigitProIDA = ({
   currentPage,
   totalPage,
 }: Props) => {
+  useEffect(() => {
+    fetchData();
+  }, [currentPage]);
+
   return (
-    <div className="w-full bg-white rounded-2xl shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
+    <div className="w-full bg-white rounded-2xl shadow-md">
       <Table className="min-w-full">
         <TableHeader className="min-w-full">
           <TableRow className="h-14 ">
             <TableHead className="text-center font-bold">NO</TableHead>
             <TableHead className="text-center font-bold">Mother Name</TableHead>
             <TableHead className="text-center font-bold">Baby Name</TableHead>
-            <TableHead className="text-center font-bold">Baby Gender</TableHead>
             <TableHead className="text-center font-bold">
               Date of Birth
             </TableHead>
@@ -79,112 +81,100 @@ export const TableHistoryDigitProIDA = ({
             </TableHead>
             <TableHead className="text-center font-bold">Baby Weight</TableHead>
             <TableHead className="text-center font-bold">Date / Time</TableHead>
-            <TableHead className="text-center font-bold">Action</TableHead>
+            {/* <TableHead className="text-center font-bold">Action</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {patients && patients.length > 0 ? (
-            patients.map((item, index) => (
-              <TableRow
-                key={item.id}
-                onClick={(e) => {
-                  const target = e.target as HTMLElement;
-                  if (
-                    target.closest("button") ||
-                    target.closest("[data-stop-click]")
-                  ) {
-                    return;
-                  }
-
-                  openDetail(item.id);
-                }}
-                className={`border-gray-300 transition-all duration-500 ease-in-out cursor-pointer ${
-                  animateRows
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-2"
-                }`}
-                style={{ transitionDelay: `${index * 50}ms` }}
-              >
-                <TableCell className="text-center">{index + 1}</TableCell>
-                <TableCell className="text-left">{item.mother_name}</TableCell>
-                <TableCell className="text-left">{item.baby_name}</TableCell>
-                <TableCell className="text-center">
-                  {item.baby_gender}
-                </TableCell>
-                <TableCell className="text-center">
-                  {new Intl.DateTimeFormat("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  }).format(new Date(item.date_of_birth))}
-                </TableCell>
-                <TableCell className="text-center">
-                  {item.mother_weight}
-                </TableCell>
-                <TableCell className="text-center">
-                  {item.baby_weight}
-                </TableCell>
-                <TableCell className="text-center">{item.timestamp}</TableCell>
-
-                <TableCell className="text-center text-xl">
-                  <div className="flex flex-row justify-center gap-5 text-base text-white items-center">
-                    {/* Delete */}
+          {data && data.length > 0 ? (
+            data.map((item, index) => {
+              const patient = item.patient_handler?.patient;
+              const baby = item.patient_handler?.baby;
+              return (
+                <TableRow
+                  key={item.id}
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (
+                      target.closest("button") ||
+                      target.closest("[data-stop-click]")
+                    )
+                      return;
+                    openDetail(item.id);
+                  }}
+                  className={`transition-all duration-300 cursor-pointer ${
+                    animateRows ? "opacity-100" : "opacity-0 translate-y-2"
+                  }`}
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                >
+                  <TableCell className="text-center">{index + 1}</TableCell>
+                  <TableCell className="text-left">
+                    {patient?.name || "-"}
+                  </TableCell>
+                  <TableCell className="text-left">
+                    {baby?.name || "-"}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {patient?.date_of_birth
+                      ? formatDate(patient.date_of_birth)
+                      : "-"}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {item.weight_mother}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {item.weight_child}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {formatDate(item.timestamp)}
+                  </TableCell>
+                  {/* <TableCell className="text-center">
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Trash2
-                          className="w-7 h-7 cursor-pointer text-red-500"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
+                          className="w-6 h-6 text-red-500 hover:text-red-700"
+                          onClick={(e) => e.stopPropagation()}
                         />
-                        {/* <MdDeleteOutline
-                                  className="w-7 h-7 cursor-pointer"
-                                  color="red"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                /> */}
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-white border-0">
+                      <AlertDialogContent className="bg-white">
                         <AlertDialogHeader>
                           <AlertDialogTitle>
                             Are you absolutely sure?
                           </AlertDialogTitle>
                           <AlertDialogDescription>
                             This action cannot be undone. This will permanently
-                            delete this item and remove it from our system.
+                            delete this item.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel className="border-0 text-black cursor-pointer">
+                          <AlertDialogCancel className="text-black border">
                             Cancel
                           </AlertDialogCancel>
                           <AlertDialogAction
-                            onClick={() => alert("Delete")}
-                            className="bg-red-500 text-white cursor-pointer"
+                            onClick={() => buttonAction("delete", item)}
+                            className="bg-red-500 text-white"
                           >
                             Delete
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
+                  </TableCell> */}
+                </TableRow>
+              );
+            })
           ) : (
             <TableRow>
-              <TableCell colSpan={7} className="text-center">
-                No data
+              <TableCell colSpan={8} className="text-center py-6">
+                No data available
               </TableCell>
             </TableRow>
           )}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={9} className="p-4 text-center">
+            <TableCell colSpan={8} className="p-4 text-center">
               <Pagination>
-                <PaginationContent className="flex w-full justify-between">
+                <PaginationContent className="flex justify-between w-full gap-4">
                   <PaginationItem>
                     <PaginationPrevious
                       onClick={() => goToPreviousPage("patient")}
@@ -196,18 +186,19 @@ export const TableHistoryDigitProIDA = ({
                       }
                     />
                   </PaginationItem>
-                  <PaginationItem className="flex flex-row gap-2">
+                  <div className="flex gap-2">
                     {[...Array(totalPage)].map((_, index) => (
-                      <PaginationLink
-                        key={index}
-                        isActive={currentPage === index + 1}
-                        onClick={() => goToPage("patient", index + 1)}
-                        className="cursor-pointer"
-                      >
-                        {index + 1}
-                      </PaginationLink>
+                      <PaginationItem key={index}>
+                        <PaginationLink
+                          isActive={currentPage === index + 1}
+                          onClick={() => goToPage("patient", index + 1)}
+                          className="cursor-pointer"
+                        >
+                          {index + 1}
+                        </PaginationLink>
+                      </PaginationItem>
                     ))}
-                  </PaginationItem>
+                  </div>
                   <PaginationItem>
                     <PaginationNext
                       onClick={() => goToNextPage("patient")}

@@ -29,7 +29,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
   //Digit Pro IDA
   const [weightDigitProIDA, setWeightDigitProIDA] = useState<DigitProIDAModel>({
     weight_mother: 0,
-    weight_baby: 0,
+    weight_child: 0,
   });
   const [weightDigitProIDARealtime, setWeightDigitProIDARealtime] = useState<
     {
@@ -164,7 +164,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
               console.log("DigitProIDA(s) received:", payload.data_digitproida);
               setWeightDigitProIDA({
                 weight_mother: payload.data_digitproida[0].weight_mother,
-                weight_baby: payload.data_digitproida[0].weight_baby,
+                weight_child: payload.data_digitproida[0].weight_child,
               });
             }
           }
@@ -187,7 +187,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
                   {
                     index: prev.length,
                     weight_mother: latest.weight_mother,
-                    weight_child: latest.weight_baby,
+                    weight_child: latest.weight_child,
                   },
                 ];
                 return next.slice(-100);
