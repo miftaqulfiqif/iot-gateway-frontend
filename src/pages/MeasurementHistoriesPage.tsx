@@ -60,6 +60,8 @@ import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-i
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
 import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
+import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
+import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 
 const state = [
   {
@@ -320,31 +322,140 @@ const dummyDoppler = [
   },
 ];
 const MeasurementHistoriesPage = () => {
-  const {
-    isVisible,
-    limit,
-    handleLimitChange,
-    filterRef,
-    setShowFilter,
-    showFilter,
-    search,
-    handleSearchChange,
-    openDetail,
-    animateRows,
-    goToNextPage,
-    goToPreviousPage,
-    currentPage,
-    totalPage,
-    goToPage,
-    buttonAction,
-  } = UsePatientPage();
+  const { historiesDigitProIDA, fetchDataIDA, currentPageIDA } =
+    useDigitProIDA();
+  const { dataDigitProBaby, fetchDataDigitProBaby, currentPageDigitProBaby } =
+    useDigitProBaby();
+  const { dataDigitProBMI, fetchDataBMI, currentPageBMI } = useDigitProBMI();
+
+  const [search, setSearch] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [showFilter, setShowFilter] = useState(false);
 
   const stateRef = useRef(state);
   const [selectedDevice, setSelectedDevice] = useState<string | null>(
     "digit-pro-baby"
   );
+  const [paginationState, setPaginationState] = useState<{
+    [key: string]: {
+      page: number;
+      limit: number;
+      search: string;
+    };
+  }>({
+    "digit-pro-ida": { page: 1, limit: 10, search: "" },
+    "digit-pro-baby": { page: 1, limit: 10, search: "" },
+    bmi: { page: 1, limit: 10, search: "" },
+    doppler: { page: 1, limit: 10, search: "" },
+  });
+  const [totalPageState, setTotalPageState] = useState<{
+    [key: string]: number;
+  }>({
+    "digit-pro-ida": 0,
+    "digit-pro-baby": 0,
+    bmi: 0,
+    doppler: 0,
+  });
+  const totalPage = totalPageState[selectedDevice ?? "digit-pro-ida"];
+  const currentPagination = paginationState[selectedDevice ?? "digit-pro-ida"];
 
-  const { historiesDigitProIDA, getAllHistories } = useDigitProIDA();
+  const updatePagination = (
+    updates: Partial<{ page: number; limit: number; search: string }>
+  ) => {
+    setPaginationState((prev) => ({
+      ...prev,
+      [selectedDevice ?? "digit-pro-ida"]: {
+        ...prev[selectedDevice ?? "digit-pro-ida"],
+        ...updates,
+      },
+    }));
+  };
+
+  useEffect(() => {
+    setLimit(10);
+    setSearch("");
+    setShowFilter(false);
+  }, [selectedDevice]);
+
+  useEffect(() => {
+    if (selectedDevice === "digit-pro-ida") {
+      fetchDataIDA({
+        page: 1,
+        limit,
+        search,
+      });
+    }
+    if (selectedDevice === "digit-pro-baby") {
+      fetchDataDigitProBaby({
+        page: 1,
+        limit,
+        search,
+      });
+    }
+    if (selectedDevice === "bmi") {
+      fetchDataBMI({
+        page: 1,
+        limit,
+        search,
+      });
+    }
+  }, [limit, search, selectedDevice]);
+
+  useEffect(() => {
+    const { page, limit, search } =
+      paginationState[selectedDevice ?? "digit-pro-ida"];
+
+    if (selectedDevice === "digit-pro-ida") {
+      fetchDataIDA({ page, limit, search }).then((res) => {
+        setTotalPageState((prev) => ({
+          ...prev,
+          "digit-pro-ida": res?.total_pages ?? 0,
+        }));
+      });
+    }
+    if (selectedDevice === "digit-pro-baby") {
+      fetchDataDigitProBaby({ page, limit, search }).then((res) => {
+        setTotalPageState((prev) => ({
+          ...prev,
+          "digit-pro-baby": res?.total_pages ?? 0,
+        }));
+      });
+    }
+    if (selectedDevice === "bmi") {
+      fetchDataBMI({ page, limit, search }).then((res) => {
+        setTotalPageState((prev) => ({
+          ...prev,
+          bmi: res?.total_pages ?? 0,
+        }));
+      });
+    }
+  }, [paginationState, selectedDevice]);
+
+  const handleLimitChange = (value: string) => {
+    updatePagination({ limit: Number(value), page: 1 });
+    setLimit(Number(value));
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updatePagination({ search: e.target.value, page: 1 });
+    setSearch(e.target.value);
+  };
+
+  const goToPage = (page: number) => {
+    updatePagination({ page });
+  };
+
+  const goToNextPage = () => {
+    if (currentPagination.page < totalPage) {
+      updatePagination({ page: currentPagination.page + 1 });
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPagination.page > 1) {
+      updatePagination({ page: currentPagination.page - 1 });
+    }
+  };
 
   return (
     <MainLayout title="Measurement Histories" state="Measurement Histories">
@@ -401,7 +512,7 @@ const MeasurementHistoriesPage = () => {
               </div>
 
               <div className="flex gap-4 items-center">
-                <div ref={filterRef} className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
                   <div
                     className="flex cursor-pointer bg-white items-center gap-2 px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]"
                     onClick={(e) => {
@@ -444,10 +555,7 @@ const MeasurementHistoriesPage = () => {
                 </div>
 
                 <div className="relative">
-                  <div
-                    className="bg-white rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]"
-                    style={{ opacity: isVisible ? 0.5 : 1 }}
-                  >
+                  <div className="bg-white rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
                     <label
                       htmlFor="search"
                       className="flex items-center gap-2 px-4 py-2"
@@ -460,7 +568,6 @@ const MeasurementHistoriesPage = () => {
                         value={search}
                         onChange={handleSearchChange}
                         className="px-2 focus:outline-none"
-                        disabled={isVisible}
                       />
                     </label>
                   </div>
@@ -475,45 +582,35 @@ const MeasurementHistoriesPage = () => {
               {/* Table */}
               {selectedDevice === "digit-pro-baby" && (
                 <TableHistoryDigitProBaby
-                  patients={dummyProBaby}
-                  animateRows={animateRows}
-                  buttonAction={buttonAction}
-                  openDetail={openDetail}
+                  data={dataDigitProBaby}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
-                  currentPage={currentPage}
+                  currentPage={currentPageDigitProBaby}
                   totalPage={totalPage}
                 />
               )}
               {selectedDevice === "digit-pro-ida" && (
                 <TableHistoryDigitProIDA
                   data={historiesDigitProIDA}
-                  fetchData={getAllHistories}
-                  animateRows={animateRows}
-                  buttonAction={buttonAction}
-                  openDetail={openDetail}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
-                  currentPage={currentPage}
+                  currentPage={currentPageIDA}
                   totalPage={totalPage}
                 />
               )}
               {selectedDevice === "bmi" && (
                 <TableHistoryBMI
-                  patients={dummyBMI}
-                  animateRows={animateRows}
-                  buttonAction={buttonAction}
-                  openDetail={openDetail}
+                  data={dataDigitProBMI}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
-                  currentPage={currentPage}
+                  currentPage={currentPageBMI}
                   totalPage={totalPage}
                 />
               )}
-              {selectedDevice === "doppler" && (
+              {/* {selectedDevice === "doppler" && (
                 <TableHistoryDoppler
                   patients={dummyDoppler}
                   animateRows={animateRows}
@@ -525,7 +622,7 @@ const MeasurementHistoriesPage = () => {
                   currentPage={currentPage}
                   totalPage={totalPage}
                 />
-              )}
+              )} */}
             </div>
           </div>
         </div>

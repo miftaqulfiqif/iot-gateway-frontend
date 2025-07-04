@@ -21,6 +21,7 @@ import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
 import { CreateBaby } from "@/components/modals/create-baby-modal";
 import { useToast } from "@/context/ToastContext";
+import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 
 const historiesData = [
   {
@@ -61,6 +62,7 @@ const DeviceIDAPage = () => {
     macDevice: mac,
   });
   const { showToast } = useToast();
+  const { createHistoryDigitProIDA } = useDigitProIDA();
 
   const [showHistories, setShowHistories] = useState(false);
 
@@ -103,14 +105,13 @@ const DeviceIDAPage = () => {
       !baby
     )
       return;
-    // createDataDigitProIDA({
-    //   patient_id: patient.id,
-    //   baby_id: baby.id,
-    //   device_id: mac,
-    //   weight_mother: weightDigitProIDA.weight_mother,
-    //   weight_child: weightDigitProIDA.weight_child,
-    //   showToast,
-    // });
+    createHistoryDigitProIDA({
+      patient_id: patient.id,
+      baby_id: baby.id,
+      device_id: mac,
+      weight_mother: weightDigitProIDA.weight_mother,
+      weight_child: weightDigitProIDA.weight_child,
+    });
   };
 
   return (
