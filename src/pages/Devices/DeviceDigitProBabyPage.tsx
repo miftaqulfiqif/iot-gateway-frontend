@@ -18,8 +18,8 @@ import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
 import { useParams } from "react-router-dom";
 import DigitProBabyRealtimeChart from "@/components/charts/chart-digit-pro-baby-realtime";
-import { createBabyApi } from "@/hooks/api/devices/use-digit-pro-baby";
 import HistoriesDigitProBaby from "@/components/charts/chart-histories-digitpro-baby";
+import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 
 const historiesData = [
   { weight: 3.2, timestamp: "2025-06-05 01:46:33.803" },
@@ -36,6 +36,8 @@ const historiesData = [
 
 const DeviceDigitProBabyPage = () => {
   const { mac } = useParams<{ mac: string }>();
+  const { createDigitProBabyHistory, fetchDataDigitProBabyByPatientId } =
+    useDigitProBaby();
 
   const {
     eventTareDigitProBaby,
@@ -75,7 +77,7 @@ const DeviceDigitProBabyPage = () => {
       !baby
     )
       return;
-    createBabyApi({
+    createDigitProBabyHistory({
       patient_id: patient.id,
       baby_id: baby.id,
       device_id: mac,
