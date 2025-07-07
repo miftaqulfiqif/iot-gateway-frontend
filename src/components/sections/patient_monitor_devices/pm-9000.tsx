@@ -2,12 +2,27 @@ import {
   Activity,
   EllipsisVertical,
   SquareArrowOutUpRight,
+  SquarePen,
   Thermometer,
 } from "lucide-react";
 import spo2Icon from "@/assets/icons/spo2.png";
 import respIcon from "@/assets/icons/resp.png";
-import { HeartbeatChart } from "@/components/heart-beat-chart";
-import { ChartHeartPulse } from "@/components/chart-heart-pusle";
+import { ECGChart } from "@/components/heart-beat-chart";
+import { HeartPulseChart } from "@/components/chart-heart-pusle";
+import HeartRateChart from "@/components/heart-rate-chart";
+
+const chartData: { heart_rate: number }[] = [
+  { heart_rate: 75 },
+  { heart_rate: 80 },
+  { heart_rate: 78 },
+  { heart_rate: 82 },
+  { heart_rate: 85 },
+  { heart_rate: 79 },
+  { heart_rate: 81 },
+  { heart_rate: 77 },
+  { heart_rate: 83 },
+  { heart_rate: 80 },
+];
 
 type Props = {
   id_device: string;
@@ -39,9 +54,43 @@ export const PatientMonitorPM9000Section = ({
       <div className="bg-[#EDEDF9] flex flex-col gap-2 p-4 rounded-3xl w-full h-fit shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)] text-sm">
         <div className="flex items-center justify-between">
           <p className="font-bold">{room}</p>
-          <button className="flex items-center gap-1 cursor-pointer transition duration-150 ">
-            <EllipsisVertical className="w-6 h-6" />
-          </button>
+          {/* Button Action */}
+          <div className="relative">
+            <button
+              className="flex items-center gap-1 cursor-pointer transition duration-150"
+              onClick={() => {
+                const optionsMenu = document.getElementById(
+                  `options-${id_device}`
+                );
+                if (optionsMenu) {
+                  optionsMenu.classList.toggle("hidden");
+                }
+              }}
+            >
+              <EllipsisVertical className="w-6 h-6" />
+            </button>
+            <div
+              id={`options-${id_device}`}
+              className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
+            >
+              <ul className="py-1">
+                <li
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    window.open(
+                      `http://localhost:5173/device/pasien_monitor_9000/${id_device}`,
+                      "_blank"
+                    );
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <SquarePen className="w-5 h-5" />
+                    Detail
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
         <p className="text-xl">{patientName} </p>
         <div className="flex flex-row w-full h-fit space-x-2 mt-4 gap-2">
@@ -143,8 +192,9 @@ export const PatientMonitorPM9000Section = ({
             </div>
           </div>
         </div>
-        <HeartbeatChart className="mt-4" />
-        <ChartHeartPulse className="" />
+        <ECGChart className="mt-4" />
+        <HeartPulseChart className="" />
+        <HeartRateChart chartData={chartData} isPatientMonitor />
       </div>
     </>
   );

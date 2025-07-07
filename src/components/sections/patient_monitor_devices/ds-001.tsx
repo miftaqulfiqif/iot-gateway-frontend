@@ -2,12 +2,14 @@ import {
   Activity,
   EllipsisVertical,
   SquareArrowOutUpRight,
+  SquarePen,
   Thermometer,
 } from "lucide-react";
 import nibpIcon from "@/assets/icons/nibp.png";
 import spo2Icon from "@/assets/icons/spo2.png";
 import respIcon from "@/assets/icons/resp.png";
 import rrIcon from "@/assets/icons/lungs.png";
+import { HeartPulseChart } from "@/components/chart-heart-pusle";
 
 type Props = {
   id_device: string;
@@ -40,9 +42,42 @@ export const PatientMonitorDS001Section = ({
     <div className="bg-[#EDEDF9] flex flex-col gap-2 p-5 rounded-4xl w-full h-fit shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)] text-sm">
       <div className="flex items-center justify-between">
         <p className="font-bold">{room}</p>
-        <button className="flex items-center gap-1 cursor-pointer transition duration-150 ">
-          <EllipsisVertical className="w-6 h-6" />
-        </button>
+        <div className="relative">
+          <button
+            className="flex items-center gap-1 cursor-pointer transition duration-150"
+            onClick={() => {
+              const optionsMenu = document.getElementById(
+                `options-${id_device}`
+              );
+              if (optionsMenu) {
+                optionsMenu.classList.toggle("hidden");
+              }
+            }}
+          >
+            <EllipsisVertical className="w-6 h-6" />
+          </button>
+          <div
+            id={`options-${id_device}`}
+            className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
+          >
+            <ul className="py-1">
+              <li
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  window.open(
+                    `http://localhost:5173/device/diagnostic_station_001/${id_device}`,
+                    "_blank"
+                  );
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <SquarePen className="w-5 h-5" />
+                  Detail
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <p className="text-xl">{patientName} </p>
       <div className="flex flex-col gap-2 w-full mt-4">
@@ -165,6 +200,8 @@ export const PatientMonitorDS001Section = ({
             </div>
           </div>
         </div>
+
+        <HeartPulseChart className="mt-2" />
       </div>
     </div>
   );

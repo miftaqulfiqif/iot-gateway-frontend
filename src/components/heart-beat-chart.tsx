@@ -17,7 +17,7 @@ type DataPoint = {
   value: number;
 };
 
-export const HeartbeatChart: React.FC<Props> = ({ className }) => {
+export const ECGChart: React.FC<Props> = ({ className }) => {
   const [data, setData] = useState<DataPoint[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -59,7 +59,8 @@ export const HeartbeatChart: React.FC<Props> = ({ className }) => {
 
   return (
     <div className={`w-full h-20 bg-black p-2 rounded-lg ${className}`}>
-      <ResponsiveContainer width="100%" height="100%">
+      <p className="text-white pl-2">ECG</p>
+      <ResponsiveContainer width="100%" height="80%">
         <LineChart data={data}>
           <CartesianGrid stroke="#333" />
           <XAxis dataKey="time" hide />

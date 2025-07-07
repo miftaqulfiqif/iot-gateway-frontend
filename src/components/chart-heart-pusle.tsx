@@ -24,7 +24,7 @@ const generateBPM = (prev: number): number => {
   return Math.max(60, Math.min(120, Math.round(newBPM))); // Normal range
 };
 
-export const ChartHeartPulse: React.FC<Props> = ({ className }) => {
+export const HeartPulseChart: React.FC<Props> = ({ className }) => {
   const [data, setData] = useState<HeartbeatData[]>([]);
   const [time, setTime] = useState(0);
 
@@ -46,7 +46,8 @@ export const ChartHeartPulse: React.FC<Props> = ({ className }) => {
     <div
       className={`w-full h-40 bg-white py-2 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] ${className}`}
     >
-      <ResponsiveContainer width="100%" height="100%">
+      <p className="pl-4 my-1">Heart Pulse</p>
+      <ResponsiveContainer width="100%" height="95%">
         <LineChart data={data}>
           <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
           <XAxis dataKey="time" className="hidden" />

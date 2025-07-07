@@ -24,7 +24,7 @@ export const DevicesConnected = ({
   deviceFunction,
   onDelete,
 }: DevicesConnectedProps) => {
-  const { deleteDevice, updateDevice } = useDevices();
+  const { deleteDeviceBluetooth, updateDevice } = useDevices();
   return (
     <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl w-full border">
       <div className="flex flex-row gap-2 items-center justify-between">
