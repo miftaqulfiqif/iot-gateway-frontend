@@ -14,7 +14,7 @@ import {
   Weight,
 } from "lucide-react";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { ChartHeartPulse } from "@/components/chart-heart-pusle";
+import { HeartPulseChart } from "@/components/chart-heart-pusle";
 
 import nibpIcon from "@/assets/icons/nibp.png";
 import spo2Icon from "@/assets/icons/spo2.png";
@@ -29,6 +29,20 @@ import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useParams } from "react-router-dom";
 
 const historiesData = [
+  {
+    timestamp: "2023-09-01 10:00:00",
+    systolic: 120,
+    diastolic: 80,
+    map: 100,
+    pulseRate: 60,
+  },
+  {
+    timestamp: "2023-09-01 10:00:00",
+    systolic: 120,
+    diastolic: 80,
+    map: 100,
+    pulseRate: 60,
+  },
   {
     timestamp: "2023-09-01 10:00:00",
     systolic: 120,
@@ -112,18 +126,18 @@ const DeviceDS001Page = () => {
   return (
     <MainLayout title="DS 001" state="Patient Monitor">
       <div className="flex flex-col gap-2 pb-5">
-        <div className="w-full">
-          <div className="w-full">
-            <p className="font-bold text-2xl">Patient Info</p>
-            <PatientInfo patient={patient} isPatientMonitor />
-          </div>
-        </div>
-        <p className="font-bold text-2xl mt-4">Result</p>
         <div className="w-full flex flex-row gap-6 ">
-          <div className="w-1/2 flex flex-col gap-4">
-            <ChartHeartPulse className="h-full" />
+          <div className="w-1/2 h-full flex flex-col">
+            <p className="font-semibold text-xl">Patient Info</p>
+            <PatientInfo patient={patient} isPatientMonitor />
+            <p className="text-xl mt-7">History NIBP</p>
+            <div className="shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl mt-2">
+              <HistoryDS001 historiesData={historiesData.slice(0, 8)} />
+            </div>
           </div>
           <div className="flex flex-col gap-2 w-1/2">
+            <p className="text-xl"> Realtime Chart</p>
+
             <div className="flex flex-row gap-4 rounded-2xl">
               {/* NIBP */}
               <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-full h-full justify-between gap-2">
@@ -135,7 +149,7 @@ const DeviceDS001Page = () => {
                     <p>NIBP</p>
                   </div>
                   <div className="flex flex-row items-end gap-4">
-                    <div className="flex flex-row items-center text-6xl gap-2">
+                    <div className="flex flex-row items-center text-6xl gap-2 pl-6">
                       <p className="">
                         {dataDS001?.systolic ? dataDS001.systolic : "--"}
                       </p>
@@ -251,10 +265,9 @@ const DeviceDS001Page = () => {
                 </div>
               </div>
             </div>
+
+            <HeartPulseChart className="h-84 mt-2" />
           </div>
-        </div>
-        <div className="shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl mt-4">
-          <HistoryDS001 historiesData={historiesData.slice(0, 5)} />
         </div>
       </div>
     </MainLayout>

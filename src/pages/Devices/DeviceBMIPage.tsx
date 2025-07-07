@@ -220,9 +220,9 @@ const DeviceBMIPage = () => {
                 <div className="flex flex-col gap-2 mt-6 rounded-2xl">
                   <p>Measurement histories last 10 times</p>
                   <HistoryBMI historiesData={historiesData.slice(0, 10)} />
-                  <div className="flex items-center justify-between mb-2">
-                    <p>Select variable to show chart</p>
-                    <div className="w-fit">
+                  <div className="flex items-center justify-end gap-4">
+                    <p className="pt-2">Select variable to show chart</p>
+                    <div className="">
                       <InputMultiSelect
                         name="histories"
                         placeholder="Select variable"

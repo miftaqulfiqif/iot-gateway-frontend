@@ -21,13 +21,14 @@ import respIcon from "@/assets/icons/resp.png";
 import nibpIcon from "@/assets/icons/nibp.png";
 
 import heartBeatImg from "@/assets/imgs/hear-beat.png";
-import { ChartHeartPulse } from "@/components/chart-heart-pusle";
-import { HeartbeatChart } from "@/components/heart-beat-chart";
+import { HeartPulseChart } from "@/components/chart-heart-pusle";
+import { ECGChart } from "@/components/heart-beat-chart";
 import { useEffect, useState } from "react";
 import { Patients } from "@/models/PatientModel";
 import ChartDopplerRealtime from "@/components/charts/chart-doppler-realtime";
 import { data, useParams } from "react-router-dom";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
+import HeartRateChart from "@/components/heart-rate-chart";
 
 const chartData: { heart_rate: number }[] = [
   { heart_rate: 75 },
@@ -75,23 +76,15 @@ const DevicePM9000Page = () => {
   return (
     <MainLayout title="PM 9000" state="Patient Monitor">
       <div className="flex flex-col h-full gap-6">
-        <div className="w-full">
-          <div className="w-full">
-            <p className="font-bold text-2xl">Patient Info</p>
-            <PatientInfo patient={patient} isPatientMonitor />
-          </div>
-        </div>
-
         {/* Result */}
         <div className="w-full">
-          <p className="font-bold text-2xl">Result</p>
-          <div className="flex flex-row gap-4">
-            <div className="w-1/2 space-y-4 pt-3 ">
-              <ChartDopplerRealtime chartData={chartData} />
-              {/* <ChartHeartPulse className="h-96" />
-              <HeartbeatChart className="h-64" /> */}
-            </div>
-            <div className="flex flex-col gap-4 pb-5 mt-3 w-1/2">
+          <div className="flex flex-row gap-6">
+            <div className="flex flex-col gap-2 pb-5 mt-3 w-1/2">
+              <div className="w-full">
+                <p className="font-semibold text-xl">Patient Info</p>
+                <PatientInfo patient={patient} isPatientMonitor />
+              </div>
+              <p className="text-xl mt-4">Result</p>
               <div className="flex flex-row gap-4 rounded-2xl ">
                 {/* ECG */}
                 <div className="bg-green-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-1/3 h-fit justify-between gap-2">
@@ -161,15 +154,15 @@ const DevicePM9000Page = () => {
                 </div>
               </div>
 
-              <div className="flex flex-row gap-4 rounded-2xl">
+              <div className="flex flex-row gap-4 rounded-2xl mt-2">
                 {/* NIBP */}
                 <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-full justify-between gap-2">
                   <div className="flex flex-row gap-2 w-full">
                     <div className="flex flex-col gap-2 w-full">
                       <div className="flex flex-row gap-3 items-center font-semibold justify-between w-full">
                         <div className="flex flex-row items-center gap-4">
-                          <div className="bg-[#ededf9] text-red-600 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                            <img src={nibpIcon} className="w-8 h-8" />
+                          <div className="bg-[#ededf9] text-red-600 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+                            <img src={nibpIcon} className="w-6 h-6" />
                           </div>
                           <p>NIBP</p>
                         </div>
@@ -208,8 +201,8 @@ const DevicePM9000Page = () => {
                   <div className="flex flex-row gap-2">
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-row gap-3 items-center font-semibold">
-                        <div className="bg-[#ededf9] text-yellow-500 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                          <Thermometer className="w-8 h-8" />
+                        <div className="bg-[#ededf9] text-yellow-500 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+                          <Thermometer className="w-6 h-6" />
                         </div>
                         <p>Temp</p>
                       </div>
@@ -250,7 +243,14 @@ const DevicePM9000Page = () => {
                   </div>
                 </div>
               </div>
-              {/* <ChartDopplerRealtime chartData={chartData} /> */}
+            </div>
+            <div className="w-1/2 space-y-2">
+              <p className="text-xl mt-3"> Realtime Chart</p>
+              <div className="flex flex-col gap-4 pt-1">
+                <ECGChart className="h-54" />
+                <HeartPulseChart className="h-54" />
+                <HeartRateChart chartData={chartData} />
+              </div>
             </div>
           </div>
         </div>

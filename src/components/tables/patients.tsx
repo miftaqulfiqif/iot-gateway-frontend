@@ -43,7 +43,7 @@ type Props = {
   patients: any;
   animateRows: boolean;
   buttonAction: (action: string, patient: any) => void;
-  openDetail?: (id: number) => void;
+  setPatientSelected?: (id: string) => void;
   goToPreviousPage: (state: string) => void;
   goToNextPage: (state: string) => void;
   goToPage: (state: string, page: number) => void;
@@ -55,7 +55,7 @@ export const TablePatients = ({
   patients,
   animateRows,
   buttonAction,
-  openDetail,
+  setPatientSelected,
   goToPreviousPage,
   goToNextPage,
   goToPage,
@@ -85,16 +85,8 @@ export const TablePatients = ({
             patients.map((item, index) => (
               <TableRow
                 key={item.id}
-                onClick={(e) => {
-                  const target = e.target as HTMLElement;
-                  if (
-                    target.closest("button") ||
-                    target.closest("[data-stop-click]")
-                  ) {
-                    return;
-                  }
-
-                  //   openDetail(item.id);
+                onClick={() => {
+                  setPatientSelected && setPatientSelected(item.id);
                 }}
                 className={`border-gray-300 transition-all duration-500 ease-in-out cursor-pointer ${
                   animateRows
@@ -132,47 +124,6 @@ export const TablePatients = ({
                       <SquarePen className="w-5 h-5" />
                       Edit
                     </button>
-
-                    {/* Delete */}
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Trash2
-                          className="w-7 h-7 cursor-pointer text-red-500"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                        />
-                        {/* <MdDeleteOutline
-                                  className="w-7 h-7 cursor-pointer"
-                                  color="red"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                /> */}
-                      </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-white border-0">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you absolutely sure?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete this item and remove it from our system.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel className="border-0 text-black cursor-pointer">
-                            Cancel
-                          </AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => alert("Delete")}
-                            className="bg-red-500 text-white cursor-pointer"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
                   </div>
                 </TableCell>
               </TableRow>

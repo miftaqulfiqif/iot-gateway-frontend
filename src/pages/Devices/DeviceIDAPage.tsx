@@ -11,7 +11,7 @@ import MainLayout from "../../components/layouts/main-layout";
 import { href, useParams } from "react-router-dom";
 import DopplerChart from "@/components/charts/chart-digit-pro-baby-realtime";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { HistoriesDigitProIda } from "@/components/chart-ida";
+import { HistoriesDigitProIda } from "@/components/charts/chart-ida";
 
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import babyWeighingIcon from "@/assets/icons/pediatrics.png";

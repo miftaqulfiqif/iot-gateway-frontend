@@ -31,9 +31,7 @@ export const PatientInfo = ({
   return (
     <div className="flex flex-row gap-2 bg-gradient-to-b from-[#4956F4] to-[#6e79f4]  rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-3 h-fit">
       <div className="flex flex-col gap-4 px-8 py-4 w-full">
-        <div
-          className={`flex gap-4 ${isPatientMonitor ? "flex-row" : "flex-col"}`}
-        >
+        <div className={`flex gap-4 flex-col`}>
           <div className="flex flex-col gap-4 w-full">
             <div className="flex flex-row gap-4">
               <p className=" text-3xl">{patient?.name ?? " -- "}</p>
