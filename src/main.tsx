@@ -39,6 +39,10 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/patient-monitor" element={<PatientMonitorPage />} />
               <Route path="/devices" element={<Devices />} />
               <Route path="/patients" element={<Patients />} />
+              <Route
+                path="/detail-patient/:patient_id"
+                element={<Patients />}
+              />
               <Route path="/settings" element={<SettingsPage />} />
               <Route
                 path="/measurement-histories"

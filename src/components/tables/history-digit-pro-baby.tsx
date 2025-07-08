@@ -73,6 +73,8 @@ export const TableHistoryDigitProBaby = ({
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
 
+  console.log(data);
+
   useEffect(() => {
     setAnimateRows(false);
     setTimeout(() => setAnimateRows(true), 50);
