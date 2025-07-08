@@ -19,20 +19,27 @@ export const useDigitProBMI = () => {
       page = 1,
       limit = 10,
       search = "",
+      patient_id = "",
     }: {
       page?: number;
       limit?: number;
       search?: string;
+      patient_id?: string;
     }) => {
       try {
+        const params: Record<string, any> = {
+          page,
+          limit,
+          search,
+        };
+        if (patient_id !== "") {
+          params.patient_id = patient_id;
+        }
+
         const response = await axios.get(
-          "http://localhost:3000/api/measurement-histories-digit-pro-bmi",
+          "http://localhost:3000/api/measurement-histories-digit-pro-baby",
           {
-            params: {
-              page,
-              limit,
-              search,
-            },
+            params,
             withCredentials: true,
           }
         );
