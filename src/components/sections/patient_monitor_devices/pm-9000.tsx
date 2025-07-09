@@ -104,12 +104,14 @@ export const PatientMonitorPM9000Section = ({
                       <Activity className="w-4 h-4" />
                     </div>
                     <div className="flex flex-col">
-                      <p className="text-xl">ECG</p>
+                      <p className="text-lg">ECG</p>
                       <div className="flex flex-row gap-1">
                         <div className="flex flex-row items-center text-2xl rounded-4xl">
                           <p className="text-5xl">{ecg}</p>
                         </div>
-                        <p className="text-[10px]">rpm</p>
+                        <div className="flex flex-row items-end">
+                          <p className="text-base">rpm</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -124,12 +126,14 @@ export const PatientMonitorPM9000Section = ({
                   <img src={respIcon} className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl">RESP</p>
+                  <p className="text-lg">RESP</p>
                   <div className="flex flex-row gap-1 ">
                     <div className="flex flex-row items-end text-2xl rounded-4xl">
                       <p className="text-5xl">{resp}</p>
                     </div>
-                    <p className="text-[10px]">rpm</p>
+                    <div className="flex flex-row items-end">
+                      <p className="text-base">rpm</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -148,39 +152,38 @@ export const PatientMonitorPM9000Section = ({
                       {/* <p className="text-xs">ECG</p> */}
                       <div className="flex flex-row gap-1">
                         <div className="flex flex-row items-center text-2xl rounded-4xl">
-                          <p>{spo2}</p>
+                          <p>{spo2} %</p>
                         </div>
-                        <p className="text-xs pb-4">%</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-              <div className="flex flex-col gap-2">
+            <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-full justify-between gap-2">
+              <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-row gap-3 items-center font-semibold">
                   <div className="bg-[#ededf9] text-yellow-500 rounded-sm p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                     <Thermometer className="w-4 h-4" />
                   </div>
-                  <p>Temp</p>
+                  <p className="text-lg">Temp</p>
                 </div>
-                <div className="flex flex-col">
-                  <div className="flex flex-row items-center gap-6">
+                <div className="flex flex-col w-full items-center">
+                  <div className="flex flex-row items-center gap-12">
                     <p className="w-1">T1</p>
                     <div className="flex flex-row items-end gap-1">
                       <p className="text-xl w-10 text-end">{temp1}</p>
                       <p className="text-sm pb-0.5">°C</p>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center gap-6">
+                  <div className="flex flex-row items-center gap-12">
                     <p className="w-1">T2</p>
                     <div className="flex flex-row items-end gap-1">
                       <p className="text-xl w-10 text-end">{temp2}</p>
                       <p className="text-sm pb-0.5">°C</p>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center gap-6">
+                  <div className="flex flex-row items-center gap-12">
                     <p className="w-1">TD</p>
                     <div className="flex flex-row items-end gap-1">
                       <p className="text-xl w-10 text-end">{tempD}</p>

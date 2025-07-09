@@ -21,6 +21,8 @@ import MeasurementHistoriesPage from "./pages/MeasurementHistoriesPage.tsx";
 import { ToastProvider } from "./context/ToastContext.tsx";
 import PatientMonitorPage from "./pages/PatientMonitorPage.tsx";
 import DetailPatientPage from "./pages/DetailPatientPage.tsx";
+import { RoomsPage } from "./pages/RoomsPage.tsx";
+import DetailRoomPage from "./pages/DetailRoomPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -44,6 +46,8 @@ createRoot(document.getElementById("root")!).render(
                 path="/detail-patient/:patientId"
                 element={<DetailPatientPage />}
               />
+              <Route path="/rooms" element={<RoomsPage />} />
+              <Route path="/room/:roomId" element={<DetailRoomPage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route
                 path="/measurement-histories"
