@@ -135,6 +135,7 @@ const MeasurementPage = () => {
           openSelectModal={() => setState("select")}
           openCreateModal={() => setState("create")}
           patientSelected={(patient) => setPatient(patient)}
+          stateSidebar="Measurement"
         />
       )}
     </MainLayout>

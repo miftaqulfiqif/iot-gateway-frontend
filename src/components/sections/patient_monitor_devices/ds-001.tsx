@@ -9,6 +9,8 @@ import nibpIcon from "@/assets/icons/nibp.png";
 import spo2Icon from "@/assets/icons/spo2.png";
 import respIcon from "@/assets/icons/resp.png";
 import rrIcon from "@/assets/icons/lungs.png";
+import prIcon from "@/assets/icons/pr-red.png";
+
 import { HeartPulseChart } from "@/components/chart-heart-pusle";
 
 type Props = {
@@ -89,7 +91,7 @@ export const PatientMonitorDS001Section = ({
                 <div className="bg-[#ededf9] text-red-600 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                   <img src={nibpIcon} className="w-5 h-5" />
                 </div>
-                <p>NIBP</p>
+                <p className="text-lg">NIBP</p>
               </div>
               <div className="flex flex-row items-end gap-4 ml-4">
                 <div className="flex flex-row items-center text-4xl gap-2">
@@ -99,38 +101,44 @@ export const PatientMonitorDS001Section = ({
               </div>
               <div className="ml-4 flex flex-row gap-4 mt-2">
                 <div className="flex flex-row w-fit text-white items-center gap-2 bg-red-400 px-3 py-1 rounded-full h-fit">
-                  <Activity className="w-4 h-4" />
-                  <p className="text-xs">{mean} bpm</p>
+                  <Activity className="w-6 h-6" />
+                  <p className="text-sm">{mean} bpm</p>
+                </div>
+                <div className="flex flex-row w-fit text-red-900 items-center gap-2 bg-red-300 px-3 py-1 rounded-full h-fit">
+                  <img src={prIcon} alt="" className="w-6 h-6" />
+                  <p className="text-sm">{pulse_rate ? pulse_rate : "--"}</p>
+                  <p>bpm</p>
                 </div>
               </div>
             </div>
-          </div>
-          {/* PR */}
-          <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-40 justify-between gap-2">
-            <div className="flex flex-row gap-2 w-full justify-center">
-              <div className="flex flex-col gap-2">
-                <p className="font-semibold mx-auto">PR</p>
-                <p className="mx-auto text-4xl flex justify-center items-center h-full ">
-                  {pulse_rate}
-                </p>
+            <div className="w-1/3 h-34 bg-white text-red-700 rounded-2xl shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] p-4">
+              <div className="flex flex-row justify-center gap-4 items-center">
+                <img src={prIcon} alt="" className="w-6 h-6" />
+                <p className=" font-bold text-xl">PR</p>
+              </div>
+              <div className="flex h-2/3 items-end justify-self-center gap-2">
+                <p className="text-5xl">{pulse_rate ? pulse_rate : "--"}</p>
+                <p>bpm</p>
               </div>
             </div>
           </div>
           {/* TEMP */}
-          <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-fit justify-between gap-2">
-            <div className="flex flex-row gap-2">
-              <div className="flex flex-col gap-2">
+          <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/4 justify-between gap-2">
+            <div className="flex flex-row gap-2 w-full">
+              <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-row gap-3 items-center font-semibold">
                   <div className="bg-[#ededf9] text-yellow-500 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                     <Thermometer className="w-5 h-5" />
                   </div>
-                  <p>Temp</p>
+                  <p className="text-lg">Temp</p>
                 </div>
-                <div className="flex flex-row items-end">
-                  <div className="flex flex-row items-center justify-center text-4xl h-full px-4 py-2">
+                <div className="flex flex-row w-full items-center justify-center h-full">
+                  <div className="flex flex-row items-center justify-center text-5xl h-full px-4 py-2">
                     <p>{temp}</p>
                   </div>
-                  <p className="text-lg pb-4">°C</p>
+                  <div className="h-full flex items-end">
+                    <p className="text-lg pb-4">°C</p>
+                  </div>
                 </div>
               </div>
             </div>

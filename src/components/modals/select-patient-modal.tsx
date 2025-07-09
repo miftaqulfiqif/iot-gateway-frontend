@@ -8,7 +8,6 @@ import {
   ScanSearch,
   Wifi,
 } from "lucide-react";
-import { useSocketHandler } from "@/hooks/socket_handler/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
 import Sidebar from "../layouts/sidebar";
 
@@ -25,6 +24,7 @@ type Props = {
   openSelectModal: () => void;
   openCreateModal: () => void;
   patientSelected: (patient: any) => void;
+  stateSidebar: string;
 };
 
 export const SelectPatient = ({
@@ -34,17 +34,18 @@ export const SelectPatient = ({
   openSelectModal,
   openCreateModal,
   patientSelected,
+  stateSidebar,
 }: Props) => {
   return (
     <div
-      className={`fixed right-0 top-0 w-full h-full bg-transparent bg-opacity-50 z-40 transition-opacity duration-300  ${
+      className={`fixed right-0 top-0 w-full h-full bg-transparent bg-opacity-50 z-50 transition-opacity duration-300  ${
         isActive ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
       style={{ backdropFilter: "blur(5px)", background: "rgba(0, 0, 0, 0.2)" }}
     >
       <div className="w-full h-full p-4">
         {/* Component Sidebar */}
-        <Sidebar state="Measurement" />
+        <Sidebar state={stateSidebar} />
       </div>
 
       {/* Show Modal */}

@@ -190,7 +190,7 @@ const DeviceDS001Page = () => {
               </div>
 
               {/* TEMP */}
-              <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-fit justify-between gap-2">
+              <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-1/3 justify-between gap-2">
                 <div className="flex flex-row gap-2">
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-3 items-center font-semibold">

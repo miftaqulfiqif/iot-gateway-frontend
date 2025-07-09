@@ -24,6 +24,7 @@ import nibpIcon from "@/assets/icons/nibp.png";
 
 import { PatientMonitorPM9000Section } from "@/components/sections/patient_monitor_devices/pm-9000";
 import { PatientMonitorDS001Section } from "@/components/sections/patient_monitor_devices/ds-001";
+import { SelectPatient } from "@/components/modals/select-patient-modal";
 
 const pm9000 = [
   {
@@ -133,6 +134,9 @@ const ds001 = [
 const PatientMonitorPage = () => {
   const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
+  const [showAddPatientModal, setShowAddPatientModal] = useState(false);
+  const [patient, setPatient] = useState<any>(null);
+  const [state, setState] = useState("barcode");
   const [limit, setLimit] = useState(10);
 
   const filterRef = useRef<HTMLDivElement>(null);
@@ -217,11 +221,11 @@ const PatientMonitorPage = () => {
                     className="flex bg-[#3885FD] items-center gap-2 px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)] cursor-pointer text-white "
                     onClick={(e) => {
                       e.stopPropagation();
-                      alert("Add Device");
+                      setShowAddPatientModal(true);
                     }}
                   >
                     <Plus className="w-5 h-5" />
-                    <p className="text-white">Add Device</p>
+                    <p className="text-white">Add Patient</p>
                   </div>
                 </div>
 
@@ -310,6 +314,15 @@ const PatientMonitorPage = () => {
           </div>
         </div>
       </div>
+      <SelectPatient
+        isActive={showAddPatientModal}
+        state={state}
+        openBarcodeModal={() => setState("barcode")}
+        openSelectModal={() => setState("select")}
+        openCreateModal={() => setState("create")}
+        patientSelected={(patient) => setPatient(patient)}
+        stateSidebar={"Patient Monitor"}
+      />
     </MainLayout>
   );
 };

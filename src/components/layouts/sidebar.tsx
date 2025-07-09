@@ -1,4 +1,5 @@
 import {
+  BedSingle,
   HomeIcon,
   Lamp,
   LogOut,
@@ -66,6 +67,12 @@ const Sidebar = ({ state }: SidebarProps) => {
               title="Patients"
               isActive={state === "Patients"}
               url="/patients"
+            />
+            <AppSidebar
+              icon={<BedSingle />}
+              title="Rooms"
+              isActive={state === "Rooms"}
+              url="/rooms"
             />
             <AppSidebar
               icon={<ScrollText />}
