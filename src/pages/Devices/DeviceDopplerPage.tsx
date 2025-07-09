@@ -31,6 +31,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ChartDopplerRealtime from "@/components/charts/chart-doppler-realtime";
 import HistoriesDoppler from "@/components/charts/chart-histories-doppler";
+import { SaveMeasurementDoppler } from "@/components/modals/save_measurement/save-measurement-doppler";
 
 const historiesData = [
   { heart_rate: 3.2, timestamp: "2025-06-05 01:46:33.803" },
@@ -53,6 +54,17 @@ const DeviceDopplerPage = () => {
 
   const [patient, setPatient] = useState<Patients>();
   const [showHistories, setShowHistories] = useState(false);
+  const [saveModal, setSaveModal] = useState(false);
+  const [result, setResult] = useState<number>(0);
+
+  useEffect(() => {
+    if (dataDopplerChartData.length > 0) {
+      const last = dataDopplerChartData[dataDopplerChartData.length - 1];
+      setResult(last.heart_rate_avg);
+    } else {
+      setResult(0);
+    }
+  }, [dataDopplerChartData]);
 
   // Get patient from local storage
   useEffect(() => {
@@ -94,12 +106,12 @@ const DeviceDopplerPage = () => {
                     <span className="text-sm">bpm</span>
                   </div>
                 </div>
-                {/* <div className="flex flex-col justify-end">
-                <div className="flex flex-row items-center gap-2 bg-blue-400 px-3 py-1 rounded-full h-fit">
-                  <Activity className="w-6 h-6" />
-                  <p className="text-sm">310 bpm</p>
+                <div className="flex flex-col justify-end">
+                  <div className="flex flex-row items-center gap-2 bg-blue-400 px-3 py-1 rounded-full h-fit">
+                    <Activity className="w-6 h-6" />
+                    <p className="text-sm">{`${result} bpm`}</p>
+                  </div>
                 </div>
-              </div> */}
 
                 <div className="flex flex-gap gap-8">
                   <AudioLines
@@ -144,7 +156,7 @@ const DeviceDopplerPage = () => {
                 </div>
                 <div
                   className="flex flex-row border-2 bg-white border-[#09d03e] text-[#09d03e] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={() => alert("save")}
+                  onClick={() => setSaveModal(true)}
                 >
                   <div className="flex flex-row gap-3 mx-auto items-center">
                     <ArrowDownToLine />
@@ -156,6 +168,12 @@ const DeviceDopplerPage = () => {
           </div>
         </div>
       </div>
+      <SaveMeasurementDoppler
+        isActive={saveModal}
+        setInactive={() => setSaveModal(false)}
+        patient={patient}
+        result={result}
+      />
     </MainLayout>
   );
 };

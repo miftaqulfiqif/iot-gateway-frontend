@@ -73,7 +73,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
     battery_level: 0,
   });
   const [dataDopplerChartData, setDataDopplerChartData] = useState<
-    { index: number; heart_rate: number }[]
+    { index: number; heart_rate: number; heart_rate_avg: number }[]
   >([]);
 
   //PM9000
@@ -298,11 +298,26 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
                 battery_level: payload.data_doppler[0].battery_level,
               });
               setDataDopplerChartData((prev) => {
+                //Calucate heart rate average
+                let heartRateSum = 0;
+                let heartRateCount = 0;
+                prev.forEach((entry) => {
+                  heartRateSum += entry.heart_rate;
+                  heartRateCount += 1;
+                });
+                const heartRateAvg =
+                  heartRateCount > 0 ? heartRateSum / heartRateCount : 0;
+
                 const next = [
                   ...prev,
-                  { index: prev.length, heart_rate: latest.heart_rate },
+                  {
+                    index: prev.length,
+                    heart_rate: latest.heart_rate,
+                    heart_rate_avg: parseFloat(heartRateAvg.toFixed(1)),
+                  },
                 ];
-                return next.slice(-100); // Keep the last 100 entries
+                // return next.slice(-100); // Keep the last 100 entries
+                return next; // Keep the last 100 entries
               });
             }
           }
@@ -542,6 +557,10 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
     dataDS001,
   };
 };
+
+function calculateAvgHeartRateDoppler(heart_rate: number[]) {
+  return heart_rate.reduce((a, b) => a + b, 0) / heart_rate.length;
+}
 
 export function calculateHealthMetrics(data: any) {
   const { height, age, gender, bmiWeight, impedence } = data;

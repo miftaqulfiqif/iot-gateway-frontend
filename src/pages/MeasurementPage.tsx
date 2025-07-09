@@ -107,18 +107,21 @@ const MeasurementPage = () => {
             <p className="font-bold text-2xl">Devices already to use</p>
             <div className="flex flex-col gap-4 mt-3">
               {devices.length > 0 ? (
-                devices.map((devices) => (
-                  <DeviceConnected
-                    key={devices.id}
-                    deviceIcon={devices.icon}
-                    deviceName={devices.name ? devices.name : devices.device}
-                    deviceMac={devices.id}
-                    deviceConnection={devices.connection}
-                    url={`/device/${devices.device_function}/${devices.id}`}
-                  />
-                ))
+                devices.map(
+                  (device) =>
+                    device.connection === "bluetooth" && (
+                      <DeviceConnected
+                        key={device.id}
+                        deviceIcon={device.icon}
+                        deviceName={device.name ? device.name : device.device}
+                        deviceMac={device.id}
+                        deviceConnection={device.connection}
+                        url={`/device/${device.device_function}/${device.id}`}
+                      />
+                    )
+                )
               ) : (
-                <p className="text-gray-500">Nothing device connected</p>
+                <p className="text-gray-500">No devices connected</p>
               )}
             </div>
           </div>

@@ -18,7 +18,8 @@ import { HeartPulseChart } from "@/components/chart-heart-pusle";
 
 import nibpIcon from "@/assets/icons/nibp.png";
 import spo2Icon from "@/assets/icons/spo2.png";
-import respIcon from "@/assets/icons/resp.png";
+import prSpo2Icon from "@/assets/icons/resp.png";
+import prIcon from "@/assets/icons/pr-red.png";
 import rrIcon from "@/assets/icons/lungs.png";
 
 // import { HeartRateDoppler } from "@/components/ui/chart-doppler-realtime";
@@ -165,20 +166,29 @@ const DeviceDS001Page = () => {
                         {dataDS001?.mean ? dataDS001.mean : "--"} bpm
                       </p>
                     </div>
+                    <div className="flex flex-row w-fit text-red-900 items-center gap-2 bg-red-300 px-3 py-1 rounded-full h-fit">
+                      <img src={prIcon} alt="" className="w-6 h-6" />
+                      <p className="text-sm">
+                        {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "-- "}
+                        bpm
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* PR */}
-              <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-40 justify-between gap-2">
-                <div className="flex flex-row gap-2 w-full justify-center">
-                  <div className="flex flex-col gap-2">
-                    <p className="font-semibold mx-auto">PR</p>
-                    <p className="mx-auto text-5xl flex justify-center items-center h-full">
-                      {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "--"}
+                <div className="w-1/3 h-full  bg-white text-red-700 rounded-2xl shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] p-4">
+                  <div className="flex flex-row justify-center gap-4 items-center">
+                    <img src={prIcon} alt="" className="w-6 h-6" />
+                    <p className=" font-bold text-xl">PR</p>
+                  </div>
+                  <div className="flex h-2/3 items-end justify-self-center">
+                    <p className="text-7xl">
+                      {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "99"}
                     </p>
+                    <p>bpm</p>
                   </div>
                 </div>
               </div>
+
               {/* TEMP */}
               <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-fit justify-between gap-2">
                 <div className="flex flex-row gap-2">
@@ -224,13 +234,13 @@ const DeviceDS001Page = () => {
                   </div>
                 </div>
               </div>
-              {/* RR - Sp02 */}
+              {/* PR - Sp02 */}
               <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-4 w-1/3 h-fit justify-between gap-2">
                 <div className="flex flex-row gap-2">
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-3 items-center font-semibold">
                       <div className="bg-[#ededf9] text-blue-800 rounded-xl p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                        <img src={respIcon} className="w-8 h-8" />
+                        <img src={prSpo2Icon} className="w-8 h-8" />
                       </div>
                       <p>
                         PR - Sp0<sub>2</sub>

@@ -20,6 +20,7 @@ import { PrivateRoute } from "./routes/PrivateRoute.tsx";
 import MeasurementHistoriesPage from "./pages/MeasurementHistoriesPage.tsx";
 import { ToastProvider } from "./context/ToastContext.tsx";
 import PatientMonitorPage from "./pages/PatientMonitorPage.tsx";
+import DetailPatientPage from "./pages/DetailPatientPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -40,8 +41,8 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/devices" element={<Devices />} />
               <Route path="/patients" element={<Patients />} />
               <Route
-                path="/detail-patient/:patient_id"
-                element={<Patients />}
+                path="/detail-patient/:patientId"
+                element={<DetailPatientPage />}
               />
               <Route path="/settings" element={<SettingsPage />} />
               <Route

@@ -22,6 +22,8 @@ import { Patients } from "@/models/PatientModel";
 import { CreateBaby } from "@/components/modals/create-baby-modal";
 import { useToast } from "@/context/ToastContext";
 import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
+import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";
+import { SaveMeasurementDigitProIDA } from "@/components/modals/save_measurement/save-measurement-digit-pro-ida";
 
 const historiesData = [
   {
@@ -63,6 +65,7 @@ const DeviceIDAPage = () => {
   });
   const { showToast } = useToast();
   const { createHistoryDigitProIDA } = useDigitProIDA();
+  const [saveModal, setSaveModal] = useState(false);
 
   const [showHistories, setShowHistories] = useState(false);
 
@@ -205,7 +208,7 @@ const DeviceIDAPage = () => {
                     ? "cursor-not-allowed"
                     : "cursor-pointer"
                 }`}
-                onClick={handleCreateData}
+                onClick={() => setSaveModal(true)}
               >
                 <div className="flex flex-row gap-3 mx-auto">
                   <p>Save</p>
@@ -223,6 +226,13 @@ const DeviceIDAPage = () => {
           patientId={patient.id}
         />
       )}
+      <SaveMeasurementDigitProIDA
+        isActive={saveModal}
+        setInactive={() => setSaveModal(false)}
+        patient={patient}
+        baby={baby}
+        result={weightDigitProIDA}
+      />
     </MainLayout>
   );
 };
