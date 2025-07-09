@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import DigitProBabyRealtimeChart from "@/components/charts/chart-digit-pro-baby-realtime";
 import HistoriesDigitProBaby from "@/components/charts/chart-histories-digitpro-baby";
 import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
+import { SaveMeasurementDigitProBaby } from "@/components/modals/save_measurement/save-measurement-digit-pro-baby";
 
 const historiesData = [
   { weight: 3.2, timestamp: "2025-06-05 01:46:33.803" },
@@ -46,6 +47,7 @@ const DeviceDigitProBabyPage = () => {
   } = useSocketHandler({ macDevice: mac });
 
   const [showHistories, setShowHistories] = useState(false);
+  const [saveModal, setSaveModal] = useState(false);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -166,7 +168,7 @@ const DeviceDigitProBabyPage = () => {
                 </div>
                 <div
                   className="flex flex-row border-2 bg-white border-[#09d03e] text-[#09d03e] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={handleCreateBaby}
+                  onClick={() => setSaveModal(true)}
                 >
                   <div className="flex flex-row gap-3 mx-auto items-center">
                     <ArrowDownToLine />
@@ -186,6 +188,12 @@ const DeviceDigitProBabyPage = () => {
           patientId={patient.id}
         />
       )}
+      <SaveMeasurementDigitProBaby
+        isActive={saveModal}
+        setInactive={() => setSaveModal(false)}
+        baby={baby}
+        result={weightDigitProBaby.weight}
+      />
     </MainLayout>
   );
 };

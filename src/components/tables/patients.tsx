@@ -86,7 +86,7 @@ export const TablePatients = ({
               <TableRow
                 key={item.id}
                 onClick={() => {
-                  setPatientSelected && setPatientSelected(item.id);
+                  window.location.href = `/detail-patient/${item.id}`;
                 }}
                 className={`border-gray-300 transition-all duration-500 ease-in-out cursor-pointer ${
                   animateRows

@@ -59,6 +59,7 @@ type Props = {
   totalPage?: number;
   limit?: number;
   search?: string;
+  isDetailPatient?: boolean;
 };
 
 export const TableHistoryDigitProBaby = ({
@@ -70,6 +71,7 @@ export const TableHistoryDigitProBaby = ({
   totalPage,
   limit,
   search,
+  isDetailPatient,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
 
@@ -86,7 +88,12 @@ export const TableHistoryDigitProBaby = ({
         <TableHeader className="min-w-full">
           <TableRow className="h-14 ">
             <TableHead className="text-center font-bold">NO</TableHead>
-            <TableHead className="text-center font-bold">Mother Name</TableHead>
+            {!isDetailPatient && (
+              <TableHead className="text-center font-bold">
+                Mother Name
+              </TableHead>
+            )}
+
             <TableHead className="text-center font-bold">Baby Name</TableHead>
             <TableHead className="text-center font-bold">Gender</TableHead>
             <TableHead className="text-center font-bold">
@@ -121,7 +128,9 @@ export const TableHistoryDigitProBaby = ({
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
                   <TableCell className="text-center">{index + 1}</TableCell>
-                  <TableCell className="text-left">{patient?.name}</TableCell>
+                  {!isDetailPatient && (
+                    <TableCell className="text-left">{patient?.name}</TableCell>
+                  )}
                   <TableCell className="text-left">{baby?.name}</TableCell>
                   <TableCell className="text-center">{baby?.gender}</TableCell>
                   <TableCell className="text-center">

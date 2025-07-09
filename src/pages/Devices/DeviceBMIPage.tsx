@@ -21,6 +21,7 @@ import { HistoryBMI } from "@/components/tables/history-bmi";
 import { InputSelect } from "@/components/ui/input-select";
 import HistoriesDigitProBMI from "@/components/charts/chart-histories-digitpro-bmi";
 import { InputMultiSelect } from "@/components/ui/input-multi-select";
+import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";
 
 const historiesData = [
   {
@@ -188,6 +189,7 @@ const historiesData = [
 const DeviceBMIPage = () => {
   const { mac } = useParams();
   const { weightBMI, setWeightBMI } = useSocketHandler({ macDevice: mac });
+  const [saveModal, setSaveModal] = useState(false);
 
   const [variabel, setVariabel] = useState<string[]>([]);
   const mainVariables = variabel.filter((v) => v !== "metabolism");
@@ -347,7 +349,7 @@ const DeviceBMIPage = () => {
                 </div>
                 <div
                   className="flex flex-row border-2 bg-white border-[#09d03e] text-[#09d03e] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={() => alert("save")}
+                  onClick={() => setSaveModal(true)}
                 >
                   <div className="flex flex-row gap-3 mx-auto items-center">
                     <ArrowDownToLine />
@@ -366,6 +368,12 @@ const DeviceBMIPage = () => {
           setPatient={setPatient}
         />
       )}
+      <SaveMeasurementBMI
+        isActive={saveModal}
+        setInactive={() => setSaveModal(false)}
+        patient={patient}
+        result={weightBMI}
+      />
     </MainLayout>
   );
 };
