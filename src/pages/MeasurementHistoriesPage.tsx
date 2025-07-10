@@ -62,6 +62,7 @@ import { TableHistoryDoppler } from "@/components/tables/history-doppler";
 import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
+import { useDoppler } from "@/hooks/api/devices/use-doppler";
 
 const state = [
   {
@@ -82,251 +83,14 @@ const state = [
   },
 ];
 
-// Dummy Data
-const dummyProBaby = [
-  {
-    id: "baby-001",
-    name: "Aisyah Putri",
-    gender: "Female",
-    date_of_birth: "2023-11-10",
-    weight: "3.2 kg",
-    timestamp: "2025-06-24 09:15",
-  },
-  {
-    id: "baby-002",
-    name: "Rizki Ramadhan",
-    gender: "Male",
-    date_of_birth: "2024-01-05",
-    weight: "3.6 kg",
-    timestamp: "2025-06-24 09:20",
-  },
-  {
-    id: "baby-003",
-    name: "Nadia Lestari",
-    gender: "Female",
-    date_of_birth: "2024-05-18",
-    weight: "3.0 kg",
-    timestamp: "2025-06-24 09:25",
-  },
-  {
-    id: "baby-004",
-    name: "Ahmad Fadil",
-    gender: "Male",
-    date_of_birth: "2023-12-22",
-    weight: "3.4 kg",
-    timestamp: "2025-06-24 09:30",
-  },
-  {
-    id: "baby-005",
-    name: "Siti Nurjanah",
-    gender: "Female",
-    date_of_birth: "2024-03-30",
-    weight: "2.9 kg",
-    timestamp: "2025-06-24 09:35",
-  },
-];
-const dummyProIDA = [
-  {
-    id: "m-001",
-    mother_name: "Ayu Lestari",
-    baby_name: "Rafi Hidayat",
-    baby_gender: "Male",
-    date_of_birth: "2024-09-15",
-    mother_weight: "58 kg",
-    baby_weight: "3.4 kg",
-    timestamp: "2025-06-24 08:30",
-  },
-  {
-    id: "m-002",
-    mother_name: "Siti Aminah",
-    baby_name: "Putri Anjani",
-    baby_gender: "Female",
-    date_of_birth: "2024-12-01",
-    mother_weight: "60 kg",
-    baby_weight: "3.0 kg",
-    timestamp: "2025-06-24 08:45",
-  },
-  {
-    id: "m-003",
-    mother_name: "Dewi Sartika",
-    baby_name: "Farhan Aditya",
-    baby_gender: "Male",
-    date_of_birth: "2025-01-10",
-    mother_weight: "62 kg",
-    baby_weight: "3.5 kg",
-    timestamp: "2025-06-24 09:00",
-  },
-  {
-    id: "m-004",
-    mother_name: "Nur Aini",
-    baby_name: "Zahra Laila",
-    baby_gender: "Female",
-    date_of_birth: "2025-02-25",
-    mother_weight: "59 kg",
-    baby_weight: "3.2 kg",
-    timestamp: "2025-06-24 09:15",
-  },
-  {
-    id: "m-005",
-    mother_name: "Mega Wulandari",
-    baby_name: "Reyhan Pratama",
-    baby_gender: "Male",
-    date_of_birth: "2024-11-07",
-    mother_weight: "61 kg",
-    baby_weight: "3.3 kg",
-    timestamp: "2025-06-24 09:30",
-  },
-];
-const dummyBMI = [
-  {
-    id: "ida-001",
-    name: "Rizky Maulana",
-    gender: "Male",
-    age: 28,
-    height: "170 cm",
-    weight: "68 kg",
-    bmi: 23.5,
-    fat: "17.2%",
-    muscle: "42.1%",
-    water: "56.8%",
-    visceral_fat: 8,
-    bone_mass: "3.1 kg",
-    metabolism: "1450 kcal",
-    protein: "17.0%",
-    obesity: "0%",
-    body_age: 26,
-    lbm: "56.3 kg",
-    timestamp: "2025-06-24 09:00",
-  },
-  {
-    id: "ida-002",
-    name: "Anisa Putri",
-    gender: "Female",
-    age: 32,
-    height: "160 cm",
-    weight: "54 kg",
-    bmi: 21.1,
-    fat: "25.5%",
-    muscle: "36.5%",
-    water: "50.3%",
-    visceral_fat: 6,
-    bone_mass: "2.7 kg",
-    metabolism: "1350 kcal",
-    protein: "16.5%",
-    obesity: "0%",
-    body_age: 30,
-    lbm: "47.5 kg",
-    timestamp: "2025-06-24 09:05",
-  },
-  {
-    id: "ida-003",
-    name: "Budi Santoso",
-    gender: "Male",
-    age: 40,
-    height: "175 cm",
-    weight: "80 kg",
-    bmi: 26.1,
-    fat: "20.3%",
-    muscle: "38.8%",
-    water: "55.1%",
-    visceral_fat: 10,
-    bone_mass: "3.5 kg",
-    metabolism: "1600 kcal",
-    protein: "17.8%",
-    obesity: "10%",
-    body_age: 43,
-    lbm: "63.7 kg",
-    timestamp: "2025-06-24 09:10",
-  },
-  {
-    id: "ida-004",
-    name: "Citra Lestari",
-    gender: "Female",
-    age: 29,
-    height: "158 cm",
-    weight: "59 kg",
-    bmi: 23.7,
-    fat: "27.0%",
-    muscle: "35.0%",
-    water: "49.5%",
-    visceral_fat: 7,
-    bone_mass: "2.8 kg",
-    metabolism: "1380 kcal",
-    protein: "16.9%",
-    obesity: "5%",
-    body_age: 31,
-    lbm: "50.4 kg",
-    timestamp: "2025-06-24 09:15",
-  },
-  {
-    id: "ida-005",
-    name: "Eko Wijaya",
-    gender: "Male",
-    age: 35,
-    height: "172 cm",
-    weight: "75 kg",
-    bmi: 25.3,
-    fat: "18.9%",
-    muscle: "40.2%",
-    water: "54.0%",
-    visceral_fat: 9,
-    bone_mass: "3.2 kg",
-    metabolism: "1550 kcal",
-    protein: "17.2%",
-    obesity: "8%",
-    body_age: 36,
-    lbm: "61.0 kg",
-    timestamp: "2025-06-24 09:20",
-  },
-];
-const dummyDoppler = [
-  {
-    id: "baby-001",
-    name: "Aisyah Putri",
-    gender: "Female",
-    date_of_birth: "2023-11-10",
-    heart_rate: "132 bpm",
-    timestamp: "2025-06-24 09:15",
-  },
-  {
-    id: "baby-002",
-    name: "Rizki Ramadhan",
-    gender: "Male",
-    date_of_birth: "2024-01-05",
-    heart_rate: "148 bpm",
-    timestamp: "2025-06-24 09:20",
-  },
-  {
-    id: "baby-003",
-    name: "Nadia Lestari",
-    gender: "Female",
-    date_of_birth: "2024-05-18",
-    heart_rate: "125 bpm",
-    timestamp: "2025-06-24 09:25",
-  },
-  {
-    id: "baby-004",
-    name: "Ahmad Fadil",
-    gender: "Male",
-    date_of_birth: "2023-12-22",
-    heart_rate: "138 bpm",
-    timestamp: "2025-06-24 09:30",
-  },
-  {
-    id: "baby-005",
-    name: "Siti Nurjanah",
-    gender: "Female",
-    date_of_birth: "2024-03-30",
-    heart_rate: "142 bpm",
-    timestamp: "2025-06-24 09:35",
-  },
-];
 const MeasurementHistoriesPage = () => {
   const { historiesDigitProIDA, fetchDataIDA, currentPageIDA } =
     useDigitProIDA();
   const { dataDigitProBaby, fetchDataDigitProBaby, currentPageDigitProBaby } =
     useDigitProBaby();
   const { dataDigitProBMI, fetchDataBMI, currentPageBMI } = useDigitProBMI();
+  const { historiesDoppler, fetchDataDoppler, currentPageDoppler } =
+    useDoppler();
 
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(10);
@@ -399,6 +163,13 @@ const MeasurementHistoriesPage = () => {
         search,
       });
     }
+    if (selectedDevice === "doppler") {
+      fetchDataDoppler({
+        page: 1,
+        limit,
+        search,
+      });
+    }
   }, [limit, search, selectedDevice]);
 
   useEffect(() => {
@@ -426,6 +197,14 @@ const MeasurementHistoriesPage = () => {
         setTotalPageState((prev) => ({
           ...prev,
           bmi: res?.total_pages ?? 0,
+        }));
+      });
+    }
+    if (selectedDevice === "doppler") {
+      fetchDataDoppler({ page, limit, search }).then((res) => {
+        setTotalPageState((prev) => ({
+          ...prev,
+          doppler: res?.total_pages ?? 0,
         }));
       });
     }
@@ -610,19 +389,16 @@ const MeasurementHistoriesPage = () => {
                   totalPage={totalPage}
                 />
               )}
-              {/* {selectedDevice === "doppler" && (
+              {selectedDevice === "doppler" && (
                 <TableHistoryDoppler
-                  patients={dummyDoppler}
-                  animateRows={animateRows}
-                  buttonAction={buttonAction}
-                  openDetail={openDetail}
+                  data={historiesDoppler}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
-                  currentPage={currentPage}
+                  currentPage={currentPageDoppler}
                   totalPage={totalPage}
                 />
-              )} */}
+              )}
             </div>
           </div>
         </div>

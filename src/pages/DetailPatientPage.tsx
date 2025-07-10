@@ -8,6 +8,8 @@ import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/main-layout";
+import { TableHistoryDoppler } from "@/components/tables/history-doppler";
+import { useDoppler } from "@/hooks/api/devices/use-doppler";
 
 const state = [
   {
@@ -38,6 +40,8 @@ const DetailPatientPage = () => {
   const { dataDigitProBaby, fetchDataDigitProBaby, currentPageDigitProBaby } =
     useDigitProBaby();
   const { dataDigitProBMI, fetchDataBMI, currentPageBMI } = useDigitProBMI();
+  const { historiesDoppler, fetchDataDoppler, currentPageDoppler } =
+    useDoppler();
 
   const [show, setShow] = useState(false);
   const stateRef = useRef(state);
@@ -220,6 +224,10 @@ const DetailPatientPage = () => {
             <p className="text-lg font-bold">Detail info patient</p>
             <div className="mt-4">
               <div className="flex flex-col gap-2">
+                <div className="flex justify-between">
+                  <p className="font-semibold">NIK :</p>
+                  <p>3517172109010001</p>
+                </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Name :</p>
                   <p>Patient Name</p>
@@ -415,6 +423,17 @@ const DetailPatientPage = () => {
             goToNextPage={goToNextPage}
             goToPage={goToPage}
             currentPage={currentPageBMI}
+            totalPage={totalPage}
+            isDetailPatient
+          />
+        )}
+        {selectedDevice === "doppler" && (
+          <TableHistoryDoppler
+            data={historiesDoppler}
+            goToPreviousPage={goToPreviousPage}
+            goToNextPage={goToNextPage}
+            goToPage={goToPage}
+            currentPage={currentPageDoppler}
             totalPage={totalPage}
             isDetailPatient
           />

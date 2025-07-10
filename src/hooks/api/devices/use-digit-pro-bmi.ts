@@ -3,6 +3,8 @@ import { DigitProBMIMeasurementHistory } from "@/models/Devices/BMIModel";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useDigitProBMI = () => {
   const { showToast } = useToast();
   const [dataDigitProBMI, setDataDigitProBMI] = useState<
@@ -37,7 +39,7 @@ export const useDigitProBMI = () => {
         }
 
         const response = await axios.get(
-          "http://localhost:3000/api/measurement-histories-digit-pro-baby",
+          `${apiUrl}/api/measurement-histories-digit-pro-baby`,
           {
             params,
             withCredentials: true,
@@ -101,7 +103,7 @@ export const useDigitProBMI = () => {
   }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/measurement-histories-digit-pro-bmi",
+        `${apiUrl}/api/measurement-histories-digit-pro-bmi`,
         {
           patient_id,
           device_id,

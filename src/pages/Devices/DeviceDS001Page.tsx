@@ -166,13 +166,13 @@ const DeviceDS001Page = () => {
                         {dataDS001?.mean ? dataDS001.mean : "--"} bpm
                       </p>
                     </div>
-                    <div className="flex flex-row w-fit text-red-900 items-center gap-2 bg-red-300 px-3 py-1 rounded-full h-fit">
+                    {/* <div className="flex flex-row w-fit text-red-900 items-center gap-2 bg-red-300 px-3 py-1 rounded-full h-fit">
                       <img src={prIcon} alt="" className="w-6 h-6" />
                       <p className="text-sm">
                         {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "-- "}
                         bpm
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="w-1/3 h-full  bg-white text-red-700 rounded-2xl shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] p-4">

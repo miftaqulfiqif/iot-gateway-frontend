@@ -3,18 +3,17 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import * as yup from "yup";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useBabies = (patientId: string) => {
   const [babies, setBabies] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const getBabiesByPatientId = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/baby/${patientId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`${apiUrl}/api/baby/${patientId}`, {
+        withCredentials: true,
+      });
       setBabies(response.data.data);
     } catch (error) {
       console.error("Error fetching babies:", error);
@@ -37,7 +36,7 @@ export const useBabies = (patientId: string) => {
     }),
     onSubmit: async (values) => {
       try {
-        await axios.post("http://localhost:3000/api/babies", values, {
+        await axios.post(`${apiUrl}/api/babies`, values, {
           withCredentials: true,
         });
         getBabiesByPatientId();

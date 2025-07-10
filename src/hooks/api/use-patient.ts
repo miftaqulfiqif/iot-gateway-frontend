@@ -1,29 +1,30 @@
 import { Patients } from "@/models/PatientModel";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 type CreateNewPatientProps = {
   fetchPatients?: () => void;
   closeModal?: () => void;
+  showToast?: any;
 };
 
 export const UsePatient = ({
   fetchPatients,
   closeModal,
+  showToast,
 }: CreateNewPatientProps) => {
   // Update patient
   const updatePatient = async (patient: Patients) => {
     try {
       await axios
-        .patch(
-          `http://localhost:3000/api/patient-update/${patient.id}`,
-          patient,
-          {
-            withCredentials: true,
-          }
-        )
+        .patch(`${apiUrl}/api/patient-update/${patient.id}`, patient, {
+          withCredentials: true,
+        })
         .then((response) => {
           if (response.status === 200) {
             console.log("Patient updated successfully : ", response.data);
+            showToast(null, "Patient updated successfully", "success");
           }
         })
         .catch((error) => {
@@ -38,17 +39,14 @@ export const UsePatient = ({
   // Save Patient
   const savePatient = async (values: any) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/patients",
-        values,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${apiUrl}/api/patients`, values, {
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
         closeModal?.();
         fetchPatients?.();
+        showToast(null, "Patient saved successfully", "success");
       } else {
       }
     } catch (error) {
@@ -60,7 +58,7 @@ export const UsePatient = ({
   const updatePatientHeight = async (patientId: string, newHeight: number) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/patient-update/${patientId}`,
+        `${apiUrl}/api/patient-update/${patientId}`,
         {
           height: newHeight,
         },

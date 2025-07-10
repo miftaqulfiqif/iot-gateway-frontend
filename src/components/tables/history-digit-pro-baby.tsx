@@ -142,7 +142,6 @@ export const TableHistoryDigitProBaby = ({
                   <TableCell className="text-center">
                     {formatDate(item.timestamp)}
                   </TableCell>
-
                   {/* <TableCell className="text-center text-xl">
                     <div className="flex flex-row justify-center gap-5 text-base text-white items-center">
                       <AlertDialog>

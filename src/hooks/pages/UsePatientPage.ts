@@ -4,6 +4,8 @@ import { useHistoryMeasurement } from "../UseHistoryMeasurement";
 import { Patients } from "@/models/PatientModel";
 import { debounce } from "lodash";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const UsePatientPage = () => {
   const { fetchAndFormatData, chartData } = useHistoryMeasurement();
 
@@ -40,7 +42,7 @@ export const UsePatientPage = () => {
   const deletePatient = async (id: string) => {
     try {
       await axios
-        .delete(`http://localhost:3000/api/patient/${id}`, {
+        .delete(`${apiUrl}/api/patient/${id}`, {
           withCredentials: true,
         })
         .then((response) => {
@@ -61,16 +63,13 @@ export const UsePatientPage = () => {
   // Get Patient / Fetch Patient
   const fetchPatients = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/patients-by-hospital",
-        {
-          withCredentials: true,
-          params: {
-            page: currentPage,
-            limit: limit,
-          },
-        }
-      );
+      const response = await axios.get(`${apiUrl}/api/patients-by-hospital`, {
+        withCredentials: true,
+        params: {
+          page: currentPage,
+          limit: limit,
+        },
+      });
 
       setPatients(response.data.data);
       setCurrentPage(response.data.current_page);
@@ -84,17 +83,14 @@ export const UsePatientPage = () => {
   // Search Patients
   const searchPatients = debounce(async (searchQuery: string) => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/patients-by-hospital",
-        {
-          withCredentials: true,
-          params: {
-            page: currentPage,
-            limit: limit,
-            query: searchQuery,
-          },
-        }
-      );
+      const response = await axios.get(`${apiUrl}/api/patients-by-hospital`, {
+        withCredentials: true,
+        params: {
+          page: currentPage,
+          limit: limit,
+          query: searchQuery,
+        },
+      });
 
       console.log(response.data.total_pages);
 

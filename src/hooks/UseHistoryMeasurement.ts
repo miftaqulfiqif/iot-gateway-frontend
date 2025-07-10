@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 // Tipe untuk data measurement (dari API)
 interface Measurement {
   id: number;
@@ -23,7 +25,7 @@ export const useHistoryMeasurement = () => {
   const fetchAndFormatData = async (idPatient: string): Promise<void> => {
     try {
       const response = await axios.get<{ data: Measurement[] }>(
-        `http://localhost:3000/api/history-measurement/${idPatient}`,
+        `${apiUrl}/api/history-measurement/${idPatient}`,
         {
           withCredentials: true,
         }

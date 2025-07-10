@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 type BMIRangeBarProps = {
   value: number;
@@ -6,6 +6,7 @@ type BMIRangeBarProps = {
 };
 
 const BMIRangeBar: React.FC<BMIRangeBarProps> = ({ value, onChangeValue }) => {
+  useEffect(() => {}, []);
   const min = 15;
   const max = 35;
 
@@ -42,11 +43,11 @@ const BMIRangeBar: React.FC<BMIRangeBarProps> = ({ value, onChangeValue }) => {
     return bmiRanges[bmiRanges.length - 1];
   };
 
-  const category = getBMICategory(clampedValue);
+  const category = useMemo(() => getBMICategory(clampedValue), [clampedValue]);
 
   useEffect(() => {
-    onChangeValue({ label: category.label, color: category.color });
-  }, [category.label, category.color, onChangeValue]);
+    onChangeValue(category);
+  }, [category, onChangeValue]);
 
   return (
     <div className="relative w-full px-4 mt-4">

@@ -7,6 +7,7 @@ import {
   LandPlot,
   ScanSearch,
   Wifi,
+  X,
 } from "lucide-react";
 import { Devices } from "@/models/DeviceModel";
 import Sidebar from "../layouts/sidebar";
@@ -19,6 +20,7 @@ import { CreatePatientContent } from "./contents/create-patient-content";
 
 type Props = {
   isActive: boolean;
+  setNonactive: () => void;
   state: string;
   openBarcodeModal: () => void;
   openSelectModal: () => void;
@@ -29,6 +31,7 @@ type Props = {
 
 export const SelectPatient = ({
   isActive,
+  setNonactive,
   state,
   openBarcodeModal,
   openSelectModal,
@@ -63,42 +66,47 @@ export const SelectPatient = ({
           {/* Option Select Patient */}
           <div className="flex flex-row items-center justify-between">
             <p className="font-bold text-xl">Select patient</p>
-            <div className="flex flex-row gap-4 bg-[#f0f0f0] px-4 py-2 rounded-xl text-sm">
-              {/* Scan Barcode */}
-              <div
-                className={
-                  state === "barcode"
-                    ? `bg-white items-center px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
-                    : ` items-center px-4 py-2 rounded-xl cursor-pointer`
-                }
-                onClick={openBarcodeModal}
-              >
-                <p className="text-blue-700 font-semibold">Scan Barcode</p>
-              </div>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-row gap-4 bg-[#f0f0f0] px-4 py-2 rounded-xl text-sm">
+                {/* Scan Barcode */}
+                <div
+                  className={
+                    state === "barcode"
+                      ? `bg-white items-center px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
+                      : ` items-center px-4 py-2 rounded-xl cursor-pointer`
+                  }
+                  onClick={openBarcodeModal}
+                >
+                  <p className="text-blue-700 font-semibold">Scan Barcode</p>
+                </div>
 
-              {/* Select Patient by Name */}
-              <div
-                className={
-                  state === "select"
-                    ? `bg-white items-center px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
-                    : ` items-center px-4 py-2 rounded-xl cursor-pointer`
-                }
-                onClick={openSelectModal}
-              >
-                <p className="text-blue-700 font-semibold">Select Patient</p>
-              </div>
+                {/* Select Patient by Name */}
+                <div
+                  className={
+                    state === "select"
+                      ? `bg-white items-center px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
+                      : ` items-center px-4 py-2 rounded-xl cursor-pointer`
+                  }
+                  onClick={openSelectModal}
+                >
+                  <p className="text-blue-700 font-semibold">Select Patient</p>
+                </div>
 
-              {/* Create Patient */}
-              <div
-                className={
-                  state === "create"
-                    ? `bg-white items-center px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
-                    : ` items-center px-4 py-2 rounded-xl cursor-pointer `
-                }
-                onClick={openCreateModal}
-              >
-                <p className="text-blue-700 font-semibold">Create Patient</p>
+                {/* Create Patient */}
+                <div
+                  className={
+                    state === "create"
+                      ? `bg-white items-center px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
+                      : ` items-center px-4 py-2 rounded-xl cursor-pointer `
+                  }
+                  onClick={openCreateModal}
+                >
+                  <p className="text-blue-700 font-semibold">Create Patient</p>
+                </div>
               </div>
+              {stateSidebar !== "Measurement" && (
+                <X className="cursor-pointer w-8 h-8" onClick={setNonactive} />
+              )}
             </div>
           </div>
 

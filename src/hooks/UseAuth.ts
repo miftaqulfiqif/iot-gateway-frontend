@@ -3,13 +3,15 @@ import * as yup from "yup";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useAuthHook = () => {
   const { login } = useAuth();
 
   const loginUser = async () => {
     try {
       await axios
-        .post("http://localhost:3000/api/users-login", formik.values, {
+        .post(`${apiUrl}/api/users-login`, formik.values, {
           withCredentials: true,
         })
         .then((response) => {

@@ -140,6 +140,8 @@ const PatientMonitorPage = () => {
   const [limit, setLimit] = useState(10);
 
   const filterRef = useRef<HTMLDivElement>(null);
+
+  console.log(patient);
   return (
     <MainLayout title="Patient Monitor" state="Patient Monitor">
       <div className="flex flex-col gap-4 pb-20">
@@ -316,6 +318,7 @@ const PatientMonitorPage = () => {
       </div>
       <SelectPatient
         isActive={showAddPatientModal}
+        setNonactive={() => setShowAddPatientModal(false)}
         state={state}
         openBarcodeModal={() => setState("barcode")}
         openSelectModal={() => setState("select")}

@@ -1,22 +1,22 @@
 import { useToast } from "@/context/ToastContext";
-import { DigitProIDAMeasurementHistory } from "@/models/Devices/DigitProIDAModel";
+import { DopplerMeasurementHistory } from "@/models/Devices/DopplerModel";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export const useDigitProIDA = () => {
+export const useDoppler = () => {
   const { showToast } = useToast();
-  const [historiesDigitProIDA, setHistoriesDigitProIDA] = useState<
-    DigitProIDAMeasurementHistory[]
+  const [historiesDoppler, setHistoriesDoppler] = useState<
+    DopplerMeasurementHistory[]
   >([]);
-  const [currentPageIDA, setCurrentPageIDA] = useState(1);
-  const [totalItemsIDA, setTotalItemsIDA] = useState(0);
-  const [totalPageIDA, setTotalPageIDA] = useState(0);
-  const [limitIDA, setLimitIDA] = useState(10);
-  const [searchIDA, setSearchIDA] = useState("");
+  const [currentPageDoppler, setCurrentPageDoppler] = useState(1);
+  const [totalItemsDoppler, setTotalItemsDoppler] = useState(0);
+  const [totalPageDoppler, setTotalPageDoppler] = useState(0);
+  const [limitDoppler, setLimitDoppler] = useState(10);
+  const [searchDoppler, setSearchDoppler] = useState("");
 
-  const fetchDataIDA = useCallback(
+  const fetchDataDoppler = useCallback(
     async ({
       page = 1,
       limit = 10,
@@ -39,7 +39,7 @@ export const useDigitProIDA = () => {
         }
 
         const response = await axios.get(
-          `${apiUrl}/api/measurement-histories-digit-pro-ida`,
+          `${apiUrl}/api/measurement-histories-doppler`,
           {
             params,
             withCredentials: true,
@@ -47,12 +47,12 @@ export const useDigitProIDA = () => {
         );
 
         if (response.status === 200) {
-          setCurrentPageIDA(response.data.current_page);
-          setTotalItemsIDA(response.data.total_items);
-          setTotalPageIDA(response.data.total_pages);
-          setHistoriesDigitProIDA(response.data.data);
-          setLimitIDA(limit);
-          setSearchIDA(search);
+          setCurrentPageDoppler(response.data.current_page);
+          setTotalItemsDoppler(response.data.total_items);
+          setTotalPageDoppler(response.data.total_pages);
+          setHistoriesDoppler(response.data.data);
+          setLimitDoppler(limit);
+          setSearchDoppler(search);
 
           return {
             total_pages: response.data.total_pages,
@@ -69,7 +69,7 @@ export const useDigitProIDA = () => {
     []
   );
 
-  const createHistoryDigitProIDA = async ({
+  const createHistoryDoppler = async ({
     patient_id,
     baby_id,
     device_id,
@@ -107,13 +107,13 @@ export const useDigitProIDA = () => {
   };
 
   return {
-    historiesDigitProIDA,
-    fetchDataIDA,
-    limitIDA,
-    searchIDA,
-    currentPageIDA,
-    totalItemsIDA,
-    totalPageIDA,
-    createHistoryDigitProIDA,
+    historiesDoppler,
+    fetchDataDoppler,
+    limitDoppler,
+    searchDoppler,
+    currentPageDoppler,
+    totalItemsDoppler,
+    totalPageDoppler,
+    createHistoryDoppler,
   };
 };

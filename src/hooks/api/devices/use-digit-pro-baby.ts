@@ -3,6 +3,8 @@ import { DigitProBabyMeasurementHistory } from "@/models/Devices/DigitProBabyMod
 import axios from "axios";
 import { useCallback, useState } from "react";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useDigitProBaby = () => {
   const { showToast } = useToast();
   const [dataDigitProBaby, setDataDigitProBaby] = useState<
@@ -72,7 +74,7 @@ export const useDigitProBaby = () => {
         console.log(params.patient_id);
 
         const response = await axios.get(
-          "http://localhost:3000/api/measurement-histories-digit-pro-baby",
+          `${apiUrl}/api/measurement-histories-digit-pro-baby`,
           {
             params,
             withCredentials: true,
@@ -107,7 +109,7 @@ export const useDigitProBaby = () => {
     async (patientId: string) => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/measurement-histories-digit-pro-baby/patient/${patientId}`,
+          `${apiUrl}/api/measurement-histories-digit-pro-baby/patient/${patientId}`,
           {
             withCredentials: true,
           }

@@ -56,6 +56,7 @@ import { CreateNewPatient } from "@/components/modals/create-new-patient";
 import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
 import { TablePatients } from "@/components/tables/patients";
 import DetailPatient from "@/components/sections/patients-page/detail-patient";
+import { useToast } from "@/context/ToastContext";
 
 const Patients = () => {
   const {
@@ -92,6 +93,7 @@ const Patients = () => {
     buttonAction,
   } = UsePatientPage();
   const [patientSelected, setPatientSelected] = useState("");
+  const { showToast } = useToast();
 
   return (
     <MainLayout title="Patients" state="Patients">
@@ -248,6 +250,7 @@ const Patients = () => {
         setPatient={setPatients}
         fetchPatients={fetchPatients}
         patient={patientEdit}
+        showToast={showToast}
       />
     </MainLayout>
   );

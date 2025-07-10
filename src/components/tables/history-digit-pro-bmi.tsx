@@ -59,6 +59,7 @@ type Props = {
   totalPage?: number;
   limit?: number;
   search?: string;
+  isDetailPatient?: boolean;
 };
 
 export const TableHistoryBMI = ({
@@ -68,6 +69,7 @@ export const TableHistoryBMI = ({
   goToPage,
   currentPage,
   totalPage,
+  isDetailPatient,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
 
@@ -86,9 +88,13 @@ export const TableHistoryBMI = ({
         <TableHeader className="min-w-full">
           <TableRow className="h-14 text-xs ">
             <TableHead className="text-center font-bold">NO</TableHead>
-            <TableHead className="text-center font-bold">Name</TableHead>
-            <TableHead className="text-center font-bold">Gender</TableHead>
-            <TableHead className="text-center font-bold">Age</TableHead>
+            {!isDetailPatient && (
+              <>
+                <TableHead className="text-center font-bold">Name</TableHead>
+                <TableHead className="text-center font-bold">Gender</TableHead>
+                <TableHead className="text-center font-bold">Age</TableHead>
+              </>
+            )}
             <TableHead className="text-center font-bold">Weight</TableHead>
             <TableHead className="text-center font-bold">BMI</TableHead>
             <TableHead className="text-center font-bold">FAT</TableHead>
@@ -128,15 +134,20 @@ export const TableHistoryBMI = ({
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
                   <TableCell className="text-center">{index + 1}</TableCell>
-                  <TableCell className="text-left">
-                    {patient?.name || "-"}
-                  </TableCell>
-                  <TableCell className="text-left">
-                    {patient?.gender || "-"}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {patient?.age || "-"}
-                  </TableCell>
+                  {!isDetailPatient && (
+                    <>
+                      <TableCell className="text-left">
+                        {patient?.name || "-"}
+                      </TableCell>
+                      <TableCell className="text-left">
+                        {patient?.gender || "-"}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {patient?.age || "-"}
+                      </TableCell>
+                    </>
+                  )}
+
                   <TableCell className="text-center">
                     {item.weight || "-"}
                   </TableCell>

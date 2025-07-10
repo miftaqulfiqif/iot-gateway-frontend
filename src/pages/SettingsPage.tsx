@@ -1,50 +1,95 @@
 import { InputSelect } from "@/components/ui/input-select";
 import MainLayout from "../components/layouts/main-layout";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { MenuSettings } from "@/components/ui/settings-page/menu-setting";
 
-const data = [
-  {
-    label: "Gateway 1",
-    value: "SN1234567890",
-  },
-  {
-    label: "Gateway 2",
-    value: "SN1234567891",
-  },
-];
+import profileIcon from "@/assets/icons/profile-icon.png";
+import hospitalIcon from "@/assets/icons/hospital-icon.png";
+import passwordIcon from "@/assets/icons/password-icon.png";
+import gatewayIcon from "@/assets/icons/gateway-icon.png";
+import { MenuItems } from "@/components/sections/settings-page/menu-items";
+import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-settings";
+import { AddGatewayModal } from "@/components/modals/add-gateway-modal";
 
 const SettingsPage = () => {
-  const [gatewayDevices, setGatewayDevices] = useState(data);
-  const [gatewaySelected, setGatewaySelected] = useState<string>("");
+  const { user } = useAuth();
+
+  const [state, setState] = useState(
+    user?.role === "admin" ? "Edit Hospital Profile" : "Edit Profile"
+  );
+
+  const [addGatewayModal, setAddGatewayModal] = useState(false);
+  const [confifmModal, setConfirmModal] = useState(false);
+
+  const [animationKey, setAnimationKey] = useState(0);
+
+  const handleMenuChange = (menu: string, callback?: () => void) => {
+    setAnimationKey((prev) => prev + 1);
+    setState(menu);
+    if (callback) callback();
+  };
 
   return (
     <MainLayout title="Settings" state="Settings">
       <div className="h-full mb-5">
-        <p className="text-2xl">Gateway Devices</p>
-        <div className="flex flex-col gap-5 p-4 bg-white w-[600px] rounded-2xl shadow-[4px_4px_4px_rgba(0,0,0,0.16)] mt-4 ">
-          {/* Header */}
-          <div className="flex justify-between items-center">
-            <p>List Gateway</p>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded-lg">
-              Add Device
-            </button>
+        <div className="flex flex-col gap-8">
+          <div className="flex justify-between mx-8">
+            <div className="">
+              <p className="text-3xl font-bold">Settings</p>
+            </div>
           </div>
-          {/* List */}
-          <div className="flex flex-col gap-4">
-            {gatewayDevices.map((device) => (
-              <div className="flex gap-4 items-center">
-                <div className="w-20 h-20 bg-gray-500 rounded-2xl"></div>
-                <div className="flex flex-col gap-2">
-                  <p className="font-bold">{device.label}</p>
-                  <p>Serial number : {device.value}</p>
-                </div>
-              </div>
-            ))}
+          <div className="flex flex-row gap-10 bg-white rounded-xl w-full h-full shadow-[0px_4px_4px_rgba(0,0,0,0.3)] p-8">
+            <div className="flex flex-col w-3xs gap-4">
+              {user?.role === "admin" && (
+                <MenuSettings
+                  title="Hospital Profile"
+                  icon={hospitalIcon}
+                  isActive={state === "Edit Hospital Profile"}
+                  onClick={() => handleMenuChange("Edit Hospital Profile")}
+                />
+              )}
+              <MenuSettings
+                title="Profile"
+                icon={profileIcon}
+                isActive={state === "Edit Profile"}
+                onClick={() => handleMenuChange("Edit Profile")}
+              />
+              <MenuSettings
+                title="Password"
+                icon={passwordIcon}
+                isActive={state === "Password"}
+                onClick={() => handleMenuChange("Password")}
+              />
+              <MenuSettings
+                title="Gateways"
+                icon={gatewayIcon}
+                isActive={state === "Gateways"}
+                onClick={() => handleMenuChange("Gateways")}
+              />
+            </div>
+            <div className="w-full p-2">
+              <MenuItems
+                state={state}
+                animationKey={animationKey}
+                setAddGatewayModal={setAddGatewayModal}
+                setConfirmModal={setConfirmModal}
+              />
+            </div>
           </div>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-lg cursor-pointer">
-            Save
-          </button>
         </div>
+        <AddGatewayModal
+          isActive={addGatewayModal}
+          setInactive={() => setAddGatewayModal(false)}
+        />
+        {/* <ConfirmChangeSettingModal
+          closeModal={() => setFormDelete(false)}
+          form={formDelete}
+          state={state}
+          name={name}
+          changeProfil={changeProfil}
+          changeHospitalProfil={changeHospitalProfil}
+        /> */}
       </div>
     </MainLayout>
   );
