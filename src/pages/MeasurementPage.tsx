@@ -130,6 +130,7 @@ const MeasurementPage = () => {
       {patient === null && (
         <SelectPatient
           isActive={patient === null}
+          setNonactive={() => setPatient(null)}
           state={state}
           openBarcodeModal={() => setState("barcode")}
           openSelectModal={() => setState("select")}

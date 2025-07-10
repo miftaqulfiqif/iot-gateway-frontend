@@ -10,7 +10,9 @@ import { useAuth } from "@/context/AuthContext";
 import { PM9000Model } from "@/models/Devices/PM9000Model";
 
 const userId = "UserTest";
-const socketUrl = "http://localhost:3000";
+const socketUrl = import.meta.env.VITE_SOCKET_URL;
+
+console.log("Socket URL : ", socketUrl);
 
 interface Props {
   macDevice?: string;
@@ -262,7 +264,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
             const latest = payload.data_bmi[0];
 
             if (latest.mac === macDevice) {
-              setWeightBMI({
+              const newBMI = {
                 weight: bmiData.weight,
                 age: bmiData.age,
                 impedence: bmiData.impedence,
@@ -277,6 +279,11 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
                 obesity: bmiData.obesity,
                 bodyAge: bmiData.bodyAge,
                 lbm: bmiData.lbm,
+              };
+
+              setWeightBMI((prev) => {
+                const isEqual = JSON.stringify(prev) === JSON.stringify(newBMI);
+                return isEqual ? prev : newBMI;
               });
             }
           } catch (error) {

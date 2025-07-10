@@ -189,6 +189,7 @@ const historiesData = [
 const DeviceBMIPage = () => {
   const { mac } = useParams();
   const { weightBMI, setWeightBMI } = useSocketHandler({ macDevice: mac });
+
   const [saveModal, setSaveModal] = useState(false);
 
   const [variabel, setVariabel] = useState<string[]>([]);
@@ -196,7 +197,6 @@ const DeviceBMIPage = () => {
   const showMetabolism = variabel.includes("metabolism");
 
   const [showHistories, setShowHistories] = useState(false);
-  console.log("weightBMI", weightBMI);
 
   const [patient, setPatient] = useState(null);
   // Get patient from local storage

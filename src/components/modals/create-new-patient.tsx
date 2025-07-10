@@ -20,6 +20,7 @@ type CreateNewPatientProps = {
   openFormBarcode?: () => void;
   buttonLoading?: boolean;
   patient?: Patients;
+  showToast?: any;
 };
 
 export const CreateNewPatient = (props: CreateNewPatientProps) => {
@@ -32,17 +33,20 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     openFormBarcode,
     buttonLoading,
     patient,
+    showToast,
   } = props;
 
   const { updatePatient, savePatient } = UsePatient({
     fetchPatients,
     closeModal,
+    showToast,
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: patient?.name || "",
+      nik: patient?.nik || "",
       gender: patient?.gender || "",
       address: patient?.address || "",
       phone: patient?.phone || "",
@@ -55,6 +59,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     },
     validationSchema: yup.object().shape({
       name: yup.string().required("Name is required"),
+      nik: yup.string().required("NIK is required"),
       gender: yup.string().required("Gender is required"),
       address: yup.string(),
       phone: yup.number(),
@@ -75,6 +80,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
           const updatedPatient = {
             ...patient,
             name: values.name,
+            nik: values.nik,
             gender: values.gender,
             phone: values.phone,
             last_education: values.last_education,
@@ -101,7 +107,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-4xl h-[600px] transition-all duration-300 ease-in-out
+        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-4xl h-[660px] transition-all duration-300 ease-in-out
     ${
       form
         ? "opacity-100 scale-100 translate-x-[-50%] translate-y-[-50%]"
@@ -151,6 +157,16 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
         </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-col gap-5">
+            <InputText
+              name="nik"
+              label="NIK"
+              placeholder="Input NIK"
+              onChange={formik.handleChange}
+              value={formik.values.nik}
+              onTouch={formik.touched.nik}
+              onError={formik.errors.nik}
+              isRequired
+            />
             <div className="flex flex-row gap-4 justify-between w-full">
               <InputText
                 name="name"

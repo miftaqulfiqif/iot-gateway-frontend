@@ -47,7 +47,7 @@ export const InputSelect = (props: InputSelectProps) => {
         <SelectTrigger className="h-full w-full rounded-lg bg-gray-100 border-0">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent className="border-0">
+        <SelectContent className="z-[9999] border-0">
           {option.map((item) => (
             <SelectItem
               key={item.value.toString()}

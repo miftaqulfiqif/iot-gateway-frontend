@@ -3,13 +3,15 @@ import { Devices } from "@/models/DeviceModel";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useDevices = () => {
   const { showToast } = useToast();
   const [devices, setDevices] = useState<Devices[]>([]);
 
   const getAllDevices = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/devices", {
+      const response = await axios.get(`${apiUrl}/api/devices`, {
         withCredentials: true,
       });
       setDevices(response.data.data);
@@ -20,12 +22,9 @@ export const useDevices = () => {
 
   const deleteDeviceBluetooth = async (deviceId: string) => {
     try {
-      await axios.delete(
-        `http://localhost:3000/api/devices/disconnect-ble/${deviceId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.delete(`${apiUrl}/api/devices/disconnect-ble/${deviceId}`, {
+        withCredentials: true,
+      });
       showToast(null, "Device disconnected successfully", "success");
       await getAllDevices();
     } catch (error) {
@@ -35,12 +34,9 @@ export const useDevices = () => {
   };
   const deleteDeviceTcpIP = async (deviceId: string) => {
     try {
-      await axios.delete(
-        `http://localhost:3000/api/devices/disconnect-tcpip/${deviceId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.delete(`${apiUrl}/api/devices/disconnect-tcpip/${deviceId}`, {
+        withCredentials: true,
+      });
       showToast(null, "Device disconnected successfully", "success");
       await getAllDevices();
     } catch (error) {

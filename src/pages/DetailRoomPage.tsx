@@ -8,6 +8,7 @@ import {
   NotebookTabs,
   Users,
   History,
+  SquarePen,
 } from "lucide-react";
 
 const dummyData = {
@@ -17,7 +18,7 @@ const dummyData = {
     status: "Full",
     capacity: 5,
     occupied: 5,
-    createdAt: "2025-07-01",
+    nurseManager: "dr. Yulia Pratiwi",
     doctor: "dr. Yulia Pratiwi",
   },
   stats: {
@@ -80,19 +81,25 @@ export default function DetailRoomPage() {
           <div className="flex flex-col gap-4 w-full">
             {/* Room Info */}
             <div className="bg-white rounded-xl p-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-              <div className="flex gap-2 items-center mb-4">
-                <NotebookTabs className="w-6 h-6 text-blue-600" />
-                <h2 className="text-lg font-semibold"> Room Information</h2>
+              <div className="flex justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <NotebookTabs className="w-6 h-6 text-blue-600" />
+                  <h2 className="text-lg font-semibold"> Room Information</h2>
+                </div>
+                <div className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-full cursor-pointer">
+                  <SquarePen className="w-6 h-6 " />
+                  <h2 className="text-lg font-semibold"> Edit room</h2>
+                </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-2 text-gray-700">
                 <p>
                   <strong>Room Number:</strong> {room.number}
                 </p>
                 <p>
-                  <strong>Type:</strong> {room.type}
+                  <strong>Nurse Manager:</strong> {room.nurseManager}
                 </p>
                 <p>
-                  <strong>Created At:</strong> {room.createdAt}
+                  <strong>Type:</strong> {room.type}
                 </p>
                 <p>
                   <strong>Doctor:</strong> {room.doctor}
@@ -125,8 +132,8 @@ export default function DetailRoomPage() {
                       className={`text-sm font-medium px-3 py-1 rounded-full
                 ${
                   p.status === "Aktif"
-                    ? "bg-green-200 text-green-800"
-                    : "bg-yellow-200 text-yellow-800"
+                    ? "bg-green-200 text-green-800 font-semibold"
+                    : "bg-yellow-200 text-yellow-800 font-semibold"
                 }`}
                     >
                       {p.status}

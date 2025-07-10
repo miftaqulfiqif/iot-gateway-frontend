@@ -1,5 +1,6 @@
 import MainLayout from "@/components/layouts/main-layout";
 import CreateRoomModal from "@/components/modals/room_page/create-room-modal";
+import { RoomItems } from "@/components/sections/rooms-page/room-item";
 import {
   Select,
   SelectContent,
@@ -19,30 +20,63 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+export const dummyRooms = [
+  {
+    roomNumber: "312",
+    unit: "ICU",
+    status: "Full",
+    capacity: {
+      current: 2,
+      total: 2,
+    },
+    patients: [
+      {
+        name: "Andi Saputra",
+        entryDate: "5 July 2025",
+        status: "Active",
+      },
+      {
+        name: "Rina Aulia",
+        entryDate: "3 August 2025",
+        status: "Observe",
+      },
+    ],
+  },
+  {
+    roomNumber: "208",
+    unit: "HCU",
+    status: "Available",
+    capacity: {
+      current: 1,
+      total: 3,
+    },
+    patients: [
+      {
+        name: "Budi Hartono",
+        entryDate: "9 July 2025",
+        status: "Active",
+      },
+    ],
+  },
+  {
+    roomNumber: "101",
+    unit: "General Ward",
+    status: "Available",
+    capacity: {
+      current: 0,
+      total: 2,
+    },
+    patients: [],
+  },
+];
+
 export const RoomsPage = () => {
   const { showToast } = useToast();
   const [showFilter, setShowFilter] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const [search, setSearch] = useState("");
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const handleCreateRoom = (data: {
     number: string;
@@ -52,6 +86,7 @@ export const RoomsPage = () => {
     console.log("Room Created:", data);
     showToast(null, "Room created successfully", "success");
   };
+
   return (
     <MainLayout title="Rooms" state="Rooms">
       <div className="flex flex-col w-full">
@@ -139,95 +174,11 @@ export const RoomsPage = () => {
         </div>
 
         {/* Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
           {/* List Room */}
-          <div className="flex flex-col gap-2 bg-white rounded-2xl p-4 shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
-            <div className="flex justify-between">
-              <div className="flex gap-2 items-center">
-                <p className="font-bold text-xl">312</p>
-                <p>-</p>
-                <p className="bg-green-200 text-green-900 font-bold flex rounded-full px-4 items-center">
-                  ICU
-                </p>
-              </div>
-              <div className="flex items-center gap-4">
-                <p className="bg-red-200 text-red-900 font-bold flex rounded-full px-4 items-center">
-                  Full
-                </p>
-                <div className="relative" ref={dropdownRef}>
-                  <EllipsisVertical
-                    className="w-5 h-5 cursor-pointer"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                  />
-                  {dropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
-                      <ul className="py-1 text-sm text-gray-700">
-                        <li
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                          onClick={() => {
-                            window.location.href = `/room/312`;
-                          }}
-                        >
-                          Lihat Detail
-                        </li>
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          Edit Ruangan
-                        </li>
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 flex items-center gap-2">
-                          <Trash className="w-4 h-4" />
-                          Hapus
-                        </li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                <p>Capacity</p>
-              </div>
-              <div className="flex bg-blue-200 font-bold rounded-sm px-2 items-center">
-                <p>2</p>
-                <p>/</p>
-                <p>4</p>
-              </div>
-            </div>
-            {/* List Patient */}
-            <p className="font-semibold mt-2">Patients</p>
-            <div className="flex flex-col gap-2 w-full bg-[#ededf9] shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] rounded-lg p-4">
-              {/* Patient 1 */}
-              <div className="flex justify-between items-center bg-white px-4 py-2 rounded-lg shadow-sm">
-                <div className="flex items-center gap-2">
-                  <User className="w-6 h-6 text-blue-600" />
-                  <div className="flex flex-col">
-                    <p className="font-semibold">Andi Saputra</p>
-                    <p className="text-sm text-gray-500">Entry: 5 July 2025</p>
-                  </div>
-                </div>
-                <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-sm">
-                  Active
-                </span>
-              </div>
-
-              {/* Patient2 */}
-              <div className="flex justify-between items-center bg-white px-4 py-2 rounded-lg shadow-sm">
-                <div className="flex items-center gap-2">
-                  <User className="w-6 h-6 text-blue-600" />
-                  <div className="flex flex-col">
-                    <p className="font-semibold">Rina Aulia</p>
-                    <p className="text-sm text-gray-500">
-                      Entry: 3 August 2025
-                    </p>
-                  </div>
-                </div>
-                <span className="bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full text-sm">
-                  Observe
-                </span>
-              </div>
-            </div>
-          </div>
+          {dummyRooms.map((room) => (
+            <RoomItems key={room.roomNumber} room={room} />
+          ))}
         </div>
       </div>
       <CreateRoomModal

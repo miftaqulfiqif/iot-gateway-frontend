@@ -7,6 +7,8 @@ import {
   useEffect,
   ReactNode,
 } from "react";
+const apiUrl = import.meta.env.VITE_API_URL;
+console.log("API URL:", apiUrl);
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -71,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsAuthenticated(true);
 
         axios
-          .get("http://localhost:3000/api/user-current", {
+          .get(`${apiUrl}/api/user-current`, {
             withCredentials: true,
           })
           .then((response) => {

@@ -104,11 +104,6 @@ export const PatientMonitorDS001Section = ({
                   <Activity className="w-6 h-6" />
                   <p className="text-sm">{mean} bpm</p>
                 </div>
-                <div className="flex flex-row w-fit text-red-900 items-center gap-2 bg-red-300 px-3 py-1 rounded-full h-fit">
-                  <img src={prIcon} alt="" className="w-6 h-6" />
-                  <p className="text-sm">{pulse_rate ? pulse_rate : "--"}</p>
-                  <p>bpm</p>
-                </div>
               </div>
             </div>
             <div className="w-1/3 h-34 bg-white text-red-700 rounded-2xl shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] p-4">
