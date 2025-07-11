@@ -80,7 +80,7 @@ export default function DetailRoomPage() {
         <div className="flex gap-6">
           <div className="flex flex-col gap-4 w-full">
             {/* Room Info */}
-            <div className="bg-white rounded-xl p-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+            <div className="bg-[#EDEDF9] rounded-xl p-4 shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)]">
               <div className="flex justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <NotebookTabs className="w-6 h-6 text-blue-600" />
@@ -109,11 +109,11 @@ export default function DetailRoomPage() {
 
             {/* Patients */}
             <div>
-              <div className="flex flex-row gap-2 items-center mb-4">
+              <div className="flex flex-row gap-2 items-center mb-4 mt-10">
                 <Users className="w-6 h-6 text-blue-600" />
                 <h2 className="text-lg font-semibold">Patient List</h2>
               </div>
-              <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4 bg-white p-8 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
                 {patients.map((p, i) => (
                   <div
                     key={i}
@@ -175,10 +175,10 @@ function StatCard({
   value: any;
 }) {
   return (
-    <div className="bg-white p-4 rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex items-center gap-4">
-      <div className="text-blue-600">{icon}</div>
+    <div className="bg-gradient-to-b to-[#6e79f4] from-[#4956F4] shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)] p-4 rounded-xl flex items-center gap-4 text-white">
+      <div className="">{icon}</div>
       <div>
-        <p className="text-gray-500 text-sm">{title}</p>
+        <p className="text-sm">{title}</p>
         <p className="font-bold text-lg">{value}</p>
       </div>
     </div>

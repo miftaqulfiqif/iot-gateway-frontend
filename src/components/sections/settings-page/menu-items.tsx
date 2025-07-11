@@ -1,6 +1,5 @@
 import person from "@/assets/icons/profile-icon.png";
 import avatarIcon from "@/assets/icons/avatar.png";
-import gatewayIcon from "@/assets/icons/gateway.png";
 
 import {
   ChangeEvent,
@@ -14,8 +13,16 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "@/context/AuthContext";
 import { Search } from "lucide-react";
+import { SettingGateway } from "./gateway-setting";
 
-export const dummyGateways = [
+const dummyCurrentGateway = {
+  id: "GW001",
+  name: "Gateway 1",
+  description: "Gateway utama ruang IGD",
+  status: "active",
+};
+
+const dummyGateways = [
   {
     id: "GW001",
     name: "Gateway 1",
@@ -40,6 +47,30 @@ export const dummyGateways = [
     description: "Gateway untuk keperluan lab & diagnostik",
     status: "Maintenance",
   },
+  {
+    id: "GW005",
+    name: "Gateway 4",
+    description: "Gateway untuk keperluan lab & diagnostik",
+    status: "Maintenance",
+  },
+  {
+    id: "GW006",
+    name: "Gateway 4",
+    description: "Gateway untuk keperluan lab & diagnostik",
+    status: "Maintenance",
+  },
+  {
+    id: "GW007",
+    name: "Gateway 4",
+    description: "Gateway untuk keperluan lab & diagnostik",
+    status: "Maintenance",
+  },
+  {
+    id: "GW008",
+    name: "Gateway 4",
+    description: "Gateway untuk keperluan lab & diagnostik",
+    status: "Maintenance",
+  },
 ];
 
 type MenuItemsProps = {
@@ -60,6 +91,10 @@ export const MenuItems = ({
   const [image, setImage] = useState("");
   const [logo, setLogo] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Gateways
+  const [currentGateway, setCurrentGateway] = useState(dummyCurrentGateway);
+  const [gateways, setGateways] = useState(dummyGateways);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -270,60 +305,12 @@ export const MenuItems = ({
       )}
       {/* Gateways */}
       {state === "Gateways" && (
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-row justify-between">
-            <p className="text-2xl font-bold">Gateways</p>
-            <a
-              className="cursor-pointer"
-              onClick={() => setAddGatewayModal(true)}
-            >
-              <div className="border-2 bg-[#35AAFF] text-white rounded-xl px-6 py-2 w-fit">
-                <p>Add gateway</p>
-              </div>
-            </a>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <p>List gateways</p>
-              <div className="flex gap-2 items-center">
-                <Search />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="border px-4 py-2 rounded-2xl focus:outline-blue-500 transition duration-150 ease-in-out"
-                />
-              </div>
-            </div>
-            <hr className="border-t-2 border-[#ECECEC]" />
-            <div className="flex flex-col gap-4">
-              {/* List Gateways */}
-              {dummyGateways.map((gateway) => (
-                <div className="flex flex-row justify-between items-center hover:bg-gray-100 rounded-2xl px-4 py-2 border">
-                  <div className="flex items-center gap-4">
-                    <img src={gatewayIcon} alt="" className="w-12 h-12" />
-                    <div className="flex flex-col gap-2">
-                      <p className="font-semibold">{gateway.name}</p>
-                      <p className="text-sm text-[#A7A7A7]">
-                        {gateway.description}
-                      </p>
-                    </div>
-                  </div>
-                  {gateway.status === "active" ? (
-                    <p className="font-semibold bg-green-200 text-green-900 px-4 py-1 rounded-full">
-                      {gateway.status}
-                    </p>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              ))}
-
-              <button className="bg-blue-500 text-white p-3 rounded-xl font-bold cursor-pointer ">
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
+        <SettingGateway
+          setAddGatewayModal={setAddGatewayModal}
+          setCurrentGateway={setCurrentGateway}
+          currentGateway={currentGateway}
+          gateways={gateways}
+        />
       )}
     </div>
   );

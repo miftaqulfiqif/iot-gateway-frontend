@@ -64,7 +64,7 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
       `}
       >
         <p className="font-semibold text-xl mb-5">Add Gateway</p>
-        <form className="flex flex-col gap-2" onSubmit={formik.handleSubmit}>
+        <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
           <InputText
             name="gateway_sn"
             label="Gateway Serial Number"
@@ -73,6 +73,7 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
             value={formik.values.gateway_sn}
             onTouch={formik.touched.gateway_sn}
             onError={formik.errors.gateway_sn}
+            isRequired
           />
           <InputText
             name="gateway_name"
@@ -82,17 +83,22 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
             value={formik.values.gateway_name}
             onTouch={formik.touched.gateway_name}
             onError={formik.errors.gateway_name}
+            isRequired
           />
-          <InputLongtext
-            name="description"
-            label="Description"
-            placeholder="Input Description"
-            onChange={formik.handleChange}
-            value={formik.values.description}
-            onTouch={formik.touched.description}
-            onError={formik.errors.description}
-            rows={4}
-          />
+          <div className="">
+            <InputLongtext
+              name="description"
+              label="Description"
+              placeholder="Input Description"
+              onChange={formik.handleChange}
+              value={formik.values.description}
+              onTouch={formik.touched.description}
+              onError={formik.errors.description}
+              rows={4}
+              maxLength={150}
+              isRequired
+            />
+          </div>
           <button
             type="submit"
             className="flex items-center justify-center bg-blue-500 text-white text-center rounded-sm py-2 mx-auto font-bold mt-4 cursor-pointer w-full"

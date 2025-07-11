@@ -1,4 +1,4 @@
-import { Eye, EyeClosed, Mars, Venus } from "lucide-react";
+import { CaseUpper, Eye, EyeClosed, Mars, Venus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/main-layout";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
+import { id } from "date-fns/locale";
+import { title } from "process";
 
 const state = [
   {
@@ -29,10 +31,121 @@ const state = [
     label: "Digit Pro IDA",
   },
 ];
-type Props = {
-  patientId: string;
+
+const dummyPatient = {
+  id: "PATL230000000000001",
+  nik: "3517172100000000",
+  barcode_img:
+    "data:image/png;base64,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",
+  name: "Abdulloh Khasimiri",
+  gender: "male",
+  address: "Surabaya",
+  phone: "01281023018291",
+  work: "Software Engineer",
+  last_education: "S1",
+  place_of_birth: "Surabaya",
+  date_of_birth: "2001-09-21",
+  religion: null,
+  height: null,
+  age: 23,
 };
 
+const dummyListBaby = [
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    name: "Test",
+    gender: "male",
+    date_of_birth: "2001-09-01",
+    place_of_birth: null,
+    patient_id: "PATL230000000000001",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    name: "Prabowo Sinegar",
+    gender: "female",
+    date_of_birth: "2001-09-01",
+    place_of_birth: null,
+    patient_id: "PATL230000000000001",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    name: "Prabowo Sinegar",
+    gender: "female",
+    date_of_birth: "2001-09-01",
+    place_of_birth: null,
+    patient_id: "PATL230000000000001",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    name: "Prabowo Sinegar",
+    gender: "female",
+    date_of_birth: "2001-09-01",
+    place_of_birth: null,
+    patient_id: "PATL230000000000001",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    name: "Prabowo Sinegar",
+    gender: "female",
+    date_of_birth: "2001-09-01",
+    place_of_birth: null,
+    patient_id: "PATL230000000000001",
+  },
+];
+
+const dummyRecentDoctor = [
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    doctor_name: "Dr. Prabowo Sinegar",
+    speciality: "Dokter Umum",
+    date: "2023-06-01",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    doctor_name: "Dr. Prabowo Sinegar",
+    speciality: "Dokter Umum",
+    date: "2023-06-01",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    doctor_name: "Dr. Prabowo Sinegar",
+    speciality: "Dokter Umum",
+    date: "2023-06-01",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    doctor_name: "Dr. Prabowo Sinegar",
+    speciality: "Dokter Umum",
+    date: "2023-06-01",
+  },
+];
+
+const dummyMedicalActivity = [
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    title: "Pemeriksaan Fisik",
+    date: "2023-06-01",
+    note: "Pemeriksaan fisik dengan hasil normal",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    title: "Pemeriksaan Fisik",
+    date: "2023-06-01",
+    note: "Pemeriksaan fisik dengan hasil normal",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    title: "Pemeriksaan Fisik",
+    date: "2023-06-01",
+    note: "Pemeriksaan fisik dengan hasil normal",
+  },
+  {
+    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    title: "Pemeriksaan Fisik",
+    date: "2023-06-01",
+    note: "Pemeriksaan fisik dengan hasil normal",
+  },
+];
 const DetailPatientPage = () => {
   const { patientId } = useParams();
   const { historiesDigitProIDA, fetchDataIDA, currentPageIDA } =
@@ -159,7 +272,7 @@ const DetailPatientPage = () => {
               <div className="flex gap-4">
                 <div className="rounded-full bg-gray-200 w-20 h-20"></div>
                 <div className="flex flex-col gap-2 justify-end">
-                  <p className="text-4xl font-bold">Patient Name</p>
+                  <p className="text-4xl font-bold">{dummyPatient.name}</p>
                   <p className="text-sm">{patientId} </p>
                 </div>
               </div>
@@ -220,37 +333,56 @@ const DetailPatientPage = () => {
             </div>
           </div>
           {/* Detail Info */}
+
           <div className="bg-white w-full min-h-full rounded-2xl shadow-lg p-4">
             <p className="text-lg font-bold">Detail info patient</p>
             <div className="mt-4">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                   <p className="font-semibold">NIK :</p>
-                  <p>3517172109010001</p>
+                  <p>{dummyPatient.nik}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Name :</p>
-                  <p>Patient Name</p>
+                  <p>{dummyPatient.name}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Age :</p>
-                  <p>30 years</p>
+                  <p>{dummyPatient.age} years</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Gender :</p>
-                  <p>Male</p>
+                  <p>
+                    {dummyPatient.gender
+                      ? dummyPatient.gender.charAt(0).toUpperCase() +
+                        dummyPatient.gender.slice(1)
+                      : "Unknown"}
+                  </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Place of Birth :</p>
-                  <p>Surabaya</p>
+                  <p>{dummyPatient.place_of_birth}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Date of Birth :</p>
-                  <p>21 September 2001</p>
+                  <p>
+                    {new Date(dummyPatient.date_of_birth).toLocaleDateString(
+                      "en-GB",
+                      { day: "2-digit", month: "long", year: "numeric" }
+                    )}
+                  </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Phone :</p>
-                  <p>123456789</p>
+                  <p>{dummyPatient.phone}</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="font-semibold">Work :</p>
+                  <p>{dummyPatient.work}</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="font-semibold">Last Education :</p>
+                  <p>{dummyPatient.last_education}</p>
                 </div>
               </div>
             </div>
@@ -262,20 +394,27 @@ const DetailPatientPage = () => {
           <div className="flex flex-col bg-gradient-to-l from-[#4956F4] to-[#6e79f4] w-1/3 h-full rounded-2xl border-3 border-gray-200 p-4 text-white">
             <p className="font-semibold text-lg">List baby</p>
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              <div className="flex gap-4 border rounded-3xl items-center px-4 py-2">
-                <Venus className="w-6 h-6" />
-                <div className="flex flex-col gap-1">
-                  <p className="font-semibold">Baby Name</p>
-                  <p className="text-sm">23 September 2023</p>
+              {dummyListBaby.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex gap-4 border rounded-3xl items-center px-4 py-2"
+                >
+                  {item.gender === "male" ? (
+                    <Mars className="w-6 h-6" />
+                  ) : (
+                    <Venus className="w-6 h-6" />
+                  )}
+                  <div className="flex flex-col gap-1">
+                    <p className="font-semibold">{item.name}</p>
+                    <p className="text-sm">
+                      {new Date(item.date_of_birth).toLocaleDateString(
+                        "en-GB",
+                        { day: "2-digit", month: "long", year: "numeric" }
+                      )}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-4 border rounded-3xl items-center px-4 py-2">
-                <Venus className="w-6 h-6" />
-                <div className="flex flex-col gap-1">
-                  <p className="font-semibold">Baby Name</p>
-                  <p className="text-sm">23 September 2023</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           {/* Recent Doctor */}
@@ -288,36 +427,18 @@ const DetailPatientPage = () => {
             </div>
             {/* List doctor */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              <div className="flex items-center gap-3">
-                <div className="w-18 h-18 rounded-full bg-gray-400"></div>
-                <div className="flex flex-col">
-                  <p className="font-semibold font-sm">Dr. Name</p>
-                  <p className="text-sm text-gray-500">Specialist</p>
-                  <div className="border px-2 py-1 rounded-full flex items-center mt-1">
-                    <p className="text-xs">21 September 2001</p>
+              {dummyRecentDoctor.map((item) => (
+                <div key={item.id} className="flex items-center gap-3">
+                  <div className="w-18 h-18 rounded-full bg-gray-400"></div>
+                  <div className="flex flex-col">
+                    <p className="font-semibold font-sm">{item.doctor_name}</p>
+                    <p className="text-sm text-gray-500">{item.speciality}</p>
+                    <div className="border px-2 py-1 rounded-full flex items-center mt-1">
+                      <p className="text-xs">{item.date}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-18 h-18 rounded-full bg-gray-400"></div>
-                <div className="flex flex-col">
-                  <p className="font-semibold font-sm">Dr. Name</p>
-                  <p className="text-sm text-gray-500">Specialist</p>
-                  <div className="border px-2 py-1 rounded-full flex items-center mt-1">
-                    <p className="text-xs">21 September 2001</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-18 h-18 rounded-full bg-gray-400"></div>
-                <div className="flex flex-col">
-                  <p className="font-semibold font-sm">Dr. Name</p>
-                  <p className="text-sm text-gray-500">Specialist</p>
-                  <div className="border px-2 py-1 rounded-full flex items-center mt-1">
-                    <p className="text-xs">21 September 2001</p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           {/* Medical Activity */}
@@ -329,46 +450,22 @@ const DetailPatientPage = () => {
               </p>
             </div>
             {/* List */}
-            <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              <div className="flex items-center border p-4 rounded-2xl">
-                <div className="flex flex-col">
-                  <div className="flex justify-between">
-                    <p className="font-semibold text-sm">Title</p>
-                    <p className="text-xs">23/09/2023</p>
+            <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
+              {dummyMedicalActivity.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center border p-4 rounded-2xl"
+                >
+                  <div className="flex flex-col w-full">
+                    <div className="flex justify-between">
+                      <p className="text-base font-semibold">{item.title}</p>
+                      <p className="text-xs">{item.date}</p>
+                    </div>
+                    <p className="text-sm font-normal">{item.note}</p>
                   </div>
-                  <p className="text-sm">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Magnam, sit?
-                  </p>
+                  <div className="flex flex-col"></div>
                 </div>
-                <div className="flex flex-col"></div>
-              </div>
-              <div className="flex items-center border p-4 rounded-2xl">
-                <div className="flex flex-col">
-                  <div className="flex justify-between">
-                    <p className="font-semibold text-sm">Title</p>
-                    <p className="text-xs">23/09/2023</p>
-                  </div>
-                  <p className="text-sm">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Magnam, sit?
-                  </p>
-                </div>
-                <div className="flex flex-col"></div>
-              </div>
-              <div className="flex items-center border p-4 rounded-2xl">
-                <div className="flex flex-col">
-                  <div className="flex justify-between">
-                    <p className="font-semibold text-sm">Title</p>
-                    <p className="text-xs">23/09/2023</p>
-                  </div>
-                  <p className="text-sm">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Magnam, sit?
-                  </p>
-                </div>
-                <div className="flex flex-col"></div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
