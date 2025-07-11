@@ -1,5 +1,6 @@
 import person from "@/assets/icons/profile-icon.png";
 import avatarIcon from "@/assets/icons/avatar.png";
+import gatewayIcon from "@/assets/icons/gateway.png";
 
 import {
   ChangeEvent,
@@ -12,6 +13,34 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "@/context/AuthContext";
+import { Search } from "lucide-react";
+
+export const dummyGateways = [
+  {
+    id: "GW001",
+    name: "Gateway 1",
+    description: "Gateway utama ruang IGD",
+    status: "active",
+  },
+  {
+    id: "GW002",
+    name: "Gateway 2",
+    description: "Backup gateway ruang ICU",
+    status: "Inactive",
+  },
+  {
+    id: "GW003",
+    name: "Gateway 3",
+    description: "Gateway rawat inap lantai 3",
+    status: "Active",
+  },
+  {
+    id: "GW004",
+    name: "Gateway 4",
+    description: "Gateway untuk keperluan lab & diagnostik",
+    status: "Maintenance",
+  },
+];
 
 type MenuItemsProps = {
   state: string;
@@ -68,14 +97,6 @@ export const MenuItems = ({
       alert("Password changed successfully!");
     },
   });
-
-  const toggleCategory = (id: number) => {
-    setCategoryOpen((prevOpen) =>
-      prevOpen.includes(id)
-        ? prevOpen.filter((openId) => openId !== id)
-        : [...prevOpen, id]
-    );
-  };
 
   return (
     <div
@@ -262,9 +283,45 @@ export const MenuItems = ({
             </a>
           </div>
           <div className="flex flex-col gap-4">
-            <p>List gateways</p>
+            <div className="flex items-center justify-between">
+              <p>List gateways</p>
+              <div className="flex gap-2 items-center">
+                <Search />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="border px-4 py-2 rounded-2xl focus:outline-blue-500 transition duration-150 ease-in-out"
+                />
+              </div>
+            </div>
             <hr className="border-t-2 border-[#ECECEC]" />
-            <div className="flex flex-col gap-4"></div>
+            <div className="flex flex-col gap-4">
+              {/* List Gateways */}
+              {dummyGateways.map((gateway) => (
+                <div className="flex flex-row justify-between items-center hover:bg-gray-100 rounded-2xl px-4 py-2 border">
+                  <div className="flex items-center gap-4">
+                    <img src={gatewayIcon} alt="" className="w-12 h-12" />
+                    <div className="flex flex-col gap-2">
+                      <p className="font-semibold">{gateway.name}</p>
+                      <p className="text-sm text-[#A7A7A7]">
+                        {gateway.description}
+                      </p>
+                    </div>
+                  </div>
+                  {gateway.status === "active" ? (
+                    <p className="font-semibold bg-green-200 text-green-900 px-4 py-1 rounded-full">
+                      {gateway.status}
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              ))}
+
+              <button className="bg-blue-500 text-white p-3 rounded-xl font-bold cursor-pointer ">
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       )}

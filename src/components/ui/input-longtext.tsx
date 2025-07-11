@@ -1,21 +1,20 @@
 type InputTextProps = {
   label?: string;
   disabled?: boolean;
-  type?: string;
   placeholder: string;
   name: string;
   value: any;
   onTouch: any;
   onError?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   className?: string;
   isRequired?: boolean;
+  rows?: number;
 };
 
-export const InputText = (props: InputTextProps) => {
+export const InputLongtext = (props: InputTextProps) => {
   const {
     label,
-    type,
     disabled,
     placeholder,
     name,
@@ -25,6 +24,7 @@ export const InputText = (props: InputTextProps) => {
     onError,
     className,
     isRequired,
+    rows,
   } = props;
   return (
     <div className="w-full">
@@ -34,13 +34,13 @@ export const InputText = (props: InputTextProps) => {
           {isRequired && <span className="text-red-500">*</span>}
         </div>
         <div className={`rounded-lg focus-within:outline-1 ${className}`}>
-          <input
-            type={type || "text"}
+          <textarea
             name={name}
             disabled={disabled}
             placeholder={placeholder}
             onChange={onChange}
             value={value}
+            rows={rows}
             className=" bg-gray-100 text-sm px-4 py-2 rounded-lg w-full disabled:bg-slate-200 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150 ease-in-out"
           />
         </div>

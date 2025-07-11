@@ -23,6 +23,8 @@ import PatientMonitorPage from "./pages/PatientMonitorPage.tsx";
 import DetailPatientPage from "./pages/DetailPatientPage.tsx";
 import { RoomsPage } from "./pages/RoomsPage.tsx";
 import DetailRoomPage from "./pages/DetailRoomPage.tsx";
+import { UsersPage } from "./pages/UsersPage.tsx";
+import DetailUserPage from "./pages/DetailUserPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -49,6 +51,11 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/rooms" element={<RoomsPage />} />
               <Route path="/room/:roomId" element={<DetailRoomPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/users" element={<UsersPage />} />
+              <Route
+                path="/users/detail-user/:userId"
+                element={<DetailUserPage />}
+              />
               <Route
                 path="/measurement-histories"
                 element={<MeasurementHistoriesPage />}
