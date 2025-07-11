@@ -37,7 +37,7 @@ const Sidebar = ({ state }: SidebarProps) => {
         </div>
         <div className="flex flex-col gap-4">
           <p>Menu</p>
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-2 w-full">
             {/* <AppSidebar
               icon={<HomeIcon />}
               title="Dashboard"
@@ -84,12 +84,18 @@ const Sidebar = ({ state }: SidebarProps) => {
         </div>
         <div className="flex flex-col gap-4">
           <p>Tools</p>
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-2 w-full">
             <AppSidebar
               icon={<Settings />}
               title="Settings"
               isActive={state === "Settings"}
               url="/settings"
+            />
+            <AppSidebar
+              icon={<UsersRound />}
+              title="Users management"
+              isActive={state === "Users"}
+              url="/users"
             />
           </div>
         </div>

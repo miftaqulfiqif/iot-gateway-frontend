@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bluetooth, EthernetPort, Key, LandPlot, Wifi } from "lucide-react";
+import { InputText } from "../ui/input-text";
+import { setIn, useFormik } from "formik";
+import { InputLongtext } from "../ui/input-longtext";
+import * as yup from "yup";
+import { useToast } from "@/context/ToastContext";
 
 type Props = {
   isActive: boolean;
@@ -7,6 +12,39 @@ type Props = {
 };
 
 export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
+  const { showToast } = useToast();
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setInactive();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      gateway_sn: "",
+      gateway_name: "",
+      description: "",
+    },
+    validationSchema: yup.object().shape({
+      gateway_sn: yup.string().required("Gateway serial number is required"),
+      gateway_name: yup.string().required("Gateway name is required"),
+      description: yup.string().required("Description is required"),
+    }),
+    onSubmit: (values) => {
+      showToast(null, "Gateway added successfully", "success");
+      setInactive();
+    },
+  });
+
   return (
     <div
       onClick={setInactive}
@@ -25,8 +63,43 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
         }
       `}
       >
-        <p className="font-semibold text-xl mb-2">Add Gateway</p>
-        <div className="flex flex-row gap-4"></div>
+        <p className="font-semibold text-xl mb-5">Add Gateway</p>
+        <form className="flex flex-col gap-2" onSubmit={formik.handleSubmit}>
+          <InputText
+            name="gateway_sn"
+            label="Gateway Serial Number"
+            placeholder="Input Gateway Serial Number"
+            onChange={formik.handleChange}
+            value={formik.values.gateway_sn}
+            onTouch={formik.touched.gateway_sn}
+            onError={formik.errors.gateway_sn}
+          />
+          <InputText
+            name="gateway_name"
+            label="Gateway Name"
+            placeholder="Input Gateway Name"
+            onChange={formik.handleChange}
+            value={formik.values.gateway_name}
+            onTouch={formik.touched.gateway_name}
+            onError={formik.errors.gateway_name}
+          />
+          <InputLongtext
+            name="description"
+            label="Description"
+            placeholder="Input Description"
+            onChange={formik.handleChange}
+            value={formik.values.description}
+            onTouch={formik.touched.description}
+            onError={formik.errors.description}
+            rows={4}
+          />
+          <button
+            type="submit"
+            className="flex items-center justify-center bg-blue-500 text-white text-center rounded-sm py-2 mx-auto font-bold mt-4 cursor-pointer w-full"
+          >
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );

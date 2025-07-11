@@ -11,6 +11,7 @@ import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import { MenuItems } from "@/components/sections/settings-page/menu-items";
 import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-settings";
 import { AddGatewayModal } from "@/components/modals/add-gateway-modal";
+import { Users } from "lucide-react";
 
 const SettingsPage = () => {
   const { user } = useAuth();
@@ -32,22 +33,19 @@ const SettingsPage = () => {
 
   return (
     <MainLayout title="Settings" state="Settings">
-      <div className="h-full mb-5">
+      <div className="h-full mb-5 mt-8">
         <div className="flex flex-col gap-8">
-          <div className="flex justify-between mx-8">
-            <div className="">
-              <p className="text-3xl font-bold">Settings</p>
-            </div>
-          </div>
           <div className="flex flex-row gap-10 bg-white rounded-xl w-full h-full shadow-[0px_4px_4px_rgba(0,0,0,0.3)] p-8">
             <div className="flex flex-col w-3xs gap-4">
               {user?.role === "admin" && (
-                <MenuSettings
-                  title="Hospital Profile"
-                  icon={hospitalIcon}
-                  isActive={state === "Edit Hospital Profile"}
-                  onClick={() => handleMenuChange("Edit Hospital Profile")}
-                />
+                <>
+                  <MenuSettings
+                    title="Hospital Profile"
+                    icon={hospitalIcon}
+                    isActive={state === "Edit Hospital Profile"}
+                    onClick={() => handleMenuChange("Edit Hospital Profile")}
+                  />
+                </>
               )}
               <MenuSettings
                 title="Profile"

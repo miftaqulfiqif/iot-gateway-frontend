@@ -1,6 +1,6 @@
 type MenuSettingsProps = {
   title: string;
-  icon: string;
+  icon: string | React.ReactNode;
   isActive?: boolean;
   onClick: () => void;
   className?: string;
@@ -13,6 +13,8 @@ export const MenuSettings = ({
   onClick,
   className,
 }: MenuSettingsProps) => {
+  const isStringIcon = typeof icon === "string";
+
   return (
     <div
       onClick={onClick}
@@ -24,7 +26,11 @@ export const MenuSettings = ({
       }
       transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-[#f0f0f0] ${className}`}
     >
-      <img src={icon} className="w-8 h-8" alt="" />
+      {isStringIcon ? (
+        <img src={icon} className="w-8 h-8" alt={title + " icon"} />
+      ) : (
+        <span className="w-8 h-8 flex items-center justify-center">{icon}</span>
+      )}
       <p className="text-lg font-semibold">{title}</p>
     </div>
   );
