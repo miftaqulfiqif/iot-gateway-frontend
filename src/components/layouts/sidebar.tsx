@@ -112,7 +112,10 @@ const Sidebar = ({ state }: SidebarProps) => {
             <p className="text-xl w-40">{user?.name}</p>
           </div>
 
-          <div className="flex flex-col font-bold">
+          <div className="flex flex-col font-bold gap-2">
+            {/* <div className="flex flex-col font-normal border h-fit w-40 p-2 rounded-xl">
+              <p>Gateway name</p>
+            </div> */}
             <div
               className="flex flex-row gap-2 cursor-pointer  bg-red-500  rounded-2xl px-4 py-2 w-fit"
               onClick={logout}

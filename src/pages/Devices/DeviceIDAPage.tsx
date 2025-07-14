@@ -70,6 +70,7 @@ const DeviceIDAPage = () => {
   const [showHistories, setShowHistories] = useState(false);
 
   const [patient, setPatient] = useState<Patients>({
+    nik: "",
     id: "",
     barcode_image: "",
     name: "",

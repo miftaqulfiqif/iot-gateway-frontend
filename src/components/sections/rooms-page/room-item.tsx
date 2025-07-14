@@ -90,31 +90,42 @@ export const RoomItems = ({ room }: { room: Room }) => {
       {/* List Patient */}
       <p className="font-semibold mt-2">Patients</p>
       <div className="flex flex-col gap-2 w-full bg-[#ededf9] shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] rounded-lg p-4">
-        {/* Patient 1 */}
         {room.patients.length === 0 ? (
           <div className="text-center text-gray-500 italic py-4">
-            No patients Available
+            No patients available
           </div>
         ) : (
-          room.patients.map((patient, index) => (
-            <div
-              key={index}
-              className="flex justify-between items-center bg-white px-4 py-2 rounded-lg shadow-sm"
-            >
-              <div className="flex items-center gap-2">
-                <User className="w-6 h-6 text-blue-600" />
-                <div className="flex flex-col">
-                  <p className="font-semibold">{patient.name}</p>
-                  <p className="text-sm text-gray-500">
-                    Entry: {patient.entryDate}
-                  </p>
+          <>
+            {/* Tampilkan 2 pasien pertama */}
+            {room.patients.slice(0, 2).map((patient, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center bg-white px-4 py-2 rounded-lg shadow-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <User className="w-6 h-6 text-blue-600" />
+                  <div className="flex flex-col">
+                    <p className="font-semibold">{patient.name}</p>
+                    <p className="text-sm text-gray-500">
+                      Entry: {patient.entryDate}
+                    </p>
+                  </div>
                 </div>
+                <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-sm">
+                  {patient.status}
+                </span>
               </div>
-              <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-sm">
-                {patient.status}
-              </span>
-            </div>
-          ))
+            ))}
+
+            {/* Jika ada lebih dari 2 pasien, tampilkan indikator tambahan */}
+            {room.patients.length > 2 && (
+              <div className="flex justify-center">
+                <span className="text-sm text-gray-500 italic">
+                  ...and more
+                </span>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

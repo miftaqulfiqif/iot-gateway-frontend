@@ -81,6 +81,7 @@ export const TableAdminUsers = ({
             <TableHead className="text-center font-bold">Email</TableHead>
             <TableHead className="text-center font-bold">Phone</TableHead>
             <TableHead className="text-center font-bold">Username</TableHead>
+            <TableHead className="text-center font-bold">Role</TableHead>
             <TableHead className="text-center font-bold">Created At</TableHead>
             <TableHead className="text-center font-bold">Action</TableHead>
           </TableRow>
@@ -106,11 +107,12 @@ export const TableAdminUsers = ({
                   <TableCell className="text-left">
                     {item.email || "-"}
                   </TableCell>
-                  <TableCell className="text-left">
+                  <TableCell className="text-center">
                     {item.phone || "-"}
                   </TableCell>
-
                   <TableCell className="text-center">{item.username}</TableCell>
+                  <TableCell className="text-center">{item.role}</TableCell>
+
                   <TableCell className="text-center">
                     {formatDate(item.created_at)}
                   </TableCell>
@@ -153,7 +155,7 @@ export const TableAdminUsers = ({
             })
           ) : (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-6">
+              <TableCell colSpan={8} className="text-center py-6">
                 No data available
               </TableCell>
             </TableRow>
@@ -161,7 +163,7 @@ export const TableAdminUsers = ({
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={7} className="p-4 text-center">
+            <TableCell colSpan={8} className="p-4 text-center">
               <Pagination>
                 <PaginationContent className="flex justify-between w-full gap-4">
                   <PaginationItem>

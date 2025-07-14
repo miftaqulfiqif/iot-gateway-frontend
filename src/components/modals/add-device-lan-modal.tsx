@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bluetooth,
   Cpu,
@@ -18,6 +18,8 @@ import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import axios from "axios";
 import { useDevices } from "@/hooks/api/use-device";
 import { useAuth } from "@/context/AuthContext";
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 type Props = {
   isActive: boolean;
@@ -49,7 +51,7 @@ export const AddDeviceLan = ({
 
       console.log(data);
       const response = await axios.post(
-        "http://localhost:3000/api/devices/connect-tcpip",
+        `${apiUrl}/api/devices/connect-tcpip`,
         data,
         {
           withCredentials: true,
@@ -115,6 +117,20 @@ export const AddDeviceLan = ({
       handleConnectDevice(values);
     },
   });
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setInactive();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   return (
     <div
@@ -212,6 +228,7 @@ export const AddDeviceLan = ({
                     onTouch={formik.touched.device_function}
                     onError={formik.errors.device_function}
                     isRequired
+                    className="w-40"
                   />
                 </div>
 

@@ -10,6 +10,7 @@ import axios from "axios";
 import { Patients } from "@/models/PatientModel";
 import { BarcodeIcon, ScanBarcode, X } from "lucide-react";
 import { UsePatient } from "@/hooks/api/use-patient";
+import { useEffect } from "react";
 
 type CreateNewPatientProps = {
   form: boolean;
@@ -96,6 +97,20 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
       closeModal();
     },
   });
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   return (
     <div

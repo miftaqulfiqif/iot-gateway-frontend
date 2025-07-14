@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bluetooth,
   Cpu,
@@ -39,6 +39,20 @@ export const AddDeviceBluetooth = ({
   const handleSelectDevice = (device: Devices) => {
     setSelectedDevice(device);
   };
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setInactive();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   return (
     <div
