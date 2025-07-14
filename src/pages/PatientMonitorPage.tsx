@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MainLayout from "../components/layouts/main-layout";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   EllipsisVertical,
@@ -25,6 +25,7 @@ import nibpIcon from "@/assets/icons/nibp.png";
 import { PatientMonitorPM9000Section } from "@/components/sections/patient_monitor_devices/pm-9000";
 import { PatientMonitorDS001Section } from "@/components/sections/patient_monitor_devices/ds-001";
 import { SelectPatient } from "@/components/modals/select-patient-modal";
+import { SelectDevicePatientMonitorModal } from "@/components/modals/select-device-patient-monitor-modal";
 
 const pm9000 = [
   {
@@ -79,7 +80,7 @@ const pm9000 = [
 
 const ds001 = [
   {
-    id: "192.168.1.2",
+    id: "192.168.2.1",
     name: "ACB-423",
     patient_id: {
       id: "1",
@@ -96,7 +97,7 @@ const ds001 = [
     rr: 39,
   },
   {
-    id: "192.168.1.2",
+    id: "192.168.2.3",
     name: "ACB-423",
     patient_id: {
       id: "2",
@@ -113,7 +114,7 @@ const ds001 = [
     rr: 39,
   },
   {
-    id: "192.168.1.2",
+    id: "192.168.2.4",
     name: "ACB-423",
     patient_id: {
       id: "3",
@@ -135,11 +136,19 @@ const PatientMonitorPage = () => {
   const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
+  const [showSelectDeviceModal, setShowSelectDeviceModal] = useState(false);
   const [patient, setPatient] = useState<any>(null);
   const [state, setState] = useState("barcode");
   const [limit, setLimit] = useState(10);
 
   const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (patient !== null) {
+      setShowAddPatientModal(false);
+      setShowSelectDeviceModal(true);
+    }
+  }, [patient]);
 
   console.log(patient);
   return (
@@ -325,6 +334,19 @@ const PatientMonitorPage = () => {
         openCreateModal={() => setState("create")}
         patientSelected={(patient) => setPatient(patient)}
         stateSidebar={"Patient Monitor"}
+      />
+      <SelectDevicePatientMonitorModal
+        isActive={showSelectDeviceModal}
+        setInactive={() => {
+          setShowSelectDeviceModal(false);
+          setShowAddPatientModal(true);
+          setPatient(null);
+        }}
+        closeAllModals={() => {
+          setShowSelectDeviceModal(false);
+          setShowAddPatientModal(false);
+        }}
+        patientSelected={patient}
       />
     </MainLayout>
   );

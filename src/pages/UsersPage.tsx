@@ -23,6 +23,7 @@ const dummyUsers = [
     email: "budi.admin@rsprima.com",
     phone: "081234567890",
     username: "budiadmin",
+    role: "admin",
     created_at: "2025-06-01T10:15:00",
   },
   {
@@ -31,6 +32,7 @@ const dummyUsers = [
     email: "siti.marlina@rsprima.com",
     phone: "081234567891",
     username: "sitimarlina",
+    role: "admin",
     created_at: "2025-06-05T14:20:00",
   },
   {
@@ -39,6 +41,7 @@ const dummyUsers = [
     email: "agus.wijaya@rsprima.com",
     phone: "081234567892",
     username: "aguswijaya",
+    role: "doctor",
     created_at: "2025-06-10T09:30:00",
   },
   {
@@ -47,6 +50,7 @@ const dummyUsers = [
     email: "dewi.lestari@rsprima.com",
     phone: "081234567893",
     username: "dewiles",
+    role: "doctor",
     created_at: "2025-06-15T08:45:00",
   },
   {
@@ -55,6 +59,7 @@ const dummyUsers = [
     email: "joko.prabowo@rsprima.com",
     phone: "081234567894",
     username: "jokoprbw",
+    role: "nurse",
     created_at: "2025-06-20T13:00:00",
   },
 ];

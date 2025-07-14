@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bluetooth, EthernetPort, Key, LandPlot, Wifi } from "lucide-react";
 
 type Props = {
@@ -14,6 +14,20 @@ export const AddDeviceModal = ({
   setBluetoothActive,
   setWifiOrLANActive,
 }: Props) => {
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setInactive();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
+
   return (
     <div
       onClick={setInactive}

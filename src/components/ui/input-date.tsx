@@ -23,7 +23,7 @@ export function InputDate(props: InputDateProps) {
   return (
     <label htmlFor="" className="w-full">
       <div className="flex">
-        <p className="text-lg ml-1 mb-2">{label}</p>
+        <p className="text-base ml-1 mb-2">{label}</p>
         {isRequired && <span className="text-red-500">*</span>}
       </div>
       <input

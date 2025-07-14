@@ -68,14 +68,14 @@ export function HistoriesDigitProIda({ chartData }: Props) {
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
-              dataKey="mother_weight"
+              dataKey="weight_mother"
               type="monotone"
               stroke="#3062E5"
               strokeWidth={2}
               dot={true}
             />
             <Line
-              dataKey="baby_weight"
+              dataKey="weight_child"
               type="monotone"
               stroke="#94c4f7"
               strokeWidth={2}

@@ -3,6 +3,7 @@ import gatewayWhiteIcon from "@/assets/icons/gateway-white.png";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { se } from "date-fns/locale";
+import { useToast } from "@/context/ToastContext";
 
 type Props = {
   setAddGatewayModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +18,7 @@ export const SettingGateway = ({
   currentGateway,
   gateways,
 }: Props) => {
+  const { showToast } = useToast();
   const [selectedGateway, setSelectedGateway] = useState<any>(null);
 
   useEffect(() => {
@@ -36,18 +38,35 @@ export const SettingGateway = ({
       </div>
       <div className="">
         <p className="mb-1">Current Gateway</p>
-        <div className="flex w-full gap-2">
-          <div className="flex flex-row w-1/2 justify-between items-center bg-gradient-to-b from-[#4956F4] to-[#6e79f4] text-white rounded-2xl px-4 py-4">
-            <div className="flex items-center gap-4">
-              <img src={gatewayWhiteIcon} alt="" className="w-12 h-12" />
-              <div className="flex flex-col gap-1">
-                <p className="font-semibold">{currentGateway.name}</p>
-                <p className="text-sm">{currentGateway.id}</p>
+        <div className="flex w-full gap-2 h-26">
+          <div className="flex flex-row w-full items-center justify-between  bg-gradient-to-b from-[#4956F4] to-[#6e79f4] text-white rounded-2xl p-1">
+            <div className="flex justify-between w-1/2">
+              <div className="flex gap-4 p-4">
+                <img src={gatewayWhiteIcon} alt="" className="w-12 h-12" />
+                <div className="flex flex-col gap-1">
+                  <p className="font-semibold">{currentGateway.name}</p>
+                  <p className="text-sm">{currentGateway.id}</p>
+                </div>
               </div>
+              <p
+                className={`font-semibold px-4 py-1 rounded-full capitalize h-fit mr-4
+    ${
+      currentGateway.status === "active"
+        ? "bg-green-200 text-green-900"
+        : currentGateway.status === "inactive"
+        ? "bg-gray-200 text-gray-800"
+        : currentGateway.status === "maintenance"
+        ? "bg-yellow-200 text-yellow-900"
+        : ""
+    }`}
+              >
+                {currentGateway.status}
+              </p>
             </div>
-          </div>
-          <div className="w-1/2 border rounded-2xl p-2 border-blue-500 text-blue-500">
-            <p className="text-sm">{currentGateway.description}</p>
+            <div className="w-1/2 h-full border rounded-2xl p-2 bg-white border-blue-500 text-blue-500">
+              <p className="text-sm">Description :</p>
+              <p className="text-sm font-bold">{currentGateway.description}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -93,19 +112,29 @@ export const SettingGateway = ({
                   <p className="text-sm ">{gateway.description}</p>
                 </div>
               </div>
-              {gateway.status === "active" ? (
-                <p className="font-semibold bg-green-200 text-green-900 px-4 py-1 rounded-full">
-                  {gateway.status}
-                </p>
-              ) : (
-                ""
-              )}
+              <p
+                className={`font-semibold px-4 py-1 rounded-full capitalize 
+    ${
+      gateway.status === "active"
+        ? "bg-green-200 text-green-900"
+        : gateway.status === "inactive"
+        ? "bg-gray-200 text-gray-800"
+        : gateway.status === "maintenance"
+        ? "bg-yellow-200 text-yellow-900"
+        : ""
+    }`}
+              >
+                {gateway.status}
+              </p>
             </div>
           ))}
         </div>
         <button
           className="bg-blue-500 text-white p-2 rounded-xl font-bold cursor-pointer mt-10 disabled:bg-blue-200 disabled:cursor-not-allowed"
-          onClick={() => setCurrentGateway(selectedGateway)}
+          onClick={() => {
+            setCurrentGateway(selectedGateway);
+            showToast(null, "Gateway changed successfully", "success");
+          }}
           disabled={
             selectedGateway === null ||
             selectedGateway?.id === currentGateway?.id

@@ -33,43 +33,43 @@ const dummyGateways = [
     id: "GW002",
     name: "Gateway 2",
     description: "Backup gateway ruang ICU",
-    status: "Inactive",
+    status: "inactive",
   },
   {
     id: "GW003",
     name: "Gateway 3",
     description: "Gateway rawat inap lantai 3",
-    status: "Active",
+    status: "active",
   },
   {
     id: "GW004",
     name: "Gateway 4",
     description: "Gateway untuk keperluan lab & diagnostik",
-    status: "Maintenance",
+    status: "maintenance",
   },
   {
     id: "GW005",
     name: "Gateway 4",
     description: "Gateway untuk keperluan lab & diagnostik",
-    status: "Maintenance",
+    status: "maintenance",
   },
   {
     id: "GW006",
     name: "Gateway 4",
     description: "Gateway untuk keperluan lab & diagnostik",
-    status: "Maintenance",
+    status: "maintenance",
   },
   {
     id: "GW007",
     name: "Gateway 4",
     description: "Gateway untuk keperluan lab & diagnostik",
-    status: "Maintenance",
+    status: "maintenance",
   },
   {
     id: "GW008",
     name: "Gateway 4",
     description: "Gateway untuk keperluan lab & diagnostik",
-    status: "Maintenance",
+    status: "maintenance",
   },
 ];
 
@@ -86,7 +86,6 @@ export const MenuItems = ({
   setConfirmModal,
 }: MenuItemsProps) => {
   const { user } = useAuth();
-  const [categoryOpen, setCategoryOpen] = useState<number[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [image, setImage] = useState("");
   const [logo, setLogo] = useState("");

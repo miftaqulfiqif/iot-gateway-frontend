@@ -30,7 +30,7 @@ export const InputText = (props: InputTextProps) => {
     <div className="w-full">
       <label htmlFor={name} className="w-full">
         <div className="flex">
-          <p className="text-lg ml-1 mb-2">{label}</p>
+          <p className="text-base ml-1 mb-2">{label}</p>
           {isRequired && <span className="text-red-500">*</span>}
         </div>
         <div className={`rounded-lg focus-within:outline-1 ${className}`}>

@@ -272,20 +272,16 @@ const DetailPatientPage = () => {
               <div className="flex gap-4">
                 <div className="rounded-full bg-gray-200 w-20 h-20"></div>
                 <div className="flex flex-col gap-2 justify-end">
-                  <p className="text-4xl font-bold">{dummyPatient.name}</p>
+                  <p className="text-2xl font-bold">{dummyPatient.name}</p>
                   <p className="text-sm">{patientId} </p>
                 </div>
               </div>
-              <div
-                className="flex gap-2 rounded-full border items-center h-fit p-4 cursor-pointer"
-                onClick={() => setShow(!show)}
-              >
-                {show ? (
-                  <Eye className="w-6 h-6" />
-                ) : (
-                  <EyeClosed className="w-6 h-6" />
-                )}
-                <p className="h-fit">Hide Info</p>
+              <div className="flex gap-2 rounded-xl border items-center h-fit p-4 cursor-pointer bg-white text-black shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16),inset_-6px_-6px_5px_rgba(255,255,255,1)]">
+                <p className="font-bold">312</p>
+                <p>-</p>
+                <p className="bg-green-200 text-green-900 rounded-2xl p-2 w-20 text-center">
+                  ICU
+                </p>
               </div>
             </div>
             <p className="mt-4 font-bold">Last Measurement</p>
@@ -298,9 +294,9 @@ const DetailPatientPage = () => {
                 </div>
                 <div className="flex gap-2 items-end">
                   <div className="flex gap-2 items-end bg-[#EDEDF9] rounded-2xl p-2 shadow-[6px_6px_5px_rgba(0,0,0,0.16),-6px_-6px_5px_rgba(255,255,255,1)]">
-                    <p className="text-6xl font-semibold">120</p>
-                    <p className="text-6xl">/</p>
-                    <p className="text-6xl font-semibold">80</p>
+                    <p className="text-5xl font-semibold">120</p>
+                    <p className="text-5xl">/</p>
+                    <p className="text-5xl font-semibold">80</p>
                     <p className="text-sm">mmHg</p>
                   </div>
                 </div>

@@ -40,6 +40,11 @@ export const dummyRooms = [
         entryDate: "3 August 2025",
         status: "Observe",
       },
+      {
+        name: "Rina Aulia",
+        entryDate: "3 August 2025",
+        status: "Observe",
+      },
     ],
   },
   {

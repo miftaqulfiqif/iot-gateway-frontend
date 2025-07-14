@@ -77,10 +77,7 @@ export const PatientMonitorPM9000Section = ({
                 <li
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                   onClick={() => {
-                    window.open(
-                      `http://localhost:5173/device/pasien_monitor_9000/${id_device}`,
-                      "_blank"
-                    );
+                    window.location.href = `/device/pasien_monitor_9000/${id_device}`;
                   }}
                 >
                   <div className="flex items-center gap-2">
