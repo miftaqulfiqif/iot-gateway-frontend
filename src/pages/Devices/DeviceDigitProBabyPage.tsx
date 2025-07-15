@@ -51,6 +51,7 @@ const DeviceDigitProBabyPage = () => {
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
+    nik: "",
     barcode_image: "",
     name: "",
     gender: "",

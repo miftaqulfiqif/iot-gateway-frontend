@@ -25,7 +25,7 @@ import rrIcon from "@/assets/icons/lungs.png";
 // import { HeartRateDoppler } from "@/components/ui/chart-doppler-realtime";
 import { useEffect, useState } from "react";
 import { Patients } from "@/models/PatientModel";
-import { HistoryDS001 } from "@/components/tables/history-ds001";
+import { HistoryDS001Nibp } from "@/components/tables/history-ds001-nibp";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useParams } from "react-router-dom";
 
@@ -100,6 +100,7 @@ const DeviceDS001Page = () => {
   const { dataDS001 } = useSocketHandler({ ipDevice: ip });
   const [patient, setPatient] = useState<Patients>({
     id: "",
+    nik: "",
     barcode_image: "",
     name: "",
     gender: "",
@@ -122,8 +123,6 @@ const DeviceDS001Page = () => {
     }
   }, []);
 
-  console.log("dataDS001 : ", dataDS001);
-
   return (
     <MainLayout title="DS 001" state="Patient Monitor">
       <div className="flex flex-col gap-2 pb-5">
@@ -133,7 +132,7 @@ const DeviceDS001Page = () => {
             <PatientInfo patient={patient} isPatientMonitor />
             <p className="text-xl mt-7">History NIBP</p>
             <div className="shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl mt-2">
-              <HistoryDS001 historiesData={historiesData.slice(0, 8)} />
+              <HistoryDS001Nibp historiesData={historiesData.slice(0, 8)} />
             </div>
           </div>
           <div className="flex flex-col gap-2 w-1/2">

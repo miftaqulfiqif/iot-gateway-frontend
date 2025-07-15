@@ -11,15 +11,14 @@ type HistoryItem = {
   timestamp: string;
   systolic: number;
   diastolic: number;
-  map: number;
-  pulseRate: number;
+  mean: number;
 };
 
 type Props = {
   historiesData: HistoryItem[];
 };
 
-export function HistoryDS001({ historiesData }: Props) {
+export function HistoryPM9000Nibp({ historiesData }: Props) {
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp);
     return date.toLocaleString("en-US", {
@@ -46,10 +45,7 @@ export function HistoryDS001({ historiesData }: Props) {
               Diastolic
             </TableHead>
             <TableHead className="text-center whitespace-nowrap px-3 py-2">
-              MAP
-            </TableHead>
-            <TableHead className="text-center whitespace-nowrap px-3 py-2">
-              Pulse Rate
+              Mean
             </TableHead>
             <TableHead className="text-center whitespace-nowrap px-3 py-2">
               Time
@@ -59,7 +55,7 @@ export function HistoryDS001({ historiesData }: Props) {
         <TableBody className="text-gray-800 text-sm">
           {historiesData.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-4 text-gray-400">
+              <TableCell colSpan={5} className="text-center py-4 text-gray-400">
                 No data available
               </TableCell>
             </TableRow>
@@ -76,13 +72,10 @@ export function HistoryDS001({ historiesData }: Props) {
                   {item.diastolic}
                 </TableCell>
                 <TableCell className="text-center px-3 py-2">
-                  {item.map}
+                  {item.mean}
                 </TableCell>
                 <TableCell className="text-center px-3 py-2">
-                  {item.pulseRate}
-                </TableCell>
-                <TableCell className="text-center px-3 py-2">
-                  {item.timestamp}
+                  {formatDate(item.timestamp)}
                 </TableCell>
               </TableRow>
             ))

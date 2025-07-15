@@ -29,6 +29,291 @@ import ChartDopplerRealtime from "@/components/charts/chart-doppler-realtime";
 import { data, useParams } from "react-router-dom";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import HeartRateChart from "@/components/heart-rate-chart";
+import { HistoryPM9000Nibp } from "@/components/tables/history-pm9000-nibp";
+import { HistoriesPm900NibpChart } from "@/components/charts/histories-pm900-nibp-chart";
+import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
+
+const historiesDataNibp = [
+  {
+    systolic: 118,
+    diastolic: 76,
+    mean: 90,
+    timestamp: "2023-09-01 08:00:00",
+  },
+  {
+    systolic: 122,
+    diastolic: 78,
+    mean: 92,
+    timestamp: "2023-09-02 08:00:00",
+  },
+  {
+    systolic: 125,
+    diastolic: 80,
+    mean: 95,
+    timestamp: "2023-09-03 08:00:00",
+  },
+  {
+    systolic: 130,
+    diastolic: 82,
+    mean: 98,
+    timestamp: "2023-09-04 08:00:00",
+  },
+  {
+    systolic: 128,
+    diastolic: 79,
+    mean: 95,
+    timestamp: "2023-09-05 08:00:00",
+  },
+  {
+    systolic: 115,
+    diastolic: 75,
+    mean: 88,
+    timestamp: "2023-09-06 08:00:00",
+  },
+  {
+    systolic: 119,
+    diastolic: 77,
+    mean: 90,
+    timestamp: "2023-09-07 08:00:00",
+  },
+  {
+    systolic: 124,
+    diastolic: 81,
+    mean: 96,
+    timestamp: "2023-09-08 08:00:00",
+  },
+  {
+    systolic: 127,
+    diastolic: 83,
+    mean: 97,
+    timestamp: "2023-09-09 08:00:00",
+  },
+  {
+    systolic: 140,
+    diastolic: 92,
+    mean: 97,
+    timestamp: "2023-09-09 08:00:00",
+  },
+];
+
+const historiesDataPM9000 = [
+  {
+    id: "1",
+    patient_handler: {
+      patient: {
+        name: "Andi Wijaya",
+      },
+    },
+    ecg: 100,
+    spo2: 98,
+    resp: 18,
+    systolic: 120,
+    diastolic: 80,
+    mean: 93,
+    temp1: 36.5,
+    temp2: 36.8,
+    delta_temp: 0.3,
+    timestamp: "2023-09-01T08:30:00Z",
+  },
+  {
+    id: "2",
+    patient_handler: {
+      patient: {
+        name: "Siti Aminah",
+      },
+    },
+    ecg: 92,
+    spo2: 95,
+    resp: 22,
+    systolic: 135,
+    diastolic: 88,
+    mean: 104,
+    temp1: 37.2,
+    temp2: 37.4,
+    delta_temp: 0.2,
+    timestamp: "2023-09-02T09:00:00Z",
+  },
+  {
+    id: "3",
+    patient_handler: {
+      patient: {
+        name: "Budi Santoso",
+      },
+    },
+    ecg: 92,
+    spo2: 97,
+    resp: 16,
+    systolic: 110,
+    diastolic: 72,
+    mean: 85,
+    temp1: 36.9,
+    temp2: 37.1,
+    delta_temp: 0.2,
+    timestamp: "2023-09-03T09:45:00Z",
+  },
+  {
+    id: "4",
+    patient_handler: {
+      patient: {
+        name: "Rina Marlina",
+      },
+    },
+    ecg: 102,
+    spo2: 99,
+    resp: 19,
+    systolic: 125,
+    diastolic: 84,
+    mean: 98,
+    temp1: 37.0,
+    temp2: 36.9,
+    delta_temp: -0.1,
+    timestamp: "2023-09-04T10:15:00Z",
+  },
+  {
+    id: "5",
+    patient_handler: {
+      patient: {
+        name: "Dewi Lestari",
+      },
+    },
+    ecg: 102,
+    spo2: 96,
+    resp: 20,
+    systolic: 118,
+    diastolic: 79,
+    mean: 92,
+    temp1: 36.8,
+    temp2: 37.0,
+    delta_temp: 0.2,
+    timestamp: "2023-09-05T11:00:00Z",
+  },
+  {
+    id: "6",
+    patient_handler: {
+      patient: {
+        name: "Agus Pratama",
+      },
+    },
+    ecg: 92,
+    spo2: 97,
+    resp: 17,
+    systolic: 122,
+    diastolic: 82,
+    mean: 95,
+    temp1: 36.7,
+    temp2: 36.9,
+    delta_temp: 0.2,
+    timestamp: "2023-09-06T08:30:00Z",
+  },
+  {
+    id: "7",
+    patient_handler: {
+      patient: {
+        name: "Lina Rahmawati",
+      },
+    },
+    ecg: 130,
+    spo2: 94,
+    resp: 21,
+    systolic: 130,
+    diastolic: 85,
+    mean: 100,
+    temp1: 37.5,
+    temp2: 37.8,
+    delta_temp: 0.3,
+    timestamp: "2023-09-07T09:00:00Z",
+  },
+  {
+    id: "8",
+    patient_handler: {
+      patient: {
+        name: "Joko Hermawan",
+      },
+    },
+    ecg: 92,
+    spo2: 98,
+    resp: 18,
+    systolic: 117,
+    diastolic: 78,
+    mean: 91,
+    temp1: 36.6,
+    temp2: 36.8,
+    delta_temp: 0.2,
+    timestamp: "2023-09-08T09:45:00Z",
+  },
+  {
+    id: "9",
+    patient_handler: {
+      patient: {
+        name: "Yuni Arlina",
+      },
+    },
+    ecg: 108,
+    spo2: 93,
+    resp: 23,
+    systolic: 140,
+    diastolic: 90,
+    mean: 107,
+    temp1: 38.1,
+    temp2: 38.3,
+    delta_temp: 0.2,
+    timestamp: "2023-09-09T10:15:00Z",
+  },
+  {
+    id: "10",
+    patient_handler: {
+      patient: {
+        name: "Rangga Saputra",
+      },
+    },
+    ecg: 92,
+    spo2: 96,
+    resp: 16,
+    systolic: 108,
+    diastolic: 70,
+    mean: 83,
+    temp1: 36.4,
+    temp2: 36.6,
+    delta_temp: 0.2,
+    timestamp: "2023-09-10T11:00:00Z",
+  },
+  {
+    id: "11",
+    patient_handler: {
+      patient: {
+        name: "Fitri Nuraini",
+      },
+    },
+    ecg: 108,
+    spo2: 99,
+    resp: 18,
+    systolic: 124,
+    diastolic: 80,
+    mean: 95,
+    temp1: 36.9,
+    temp2: 36.9,
+    delta_temp: 0.0,
+    timestamp: "2023-09-11T08:30:00Z",
+  },
+  {
+    id: "12",
+    patient_handler: {
+      patient: {
+        name: "Arif Hidayat",
+      },
+    },
+    ecg: 108,
+    spo2: 97,
+    resp: 20,
+    systolic: 126,
+    diastolic: 82,
+    mean: 97,
+    temp1: 37.0,
+    temp2: 37.1,
+    delta_temp: 0.1,
+    timestamp: "2023-09-12T09:00:00Z",
+  },
+];
 
 const chartData: { heart_rate: number }[] = [
   { heart_rate: 75 },
@@ -49,6 +334,7 @@ const DevicePM9000Page = () => {
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
+    nik: "",
     barcode_image: "",
     name: "",
     gender: "",
@@ -71,15 +357,13 @@ const DevicePM9000Page = () => {
     }
   }, []);
 
-  console.log(dataPM9000Nibp);
-
   return (
     <MainLayout title="PM 9000" state="Patient Monitor">
-      <div className="flex flex-col h-full gap-6">
+      <div className="flex flex-col h-full gap-6 ">
         {/* Result */}
         <div className="w-full">
           <div className="flex flex-row gap-6">
-            <div className="flex flex-col gap-2 pb-5 mt-3 w-1/2">
+            <div className="flex flex-col gap-2 mt-3 w-1/2">
               <div className="w-full">
                 <p className="font-semibold text-xl">Patient Info</p>
                 <PatientInfo patient={patient} isPatientMonitor />
@@ -252,6 +536,34 @@ const DevicePM9000Page = () => {
                 <HeartRateChart chartData={chartData} />
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* History */}
+        <div className="w-full pb-5 ">
+          {/* NIBP */}
+          <p className="text-xl mb-2">History NIBP</p>
+          <div className="flex flex-row gap-6">
+            <div className="w-1/2">
+              <HistoryPM9000Nibp historiesData={historiesDataNibp} />
+            </div>
+            <div className="w-1/2">
+              <HistoriesPm900NibpChart chartData={historiesDataNibp} />
+            </div>
+          </div>
+          {/* NIBP */}
+          <p className="text-xl mt-10 mb-2">History NIBP</p>
+          <div className="flex flex-row gap-6">
+            <TableHistoryPM9000
+              data={historiesDataPM9000}
+              goToPreviousPage={() => {}}
+              goToNextPage={() => {}}
+              goToPage={() => {}}
+              currentPage={1}
+              totalPage={1}
+              limit={10}
+              isDetailPatient
+            />
           </div>
         </div>
       </div>
