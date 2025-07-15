@@ -1,4 +1,6 @@
 import MainLayout from "@/components/layouts/main-layout";
+import UpdateRoomModal from "@/components/modals/room_page/update-room-modal";
+import { id } from "date-fns/locale";
 import {
   User,
   Bed,
@@ -10,21 +12,29 @@ import {
   History,
   SquarePen,
 } from "lucide-react";
+import { useState } from "react";
 
 const dummyData = {
   room: {
+    id: 1,
     number: "312",
     type: "ICU",
     status: "Full",
     capacity: 5,
     occupied: 5,
-    nurseManager: "dr. Yulia Pratiwi",
-    doctor: "dr. Yulia Pratiwi",
+    nurseManager: {
+      id: "1",
+      name: "Juleha",
+    },
+    doctor: {
+      id: "2",
+      name: "dr. Yulia Pratiwi",
+    },
   },
   stats: {
-    masukHariIni: 2,
-    keluarHariIni: 1,
-    observasi: 1,
+    admittedToday: 2,
+    dischargedToday: 1,
+    observation: 1,
   },
   patients: [
     { name: "Andi Saputra", admittedAt: "2025-07-05", status: "Aktif" },
@@ -42,6 +52,8 @@ const dummyData = {
 
 export default function DetailRoomPage() {
   const { room, stats, patients, activityLog } = dummyData;
+
+  const [updateRoomModal, setUpdateRoomModal] = useState(false);
 
   return (
     <MainLayout title="Detail Room" state="Rooms">
@@ -69,12 +81,12 @@ export default function DetailRoomPage() {
           <StatCard
             icon={<Clock className="w-6 h-6" />}
             title="Admissions Today"
-            value={stats.masukHariIni}
+            value={stats.admittedToday}
           />
           <StatCard
             icon={<Activity className="w-6 h-6" />}
             title="Observations Today"
-            value={stats.observasi}
+            value={stats.observation}
           />
         </div>
         <div className="flex gap-6">
@@ -86,7 +98,10 @@ export default function DetailRoomPage() {
                   <NotebookTabs className="w-6 h-6 text-blue-600" />
                   <h2 className="text-lg font-semibold"> Room Information</h2>
                 </div>
-                <div className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-full cursor-pointer">
+                <div
+                  className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-full cursor-pointer"
+                  onClick={() => setUpdateRoomModal(true)}
+                >
                   <SquarePen className="w-6 h-6 " />
                   <h2 className="text-lg font-semibold"> Edit room</h2>
                 </div>
@@ -96,13 +111,13 @@ export default function DetailRoomPage() {
                   <strong>Room Number:</strong> {room.number}
                 </p>
                 <p>
-                  <strong>Nurse Manager:</strong> {room.nurseManager}
+                  <strong>Nurse Manager:</strong> {room.nurseManager.name}
                 </p>
                 <p>
                   <strong>Type:</strong> {room.type}
                 </p>
                 <p>
-                  <strong>Doctor:</strong> {room.doctor}
+                  <strong>Doctor:</strong> {room.doctor.name}
                 </p>
               </div>
             </div>
@@ -160,6 +175,11 @@ export default function DetailRoomPage() {
           </div>
         </div>
       </div>
+      <UpdateRoomModal
+        isOpen={updateRoomModal}
+        onClose={() => setUpdateRoomModal(false)}
+        room={room}
+      />
     </MainLayout>
   );
 }
