@@ -69,6 +69,20 @@ export const useDigitProIDA = () => {
     []
   );
 
+  const fetchDataIDAByPatientId = useCallback(
+    async (patientId: string, page: number) => {
+      // fetch data
+    },
+    [fetchDataIDA]
+  );
+
+  const fetchDataIDAByDoctorId = useCallback(
+    async (doctorId: string, page: number) => {
+      // fetch data
+    },
+    [fetchDataIDA]
+  );
+
   const createHistoryDigitProIDA = async ({
     patient_id,
     baby_id,
@@ -109,6 +123,8 @@ export const useDigitProIDA = () => {
   return {
     historiesDigitProIDA,
     fetchDataIDA,
+    fetchDataIDAByPatientId,
+    fetchDataIDAByDoctorId,
     limitIDA,
     searchIDA,
     currentPageIDA,

@@ -28,6 +28,8 @@ import { Patients } from "@/models/PatientModel";
 import { HistoryDS001Nibp } from "@/components/tables/history-ds001-nibp";
 import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useParams } from "react-router-dom";
+import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
+import { TableHistoryDS001 } from "@/components/tables/history-ds001";
 
 const historiesData = [
   {
@@ -93,6 +95,103 @@ const historiesData = [
     map: 100,
     pulseRate: 60,
   },
+  {
+    timestamp: "2023-09-01 10:00:00",
+    systolic: 120,
+    diastolic: 80,
+    map: 100,
+    pulseRate: 60,
+  },
+  {
+    timestamp: "2023-09-01 10:00:00",
+    systolic: 120,
+    diastolic: 80,
+    map: 100,
+    pulseRate: 60,
+  },
+];
+
+const historiesDataPM9000 = [
+  {
+    id: "1",
+    patient_handler: {
+      patient: {
+        name: "Andi Wijaya",
+      },
+    },
+    systolic: 120,
+    diastolic: 80,
+    mean: 93,
+    pulse_rate: 75,
+    temp: 36.8,
+    spo2: 98,
+    pr_spo2: 75,
+    timestamp: "2025-07-14T08:30:00Z",
+  },
+  {
+    id: "2",
+    patient_handler: {
+      patient: {
+        name: "Siti Handayani",
+      },
+    },
+    systolic: 130,
+    diastolic: 85,
+    mean: 100,
+    pulse_rate: 82,
+    temp: 37.1,
+    spo2: 96,
+    pr_spo2: 82,
+    timestamp: "2025-07-14T09:45:00Z",
+  },
+  {
+    id: "3",
+    patient_handler: {
+      patient: {
+        name: "Budi Santoso",
+      },
+    },
+    systolic: 110,
+    diastolic: 70,
+    mean: 83,
+    pulse_rate: 68,
+    temp: 36.5,
+    spo2: 99,
+    pr_spo2: 68,
+    timestamp: "2025-07-14T10:15:00Z",
+  },
+  {
+    id: "4",
+    patient_handler: {
+      patient: {
+        name: "Dewi Lestari",
+      },
+    },
+    systolic: 145,
+    diastolic: 95,
+    mean: 112,
+    pulse_rate: 90,
+    temp: 38.2,
+    spo2: 94,
+    pr_spo2: 90,
+    timestamp: "2025-07-14T11:10:00Z",
+  },
+  {
+    id: "5",
+    patient_handler: {
+      patient: {
+        name: "Agus Pramono",
+      },
+    },
+    systolic: 125,
+    diastolic: 78,
+    mean: 94,
+    pulse_rate: 72,
+    temp: 36.9,
+    spo2: 97,
+    pr_spo2: 72,
+    timestamp: "2025-07-14T12:00:00Z",
+  },
 ];
 
 const DeviceDS001Page = () => {
@@ -132,7 +231,7 @@ const DeviceDS001Page = () => {
             <PatientInfo patient={patient} isPatientMonitor />
             <p className="text-xl mt-7">History NIBP</p>
             <div className="shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl mt-2">
-              <HistoryDS001Nibp historiesData={historiesData.slice(0, 8)} />
+              <HistoryDS001Nibp historiesData={historiesData.slice(0, 10)} />
             </div>
           </div>
           <div className="flex flex-col gap-2 w-1/2">
@@ -275,7 +374,23 @@ const DeviceDS001Page = () => {
               </div>
             </div>
 
-            <HeartPulseChart className="h-84 mt-2" />
+            <HeartPulseChart className="h-[410px] mt-2" />
+          </div>
+        </div>
+        <div className="w-full pb-5 ">
+          {/* NIBP */}
+          <p className="text-xl mt-10 mb-2">History</p>
+          <div className="flex flex-row gap-6">
+            <TableHistoryDS001
+              data={historiesDataPM9000}
+              goToPreviousPage={() => {}}
+              goToNextPage={() => {}}
+              goToPage={() => {}}
+              currentPage={1}
+              totalPage={1}
+              limit={10}
+              isDetailPatient
+            />
           </div>
         </div>
       </div>

@@ -10,8 +10,14 @@ import { useDevices } from "@/hooks/api/use-device";
 import { ConnectingDeviceModal } from "@/components/modals/connecting-device-modal";
 
 function Devices() {
-  const { devices, getAllDevices, deleteDeviceBluetooth, deleteDeviceTcpIP } =
-    useDevices();
+  const {
+    devices,
+    getAllDevices,
+    deleteDeviceBluetooth,
+    deleteDeviceTcpIP,
+    updateDeviceBluetooth,
+    updateDeviceTcpIP,
+  } = useDevices();
 
   const [modalAddDevice, setModalAddDevice] = useState(false);
   const [modalAddDeviceBluetooth, setModalAddDeviceBluetooth] = useState(false);
@@ -22,10 +28,6 @@ function Devices() {
     getAllDevices();
   }, [getAllDevices]);
 
-  const showAddDevice = () => {
-    setModalAddDevice(true);
-  };
-
   return (
     <MainLayout title="Devices" state="Devices">
       <div className="flex flex-col mb-5">
@@ -35,7 +37,7 @@ function Devices() {
             {/* Button Add Device */}
             <div
               className="flex flex-row items-center bg-[#2B7FFF] rounded-2xl text-white font-bold py-2 px-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)] gap-2 cursor-pointer"
-              onClick={showAddDevice}
+              onClick={() => setModalAddDevice(true)}
             >
               <Plus className="w-8 h-8" />
               <p>Add Device</p>
@@ -57,13 +59,8 @@ function Devices() {
                       deviceName={device.name || device.device}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
-                      onDelete={() => {
-                        if (device.connection === "bluetooth") {
-                          deleteDeviceBluetooth(device.id);
-                        } else {
-                          deleteDeviceTcpIP(device.id);
-                        }
-                      }}
+                      onDelete={() => deleteDeviceBluetooth(device.id)}
+                      onUpdate={() => updateDeviceBluetooth}
                     />
                   ))
               ) : (
@@ -89,13 +86,8 @@ function Devices() {
                       deviceName={device.name || device.device}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
-                      onDelete={() => {
-                        if (device.connection === "bluetooth") {
-                          deleteDeviceBluetooth(device.id);
-                        } else {
-                          deleteDeviceTcpIP(device.id);
-                        }
-                      }}
+                      onDelete={() => deleteDeviceTcpIP(device.id)}
+                      onUpdate={() => updateDeviceBluetooth}
                     />
                   ))
               ) : (
@@ -124,7 +116,6 @@ function Devices() {
         setInactive={() => setModalAddDeviceBluetooth(false)}
         getAllDevices={getAllDevices}
       />
-
       <AddDeviceLan
         isActive={modalAddDeviceWifiOrLan}
         setInactive={() => setModalAddDeviceWifiOrLan(false)}

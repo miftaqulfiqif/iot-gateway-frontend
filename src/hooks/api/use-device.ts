@@ -45,7 +45,14 @@ export const useDevices = () => {
     }
   };
 
-  const updateDevice = async (deviceId: string) => {
+  const updateDeviceBluetooth = async (deviceId: string) => {
+    try {
+      alert("Device updated successfully! : " + deviceId);
+    } catch (error) {
+      console.error("Error updating device:", error);
+    }
+  };
+  const updateDeviceTcpIP = async (deviceId: string) => {
     try {
       alert("Device updated successfully! : " + deviceId);
     } catch (error) {
@@ -58,6 +65,7 @@ export const useDevices = () => {
     devices,
     deleteDeviceBluetooth,
     deleteDeviceTcpIP,
-    updateDevice,
+    updateDeviceBluetooth,
+    updateDeviceTcpIP,
   };
 };

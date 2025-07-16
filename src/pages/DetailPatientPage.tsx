@@ -329,7 +329,6 @@ const DetailPatientPage = () => {
             </div>
           </div>
           {/* Detail Info */}
-
           <div className="bg-white w-full min-h-full rounded-2xl shadow-lg p-4">
             <p className="text-lg font-bold">Detail info patient</p>
             <div className="mt-4">

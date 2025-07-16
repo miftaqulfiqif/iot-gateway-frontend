@@ -69,6 +69,20 @@ export const useDoppler = () => {
     []
   );
 
+  const fetchDataDopplerByPatientId = useCallback(
+    async (patientId: string, page: number) => {
+      // fetch data
+    },
+    [fetchDataDoppler]
+  );
+
+  const fetchDataDopplerByDoctorId = useCallback(
+    async (doctorId: string, page: number) => {
+      // fetch data
+    },
+    [fetchDataDoppler]
+  );
+
   const createHistoryDoppler = async ({
     patient_id,
     baby_id,
@@ -109,6 +123,8 @@ export const useDoppler = () => {
   return {
     historiesDoppler,
     fetchDataDoppler,
+    fetchDataDopplerByPatientId,
+    fetchDataDopplerByDoctorId,
     limitDoppler,
     searchDoppler,
     currentPageDoppler,

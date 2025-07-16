@@ -543,16 +543,21 @@ const DevicePM9000Page = () => {
         <div className="w-full pb-5 ">
           {/* NIBP */}
           <p className="text-xl mb-2">History NIBP</p>
-          <div className="flex flex-row gap-6">
+          <div className="flex flex-row gap-6 items-stretch min-h-[450px]">
             <div className="w-1/2">
-              <HistoryPM9000Nibp historiesData={historiesDataNibp} />
+              <div className="h-full">
+                <HistoryPM9000Nibp historiesData={historiesDataNibp} />
+              </div>
             </div>
             <div className="w-1/2">
-              <HistoriesPm900NibpChart chartData={historiesDataNibp} />
+              <div className="h-full">
+                <HistoriesPm900NibpChart chartData={historiesDataNibp} />
+              </div>
             </div>
           </div>
+
           {/* NIBP */}
-          <p className="text-xl mt-10 mb-2">History NIBP</p>
+          <p className="text-xl mt-10 mb-2">History</p>
           <div className="flex flex-row gap-6">
             <TableHistoryPM9000
               data={historiesDataPM9000}
@@ -560,7 +565,7 @@ const DevicePM9000Page = () => {
               goToNextPage={() => {}}
               goToPage={() => {}}
               currentPage={1}
-              totalPage={1}
+              totalPage={2}
               limit={10}
               isDetailPatient
             />

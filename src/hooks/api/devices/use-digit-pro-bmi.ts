@@ -68,6 +68,19 @@ export const useDigitProBMI = () => {
     []
   );
 
+  const fetchDataBMIByPatientId = useCallback(
+    async (patientId: string, page: number) => {
+      // fetch data
+    },
+    [fetchDataBMI]
+  );
+  const fetchDataBMIByDoctorId = useCallback(
+    async (doctorId: string, page: number) => {
+      // fetch data
+    },
+    [fetchDataBMI]
+  );
+
   const createHistoryDigitProBMI = async ({
     patient_id,
     device_id,
@@ -143,6 +156,8 @@ export const useDigitProBMI = () => {
     limitBMI,
     searchBMI,
     fetchDataBMI,
+    fetchDataBMIByPatientId,
+    fetchDataBMIByDoctorId,
     createHistoryDigitProBMI,
   };
 };

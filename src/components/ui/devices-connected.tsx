@@ -1,4 +1,3 @@
-import { useDevices } from "@/hooks/api/use-device";
 import {
   Bluetooth,
   EllipsisVertical,
@@ -7,6 +6,7 @@ import {
   Trash,
   Wifi,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type DevicesConnectedProps = {
   device: string;
@@ -15,6 +15,7 @@ type DevicesConnectedProps = {
   deviceConnection: string;
   deviceFunction: string;
   onDelete: () => void;
+  onUpdate: () => void;
 };
 export const DevicesConnected = ({
   device,
@@ -23,8 +24,9 @@ export const DevicesConnected = ({
   deviceConnection,
   deviceFunction,
   onDelete,
+  onUpdate,
 }: DevicesConnectedProps) => {
-  const { deleteDeviceBluetooth, updateDevice } = useDevices();
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-1 bg-white p-4 rounded-2xl w-full border">
       <div className="flex flex-row gap-2 items-center justify-between">
@@ -69,14 +71,16 @@ export const DevicesConnected = ({
               <li
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
-                  // Add edit functionality here
-                  updateDevice(deviceMac);
+                  deviceConnection === "bluetooth"
+                    ? navigate("/device/bluetooth/" + deviceMac)
+                    : null;
+
+                  deviceConnection !== "bluetooth"
+                    ? navigate("/device/tcpip/" + deviceMac)
+                    : null; 
                 }}
               >
-                <div className="flex items-center gap-2">
-                  <SquarePen className="w-5 h-5" />
-                  Edit
-                </div>
+                <div className="flex items-center gap-2">Detail</div>
               </li>
               <li
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"

@@ -25,6 +25,12 @@ import { RoomsPage } from "./pages/RoomsPage.tsx";
 import DetailRoomPage from "./pages/DetailRoomPage.tsx";
 import { UsersPage } from "./pages/UsersPage.tsx";
 import DetailUserPage from "./pages/DetailUserPage.tsx";
+import NotFoundPage from "./pages/error/NotFoundPage.tsx";
+import DetailUserAdminPage from "./pages/DetailUserAdminPage.tsx";
+import DetailUserDoctorPage from "./pages/DetailUserDoctorPage.tsx";
+import DetailUserNursePage from "./pages/DetailUserNursePage.tsx";
+import { DetailBluetoothDevice } from "./pages/Device/DetailBluetoothDevice.tsx";
+import { DetailTcpIpDevice } from "./pages/Device/DetailTcpIpDevice.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -43,6 +49,12 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/measurement" element={<MeasurementPage />} />
               <Route path="/patient-monitor" element={<PatientMonitorPage />} />
               <Route path="/devices" element={<Devices />} />
+              {/* Detail Device */}
+              <Route
+                path="/device/bluetooth/:mac"
+                element={<DetailBluetoothDevice />}
+              />
+              <Route path="/device/tcpip/:ip" element={<DetailTcpIpDevice />} />
               <Route path="/patients" element={<Patients />} />
               <Route
                 path="/detail-patient/:patientId"
@@ -55,6 +67,18 @@ createRoot(document.getElementById("root")!).render(
               <Route
                 path="/users/detail-user/:userId"
                 element={<DetailUserPage />}
+              />
+              <Route
+                path="/users/detail-user/admin/:userId"
+                element={<DetailUserAdminPage />}
+              />
+              <Route
+                path="/users/detail-user/doctor/:userId"
+                element={<DetailUserDoctorPage />}
+              />
+              <Route
+                path="/users/detail-user/nurse/:userId"
+                element={<DetailUserNursePage />}
               />
               <Route
                 path="/measurement-histories"
@@ -86,6 +110,8 @@ createRoot(document.getElementById("root")!).render(
                 path="/device/diagnostic_station_001/:ip"
                 element={<DeviceDS001Page />}
               />
+
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </Router>
