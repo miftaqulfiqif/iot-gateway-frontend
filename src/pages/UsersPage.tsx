@@ -36,7 +36,7 @@ const dummyUsers = [
     created_at: "2025-06-05T14:20:00",
   },
   {
-    id: "ADM003",
+    id: "DCT003",
     name: "Agus Wijaya",
     email: "agus.wijaya@rsprima.com",
     phone: "081234567892",
@@ -45,7 +45,7 @@ const dummyUsers = [
     created_at: "2025-06-10T09:30:00",
   },
   {
-    id: "ADM004",
+    id: "DCT004",
     name: "Dewi Lestari",
     email: "dewi.lestari@rsprima.com",
     phone: "081234567893",
@@ -54,7 +54,7 @@ const dummyUsers = [
     created_at: "2025-06-15T08:45:00",
   },
   {
-    id: "ADM005",
+    id: "NUR005",
     name: "Joko Prabowo",
     email: "joko.prabowo@rsprima.com",
     phone: "081234567894",

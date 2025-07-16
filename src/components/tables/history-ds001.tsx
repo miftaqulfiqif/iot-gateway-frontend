@@ -62,7 +62,7 @@ type Props = {
   isDetailPatient?: boolean;
 };
 
-export const TableHistoryPM9000 = ({
+export const TableHistoryDS001 = ({
   data,
   goToPreviousPage,
   goToNextPage,
@@ -93,16 +93,16 @@ export const TableHistoryPM9000 = ({
                 Patient Name
               </TableHead>
             )}
-            <TableHead className="text-center font-bold">ECG</TableHead>
-            <TableHead className="text-center font-bold">Sp02</TableHead>
-            <TableHead className="text-center font-bold">RESP</TableHead>
             <TableHead className="text-center font-bold">Systolic</TableHead>
             <TableHead className="text-center font-bold">Diastolic</TableHead>
             <TableHead className="text-center font-bold">Mean</TableHead>
-            <TableHead className="text-center font-bold">Temp 1</TableHead>
-            <TableHead className="text-center font-bold">Temp 2</TableHead>
-            <TableHead className="text-center font-bold">Delta Temp</TableHead>
-            <TableHead className="text-center font-bold">Date / Time</TableHead>
+            <TableHead className="text-center font-bold">Pulse Rate</TableHead>
+            <TableHead className="text-center font-bold">Temp</TableHead>
+            <TableHead className="text-center font-bold">Spo2</TableHead>
+            <TableHead className="text-center font-bold">PR Spo2</TableHead>
+            <TableHead className="text-center font-bold">
+              Respiratory Rate
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -132,19 +132,17 @@ export const TableHistoryPM9000 = ({
                   {!isDetailPatient && (
                     <TableCell className="text-left">{patient?.name}</TableCell>
                   )}
-                  <TableCell className="text-center">{item.ecg}</TableCell>
-                  <TableCell className="text-center">{item.spo2}</TableCell>
-                  <TableCell className="text-center">{item.resp}</TableCell>
                   <TableCell className="text-center">{item.systolic}</TableCell>
                   <TableCell className="text-center">
                     {item.diastolic}
                   </TableCell>
                   <TableCell className="text-center">{item.mean}</TableCell>
-                  <TableCell className="text-center">{item.temp1}</TableCell>
-                  <TableCell className="text-center">{item.temp2}</TableCell>
                   <TableCell className="text-center">
-                    {item.delta_temp}
+                    {item.pulse_rate}
                   </TableCell>
+                  <TableCell className="text-center">{item.temp}</TableCell>
+                  <TableCell className="text-center">{item.spo2}</TableCell>
+                  <TableCell className="text-center">{item.pr_spo2}</TableCell>
                   <TableCell className="text-center">
                     {formatDate(item.timestamp)}
                   </TableCell>

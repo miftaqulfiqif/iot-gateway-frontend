@@ -122,6 +122,13 @@ export const useDigitProBaby = () => {
     []
   );
 
+  const fetchDataDigitProBabyByDoctorId = useCallback(
+    async (doctorId: string, page: number) => {
+      // fetch data
+    },
+    [fetchDataDigitProBaby]
+  );
+
   return {
     dataDigitProBaby,
     currentPageDigitProBaby,
@@ -131,6 +138,7 @@ export const useDigitProBaby = () => {
     searchDigitProBaby,
     fetchDataDigitProBaby,
     fetchDataDigitProBabyByPatientId,
+    fetchDataDigitProBabyByDoctorId,
     createDigitProBabyHistory,
   };
 };

@@ -44,7 +44,7 @@ type Props = {
 
 export function HistoriesPm900NibpChart({ chartData }: Props) {
   return (
-    <Card className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+    <Card className="shadow-[0_4px_4px_rgba(0,0,0,0.25)] h-full">
       <CardContent>
         <CardHeader>
           <CardTitle>Chart NIBP</CardTitle>

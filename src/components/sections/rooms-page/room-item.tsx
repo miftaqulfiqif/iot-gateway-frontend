@@ -63,9 +63,6 @@ export const RoomItems = ({ room }: { room: Room }) => {
                   >
                     Lihat Detail
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Edit Ruangan
-                  </li>
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 flex items-center gap-2">
                     <Trash className="w-4 h-4" />
                     Hapus

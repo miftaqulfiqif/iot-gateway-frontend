@@ -31,6 +31,7 @@ import {
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Utility function to format date
 const formatDate = (dateStr: string, showTime = true) => {
@@ -63,6 +64,7 @@ export const TableAdminUsers = ({
   search,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setAnimateRows(false);
@@ -93,7 +95,16 @@ export const TableAdminUsers = ({
                 <TableRow
                   key={item.id}
                   onClick={() => {
-                    window.location.href = `/users/detail-user/${item.id}`;
+                    if (item.role === "admin") {
+                      navigate("/users/detail-user/admin/" + item.id);
+                    } else if (item.role === "doctor") {
+                      navigate("/users/detail-user/doctor/" + item.id);
+                    } else if (item.role === "nurse") {
+                      navigate("/users/detail-user/nurse/" + item.id);
+                    } else {
+                      navigate("/error");
+                    }
+                    // window.location.href = `/users/detail-user/${item.id}`;
                   }}
                   className={`transition-all duration-300 cursor-pointer ${
                     animateRows ? "opacity-100" : "opacity-0 translate-y-2"
