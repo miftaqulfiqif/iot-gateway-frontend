@@ -126,6 +126,7 @@ const historiesDataPM9000 = [
     temp: 36.8,
     spo2: 98,
     pr_spo2: 75,
+    rr: 15,
     timestamp: "2025-07-14T08:30:00Z",
   },
   {
@@ -142,6 +143,7 @@ const historiesDataPM9000 = [
     temp: 37.1,
     spo2: 96,
     pr_spo2: 82,
+    rr: 15,
     timestamp: "2025-07-14T09:45:00Z",
   },
   {
@@ -158,6 +160,7 @@ const historiesDataPM9000 = [
     temp: 36.5,
     spo2: 99,
     pr_spo2: 68,
+    rr: 15,
     timestamp: "2025-07-14T10:15:00Z",
   },
   {
@@ -174,6 +177,7 @@ const historiesDataPM9000 = [
     temp: 38.2,
     spo2: 94,
     pr_spo2: 90,
+    rr: 15,
     timestamp: "2025-07-14T11:10:00Z",
   },
   {
@@ -190,6 +194,7 @@ const historiesDataPM9000 = [
     temp: 36.9,
     spo2: 97,
     pr_spo2: 72,
+    rr: 15,
     timestamp: "2025-07-14T12:00:00Z",
   },
 ];
@@ -381,16 +386,18 @@ const DeviceDS001Page = () => {
           {/* NIBP */}
           <p className="text-xl mt-10 mb-2">History</p>
           <div className="flex flex-row gap-6">
-            <TableHistoryDS001
-              data={historiesDataPM9000}
-              goToPreviousPage={() => {}}
-              goToNextPage={() => {}}
-              goToPage={() => {}}
-              currentPage={1}
-              totalPage={1}
-              limit={10}
-              isDetailPatient
-            />
+            <div className="w-full">
+              <TableHistoryDS001
+                data={historiesDataPM9000}
+                goToPreviousPage={() => {}}
+                goToNextPage={() => {}}
+                goToPage={() => {}}
+                currentPage={1}
+                totalPage={1}
+                limit={10}
+                isDetailPatient
+              />
+            </div>
           </div>
         </div>
       </div>

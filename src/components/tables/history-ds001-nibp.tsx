@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { format } from "date-fns";
 
 type HistoryItem = {
   timestamp: string;
@@ -20,17 +21,6 @@ type Props = {
 };
 
 export function HistoryDS001Nibp({ historiesData }: Props) {
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
-
-  const formatNumber = (value: number) => value.toFixed(1);
-
   return (
     <div className="overflow-x-auto rounded-2xl">
       <Table className="min-w-full table-auto bg-white">
@@ -82,7 +72,7 @@ export function HistoryDS001Nibp({ historiesData }: Props) {
                   {item.pulseRate}
                 </TableCell>
                 <TableCell className="text-center px-3 py-2">
-                  {item.timestamp}
+                  {format(new Date(item.timestamp), "d MMMM yyyy, HH:mm")}
                 </TableCell>
               </TableRow>
             ))

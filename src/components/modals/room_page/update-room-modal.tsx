@@ -1,6 +1,7 @@
 import { InputSelect } from "@/components/ui/input-select";
 import { InputSelectWithSearch } from "@/components/ui/input-select-with-search";
 import { InputText } from "@/components/ui/input-text";
+import { useToast } from "@/context/ToastContext";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
@@ -47,6 +48,8 @@ export default function UpdateRoomModal({
   onClose,
   room,
 }: UpdateRoomModalProps) {
+  const { showToast } = useToast();
+
   const formik = useFormik({
     initialValues: {
       id: room.id,
@@ -82,6 +85,7 @@ export default function UpdateRoomModal({
       doctor: values.doctor,
     });
     onClose();
+    showToast(null, "Update room successfuly", "success");
   };
 
   useEffect(() => {

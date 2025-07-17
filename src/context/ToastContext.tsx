@@ -100,7 +100,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`flex items-center gap-4 w-fit px-4 py-3 rounded-xl bg-white ${getColorClass(
+            className={`flex items-center gap-4 w-fit px-4 py-3 rounded-xl bg-white border-2 ${getColorClass(
               toast.type
             )}`}
           >

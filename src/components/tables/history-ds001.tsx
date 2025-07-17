@@ -103,6 +103,9 @@ export const TableHistoryDS001 = ({
             <TableHead className="text-center font-bold">
               Respiratory Rate
             </TableHead>
+            <TableHead className="text-center font-bold">
+              Date / Time{" "}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -143,8 +146,9 @@ export const TableHistoryDS001 = ({
                   <TableCell className="text-center">{item.temp}</TableCell>
                   <TableCell className="text-center">{item.spo2}</TableCell>
                   <TableCell className="text-center">{item.pr_spo2}</TableCell>
+                  <TableCell className="text-center">{item.rr}</TableCell>
                   <TableCell className="text-center">
-                    {formatDate(item.timestamp)}
+                    {format(new Date(item.timestamp), "MM/dd/yyyy, HH:mm")}
                   </TableCell>
                 </TableRow>
               );

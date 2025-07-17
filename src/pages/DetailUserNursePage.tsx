@@ -194,7 +194,7 @@ const DetailUserNursePage = () => {
   };
 
   return (
-    <MainLayout title="Detail Doctor" state="Users">
+    <MainLayout title="Detail Nurse" state="Users">
       <div className="flex flex-col gap-2 w-full pb-5">
         <p className="font-bold">User information</p>
         <div className="flex gap-4">

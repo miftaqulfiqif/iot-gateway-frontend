@@ -64,6 +64,348 @@ import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
 
+const dummyDataDigitProBaby = [
+  {
+    id: "1",
+    weight: "3.2 kg",
+    timestamp: "2025-07-16T10:15:00",
+    patient_handler: {
+      patient: {
+        name: "Ayu Kartika",
+      },
+      baby: {
+        name: "Putri Ayunda",
+        gender: "Female",
+        date_of_birth: "2025-06-01",
+      },
+    },
+  },
+  {
+    id: "2",
+    weight: "3.0 kg",
+    timestamp: "2025-07-16T11:45:00",
+    patient_handler: {
+      patient: {
+        name: "Rina Marlina",
+      },
+      baby: {
+        name: "Rafli Ramadhan",
+        gender: "Male",
+        date_of_birth: "2025-06-20",
+      },
+    },
+  },
+  {
+    id: "3",
+    weight: "2.8 kg",
+    timestamp: "2025-07-15T14:30:00",
+    patient_handler: {
+      patient: {
+        name: "Siti Aisyah",
+      },
+      baby: {
+        name: "Amira Zahra",
+        gender: "Female",
+        date_of_birth: "2025-05-30",
+      },
+    },
+  },
+  {
+    id: "4",
+    weight: "3.4 kg",
+    timestamp: "2025-07-14T09:00:00",
+    patient_handler: {
+      patient: {
+        name: "Desi Ratnasari",
+      },
+      baby: {
+        name: "Arya Pratama",
+        gender: "Male",
+        date_of_birth: "2025-06-10",
+      },
+    },
+  },
+  {
+    id: "5",
+    weight: "3.1 kg",
+    timestamp: "2025-07-14T13:20:00",
+    patient_handler: {
+      patient: {
+        name: "Indah Permata",
+      },
+      baby: {
+        name: "Larasati Wulandari",
+        gender: "Female",
+        date_of_birth: "2025-06-05",
+      },
+    },
+  },
+];
+
+const dummyDataIDA = [
+  {
+    id: "1",
+    timestamp: "2025-07-17T08:30:00",
+    weight_mother: "62.5 kg",
+    weight_child: "3.1 kg",
+    patient_handler: {
+      patient: {
+        name: "Ayu Lestari",
+        date_of_birth: "1992-03-21",
+      },
+      baby: {
+        name: "Nadia Putri",
+        date_of_birth: "2025-06-15",
+      },
+    },
+  },
+  {
+    id: "2",
+    timestamp: "2025-07-16T11:10:00",
+    weight_mother: "70.2 kg",
+    weight_child: "3.3 kg",
+    patient_handler: {
+      patient: {
+        name: "Dewi Anggraini",
+        date_of_birth: "1988-12-01",
+      },
+      baby: {
+        name: "Rafi Ahmad",
+        date_of_birth: "2025-06-20",
+      },
+    },
+  },
+  {
+    id: "3",
+    timestamp: "2025-07-15T14:45:00",
+    weight_mother: "58.0 kg",
+    weight_child: "2.9 kg",
+    patient_handler: {
+      patient: {
+        name: "Intan Permata",
+        date_of_birth: "1990-07-11",
+      },
+      baby: {
+        name: "Zahra Khansa",
+        date_of_birth: "2025-06-25",
+      },
+    },
+  },
+  {
+    id: "4",
+    timestamp: "2025-07-14T10:05:00",
+    weight_mother: "66.8 kg",
+    weight_child: "3.5 kg",
+    patient_handler: {
+      patient: {
+        name: "Lestari Wulandari",
+        date_of_birth: "1995-01-05",
+      },
+      baby: {
+        name: "Arka Mahendra",
+        date_of_birth: "2025-07-01",
+      },
+    },
+  },
+  {
+    id: "5",
+    timestamp: "2025-07-13T09:20:00",
+    weight_mother: "60.3 kg",
+    weight_child: "3.0 kg",
+    patient_handler: {
+      patient: {
+        name: "Melati Sari",
+        date_of_birth: "1993-09-17",
+      },
+      baby: {
+        name: "Revan Alfarizi",
+        date_of_birth: "2025-06-28",
+      },
+    },
+  },
+];
+
+const dummyDataBMI = [
+  {
+    id: "1",
+    timestamp: "2025-07-17T09:00:00",
+    weight: "68.5 kg",
+    bmi: "23.2",
+    body_fat: "22.5%",
+    muscle_mass: "45.3%",
+    water: "55.6%",
+    visceral_fat: "9",
+    bone_mass: "3.2 kg",
+    metabolism: "1450 kcal",
+    protein: "18.5%",
+    obesity: "0%",
+    body_age: "29",
+    lbm: "53.0 kg",
+    patient_handler: {
+      patient: {
+        name: "Andi Pratama",
+        gender: "Male",
+        age: "30",
+      },
+    },
+  },
+  {
+    id: "2",
+    timestamp: "2025-07-16T14:20:00",
+    weight: "54.7 kg",
+    bmi: "21.8",
+    body_fat: "25.1%",
+    muscle_mass: "38.7%",
+    water: "52.4%",
+    visceral_fat: "7",
+    bone_mass: "2.6 kg",
+    metabolism: "1350 kcal",
+    protein: "17.3%",
+    obesity: "0%",
+    body_age: "27",
+    lbm: "49.1 kg",
+    patient_handler: {
+      patient: {
+        name: "Siti Rohmah",
+        gender: "Female",
+        age: "28",
+      },
+    },
+  },
+  {
+    id: "3",
+    timestamp: "2025-07-15T11:45:00",
+    weight: "75.0 kg",
+    bmi: "25.6",
+    body_fat: "28.0%",
+    muscle_mass: "40.2%",
+    water: "49.8%",
+    visceral_fat: "12",
+    bone_mass: "3.5 kg",
+    metabolism: "1600 kcal",
+    protein: "19.0%",
+    obesity: "5%",
+    body_age: "35",
+    lbm: "57.8 kg",
+    patient_handler: {
+      patient: {
+        name: "Budi Santoso",
+        gender: "Male",
+        age: "36",
+      },
+    },
+  },
+  {
+    id: "4",
+    timestamp: "2025-07-14T16:10:00",
+    weight: "60.2 kg",
+    bmi: "22.5",
+    body_fat: "24.0%",
+    muscle_mass: "39.0%",
+    water: "53.1%",
+    visceral_fat: "8",
+    bone_mass: "2.9 kg",
+    metabolism: "1400 kcal",
+    protein: "17.9%",
+    obesity: "0%",
+    body_age: "31",
+    lbm: "51.7 kg",
+    patient_handler: {
+      patient: {
+        name: "Dewi Larasati",
+        gender: "Female",
+        age: "32",
+      },
+    },
+  },
+  {
+    id: "5",
+    timestamp: "2025-07-13T08:40:00",
+    weight: "82.0 kg",
+    bmi: "27.8",
+    body_fat: "30.2%",
+    muscle_mass: "42.5%",
+    water: "48.0%",
+    visceral_fat: "14",
+    bone_mass: "3.8 kg",
+    metabolism: "1700 kcal",
+    protein: "20.1%",
+    obesity: "7%",
+    body_age: "38",
+    lbm: "60.9 kg",
+    patient_handler: {
+      patient: {
+        name: "Rizki Hidayat",
+        gender: "Male",
+        age: "37",
+      },
+    },
+  },
+];
+
+const dummyDopplerData = [
+  {
+    id: "1",
+    heart_rate: 145,
+    timestamp: "2025-07-15T14:25:00Z",
+    patient_handler: {
+      patient: {
+        name: "Dr. Amelia Hartono",
+        gender: "Female",
+        date_of_birth: "1985-05-23",
+      },
+    },
+  },
+  {
+    id: "2",
+    heart_rate: 132,
+    timestamp: "2025-07-16T09:10:00Z",
+    patient_handler: {
+      patient: {
+        name: "Budi Santoso",
+        gender: "Male",
+        date_of_birth: "1990-11-12",
+      },
+    },
+  },
+  {
+    id: "3",
+    heart_rate: 157,
+    timestamp: "2025-07-16T13:40:00Z",
+    patient_handler: {
+      patient: {
+        name: "Clara Wijaya",
+        gender: "Female",
+        date_of_birth: "2001-04-18",
+      },
+    },
+  },
+  {
+    id: "4",
+    heart_rate: 123,
+    timestamp: "2025-07-17T08:20:00Z",
+    patient_handler: {
+      patient: {
+        name: "Dimas Prasetyo",
+        gender: "Male",
+        date_of_birth: "1995-08-30",
+      },
+    },
+  },
+  {
+    id: "5",
+    heart_rate: 140,
+    timestamp: "2025-07-17T10:00:00Z",
+    patient_handler: {
+      patient: {
+        name: "Eka Lestari",
+        gender: "Female",
+        date_of_birth: "1989-02-14",
+      },
+    },
+  },
+];
+
 const state = [
   {
     value: "digit-pro-baby",
@@ -361,7 +703,7 @@ const MeasurementHistoriesPage = () => {
               {/* Table */}
               {selectedDevice === "digit-pro-baby" && (
                 <TableHistoryDigitProBaby
-                  data={dataDigitProBaby}
+                  data={dummyDataDigitProBaby ?? dataDigitProBaby}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
@@ -371,7 +713,7 @@ const MeasurementHistoriesPage = () => {
               )}
               {selectedDevice === "digit-pro-ida" && (
                 <TableHistoryDigitProIDA
-                  data={historiesDigitProIDA}
+                  data={dummyDataIDA ?? historiesDigitProIDA}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
@@ -381,7 +723,7 @@ const MeasurementHistoriesPage = () => {
               )}
               {selectedDevice === "bmi" && (
                 <TableHistoryBMI
-                  data={dataDigitProBMI}
+                  data={dummyDataBMI ?? dataDigitProBMI}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
@@ -391,7 +733,7 @@ const MeasurementHistoriesPage = () => {
               )}
               {selectedDevice === "doppler" && (
                 <TableHistoryDoppler
-                  data={historiesDoppler}
+                  data={dummyDopplerData ?? historiesDoppler}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}

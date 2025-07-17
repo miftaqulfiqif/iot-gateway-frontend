@@ -1,78 +1,109 @@
 import { useAuthHook } from "@/hooks/UseAuth";
-import { Eye, EyeClosed, KeyRound, Mail, UserRound } from "lucide-react";
+import { Eye, EyeClosed, KeyRound, UserRound } from "lucide-react";
 import { useState } from "react";
+import doctorImg from "@/assets/imgs/doctor-login.png";
 
 export const LoginPage = () => {
   const formik = useAuthHook();
   const [showPassword, setShowPassword] = useState(false);
-  return (
-    <div className="m-30">
-      <div className="bg-blue-500 flex flex-row h-[700px] p-4 rounded-4xl">
-        <div className="w-1/2 rounded-2xl p-4">
-          <p className="font-bold">Image</p>
-        </div>
-        <div className="w-1/2 bg-white rounded-2xl p-4">
-          <div className="flex flex-col border">
-            <p className="font-bold text-2xl">Login</p>
-            <p className="text-sm text-red-500">{formik.status}</p>
-            <form onSubmit={formik.handleSubmit} className="mx-auto space-y-2">
-              {/* Input Email */}
-              <label
-                htmlFor="username"
-                className="flex flex-row items-center gap-2 px-2 focus-within:outline outline-1 outline-blue-500 rounded-sm h-10"
-              >
-                <UserRound className="w-10" />
-                <input
-                  name="username"
-                  type="text"
-                  placeholder="Email"
-                  onChange={formik.handleChange}
-                  value={formik.values.username}
-                  className="w-full outline-none"
-                />
-              </label>
-              {formik.touched.username && formik.errors.username && (
-                <p className="text-sm text-red-500">{formik.errors.username}</p>
-              )}
 
-              {/* Input Password */}
-              <label
-                htmlFor="password"
-                className="flex flex-row items-center gap-2 px-2 focus-within:outline outline-1 outline-blue-500 rounded-sm h-10"
-              >
-                <KeyRound className="w-10" />
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="flex flex-row bg-white rounded-3xl shadow-lg overflow-hidden max-w-6xl w-full">
+        {/* Kiri: Gambar dan Slogan */}
+        <div className="w-1/2 bg-blue-600 text-white p-10 flex flex-col justify-center">
+          <h1 className="text-3xl font-bold mb-2">
+            Welcome to Elitech Gateway
+          </h1>
+          <p className="text-lg font-semibold mb-4">
+            Official Access to Elitech Medical Devices
+          </p>
+          <p className="text-sm opacity-90 mb-6">
+            "Exclusive IoT Solution for Smarter Healthcare Services"
+          </p>
+          <img
+            src={doctorImg}
+            alt="Doctor"
+            className="w-full max-w-sm mx-auto"
+          />
+        </div>
+
+        {/* Kanan: Form Login */}
+        <div className="w-1/2 p-10 bg-white">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Login</h2>
+            {formik.status && (
+              <p className="text-sm text-red-500">{formik.status}</p>
+            )}
+          </div>
+
+          <form onSubmit={formik.handleSubmit} className="space-y-5">
+            {/* Email */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Username
+              </label>
+              <div className="flex items-center border rounded-lg px-3 py-2 group focus-within:ring-2 focus-within:ring-blue-500">
+                <UserRound className="text-gray-400 mr-2 group-focus-within:text-blue-500 transition-colors duration-100" />
                 <input
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
+                  type="text"
+                  name="username"
+                  placeholder="Enter your username"
+                  value={formik.values.username}
                   onChange={formik.handleChange}
+                  className="w-full outline-none text-sm bg-transparent"
+                />
+              </div>
+
+              {formik.touched.username && formik.errors.username && (
+                <p className="text-xs text-red-500 mt-1">
+                  {formik.errors.username}
+                </p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Password
+              </label>
+              <div className="flex items-center border rounded-lg px-3 py-2 group focus-within:ring-2 focus-within:ring-blue-500">
+                <KeyRound className="text-gray-400 mr-2 group-focus-within:text-blue-500 transition-colors duration-100" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter your password"
                   value={formik.values.password}
-                  className="w-full outline-none"
+                  onChange={formik.handleChange}
+                  className="w-full outline-none text-sm bg-transparent"
                 />
                 {showPassword ? (
                   <Eye
-                    className="cursor-pointer w-10"
-                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-gray-400 cursor-pointer ml-2"
+                    onClick={() => setShowPassword(false)}
                   />
                 ) : (
                   <EyeClosed
-                    className="cursor-pointer w-10"
-                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-gray-400 cursor-pointer ml-2"
+                    onClick={() => setShowPassword(true)}
                   />
                 )}
-              </label>
+              </div>
               {formik.touched.password && formik.errors.password && (
-                <p className="text-sm text-red-500">{formik.errors.password}</p>
+                <p className="text-xs text-red-500 mt-1">
+                  {formik.errors.password}
+                </p>
               )}
+            </div>
 
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full cursor-pointer"
-              >
-                Login
-              </button>
-            </form>
-          </div>
+            {/* Tombol Login */}
+            <button
+              type="submit"
+              className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-300"
+            >
+              Login
+            </button>
+          </form>
         </div>
       </div>
     </div>
