@@ -146,7 +146,7 @@ export const TableHistoryPM9000 = ({
                     {item.delta_temp}
                   </TableCell>
                   <TableCell className="text-center">
-                    {formatDate(item.timestamp)}
+                    {format(new Date(item.timestamp), "MM/dd/yyyy, HH:mm")}
                   </TableCell>
                 </TableRow>
               );

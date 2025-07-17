@@ -109,7 +109,9 @@ const Sidebar = ({ state }: SidebarProps) => {
         <div className="flex flex-col justify-between">
           <div className="flex flex-col font-bold">
             <p className="font-semibold">Hello ,</p>
-            <p className="text-xl w-40">{user?.name}</p>
+            <p className="text-xl w-40">
+              {user?.name ? user?.name : "Miftaqul Fiqi Firmansyah"}
+            </p>
           </div>
 
           <div className="flex flex-col font-bold gap-2">

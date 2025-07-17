@@ -559,16 +559,18 @@ const DevicePM9000Page = () => {
           {/* NIBP */}
           <p className="text-xl mt-10 mb-2">History</p>
           <div className="flex flex-row gap-6">
-            <TableHistoryPM9000
-              data={historiesDataPM9000}
-              goToPreviousPage={() => {}}
-              goToNextPage={() => {}}
-              goToPage={() => {}}
-              currentPage={1}
-              totalPage={2}
-              limit={10}
-              isDetailPatient
-            />
+            <div className="flex w-full">
+              <TableHistoryPM9000
+                data={historiesDataPM9000}
+                goToPreviousPage={() => {}}
+                goToNextPage={() => {}}
+                goToPage={() => {}}
+                currentPage={1}
+                totalPage={2}
+                limit={10}
+                isDetailPatient
+              />
+            </div>
           </div>
         </div>
       </div>
