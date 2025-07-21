@@ -9,7 +9,7 @@ import hospitalIcon from "@/assets/icons/hospital-icon.png";
 import passwordIcon from "@/assets/icons/password-icon.png";
 import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import { MenuItems } from "@/components/sections/settings-page/menu-items";
-import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-settings";
+import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-setting-modal";
 import { AddGatewayModal } from "@/components/modals/add-gateway-modal";
 import { Users } from "lucide-react";
 
@@ -80,14 +80,10 @@ const SettingsPage = () => {
           isActive={addGatewayModal}
           setInactive={() => setAddGatewayModal(false)}
         />
-        {/* <ConfirmChangeSettingModal
-          closeModal={() => setFormDelete(false)}
-          form={formDelete}
-          state={state}
-          name={name}
-          changeProfil={changeProfil}
-          changeHospitalProfil={changeHospitalProfil}
-        /> */}
+        <ConfirmChangeSettingModal
+          isActive={confifmModal}
+          setInactive={() => setConfirmModal(false)}
+        />
       </div>
     </MainLayout>
   );

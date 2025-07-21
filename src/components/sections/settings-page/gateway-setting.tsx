@@ -1,6 +1,17 @@
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import gatewayIcon from "@/assets/icons/gateway.png";
 import gatewayWhiteIcon from "@/assets/icons/gateway-white.png";
-import { Search } from "lucide-react";
+import { Check, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { se } from "date-fns/locale";
 import { useToast } from "@/context/ToastContext";
@@ -20,6 +31,11 @@ export const SettingGateway = ({
 }: Props) => {
   const { showToast } = useToast();
   const [selectedGateway, setSelectedGateway] = useState<any>(null);
+
+  const handleSelectGateway = () => {
+    setCurrentGateway(selectedGateway);
+    showToast(null, "Gateway changed successfully", "success");
+  };
 
   useEffect(() => {
     setSelectedGateway(selectedGateway);
@@ -112,8 +128,13 @@ export const SettingGateway = ({
                   <p className="text-sm ">{gateway.description}</p>
                 </div>
               </div>
-              <p
-                className={`font-semibold px-4 py-1 rounded-full capitalize 
+
+              <div className="flex items-center gap-2">
+                {selectedGateway?.id === gateway.id && (
+                  <Check className="text-blue-500" />
+                )}
+                <p
+                  className={`font-semibold px-4 py-1 rounded-full capitalize 
     ${
       gateway.status === "active"
         ? "bg-green-200 text-green-900"
@@ -123,26 +144,46 @@ export const SettingGateway = ({
         ? "bg-yellow-200 text-yellow-900"
         : ""
     }`}
-              >
-                {gateway.status}
-              </p>
+                >
+                  {gateway.status}
+                </p>
+              </div>
             </div>
           ))}
         </div>
-        <button
-          className="bg-blue-500 text-white p-2 rounded-xl font-bold cursor-pointer mt-10 disabled:bg-blue-200 disabled:cursor-not-allowed"
-          onClick={() => {
-            setCurrentGateway(selectedGateway);
-            showToast(null, "Gateway changed successfully", "success");
-          }}
-          disabled={
-            selectedGateway === null ||
-            selectedGateway?.id === currentGateway?.id
-          }
-        >
-          Save Changes
-        </button>
       </div>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <button
+            className="bg-blue-500 text-white p-2 rounded-xl font-bold cursor-pointer mt-10 disabled:bg-blue-200 disabled:cursor-not-allowed"
+            disabled={
+              selectedGateway === null ||
+              selectedGateway?.id === currentGateway?.id
+            }
+          >
+            Save Changes
+          </button>
+        </AlertDialogTrigger>
+        <AlertDialogContent className="bg-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Change a gateway will replace the current gateway
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="text-black border">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleSelectGateway}
+              className="bg-blue-500 text-white"
+            >
+              Change
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

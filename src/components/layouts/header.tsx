@@ -47,7 +47,7 @@ export const Header = ({ className, title }: NavbarProps) => {
             />
             <div className="flex flex-col gap-2">
               <p className="font-bold text-xl">
-                {user?.name ? user.name : "Miftaqul Fiqi Firmansyah"}
+                {user?.name ? user.name : "--"}
               </p>
               <p className="text-gray-500 text-base">{user?.username}</p>
             </div>

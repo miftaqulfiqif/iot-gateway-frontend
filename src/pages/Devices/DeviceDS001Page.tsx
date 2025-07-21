@@ -285,7 +285,7 @@ const DeviceDS001Page = () => {
                   </div>
                   <div className="flex h-2/3 items-end justify-self-center">
                     <p className="text-7xl">
-                      {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "99"}
+                      {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "--"}
                     </p>
                     <p>bpm</p>
                   </div>
