@@ -2,8 +2,10 @@ import { DigitProBabyModel } from "@/models/Devices/DigitProBabyModel";
 import { useEffect, useRef, useState } from "react";
 import { SocketManager } from "../SocketManager";
 import { DigitProBabyHandler } from "../handlers/DigitProBabyHandler";
+import { useToast } from "@/context/ToastContext";
 
 export const useSocketDigitProBaby = (macDevice: string) => {
+  const { showToast } = useToast();
   const [data, setData] = useState<DigitProBabyModel>({
     mac: "",
     weight: 0,
@@ -44,8 +46,9 @@ export const useSocketDigitProBaby = (macDevice: string) => {
     };
   }, [macDevice]);
 
-  const eventTareDigitProBaby = (gatewayId: string) => {
-    handlerRef.current?.handleTare(gatewayId);
+  const eventTareDigitProBaby = () => {
+    handlerRef.current?.handleTare();
+    showToast(null, "Tare successfully", "success");
   };
 
   return {

@@ -30,6 +30,7 @@ import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useParams } from "react-router-dom";
 import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
 import { TableHistoryDS001 } from "@/components/tables/history-ds001";
+import { useSocketDS001 } from "@/hooks/socket/devices/SocketDS001";
 
 const historiesData = [
   {
@@ -201,7 +202,9 @@ const historiesDataPM9000 = [
 
 const DeviceDS001Page = () => {
   const { ip } = useParams();
-  const { dataDS001 } = useSocketHandler({ ipDevice: ip });
+  // const { dataDS001 } = useSocketHandler({ ipDevice: ip });
+  const { data, dataNibp } = useSocketDS001(ip!);
+
   const [patient, setPatient] = useState<Patients>({
     id: "",
     nik: "",
@@ -253,12 +256,11 @@ const DeviceDS001Page = () => {
                     <p>NIBP</p>
                   </div>
                   <div className="flex flex-row items-end gap-4">
-                    <div className="flex flex-row items-center text-6xl gap-2 pl-6">
+                    <div className="flex flex-row items-center text-5xl gap-2 pl-6">
                       <p className="">
-                        {dataDS001?.systolic ? dataDS001.systolic : "--"}
+                        {data?.systolic ? data.systolic : "--"}
                       </p>
-                      /
-                      <p>{dataDS001?.diastolic ? dataDS001.diastolic : "--"}</p>
+                      /<p>{data?.diastolic ? data.diastolic : "--"}</p>
                     </div>
                     <p className="text-lg pb-2">mmHg</p>
                   </div>
@@ -266,7 +268,7 @@ const DeviceDS001Page = () => {
                     <div className="flex flex-row w-fit text-white items-center gap-2 bg-red-400 px-3 py-1 rounded-full h-fit">
                       <Activity className="w-6 h-6" />
                       <p className="text-sm">
-                        {dataDS001?.mean ? dataDS001.mean : "--"} bpm
+                        {data?.mean ? data.mean : "--"} bpm
                       </p>
                     </div>
                     {/* <div className="flex flex-row w-fit text-red-900 items-center gap-2 bg-red-300 px-3 py-1 rounded-full h-fit">
@@ -283,9 +285,9 @@ const DeviceDS001Page = () => {
                     <img src={prIcon} alt="" className="w-6 h-6" />
                     <p className=" font-bold text-xl">PR</p>
                   </div>
-                  <div className="flex h-2/3 items-end justify-self-center">
-                    <p className="text-7xl">
-                      {dataDS001?.pulse_rate ? dataDS001.pulse_rate : "--"}
+                  <div className="flex h-2/3 items-end justify-self-center gap-2">
+                    <p className="text-5xl">
+                      {data?.pulse_rate ? data.pulse_rate : "--"}
                     </p>
                     <p>bpm</p>
                   </div>
@@ -304,7 +306,7 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end">
                       <div className="flex flex-row items-center justify-center text-6xl h-full px-4 py-2">
-                        <p>{dataDS001?.temp ? dataDS001.temp : "--"}</p>
+                        <p>{data?.temp ? data.temp : "--"}</p>
                       </div>
                       <p className="text-lg pb-4">°C</p>
                     </div>
@@ -328,9 +330,7 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end ">
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl gap-2">
-                        <p className="">
-                          {dataDS001?.spo2 ? dataDS001.spo2 : "--"}
-                        </p>
+                        <p className="">{data?.spo2 ? data.spo2 : "--"}</p>
                       </div>
                       <p className="text-lg pb-4">%</p>
                     </div>
@@ -351,7 +351,7 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end">
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
-                        <p>{dataDS001?.pr_spo2 ? dataDS001.pr_spo2 : "--"}</p>
+                        <p>{data?.pr_spo2 ? data.pr_spo2 : "--"}</p>
                       </div>
                       <p className="text-lg pb-4">bpm</p>
                     </div>
@@ -370,7 +370,7 @@ const DeviceDS001Page = () => {
                     </div>
                     <div className="flex flex-row items-end">
                       <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
-                        <p>{dataDS001?.rr ? dataDS001.rr : "--"}</p>
+                        <p>{data?.rr ? data.rr : "--"}</p>
                       </div>
                       <p className="text-lg pb-4">rpm</p>
                     </div>

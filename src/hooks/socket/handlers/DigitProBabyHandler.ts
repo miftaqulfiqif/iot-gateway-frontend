@@ -59,9 +59,9 @@ export class DigitProBabyHandler extends BaseHandler {
     });
   }
 
-  handleTare(gatewayId: string) {
+  handleTare() {
     this.socket.emit("tare_digit_pro_baby", {
-      user_id: gatewayId,
+      user_id: "UserTest",
       data: {
         topic: "iotgateway/{id-unik}/bluetooth/digitpro_baby_tare",
         payload: "tare",

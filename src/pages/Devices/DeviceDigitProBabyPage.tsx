@@ -152,7 +152,7 @@ const DeviceDigitProBabyPage = () => {
               <div className="flex flex-row gap-2 items-center">
                 <div
                   className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={() => eventTareDigitProBaby("UserTest1")}
+                  onClick={() => eventTareDigitProBaby()}
                 >
                   <div className="flex flex-row gap-3 mx-auto">
                     <img src={tareIcon} alt="" className="w-8 h-8" />
