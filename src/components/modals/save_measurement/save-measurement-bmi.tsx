@@ -4,6 +4,7 @@ import { PatientInfo } from "../../ui/patient-info";
 import { InputText } from "../../ui/input-text";
 import { formatDate } from "date-fns";
 import { useToast } from "@/context/ToastContext";
+import { BMIModel } from "@/models/Devices/BMIModel";
 
 const ResultItem = ({
   label,
@@ -26,21 +27,7 @@ type Props = {
   isActive: boolean;
   setInactive: () => void;
   patient: any;
-  result: {
-    weight: number;
-    bmi: number;
-    age: number;
-    bodyFat: number;
-    muscleMass: number;
-    water: number;
-    visceralFat: number;
-    boneMass: number;
-    metabolism: number;
-    protein: number;
-    obesity: number;
-    bodyAge: number;
-    lbm: number;
-  };
+  result: BMIModel;
 };
 
 export const SaveMeasurementBMI = ({

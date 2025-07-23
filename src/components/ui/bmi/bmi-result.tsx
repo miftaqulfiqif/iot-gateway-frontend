@@ -20,7 +20,7 @@ import proteinIcon from "@/assets/icons/proteins.png";
 import obesityIcon from "@/assets/icons/obesity.png";
 import bodyAgeIcon from "@/assets/icons/body-age.png";
 import leanBodyMassIcon from "@/assets/icons/lean-body-mass.png";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import FatRangeBar from "./fat-range-bar";
 import MuscleRangeBar from "./muscle-range-bar";
 import WaterRangeBar from "./water-range-bar";
@@ -30,6 +30,7 @@ import MetabolismRangeBar from "./metabolism-range-bar";
 import ProteinRangeBar from "./protein-range-bar";
 import ObesityRangeBar from "./obesity-range-bar";
 import BodyAgeRangeBar from "./body-age-range-bar";
+import { useLinkClickHandler } from "react-router-dom";
 
 type BMIResultProps = {
   BMI: number;
@@ -107,36 +108,76 @@ export const BMIResult = ({
     color: "bg-gray-500",
   });
 
-  const handleBmiLabel = (info: LabelInfo) => {
-    setBmiLabel(info);
-  };
-  const handleBodyFatLabel = (info: LabelInfo) => {
-    setBodyFatLabel(info);
-  };
-  const handleMuscleMassLabel = (info: LabelInfo) => {
-    setMuscleMassLabel(info);
-  };
-  const handleWaterLabel = (info: LabelInfo) => {
-    setWaterLabel(info);
-  };
-  const handleVisceralFatLabel = (info: LabelInfo) => {
-    setVisceralFatLabel(info);
-  };
-  const handleBoneMassLabel = (info: LabelInfo) => {
-    setBoneMassLabel(info);
-  };
-  const handleMetabolismLabel = (info: LabelInfo) => {
-    setMetabolismLabel(info);
-  };
-  const handleProteinLabel = (info: LabelInfo) => {
-    setProteinLabel(info);
-  };
-  const handleObesityLabel = (info: LabelInfo) => {
-    setObesityLabel(info);
-  };
-  const handleBodyAgeLabel = (info: LabelInfo) => {
-    setBodyAgeLabel(info);
-  };
+  const handleBmiLabel = useCallback((info: LabelInfo) => {
+    setBmiLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleBodyFatLabel = useCallback((info: LabelInfo) => {
+    setBodyFatLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleMuscleMassLabel = useCallback((info: LabelInfo) => {
+    setMuscleMassLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleWaterLabel = useCallback((info: LabelInfo) => {
+    setWaterLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleVisceralFatLabel = useCallback((info: LabelInfo) => {
+    setVisceralFatLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleBoneMassLabel = useCallback((info: LabelInfo) => {
+    setBoneMassLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleMetabolismLabel = useCallback((info: LabelInfo) => {
+    setMetabolismLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleProteinLabel = useCallback((info: LabelInfo) => {
+    setProteinLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleObesityLabel = useCallback((info: LabelInfo) => {
+    setObesityLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
+  const handleBodyAgeLabel = useCallback((info: LabelInfo) => {
+    setBodyAgeLabel((prev) => {
+      if (prev.label === info.label && prev.color === info.color) return prev;
+      return info;
+    });
+  }, []);
+
   const handleLbmLabel = (info: LabelInfo) => {
     setLbmLabel(info);
   };

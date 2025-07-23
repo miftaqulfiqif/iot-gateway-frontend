@@ -32,6 +32,7 @@ import { useParams } from "react-router-dom";
 import ChartDopplerRealtime from "@/components/charts/chart-doppler-realtime";
 import HistoriesDoppler from "@/components/charts/chart-histories-doppler";
 import { SaveMeasurementDoppler } from "@/components/modals/save_measurement/save-measurement-doppler";
+import { useSocketDoppler } from "@/hooks/socket/devices/SocketDoppler";
 
 const historiesData = [
   { heart_rate: 3.2, timestamp: "2025-06-05 01:46:33.803" },
@@ -48,9 +49,11 @@ const historiesData = [
 
 const DeviceDopplerPage = () => {
   const { mac } = useParams();
-  const { dataDopplerChartData, dataDoppler } = useSocketHandler({
-    macDevice: mac,
-  });
+  // const { dataDopplerChartData, dataDoppler } = useSocketHandler({
+  //   macDevice: mac,
+  // });
+
+  const { data, realtime } = useSocketDoppler(mac!);
 
   const [patient, setPatient] = useState<Patients>();
   const [showHistories, setShowHistories] = useState(false);
@@ -58,13 +61,13 @@ const DeviceDopplerPage = () => {
   const [result, setResult] = useState<number>(0);
 
   useEffect(() => {
-    if (dataDopplerChartData.length > 0) {
-      const last = dataDopplerChartData[dataDopplerChartData.length - 1];
+    if (realtime.length > 0) {
+      const last = realtime[realtime.length - 1];
       setResult(last.heart_rate_avg);
     } else {
       setResult(0);
     }
-  }, [dataDopplerChartData]);
+  }, [realtime]);
 
   // Get patient from local storage
   useEffect(() => {
@@ -98,9 +101,7 @@ const DeviceDopplerPage = () => {
             <div className="flex flex-col gap-2 h-full">
               <div className="bg-gradient-to-t from-[#6e79f4] to-[#3062E5] rounded-2xl text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-8 w-full h-fit mt-3 justify-between gap-2">
                 <div className="flex flex-row w-54 gap-4">
-                  <p className="text-8xl w-38 text-end">
-                    {dataDoppler.heart_rate}
-                  </p>
+                  <p className="text-8xl w-38 text-end">{data.heart_rate}</p>
                   <div className="text-8xl">
                     <img src={heartBeatImg} alt="" className="h-6 w-12 " />
                     <span className="text-sm">bpm</span>
@@ -116,14 +117,14 @@ const DeviceDopplerPage = () => {
                 <div className="flex flex-gap gap-8">
                   <AudioLines
                     className={`w-8 h-8 ${
-                      dataDoppler.sound_quality === "poor"
+                      data.sound_quality === "poor"
                         ? "text-red-500"
-                        : dataDoppler.sound_quality === "medium"
+                        : data.sound_quality === "medium"
                         ? "text-yellow-300"
                         : "text-green-400"
                     }`}
                   />
-                  {dataDoppler.battery_level ? (
+                  {data.battery_level ? (
                     <img
                       src={
                         {
@@ -131,7 +132,7 @@ const DeviceDopplerPage = () => {
                           75: battery75Icon,
                           50: battery50Icon,
                           25: battery25Icon,
-                        }[dataDoppler.battery_level]
+                        }[data.battery_level]
                       }
                       alt=""
                       className="w-8 h-8"
@@ -142,7 +143,7 @@ const DeviceDopplerPage = () => {
                 </div>
               </div>
               <div className="w-full pt-3 ">
-                <ChartDopplerRealtime chartData={dataDopplerChartData} />
+                <ChartDopplerRealtime chartData={realtime} />
               </div>
               <div className="flex flex-row gap-2 items-center h-full">
                 <div

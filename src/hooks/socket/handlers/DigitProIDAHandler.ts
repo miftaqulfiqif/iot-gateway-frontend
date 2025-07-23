@@ -1,36 +1,50 @@
 import { Socket } from "socket.io-client";
-import { DigitProIDAModel } from "@/models/Devices/DigitProIDAModel";
+import { BaseHandler } from "./BaseHandler";
 
-export class DigitProIDAHandler {
+export class DigitProIDAHandler extends BaseHandler {
+  private mac: string;
+  private setData: any;
+  private setRealtime: any;
+
   constructor(
-    private socket: Socket,
-    private setWeight: (data: DigitProIDAModel) => void
+    socket: Socket,
+    mac: string,
+    setData: (data: any) => void,
+    setRealtime: (data: any[]) => void
   ) {
-    this.listen();
+    super(socket);
+    this.mac = mac;
+    this.setData = setData;
+    this.setRealtime = setRealtime;
+    this.register();
   }
 
-  private listen() {
-    this.socket.on(
-      "listen_digitproida",
-      (payload: { data_digitproida?: DigitProIDAModel[] }) => {
-        const data = payload?.data_digitproida?.[0];
-        if (data) {
-          this.setWeight({
-            babyWeight: data.babyWeight,
-            adultWeight: data.adultWeight,
-          });
-        }
-      }
-    );
-  }
+  register() {
+    this.socket.on("listen_digitproida_result", (payload) => {
+      console.log("[DigitProIDA] Reviced:", payload);
+      const deviceMac = payload.data_digitproida[0].mac;
+      if (deviceMac !== this.mac) return;
+      if (!payload?.data_digitproida) return;
 
-  public start(userId: string) {
-    this.socket.emit("start_digit_pro_ida", {
-      user_id: userId,
-      data: {
-        topic: "ble/start_digitproidanew",
-        payload: "1",
-      },
+      const last = payload.data_digitproida.at(-1);
+      const processed = payload.data_digitproida.map(
+        (item: any, index: number) => ({
+          index,
+          weight_mother: item.weight_mother,
+          weight_child: item.weight_child,
+        })
+      );
+
+      this.setData({
+        weight_mother: last?.weight_mother ?? 0,
+        weight_child: last?.weight_child ?? 0,
+      });
+
+      this.setRealtime(processed);
     });
+  }
+
+  unregister() {
+    this.socket.off("listen_digitproida_result");
   }
 }

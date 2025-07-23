@@ -21,6 +21,7 @@ import DigitProBabyRealtimeChart from "@/components/charts/chart-digit-pro-baby-
 import HistoriesDigitProBaby from "@/components/charts/chart-histories-digitpro-baby";
 import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { SaveMeasurementDigitProBaby } from "@/components/modals/save_measurement/save-measurement-digit-pro-baby";
+import { useSocketDigitProBaby } from "@/hooks/socket/devices/SocketDigitProBaby";
 
 const historiesData = [
   { weight: 3.2, timestamp: "2025-06-05 01:46:33.803" },
@@ -40,11 +41,13 @@ const DeviceDigitProBabyPage = () => {
   const { createDigitProBabyHistory, fetchDataDigitProBabyByPatientId } =
     useDigitProBaby();
 
-  const {
-    eventTareDigitProBaby,
-    weightDigitProBaby,
-    weightDigitProBabyChartData,
-  } = useSocketHandler({ macDevice: mac });
+  // const {
+  //   eventTareDigitProBaby,
+  //   weightDigitProBaby,
+  //   weightDigitProBabyChartData,
+  // } = useSocketHandler({ macDevice: mac });
+
+  const { data, realtime, eventTareDigitProBaby } = useSocketDigitProBaby(mac!);
 
   const [showHistories, setShowHistories] = useState(false);
   const [saveModal, setSaveModal] = useState(false);
@@ -72,19 +75,12 @@ const DeviceDigitProBabyPage = () => {
 
   // Create baby
   const handleCreateBaby = () => {
-    if (
-      !mac ||
-      !patient.id ||
-      !patient.name ||
-      !weightDigitProBaby.weight ||
-      !baby
-    )
-      return;
+    if (!mac || !patient.id || !patient.name || !data.weight || !baby) return;
     createDigitProBabyHistory({
       patient_id: patient.id,
       baby_id: baby.id,
       device_id: mac,
-      weight: weightDigitProBaby.weight,
+      weight: data.weight,
     });
   };
 
@@ -144,9 +140,7 @@ const DeviceDigitProBabyPage = () => {
                   <div className="flex w-full justify-center">
                     <div className="flex flex-row gap-10 my-auto items-end">
                       <p className="text-8xl">
-                        {weightDigitProBaby.weight
-                          ? weightDigitProBaby.weight
-                          : "--"}
+                        {data.weight ? data.weight : "--"}
                       </p>
                       <p className="text-3xl">kg</p>
                     </div>
@@ -154,13 +148,11 @@ const DeviceDigitProBabyPage = () => {
                 </div>
               </div>
               {/* Chart Realtime */}
-              <DigitProBabyRealtimeChart
-                chartData={weightDigitProBabyChartData}
-              />
+              <DigitProBabyRealtimeChart chartData={realtime} />
               <div className="flex flex-row gap-2 items-center">
                 <div
                   className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={eventTareDigitProBaby}
+                  onClick={() => eventTareDigitProBaby("UserTest1")}
                 >
                   <div className="flex flex-row gap-3 mx-auto">
                     <img src={tareIcon} alt="" className="w-8 h-8" />
@@ -193,7 +185,7 @@ const DeviceDigitProBabyPage = () => {
         isActive={saveModal}
         setInactive={() => setSaveModal(false)}
         baby={baby}
-        result={weightDigitProBaby.weight}
+        result={data.weight}
       />
     </MainLayout>
   );
