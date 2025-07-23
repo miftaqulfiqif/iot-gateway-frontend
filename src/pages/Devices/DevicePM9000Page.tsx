@@ -32,6 +32,7 @@ import HeartRateChart from "@/components/heart-rate-chart";
 import { HistoryPM9000Nibp } from "@/components/tables/history-pm9000-nibp";
 import { HistoriesPm900NibpChart } from "@/components/charts/histories-pm900-nibp-chart";
 import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
+import { useSocketPM9000 } from "@/hooks/socket/devices/SocketPM9000";
 
 const historiesDataNibp = [
   {
@@ -330,7 +331,8 @@ const chartData: { heart_rate: number }[] = [
 
 const DevicePM9000Page = () => {
   const { ip } = useParams();
-  const { dataPM9000, dataPM9000Nibp } = useSocketHandler({ ipDevice: ip });
+  // const { dataPM9000, dataPM9000Nibp } = useSocketHandler({ ipDevice: ip });
+  const { data, dataNibp } = useSocketPM9000(ip!);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -382,9 +384,7 @@ const DevicePM9000Page = () => {
                       </div>
                       <div className="flex flex-row items-end">
                         <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
-                          <p>
-                            {dataPM9000?.ecg_bpm ? dataPM9000.ecg_bpm : "--"}
-                          </p>
+                          <p>{data?.ecg_bpm ? data?.ecg_bpm : "--"}</p>
                         </div>
                         <p className="text-lg pb-4">rpm</p>
                       </div>
@@ -408,9 +408,7 @@ const DevicePM9000Page = () => {
                       <div className="flex flex-row items-end ">
                         <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl gap-2">
                           <p className="">
-                            {dataPM9000.ecg_bpm_spo2
-                              ? dataPM9000.ecg_bpm_spo2
-                              : "--"}
+                            {data?.ecg_bpm_spo2 ? data?.ecg_bpm_spo2 : "--"}
                           </p>
                         </div>
                         <p className="text-lg pb-4">%</p>
@@ -430,7 +428,7 @@ const DevicePM9000Page = () => {
                       </div>
                       <div className="flex flex-row items-end">
                         <div className="flex flex-row items-center text-5xl px-4 py-2 rounded-4xl">
-                          <p>{dataPM9000.resp ? dataPM9000.resp : "--"}</p>
+                          <p>{data?.resp ? data?.resp : "--"}</p>
                         </div>
                       </div>
                     </div>
@@ -454,8 +452,7 @@ const DevicePM9000Page = () => {
                           <div className="flex flex-row w-fit text-white items-center gap-2 bg-red-400 px-3 py-1 rounded-full h-fit">
                             <Activity className="w-6 h-6" />
                             <p className="text-sm">
-                              {dataPM9000Nibp.mean ? dataPM9000Nibp.mean : "--"}{" "}
-                              bpm
+                              {dataNibp?.mean ? dataNibp?.mean : "--"} bpm
                             </p>
                           </div>
                         </div>
@@ -463,16 +460,12 @@ const DevicePM9000Page = () => {
                       <div className="flex flex-row items-end gap-4 mt-4">
                         <div className="flex flex-row items-center text-7xl gap-2">
                           <p className="">
-                            {dataPM9000Nibp.systolic
-                              ? dataPM9000Nibp.systolic
-                              : "--"}
+                            {dataNibp?.systolic ? dataNibp?.systolic : "--"}
                           </p>
                           /
                           <p>
                             {" "}
-                            {dataPM9000Nibp.diastolic
-                              ? dataPM9000Nibp.diastolic
-                              : "--"}
+                            {dataNibp?.diastolic ? dataNibp?.diastolic : "--"}
                           </p>
                         </div>
                         <p className="text-lg pb-2">mmHg</p>
@@ -495,7 +488,7 @@ const DevicePM9000Page = () => {
                           <p className="w-8">T1</p>
                           <div className="flex flex-row items-end gap-1">
                             <p className="text-3xl w-14 text-end">
-                              {dataPM9000.temp1 ? dataPM9000.temp1 : "--"}
+                              {data?.temp1 ? data?.temp1 : "--"}
                             </p>
                             <p className="text-lg pb-0.5">°C</p>
                           </div>
@@ -505,7 +498,7 @@ const DevicePM9000Page = () => {
                           <div className="flex flex-row items-end gap-1">
                             <p className="text-3xl w-14 text-end">
                               {" "}
-                              {dataPM9000.temp2 ? dataPM9000.temp2 : "--"}
+                              {data?.temp2 ? data?.temp2 : "--"}
                             </p>
                             <p className="text-lg pb-0.5">°C</p>
                           </div>
@@ -515,9 +508,7 @@ const DevicePM9000Page = () => {
                           <div className="flex flex-row items-end gap-1">
                             <p className="text-3xl w-14 text-end">
                               {" "}
-                              {dataPM9000.delta_temp
-                                ? dataPM9000.delta_temp
-                                : "--"}
+                              {data?.delta_temp ? data?.delta_temp : "--"}
                             </p>
                             <p className="text-lg pb-0.5">°C</p>
                           </div>

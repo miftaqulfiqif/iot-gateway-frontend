@@ -24,6 +24,7 @@ import { useToast } from "@/context/ToastContext";
 import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";
 import { SaveMeasurementDigitProIDA } from "@/components/modals/save_measurement/save-measurement-digit-pro-ida";
+import { useSocketDigitProIDA } from "@/hooks/socket/devices/SocketDigitProIDA";
 
 const historiesData = [
   {
@@ -60,9 +61,11 @@ const historiesData = [
 
 const DeviceIDAPage = () => {
   const { mac } = useParams();
-  const { weightDigitProIDA } = useSocketHandler({
-    macDevice: mac,
-  });
+  // const { weightDigitProIDA } = useSocketHandler({
+  //   macDevice: mac,
+  // });
+  const { data } = useSocketDigitProIDA(mac!);
+
   const { showToast } = useToast();
   const { createHistoryDigitProIDA } = useDigitProIDA();
   const [saveModal, setSaveModal] = useState(false);
@@ -104,8 +107,8 @@ const DeviceIDAPage = () => {
       !mac ||
       !patient.id ||
       !patient.name ||
-      !weightDigitProIDA.weight_mother ||
-      !weightDigitProIDA.weight_child ||
+      !data.weight_mother ||
+      !data.weight_child ||
       !baby
     )
       return;
@@ -113,8 +116,8 @@ const DeviceIDAPage = () => {
       patient_id: patient.id,
       baby_id: baby.id,
       device_id: mac,
-      weight_mother: weightDigitProIDA.weight_mother,
-      weight_child: weightDigitProIDA.weight_child,
+      weight_mother: data.weight_mother,
+      weight_child: data.weight_child,
     });
   };
 
@@ -165,9 +168,7 @@ const DeviceIDAPage = () => {
                         <img src={weighingIcon} alt="" className="w-12 h-12" />
                         <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                           <span className="pr-2">
-                            {weightDigitProIDA.weight_mother
-                              ? weightDigitProIDA.weight_mother
-                              : "--"}
+                            {data.weight_mother ? data.weight_mother : "--"}
                           </span>
                           Kg
                         </p>
@@ -192,9 +193,7 @@ const DeviceIDAPage = () => {
                         />
                         <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                           <span className="pr-2">
-                            {weightDigitProIDA.weight_child
-                              ? weightDigitProIDA.weight_child
-                              : "--"}
+                            {data.weight_child ? data.weight_child : "--"}
                           </span>
                           Kg
                         </p>
@@ -205,7 +204,7 @@ const DeviceIDAPage = () => {
               </div>
               <div
                 className={`flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl mt-6 ${
-                  weightDigitProIDA.weight_child === 0
+                  data.weight_child === 0
                     ? "cursor-not-allowed"
                     : "cursor-pointer"
                 }`}
@@ -232,7 +231,7 @@ const DeviceIDAPage = () => {
         setInactive={() => setSaveModal(false)}
         patient={patient}
         baby={baby}
-        result={weightDigitProIDA}
+        result={data}
       />
     </MainLayout>
   );

@@ -1,12 +1,14 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 type BMIRangeBarProps = {
   value: number;
   onChangeValue: (info: { label: string; color: string }) => void;
 };
+type LabelInfo = { label: string; color: string };
 
 const BMIRangeBar: React.FC<BMIRangeBarProps> = ({ value, onChangeValue }) => {
-  useEffect(() => {}, []);
+  const previousCategoryRef = useRef<LabelInfo>({ label: "", color: "" });
+
   const min = 15;
   const max = 35;
 
@@ -47,6 +49,17 @@ const BMIRangeBar: React.FC<BMIRangeBarProps> = ({ value, onChangeValue }) => {
 
   useEffect(() => {
     onChangeValue(category);
+  }, [category, onChangeValue]);
+
+  useEffect(() => {
+    // Hindari pemanggilan jika kategori tidak berubah
+    if (
+      previousCategoryRef.current.label !== category.label ||
+      previousCategoryRef.current.color !== category.color
+    ) {
+      previousCategoryRef.current = category;
+      onChangeValue(category);
+    }
   }, [category, onChangeValue]);
 
   return (

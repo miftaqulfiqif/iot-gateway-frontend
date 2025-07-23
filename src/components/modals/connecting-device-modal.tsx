@@ -9,6 +9,8 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+const ApiUrl = import.meta.env.VITE_API_URL;
+
 type Props = {
   isActive: boolean;
   setInactive: () => void;
@@ -47,7 +49,7 @@ export const ConnectingDeviceModal = ({
 
       console.log(data);
       const response = await axios.post(
-        "http://localhost:3000/api/devices/connect-bluetooth",
+        `${ApiUrl}/api/devices/connect-bluetooth`,
         data,
         {
           withCredentials: true,

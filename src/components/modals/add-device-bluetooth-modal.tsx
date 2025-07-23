@@ -12,6 +12,7 @@ import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
 import { ConnectingDeviceModal } from "./connecting-device-modal";
 import { useDevices } from "@/hooks/api/use-device";
+import { useSocketDeviceManagement } from "@/hooks/socket/utils/SocketDeviceManagement";
 
 type Props = {
   isActive: boolean;
@@ -24,15 +25,19 @@ export const AddDeviceBluetooth = ({
   setInactive,
   getAllDevices,
 }: Props) => {
-  const {
-    userId,
-    eventScan,
-    devices,
-    deleteDevice,
-    isScanning,
-    eventConnectDevice,
-    startDigitProIDA,
-  } = useSocketHandler();
+  // const {
+  //   userId,
+  //   eventScan,
+  //   devices,
+  //   deleteDevice,
+  //   isScanning,
+  //   eventConnectDevice,
+  //   startDigitProIDA,
+  // } = useSocketHandler();
+
+  const { isScanning, devices, eventScanBluetoothDevice } =
+    useSocketDeviceManagement();
+
   const [selectedDevice, setSelectedDevice] = useState<Devices | null>(null);
   const [connectingDevice, setConnectingDevice] = useState(false);
 
@@ -78,7 +83,7 @@ export const AddDeviceBluetooth = ({
             <button
               className="flex flex-row items-center gap-3 bg-blue-500 text-white font-bold py-2 px-4 rounded-2xl disabled:opacity-50 text-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)] cursor-pointer"
               disabled={isScanning}
-              onClick={eventScan}
+              onClick={eventScanBluetoothDevice}
             >
               <ScanSearch className="w-8 h-8" />
               Scan Devices

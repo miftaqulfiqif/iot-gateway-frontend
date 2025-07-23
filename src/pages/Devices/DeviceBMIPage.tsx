@@ -22,6 +22,8 @@ import { InputSelect } from "@/components/ui/input-select";
 import HistoriesDigitProBMI from "@/components/charts/chart-histories-digitpro-bmi";
 import { InputMultiSelect } from "@/components/ui/input-multi-select";
 import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";
+import { useSocketDigitProBMI } from "@/hooks/socket/devices/SocketDigitProBMI";
+import { Patients } from "@/models/PatientModel";
 
 const historiesData = [
   {
@@ -188,8 +190,9 @@ const historiesData = [
 
 const DeviceBMIPage = () => {
   const { mac } = useParams();
-  const { weightBMI, setWeightBMI } = useSocketHandler({ macDevice: mac });
+  // const { weightBMI, setWeightBMI } = useSocketHandler({ macDevice: mac });
 
+  const { data } = useSocketDigitProBMI(mac!);
   const [saveModal, setSaveModal] = useState(false);
 
   const [variabel, setVariabel] = useState<string[]>([]);
@@ -198,7 +201,7 @@ const DeviceBMIPage = () => {
 
   const [showHistories, setShowHistories] = useState(false);
 
-  const [patient, setPatient] = useState(null);
+  const [patient, setPatient] = useState<Patients | null>(null);
   // Get patient from local storage
   useEffect(() => {
     const storedPatient = localStorage.getItem("patient");
@@ -288,7 +291,7 @@ const DeviceBMIPage = () => {
                       <img src={weighingIcon} alt="" className="w-15 h-15" />
                       <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                         <span className="pr-2">
-                          {weightBMI.weight ? weightBMI.weight : "--"}
+                          {data?.weight ? data.weight : "--"}
                         </span>
                         kg
                       </p>
@@ -307,40 +310,33 @@ const DeviceBMIPage = () => {
                       <img src={bmiIcon} alt="" className="w-15 h-15" />
                       <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                         <span className="pr-1">
-                          {weightBMI.bmi ? weightBMI.bmi : "--"}
+                          {data?.bmi ? data.bmi : "--"}
                         </span>
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-              {weightBMI.impedence !== 0 && (
+              {data?.impedence !== 0 && data && (
                 <BMIResult
-                  BMI={weightBMI.bmi}
-                  age={weightBMI.age}
-                  bodyFat={weightBMI.bodyFat}
-                  muscleMass={weightBMI.muscleMass}
-                  water={weightBMI.water}
-                  visceralFat={weightBMI.visceralFat}
-                  boneMass={weightBMI.boneMass}
-                  metabolism={weightBMI.metabolism}
-                  protein={weightBMI.protein}
-                  obesity={weightBMI.obesity}
-                  bodyAge={weightBMI.bodyAge}
-                  lbm={weightBMI.lbm}
+                  BMI={data.bmi}
+                  age={data.age}
+                  bodyFat={data.bodyFat}
+                  muscleMass={data.muscleMass}
+                  water={data.water}
+                  visceralFat={data.visceralFat}
+                  boneMass={data.boneMass}
+                  metabolism={data.metabolism}
+                  protein={data.protein}
+                  obesity={data.obesity}
+                  bodyAge={data.bodyAge}
+                  lbm={data.lbm}
                 />
               )}
               <div className="flex flex-row gap-2 items-center">
                 <div
                   className="flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl cursor-pointer"
-                  onClick={() =>
-                    setWeightBMI({
-                      ...weightBMI,
-                      weight: 0,
-                      impedence: 0,
-                      bmi: 0,
-                    })
-                  }
+                  onClick={() => {}}
                 >
                   <div className="flex flex-row gap-3 mx-auto items-center">
                     <RotateCcw />
@@ -363,17 +359,19 @@ const DeviceBMIPage = () => {
       </div>
       {!patient?.height && (
         <InputHeightModal
-          patientId={patient?.id}
+          patientId={patient?.id || ""}
           isActive={true}
           setPatient={setPatient}
         />
       )}
-      <SaveMeasurementBMI
-        isActive={saveModal}
-        setInactive={() => setSaveModal(false)}
-        patient={patient}
-        result={weightBMI}
-      />
+      {data && (
+        <SaveMeasurementBMI
+          isActive={saveModal}
+          setInactive={() => setSaveModal(false)}
+          patient={patient}
+          result={data}
+        />
+      )}
     </MainLayout>
   );
 };
