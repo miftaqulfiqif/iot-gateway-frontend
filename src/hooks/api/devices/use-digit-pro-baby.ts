@@ -71,8 +71,6 @@ export const useDigitProBaby = () => {
           params.patient_id = patient_id;
         }
 
-        console.log(params.patient_id);
-
         const response = await axios.get(
           `${apiUrl}/api/measurement-histories-digit-pro-baby`,
           {
@@ -89,7 +87,6 @@ export const useDigitProBaby = () => {
           setLimitDigitProBaby(limit);
           setSearchDigitProBaby(search);
 
-          // ⬇️ return nilai dari sini ke parent
           return {
             total_pages: response.data.total_pages,
             total_items: response.data.total_items,
@@ -99,7 +96,6 @@ export const useDigitProBaby = () => {
         console.error("Error fetching histories:", error);
       }
 
-      // fallback return
       return { total_pages: 0, total_items: 0 };
     },
     []

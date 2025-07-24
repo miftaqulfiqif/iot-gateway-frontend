@@ -1,4 +1,4 @@
-export type PM9000Model = {
+export type DS001Model = {
   ip?: string;
   ecg_bpm: number;
   ecg_bpm_spo2: number;
@@ -9,13 +9,17 @@ export type PM9000Model = {
   delta_temp: number;
 };
 
-export type PM9000MeasurementHistory = {
+export type DS001MeasurementHistory = {
   id: string;
   patient_handler: {
     patient: {
       name: string;
     };
   };
+  patient: {
+    name: string;
+  };
+  name: string;
   ecg: number;
   spo2: number;
   resp: number;

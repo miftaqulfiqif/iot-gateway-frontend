@@ -6,6 +6,18 @@ import {
   Trash,
   Wifi,
 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
 import { useNavigate } from "react-router-dom";
 
 type DevicesConnectedProps = {
@@ -77,20 +89,44 @@ export const DevicesConnected = ({
 
                   deviceConnection !== "bluetooth"
                     ? navigate("/device/tcpip/" + deviceMac)
-                    : null; 
+                    : null;
                 }}
               >
                 <div className="flex items-center gap-2">Detail</div>
               </li>
-              <li
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                onClick={onDelete}
-              >
-                <div className="flex items-center gap-2 text-red-500">
-                  <Trash className="w-5 h-5" />
-                  Delete
-                </div>
-              </li>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <li className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                    <div className="flex items-center gap-2 text-red-500">
+                      <Trash className="w-5 h-5" />
+                      Delete
+                    </div>
+                  </li>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this item.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="text-black border">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={onDelete}
+                      className="bg-red-500 text-white"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </ul>
           </div>
         </div>
