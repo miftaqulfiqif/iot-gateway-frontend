@@ -6,55 +6,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MainLayout from "../components/layouts/main-layout";
-import {
-  CircleArrowLeft,
-  Download,
-  Funnel,
-  Search,
-  SquarePen,
-  Trash2,
-  User2Icon,
-  UserRoundPlus,
-} from "lucide-react";
-import { InputDate } from "@/components/ui/input-date";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogDescription,
-  AlertDialogTitle,
-} from "@radix-ui/react-alert-dialog";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Funnel, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import type { Patients } from "@/models/PatientModel";
-import { useHistoryMeasurement } from "@/hooks/UseHistoryMeasurement";
-import axios from "axios";
-import { CreateNewPatient } from "@/components/modals/create-new-patient";
-import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
-import { TablePatients } from "@/components/tables/patients";
 import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
@@ -63,6 +16,317 @@ import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
+import { usePM9000 } from "@/hooks/api/devices/use-pm-9000";
+import { useDS001 } from "@/hooks/api/devices/use-ds-001";
+import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
+import { TableHistoryDS001 } from "@/components/tables/history-ds001";
+
+const dummyDataDS001 = [
+  {
+    id: "1",
+    patient_handler: {
+      patient: {
+        name: "Andi Wijaya",
+      },
+    },
+    systolic: 120,
+    diastolic: 80,
+    mean: 93,
+    pulse_rate: 75,
+    temp: 36.8,
+    spo2: 98,
+    pr_spo2: 75,
+    rr: 15,
+    timestamp: "2025-07-14T08:30:00Z",
+  },
+  {
+    id: "2",
+    patient_handler: {
+      patient: {
+        name: "Siti Handayani",
+      },
+    },
+    systolic: 130,
+    diastolic: 85,
+    mean: 100,
+    pulse_rate: 82,
+    temp: 37.1,
+    spo2: 96,
+    pr_spo2: 82,
+    rr: 15,
+    timestamp: "2025-07-14T09:45:00Z",
+  },
+  {
+    id: "3",
+    patient_handler: {
+      patient: {
+        name: "Budi Santoso",
+      },
+    },
+    systolic: 110,
+    diastolic: 70,
+    mean: 83,
+    pulse_rate: 68,
+    temp: 36.5,
+    spo2: 99,
+    pr_spo2: 68,
+    rr: 15,
+    timestamp: "2025-07-14T10:15:00Z",
+  },
+  {
+    id: "4",
+    patient_handler: {
+      patient: {
+        name: "Dewi Lestari",
+      },
+    },
+    systolic: 145,
+    diastolic: 95,
+    mean: 112,
+    pulse_rate: 90,
+    temp: 38.2,
+    spo2: 94,
+    pr_spo2: 90,
+    rr: 15,
+    timestamp: "2025-07-14T11:10:00Z",
+  },
+  {
+    id: "5",
+    patient_handler: {
+      patient: {
+        name: "Agus Pramono",
+      },
+    },
+    systolic: 125,
+    diastolic: 78,
+    mean: 94,
+    pulse_rate: 72,
+    temp: 36.9,
+    spo2: 97,
+    pr_spo2: 72,
+    rr: 15,
+    timestamp: "2025-07-14T12:00:00Z",
+  },
+];
+
+const dummyDataPM9000 = [
+  {
+    id: "1",
+    patient_handler: {
+      patient: {
+        name: "Andi Wijaya",
+      },
+    },
+    ecg: 100,
+    spo2: 98,
+    resp: 18,
+    systolic: 120,
+    diastolic: 80,
+    mean: 93,
+    temp1: 36.5,
+    temp2: 36.8,
+    delta_temp: 0.3,
+    timestamp: "2023-09-01T08:30:00Z",
+  },
+  {
+    id: "2",
+    patient_handler: {
+      patient: {
+        name: "Siti Aminah",
+      },
+    },
+    ecg: 92,
+    spo2: 95,
+    resp: 22,
+    systolic: 135,
+    diastolic: 88,
+    mean: 104,
+    temp1: 37.2,
+    temp2: 37.4,
+    delta_temp: 0.2,
+    timestamp: "2023-09-02T09:00:00Z",
+  },
+  {
+    id: "3",
+    patient_handler: {
+      patient: {
+        name: "Budi Santoso",
+      },
+    },
+    ecg: 92,
+    spo2: 97,
+    resp: 16,
+    systolic: 110,
+    diastolic: 72,
+    mean: 85,
+    temp1: 36.9,
+    temp2: 37.1,
+    delta_temp: 0.2,
+    timestamp: "2023-09-03T09:45:00Z",
+  },
+  {
+    id: "4",
+    patient_handler: {
+      patient: {
+        name: "Rina Marlina",
+      },
+    },
+    ecg: 102,
+    spo2: 99,
+    resp: 19,
+    systolic: 125,
+    diastolic: 84,
+    mean: 98,
+    temp1: 37.0,
+    temp2: 36.9,
+    delta_temp: -0.1,
+    timestamp: "2023-09-04T10:15:00Z",
+  },
+  {
+    id: "5",
+    patient_handler: {
+      patient: {
+        name: "Dewi Lestari",
+      },
+    },
+    ecg: 102,
+    spo2: 96,
+    resp: 20,
+    systolic: 118,
+    diastolic: 79,
+    mean: 92,
+    temp1: 36.8,
+    temp2: 37.0,
+    delta_temp: 0.2,
+    timestamp: "2023-09-05T11:00:00Z",
+  },
+  {
+    id: "6",
+    patient_handler: {
+      patient: {
+        name: "Agus Pratama",
+      },
+    },
+    ecg: 92,
+    spo2: 97,
+    resp: 17,
+    systolic: 122,
+    diastolic: 82,
+    mean: 95,
+    temp1: 36.7,
+    temp2: 36.9,
+    delta_temp: 0.2,
+    timestamp: "2023-09-06T08:30:00Z",
+  },
+  {
+    id: "7",
+    patient_handler: {
+      patient: {
+        name: "Lina Rahmawati",
+      },
+    },
+    ecg: 130,
+    spo2: 94,
+    resp: 21,
+    systolic: 130,
+    diastolic: 85,
+    mean: 100,
+    temp1: 37.5,
+    temp2: 37.8,
+    delta_temp: 0.3,
+    timestamp: "2023-09-07T09:00:00Z",
+  },
+  {
+    id: "8",
+    patient_handler: {
+      patient: {
+        name: "Joko Hermawan",
+      },
+    },
+    ecg: 92,
+    spo2: 98,
+    resp: 18,
+    systolic: 117,
+    diastolic: 78,
+    mean: 91,
+    temp1: 36.6,
+    temp2: 36.8,
+    delta_temp: 0.2,
+    timestamp: "2023-09-08T09:45:00Z",
+  },
+  {
+    id: "9",
+    patient_handler: {
+      patient: {
+        name: "Yuni Arlina",
+      },
+    },
+    ecg: 108,
+    spo2: 93,
+    resp: 23,
+    systolic: 140,
+    diastolic: 90,
+    mean: 107,
+    temp1: 38.1,
+    temp2: 38.3,
+    delta_temp: 0.2,
+    timestamp: "2023-09-09T10:15:00Z",
+  },
+  {
+    id: "10",
+    patient_handler: {
+      patient: {
+        name: "Rangga Saputra",
+      },
+    },
+    ecg: 92,
+    spo2: 96,
+    resp: 16,
+    systolic: 108,
+    diastolic: 70,
+    mean: 83,
+    temp1: 36.4,
+    temp2: 36.6,
+    delta_temp: 0.2,
+    timestamp: "2023-09-10T11:00:00Z",
+  },
+  {
+    id: "11",
+    patient_handler: {
+      patient: {
+        name: "Fitri Nuraini",
+      },
+    },
+    ecg: 108,
+    spo2: 99,
+    resp: 18,
+    systolic: 124,
+    diastolic: 80,
+    mean: 95,
+    temp1: 36.9,
+    temp2: 36.9,
+    delta_temp: 0.0,
+    timestamp: "2023-09-11T08:30:00Z",
+  },
+  {
+    id: "12",
+    patient_handler: {
+      patient: {
+        name: "Arif Hidayat",
+      },
+    },
+    ecg: 108,
+    spo2: 97,
+    resp: 20,
+    systolic: 126,
+    diastolic: 82,
+    mean: 97,
+    temp1: 37.0,
+    temp2: 37.1,
+    delta_temp: 0.1,
+    timestamp: "2023-09-12T09:00:00Z",
+  },
+];
 
 const dummyDataDigitProBaby = [
   {
@@ -423,6 +687,14 @@ const state = [
     value: "digit-pro-ida",
     label: "Digit Pro IDA",
   },
+  {
+    value: "pm-9000",
+    label: "PM-9000",
+  },
+  {
+    value: "ds-001",
+    label: "DS-001",
+  },
 ];
 
 const MeasurementHistoriesPage = () => {
@@ -433,6 +705,8 @@ const MeasurementHistoriesPage = () => {
   const { dataDigitProBMI, fetchDataBMI, currentPageBMI } = useDigitProBMI();
   const { historiesDoppler, fetchDataDoppler, currentPageDoppler } =
     useDoppler();
+  const { historiesPM9000, fetchDataPM9000, currentPagePM9000 } = usePM9000();
+  const { historiesDS001, fetchDataDS001, currentPageDS001 } = useDS001();
 
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(10);
@@ -453,6 +727,8 @@ const MeasurementHistoriesPage = () => {
     "digit-pro-baby": { page: 1, limit: 10, search: "" },
     bmi: { page: 1, limit: 10, search: "" },
     doppler: { page: 1, limit: 10, search: "" },
+    "pm-9000": { page: 1, limit: 10, search: "" },
+    "ds-001": { page: 1, limit: 10, search: "" },
   });
   const [totalPageState, setTotalPageState] = useState<{
     [key: string]: number;
@@ -461,6 +737,8 @@ const MeasurementHistoriesPage = () => {
     "digit-pro-baby": 0,
     bmi: 0,
     doppler: 0,
+    "pm-9000": 0,
+    "ds-001": 0,
   });
   const totalPage = totalPageState[selectedDevice ?? "digit-pro-ida"];
   const currentPagination = paginationState[selectedDevice ?? "digit-pro-ida"];
@@ -512,6 +790,20 @@ const MeasurementHistoriesPage = () => {
         search,
       });
     }
+    if (selectedDevice === "pm-9000") {
+      fetchDataPM9000({
+        page: 1,
+        limit,
+        search,
+      });
+    }
+    if (selectedDevice === "ds-001") {
+      fetchDataDS001({
+        page: 1,
+        limit,
+        search,
+      });
+    }
   }, [limit, search, selectedDevice]);
 
   useEffect(() => {
@@ -547,6 +839,22 @@ const MeasurementHistoriesPage = () => {
         setTotalPageState((prev) => ({
           ...prev,
           doppler: res?.total_pages ?? 0,
+        }));
+      });
+    }
+    if (selectedDevice === "pm-9000") {
+      fetchDataPM9000({ page, limit, search }).then((res) => {
+        setTotalPageState((prev) => ({
+          ...prev,
+          "pm-9000": res?.total_pages ?? 0,
+        }));
+      });
+    }
+    if (selectedDevice === "ds-001") {
+      fetchDataDS001({ page, limit, search }).then((res) => {
+        setTotalPageState((prev) => ({
+          ...prev,
+          "ds-001": res?.total_pages ?? 0,
         }));
       });
     }
@@ -738,6 +1046,26 @@ const MeasurementHistoriesPage = () => {
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
                   currentPage={currentPageDoppler}
+                  totalPage={totalPage}
+                />
+              )}
+              {selectedDevice === "pm-9000" && (
+                <TableHistoryPM9000
+                  data={dummyDataPM9000 ?? historiesPM9000}
+                  goToPreviousPage={goToPreviousPage}
+                  goToNextPage={goToNextPage}
+                  goToPage={goToPage}
+                  currentPage={currentPagePM9000}
+                  totalPage={totalPage}
+                />
+              )}
+              {selectedDevice === "ds-001" && (
+                <TableHistoryDS001
+                  data={dummyDataDS001 ?? historiesDS001}
+                  goToPreviousPage={goToPreviousPage}
+                  goToNextPage={goToNextPage}
+                  goToPage={goToPage}
+                  currentPage={currentPageDS001}
                   totalPage={totalPage}
                 />
               )}
