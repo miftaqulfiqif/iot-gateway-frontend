@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Bluetooth, EthernetPort, Key, LandPlot, Wifi } from "lucide-react";
+import { useEffect } from "react";
 import { Devices } from "@/models/DeviceModel";
 
 type Props = {

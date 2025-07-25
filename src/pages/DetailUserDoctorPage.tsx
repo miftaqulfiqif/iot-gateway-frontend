@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/main-layout";
-import { Mars, PenSquare, Search, Venus } from "lucide-react";
+import { PenSquare, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";

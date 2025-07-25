@@ -1,7 +1,4 @@
 import {
-  ChevronDown,
-  FileUser,
-  LucideBaby,
   Mars,
   PersonStanding,
   Venus,

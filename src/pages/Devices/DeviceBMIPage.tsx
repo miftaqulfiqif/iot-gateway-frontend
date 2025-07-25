@@ -1,24 +1,17 @@
 import {
   ArrowDownToLine,
-  ArrowLeft,
-  ArrowLeftCircle,
-  Icon,
   PersonStanding,
   RotateCcw,
-  Weight,
 } from "lucide-react";
 import MainLayout from "../../components/layouts/main-layout";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { BMIResult } from "@/components/ui/bmi/bmi-result";
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import bmiIcon from "@/assets/icons/bmi-white.png";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
 import { InputHeightModal } from "@/components/modals/input-height-modal";
 import { useParams } from "react-router-dom";
-import { useToast } from "@/context/ToastContext";
 import { HistoryBMI } from "@/components/tables/history-bmi";
-import { InputSelect } from "@/components/ui/input-select";
 import HistoriesDigitProBMI from "@/components/charts/chart-histories-digitpro-bmi";
 import { InputMultiSelect } from "@/components/ui/input-multi-select";
 import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";

@@ -4,7 +4,6 @@ import {
   LineChart,
   XAxis,
   YAxis,
-  Tooltip,
   Legend,
 } from "recharts";
 
@@ -15,7 +14,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useEffect } from "react";
 
 const chartConfig = {
   weight: { label: "Weight", color: "#4CAF50" },

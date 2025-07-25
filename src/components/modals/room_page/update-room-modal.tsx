@@ -3,7 +3,7 @@ import { InputSelectWithSearch } from "@/components/ui/input-select-with-search"
 import { InputText } from "@/components/ui/input-text";
 import { useToast } from "@/context/ToastContext";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import * as yup from "yup";
 
 interface UpdateRoomModalProps {

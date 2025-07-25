@@ -1,10 +1,7 @@
 import { UsersPageFilter } from "@/components/filter/user-page";
 import MainLayout from "@/components/layouts/main-layout";
 import { AddNewUser } from "@/components/modals/add-new-user";
-import { CreateNewPatient } from "@/components/modals/create-new-patient";
-import DetailPatient from "@/components/sections/patients-page/detail-patient";
 import { TableAdminUsers } from "@/components/tables/admin-users";
-import { TablePatients } from "@/components/tables/patients";
 import {
   Select,
   SelectContent,
@@ -13,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Funnel, Search, UserRoundPlus } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 // Dummy Admin
 const dummyUsers = [
@@ -86,7 +83,6 @@ export const UsersPage = () => {
   const [addUserModal, setAddUserModal] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
   const [userSelected, setUserSelected] = useState(null);
-  const [tableShow, setTableShow] = useState("users");
 
   const handleChangeShowTable = (value: string) => {
     alert(value);

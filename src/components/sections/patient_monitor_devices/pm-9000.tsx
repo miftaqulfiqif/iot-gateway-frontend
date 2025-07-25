@@ -1,7 +1,6 @@
 import {
   Activity,
   EllipsisVertical,
-  SquareArrowOutUpRight,
   SquarePen,
   Thermometer,
 } from "lucide-react";

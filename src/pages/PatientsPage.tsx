@@ -6,52 +6,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MainLayout from "../components/layouts/main-layout";
-import {
-  CircleArrowLeft,
-  Download,
-  Funnel,
-  Search,
-  SquarePen,
-  Trash2,
-  User2Icon,
-  UserRoundPlus,
-} from "lucide-react";
-import { InputDate } from "@/components/ui/input-date";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogDescription,
-  AlertDialogTitle,
-} from "@radix-ui/react-alert-dialog";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { Funnel, Search, UserRoundPlus } from "lucide-react";
+
+import { useState } from "react";
 import type { Patients } from "@/models/PatientModel";
-import { useHistoryMeasurement } from "@/hooks/UseHistoryMeasurement";
-import axios from "axios";
 import { CreateNewPatient } from "@/components/modals/create-new-patient";
 import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
 import { TablePatients } from "@/components/tables/patients";
@@ -70,21 +28,13 @@ const Patients = () => {
     setForm,
     search,
     handleSearchChange,
-    patientId,
     patients,
-    openDetail,
     animateRows,
     goToNextPage,
     goToPreviousPage,
     currentPage,
     totalPage,
     goToPage,
-    isDetailVisible,
-    setIsExiting,
-    setIsVisible,
-    setPatientId,
-    selectedPatient,
-    isExiting,
     form,
     closeForm,
     setPatients,

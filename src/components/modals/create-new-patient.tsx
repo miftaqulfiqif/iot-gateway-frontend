@@ -2,13 +2,11 @@ import { InputDate } from "@/components/ui/input-date";
 import { InputText } from "@/components/ui/input-text";
 import { InputSelect } from "@/components/ui/input-select";
 
-import patients from "@/assets/icons/patients-icon.png";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
 import { Patients } from "@/models/PatientModel";
-import { BarcodeIcon, ScanBarcode, X } from "lucide-react";
+import { X } from "lucide-react";
 import { UsePatient } from "@/hooks/api/use-patient";
 import { useEffect } from "react";
 

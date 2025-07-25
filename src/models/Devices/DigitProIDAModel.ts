@@ -1,4 +1,3 @@
-import { StringToBoolean } from "class-variance-authority/types";
 import { Patients } from "../PatientModel";
 
 export type DigitProIDAModel = {

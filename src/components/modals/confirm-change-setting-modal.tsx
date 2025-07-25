@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { Bluetooth, EthernetPort, Key, LandPlot, Wifi } from "lucide-react";
+import { useEffect } from "react";
 import { InputText } from "../ui/input-text";
-import { setIn, useFormik } from "formik";
-import { InputLongtext } from "../ui/input-longtext";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import { useToast } from "@/context/ToastContext";
 

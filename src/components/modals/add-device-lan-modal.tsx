@@ -1,22 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  Bluetooth,
-  Cpu,
-  EthernetPort,
-  Key,
-  LandPlot,
-  ScanSearch,
-  Wifi,
-} from "lucide-react";
-import { Devices } from "@/models/DeviceModel";
+
+
 import { InputText } from "../ui/input-text";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { InputSelect } from "../ui/input-select";
 import { useToast } from "@/context/ToastContext";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import axios from "axios";
-import { useDevices } from "@/hooks/api/use-device";
 import { useAuth } from "@/context/AuthContext";
 
 const apiUrl = import.meta.env.VITE_API_URL;

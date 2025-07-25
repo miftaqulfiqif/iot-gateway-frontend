@@ -1,17 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import {
   ArrowBigLeftDash,
-  Bluetooth,
-  Cpu,
-  EthernetPort,
-  Key,
-  LandPlot,
   Mars,
-  ScanSearch,
   Venus,
-  Wifi,
 } from "lucide-react";
-import { Devices } from "@/models/DeviceModel";
 import Sidebar from "../layouts/sidebar";
 
 import babyImg from "@/assets/imgs/baby.png";

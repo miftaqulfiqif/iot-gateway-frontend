@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils"; // jika kamu pakai shadcn untuk class merge
+// jika kamu pakai shadcn untuk class merge
 
 type InputMultiSelectProps = {
   label?: string;

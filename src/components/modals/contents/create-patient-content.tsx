@@ -1,7 +1,6 @@
 import { InputDate } from "@/components/ui/input-date";
 import { InputSelect } from "@/components/ui/input-select";
 import { InputText } from "@/components/ui/input-text";
-import { UsePatient } from "@/hooks/api/use-patient";
 import { useFormik } from "formik";
 import * as yup from "yup";
 

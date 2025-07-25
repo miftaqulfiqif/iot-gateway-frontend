@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import type { Devices } from "../models/DeviceModel";
 import MainLayout from "../components/layouts/main-layout";
-import { Cpu, Plus, ScanBarcode, ScanSearch } from "lucide-react";
+import { Plus } from "lucide-react";
 import { AddDeviceModal } from "@/components/modals/add-device-modal";
 import { AddDeviceBluetooth } from "@/components/modals/add-device-bluetooth-modal";
 import { AddDeviceLan } from "@/components/modals/add-device-lan-modal";
 import { DevicesConnected } from "@/components/ui/devices-connected";
 import { useDevices } from "@/hooks/api/use-device";
-import { ConnectingDeviceModal } from "@/components/modals/connecting-device-modal";
 
 function Devices() {
   const {
@@ -87,7 +86,7 @@ function Devices() {
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
                       onDelete={() => deleteDeviceTcpIP(device.id)}
-                      onUpdate={() => updateDeviceBluetooth}
+                      onUpdate={() => updateDeviceTcpIP}
                     />
                   ))
               ) : (

@@ -1,20 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  Bluetooth,
-  Cpu,
-  EthernetPort,
-  Key,
-  LandPlot,
-  Mars,
-  ScanSearch,
-  Venus,
-  Wifi,
-} from "lucide-react";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
-import { Devices } from "@/models/DeviceModel";
+import { useEffect } from "react";
+
+
 import Sidebar from "../layouts/sidebar";
 
-import babyImg from "@/assets/imgs/baby.png";
 import { useBabies } from "@/hooks/api/use-baby";
 
 type Props = {

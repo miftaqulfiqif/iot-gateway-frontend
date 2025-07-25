@@ -1,21 +1,10 @@
-import { useEffect, useRef, useState } from "react";
 import {
-  Bluetooth,
-  Cpu,
-  EthernetPort,
-  Key,
-  LandPlot,
-  ScanSearch,
-  Wifi,
   X,
 } from "lucide-react";
-import { Devices } from "@/models/DeviceModel";
 import Sidebar from "../layouts/sidebar";
 
 import barcodeImg from "@/assets/gif/scan-barcode.gif";
-import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
 import { SelectPatientContent } from "./contents/select-patient-content";
-import { UsePatient } from "@/hooks/api/use-patient";
 import { CreatePatientContent } from "./contents/create-patient-content";
 
 type Props = {

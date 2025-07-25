@@ -1,4 +1,4 @@
-import { CaseUpper, Eye, EyeClosed, Mars, Venus } from "lucide-react";
+import { Mars, Venus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
@@ -10,8 +10,6 @@ import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/main-layout";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
-import { id } from "date-fns/locale";
-import { title } from "process";
 
 const state = [
   {

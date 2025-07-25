@@ -1,15 +1,11 @@
 import {
   BedSingle,
-  HomeIcon,
   Lamp,
   LogOut,
-  LogOutIcon,
   ScrollText,
   Settings,
   SquareActivity,
   Stethoscope,
-  User2,
-  UserRound,
   UsersRound,
 } from "lucide-react";
 import AppSidebar from "../ui/app-sidebar";
@@ -17,7 +13,6 @@ import AppSidebar from "../ui/app-sidebar";
 import elitechLogo from "@/assets/imgs/Logo Elitech.png";
 import doctorImg from "@/assets/imgs/doctor-img.png";
 import { useAuth } from "@/context/AuthContext";
-import { useToast } from "@/context/ToastContext";
 
 interface SidebarProps {
   state: string;

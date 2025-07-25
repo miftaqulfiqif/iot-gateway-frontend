@@ -1,10 +1,8 @@
 import MainLayout from "@/components/layouts/main-layout";
 import UpdateRoomModal from "@/components/modals/room_page/update-room-modal";
-import { id } from "date-fns/locale";
 import {
   User,
   Bed,
-  Stethoscope,
   Activity,
   Clock,
   NotebookTabs,

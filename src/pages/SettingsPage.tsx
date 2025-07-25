@@ -1,4 +1,3 @@
-import { InputSelect } from "@/components/ui/input-select";
 import MainLayout from "../components/layouts/main-layout";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -11,7 +10,6 @@ import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import { MenuItems } from "@/components/sections/settings-page/menu-items";
 import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-setting-modal";
 import { AddGatewayModal } from "@/components/modals/add-gateway-modal";
-import { Users } from "lucide-react";
 
 const SettingsPage = () => {
   const { user } = useAuth();

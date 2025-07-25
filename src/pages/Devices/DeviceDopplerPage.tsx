@@ -1,23 +1,12 @@
-import DopplerChart from "@/components/charts/chart-digit-pro-baby-realtime";
 import MainLayout from "../../components/layouts/main-layout";
 import {
   Activity,
   ArrowDownToLine,
-  ArrowLeft,
   AudioLines,
-  BatteryFull,
-  BatteryLow,
-  BatteryMedium,
-  HeartPulse,
-  Icon,
-  PersonStanding,
   StopCircle,
-  Weight,
 } from "lucide-react";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { babyPacifier } from "@lucide/lab";
 
-import weighingIcon from "@/assets/icons/pediatrics.png";
 import heartBeatImg from "@/assets/imgs/hear-beat.png";
 
 import battery25Icon from "@/assets/icons/battery-25.png";
@@ -25,7 +14,6 @@ import battery50Icon from "@/assets/icons/battery-50.png";
 import battery75Icon from "@/assets/icons/battery-75.png";
 import battery100Icon from "@/assets/icons/battery-100.png";
 
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Patients } from "@/models/PatientModel";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";

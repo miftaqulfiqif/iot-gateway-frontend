@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Bluetooth, EthernetPort, Key, LandPlot, Wifi } from "lucide-react";
 import { InputSelect } from "../ui/input-select";
 import { useToast } from "@/context/ToastContext";
 

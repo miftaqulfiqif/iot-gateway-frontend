@@ -1,9 +1,8 @@
 import MainLayout from "@/components/layouts/main-layout";
 import { SettingTcpIpDeviceModal } from "@/components/modals/setting-tcpip-device-modal";
-import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
 import { TableHistoryDS001 } from "@/components/tables/history-ds001";
 import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
-import { Mars, RotateCcw, Settings, Unplug, Venus } from "lucide-react";
+import { RotateCcw, Settings, Unplug } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -368,16 +367,17 @@ const dummyMedicalActivity = [
   },
 ];
 
+const device = {
+  name: "PM 9000",
+  ip: "ip_baby",
+  type: "bluetooth",
+  status: "Connected",
+  device: "PM 9000",
+  device_function: "diagnostic_station_001",
+};
+
 export const DetailTcpIpDevice = () => {
   const { ip } = useParams();
-  const [device, setDevice] = useState({
-    name: "PM 9000",
-    ip: "ip_baby",
-    type: "bluetooth",
-    status: "Connected",
-    device: "PM 9000",
-    device_function: "diagnostic_station_001",
-  });
   const [settingModal, setSettingModal] = useState(false);
 
   return (

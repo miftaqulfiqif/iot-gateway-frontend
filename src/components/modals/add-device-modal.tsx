@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Bluetooth, EthernetPort, Key, LandPlot, Wifi } from "lucide-react";
+import { useEffect } from "react";
+import { Bluetooth, EthernetPort, Wifi } from "lucide-react";
 
 type Props = {
   isActive: boolean;

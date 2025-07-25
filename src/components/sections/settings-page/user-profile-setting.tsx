@@ -3,7 +3,7 @@ import person from "@/assets/icons/profile-icon.png";
 import { useAuth } from "@/context/AuthContext";
 import { useModal } from "@/context/ConifmModalContext";
 import { useToast } from "@/context/ToastContext";
-import React, { ChangeEvent, use, useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 
 export const UserProfileSetting = () => {
   const { user } = useAuth();
