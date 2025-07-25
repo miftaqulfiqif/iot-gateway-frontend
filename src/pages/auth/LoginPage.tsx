@@ -77,17 +77,12 @@ export const LoginPage = () => {
                   onChange={formik.handleChange}
                   className="w-full outline-none text-sm bg-transparent"
                 />
-                {showPassword ? (
-                  <Eye
-                    className="text-gray-400 cursor-pointer ml-2"
-                    onClick={() => setShowPassword(false)}
-                  />
-                ) : (
-                  <EyeClosed
-                    className="text-gray-400 cursor-pointer ml-2"
-                    onClick={() => setShowPassword(true)}
-                  />
-                )}
+                <span
+                  className="text-gray-400 cursor-pointer ml-2"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? <Eye /> : <EyeClosed />}
+                </span>
               </div>
               {formik.touched.password && formik.errors.password && (
                 <p className="text-xs text-red-500 mt-1">

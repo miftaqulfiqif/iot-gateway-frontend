@@ -2,13 +2,8 @@ import MainLayout from "@/components/layouts/main-layout";
 import CreateRoomModal from "@/components/modals/room_page/create-room-modal";
 import { RoomItems } from "@/components/sections/rooms-page/room-item";
 
-
 import { useToast } from "@/context/ToastContext";
-import {
-  Funnel,
-  Search,
-  UserRoundPlus,
-} from "lucide-react";
+import { Funnel, Search, UserRoundPlus } from "lucide-react";
 import { useRef, useState } from "react";
 
 export const dummyRooms = [

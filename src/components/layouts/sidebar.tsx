@@ -30,68 +30,70 @@ const Sidebar = ({ state }: SidebarProps) => {
           />
           {/* <p className="font-bold text-xl">Elitech</p> */}
         </div>
-        <div className="flex flex-col gap-4">
-          <p>Menu</p>
-          <div className="flex flex-col gap-2 w-full">
-            {/* <AppSidebar
+        <div className="overflow-y-auto max-h-[500px]">
+          <div className="flex flex-col gap-4">
+            <p>Menu</p>
+            <div className="flex flex-col gap-2 w-full">
+              {/* <AppSidebar
               icon={<HomeIcon />}
               title="Dashboard"
               isActive={state === "Dashboard"}
               url="/"
             /> */}
-            <AppSidebar
-              icon={<Stethoscope />}
-              title="Measurement"
-              isActive={state === "Measurement"}
-              url="/measurement"
-            />
-            <AppSidebar
-              icon={<SquareActivity />}
-              title="Patient Monitor"
-              isActive={state === "Patient Monitor"}
-              url="/patient-monitor"
-            />
-            <AppSidebar
-              icon={<Lamp />}
-              title="Devices"
-              isActive={state === "Devices"}
-              url="/devices"
-            />
-            <AppSidebar
-              icon={<UsersRound />}
-              title="Patients"
-              isActive={state === "Patients"}
-              url="/patients"
-            />
-            <AppSidebar
-              icon={<BedSingle />}
-              title="Rooms"
-              isActive={state === "Rooms"}
-              url="/rooms"
-            />
-            <AppSidebar
-              icon={<ScrollText />}
-              title="Measurement Histories"
-              isActive={state === "Measurement Histories"}
-              url="/measurement-histories"
-            />
+              <AppSidebar
+                icon={<Stethoscope />}
+                title="Measurement"
+                isActive={state === "Measurement"}
+                url="/measurement"
+              />
+              <AppSidebar
+                icon={<SquareActivity className="w-5 h-5" />}
+                title="Patient Monitor"
+                isActive={state === "Patient Monitor"}
+                url="/patient-monitor"
+              />
+              <AppSidebar
+                icon={<Lamp />}
+                title="Devices"
+                isActive={state === "Devices"}
+                url="/devices"
+              />
+              <AppSidebar
+                icon={<UsersRound />}
+                title="Patients"
+                isActive={state === "Patients"}
+                url="/patients"
+              />
+              <AppSidebar
+                icon={<BedSingle />}
+                title="Rooms"
+                isActive={state === "Rooms"}
+                url="/rooms"
+              />
+              <AppSidebar
+                icon={<ScrollText />}
+                title="Measurement Histories"
+                isActive={state === "Measurement Histories"}
+                url="/measurement-histories"
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <p>Tools</p>
-          <div className="flex flex-col gap-2 w-full">
-            <AppSidebar
-              icon={<Settings />}
-              title="Settings"
-              isActive={state === "Settings"}
-              url="/settings"
-            />
-            <AppSidebar
-              icon={<UsersRound />}
-              title="Users management"
-              isActive={state === "Users"}
-              url="/users"
-            />
+          <div className="flex flex-col gap-4">
+            <p>Tools</p>
+            <div className="flex flex-col gap-2 w-full">
+              <AppSidebar
+                icon={<Settings />}
+                title="Settings"
+                isActive={state === "Settings"}
+                url="/settings"
+              />
+              <AppSidebar
+                icon={<UsersRound />}
+                title="Users management"
+                isActive={state === "Users"}
+                url="/users"
+              />
+            </div>
           </div>
         </div>
       </div>

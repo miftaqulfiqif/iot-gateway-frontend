@@ -55,15 +55,18 @@ export const RoomItems = ({ room }: { room: Room }) => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
                 <ul className="py-1 text-sm text-gray-700">
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      window.location.href = `/room/312`;
-                    }}
-                  >
-                    Lihat Detail
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
+                    <a
+                      href={`/room/${room.roomNumber}`}
+                      className="block w-full"
+                    >
+                      Lihat Detail
+                    </a>
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 flex items-center gap-2">
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 flex items-center gap-2"
+                    onClick={() => alert("Room deleted")}
+                  >
                     <Trash className="w-4 h-4" />
                     Hapus
                   </li>
