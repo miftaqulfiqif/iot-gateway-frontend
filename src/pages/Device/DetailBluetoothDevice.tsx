@@ -3,7 +3,7 @@ import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
-import { Mars, RotateCcw, Settings, Unplug, Venus } from "lucide-react";
+import { RotateCcw, Settings, Unplug } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -194,16 +194,16 @@ const dummyMedicalActivity = [
   },
 ];
 
+const device = {
+  name: "Digit Pro Baby",
+  mac: "mac_baby",
+  type: "bluetooth",
+  status: "Connected",
+  device_function: "digitpro_bmi",
+};
+
 export const DetailBluetoothDevice = () => {
   const { mac } = useParams();
-
-  const [device, setDevice] = useState({
-    name: "Digit Pro Baby",
-    mac: "mac_baby",
-    type: "bluetooth",
-    status: "Connected",
-    device_function: "digitpro_bmi",
-  });
 
   return (
     <MainLayout title="Detail Bluetooth Device" state="Devices">

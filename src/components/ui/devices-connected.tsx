@@ -2,7 +2,6 @@ import {
   Bluetooth,
   EllipsisVertical,
   EthernetPort,
-  SquarePen,
   Trash,
   Wifi,
 } from "lucide-react";

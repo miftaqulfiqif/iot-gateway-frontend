@@ -1,33 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  Bluetooth,
-  Cpu,
-  EthernetPort,
-  Key,
-  LandPlot,
-  ScanSearch,
-  Search,
-  Wifi,
   X,
 } from "lucide-react";
-import { Devices } from "@/models/DeviceModel";
-import { InputText } from "../ui/input-text";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { InputSelect } from "../ui/input-select";
 import { useToast } from "@/context/ToastContext";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
-import axios from "axios";
-import { useDevices } from "@/hooks/api/use-device";
-import { useAuth } from "@/context/AuthContext";
-import { Patients } from "@/models/PatientModel";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@radix-ui/react-select";
+
+
 import Sidebar from "../layouts/sidebar";
 
 const dummyDeviceAvailable = [

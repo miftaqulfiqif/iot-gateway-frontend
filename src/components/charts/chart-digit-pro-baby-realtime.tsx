@@ -1,4 +1,4 @@
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, LabelList, Line, LineChart } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {

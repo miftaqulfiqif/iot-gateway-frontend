@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Cpu, X } from "lucide-react";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { useDevices } from "@/hooks/api/use-device";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";

@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { Bluetooth, EthernetPort, Key, LandPlot, Wifi } from "lucide-react";
-import { PatientInfo } from "../../ui/patient-info";
-import { InputText } from "../../ui/input-text";
 import { formatDate } from "date-fns";
 import { useToast } from "@/context/ToastContext";
 

@@ -8,14 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  CircleArrowLeft,
-  Download,
-  Funnel,
-  Search,
-  SquarePen,
   Trash2,
-  User2Icon,
-  UserRoundPlus,
 } from "lucide-react";
 import {
   AlertDialog,

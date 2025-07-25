@@ -1,4 +1,4 @@
-import { ChevronDown, CircleHelp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { ReactNode, useState } from "react";
 
 interface FitnessMetricSectionProps {

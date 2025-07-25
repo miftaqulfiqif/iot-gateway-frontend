@@ -11,9 +11,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import gatewayIcon from "@/assets/icons/gateway.png";
 import gatewayWhiteIcon from "@/assets/icons/gateway-white.png";
-import { Check, Search, Trash2 } from "lucide-react";
+import { Check, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { se } from "date-fns/locale";
 import { useToast } from "@/context/ToastContext";
 
 type Props = {

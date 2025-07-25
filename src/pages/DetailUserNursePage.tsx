@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/main-layout";
-import { Mars, PenSquare, Search, Venus } from "lucide-react";
+import { PenSquare, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
@@ -114,29 +114,35 @@ const dummyMeasurementActivity = [
 const DetailUserNursePage = () => {
   const { userId } = useParams();
   const stateRef = useRef(state);
-  const { historiesDigitProIDA, fetchDataIDAByDoctorId, currentPageIDA } =
-    useDigitProIDA();
+  const {
+    historiesDigitProIDA,
+    fetchDataIDAByDoctorId,
+    currentPageIDA,
+    totalPageIDA,
+  } = useDigitProIDA();
   const {
     dataDigitProBaby,
     fetchDataDigitProBabyByDoctorId,
     currentPageDigitProBaby,
+    totalPageDigitProBaby,
   } = useDigitProBaby();
-  const { dataDigitProBMI, fetchDataBMIByDoctorId, currentPageBMI } =
-    useDigitProBMI();
-  const { historiesDoppler, fetchDataDopplerByDoctorId, currentPageDoppler } =
-    useDoppler();
+  const {
+    dataDigitProBMI,
+    fetchDataBMIByDoctorId,
+    currentPageBMI,
+    totalPageBMI,
+  } = useDigitProBMI();
+  const {
+    historiesDoppler,
+    fetchDataDopplerByDoctorId,
+    currentPageDoppler,
+    totalPageDoppler,
+  } = useDoppler();
 
   const [selectedDevice, setSelectedDevice] = useState<string | null>(
     "digit-pro-baby"
   );
-  const [totalPageState, setTotalPageState] = useState<{
-    [key: string]: number;
-  }>({
-    "digit-pro-ida": 0,
-    "digit-pro-baby": 0,
-    bmi: 0,
-    doppler: 0,
-  });
+
   const [paginationState, setPaginationState] = useState<{
     [key: string]: {
       page: number;
@@ -149,7 +155,6 @@ const DetailUserNursePage = () => {
     bmi: { page: 1, limit: 10, search: "" },
     doppler: { page: 1, limit: 10, search: "" },
   });
-  const totalPage = totalPageState[selectedDevice ?? "digit-pro-ida"];
   const currentPagination = paginationState[selectedDevice ?? "digit-pro-ida"];
   useEffect(() => {
     if (selectedDevice === "digit-pro-ida") {
@@ -182,7 +187,7 @@ const DetailUserNursePage = () => {
   };
 
   const goToNextPage = () => {
-    if (currentPagination.page < totalPage) {
+    if (currentPagination.page < totalPageIDA) {
       updatePagination({ page: currentPagination.page + 1 });
     }
   };
@@ -367,7 +372,7 @@ const DetailUserNursePage = () => {
             goToNextPage={goToNextPage}
             goToPage={goToPage}
             currentPage={currentPageDigitProBaby}
-            totalPage={totalPage}
+            totalPage={totalPageDigitProBaby}
           />
         )}
         {selectedDevice === "digit-pro-ida" && (
@@ -377,7 +382,7 @@ const DetailUserNursePage = () => {
             goToNextPage={goToNextPage}
             goToPage={goToPage}
             currentPage={currentPageIDA}
-            totalPage={totalPage}
+            totalPage={totalPageIDA}
           />
         )}
         {selectedDevice === "bmi" && (
@@ -387,7 +392,7 @@ const DetailUserNursePage = () => {
             goToNextPage={goToNextPage}
             goToPage={goToPage}
             currentPage={currentPageBMI}
-            totalPage={totalPage}
+            totalPage={totalPageBMI}
           />
         )}
         {selectedDevice === "doppler" && (
@@ -397,7 +402,7 @@ const DetailUserNursePage = () => {
             goToNextPage={goToNextPage}
             goToPage={goToPage}
             currentPage={currentPageDoppler}
-            totalPage={totalPage}
+            totalPage={totalPageDoppler}
           />
         )}
       </div>

@@ -1,18 +1,10 @@
-import {
-  ArrowDownToLine,
-  ArrowLeft,
-  Icon,
-  Square,
-  Triangle,
-} from "lucide-react";
-import { PersonStanding, Weight } from "lucide-react";
+import { ArrowDownToLine, Icon } from "lucide-react";
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
 import { PatientInfo } from "@/components/ui/patient-info";
 
 import weighingIcon from "@/assets/icons/pediatrics.png";
 import tareIcon from "@/assets/icons/tare.png";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
@@ -38,14 +30,6 @@ const historiesData = [
 
 const DeviceDigitProBabyPage = () => {
   const { mac } = useParams<{ mac: string }>();
-  const { createDigitProBabyHistory, fetchDataDigitProBabyByPatientId } =
-    useDigitProBaby();
-
-  // const {
-  //   eventTareDigitProBaby,
-  //   weightDigitProBaby,
-  //   weightDigitProBabyChartData,
-  // } = useSocketHandler({ macDevice: mac });
 
   const { data, realtime, eventTareDigitProBaby } = useSocketDigitProBaby(mac!);
 
@@ -72,17 +56,6 @@ const DeviceDigitProBabyPage = () => {
     id: "",
     name: "",
   });
-
-  // Create baby
-  const handleCreateBaby = () => {
-    if (!mac || !patient.id || !patient.name || !data.weight || !baby) return;
-    createDigitProBabyHistory({
-      patient_id: patient.id,
-      baby_id: baby.id,
-      device_id: mac,
-      weight: data.weight,
-    });
-  };
 
   // Get patient from local storage
   useEffect(() => {

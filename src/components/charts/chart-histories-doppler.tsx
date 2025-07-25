@@ -3,8 +3,6 @@ import {
   Line,
   LineChart,
   XAxis,
-  YAxis,
-  Tooltip,
 } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";

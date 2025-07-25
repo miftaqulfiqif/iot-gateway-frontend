@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
 import {
-  Bluetooth,
   Cpu,
-  EthernetPort,
-  Key,
-  LandPlot,
   ScanSearch,
-  Wifi,
 } from "lucide-react";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { Devices } from "@/models/DeviceModel";
 import { ConnectingDeviceModal } from "./connecting-device-modal";
-import { useDevices } from "@/hooks/api/use-device";
 import { useSocketDeviceManagement } from "@/hooks/socket/utils/SocketDeviceManagement";
 
 type Props = {

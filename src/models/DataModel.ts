@@ -1,4 +1,3 @@
-import { Patients } from "./PatientModel";
 
 export type Data = {
   user_id: string;

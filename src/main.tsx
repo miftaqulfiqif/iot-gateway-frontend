@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./index.css";
 import Devices from "./pages/DevicesPage.tsx";
-import Dashboard from "./pages/DashboardPage.tsx";
 import SettingsPage from "./pages/SettingsPage.tsx";
 import DeviceIDAPage from "./pages/Devices/DeviceIDAPage.tsx";
 import DeviceBMIPage from "./pages/Devices/DeviceBMIPage.tsx";

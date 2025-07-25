@@ -20,7 +20,7 @@ type HeartbeatData = {
 
 const generateBPM = (prev: number): number => {
   const fluctuation = Math.random() * 10 - 5;
-  let newBPM = prev + fluctuation;
+  const newBPM = prev + fluctuation;
   return Math.max(60, Math.min(120, Math.round(newBPM))); // Normal range
 };
 

@@ -1,4 +1,4 @@
-import { Eye, EyeClosed, Mars, Venus } from "lucide-react";
+import { Eye, EyeClosed, Venus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";

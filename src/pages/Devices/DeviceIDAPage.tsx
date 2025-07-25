@@ -1,28 +1,17 @@
-import {
-  ArrowLeft,
-  ArrowLeftCircle,
-  Icon,
-  PersonStanding,
-  SkipBackIcon,
-  Weight,
-} from "lucide-react";
+import { Icon, PersonStanding } from "lucide-react";
 import { babyPacifier } from "@lucide/lab";
 import MainLayout from "../../components/layouts/main-layout";
-import { href, useParams } from "react-router-dom";
-import DopplerChart from "@/components/charts/chart-digit-pro-baby-realtime";
+import { useParams } from "react-router-dom";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { HistoriesDigitProIda } from "@/components/charts/chart-ida";
 
 import weighingIcon from "@/assets/icons/weighing-white.png";
 import babyWeighingIcon from "@/assets/icons/pediatrics.png";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useEffect, useState } from "react";
 import { SelectBaby } from "@/components/modals/select-baby-modal";
 import { Patients } from "@/models/PatientModel";
-import { CreateBaby } from "@/components/modals/create-baby-modal";
 import { useToast } from "@/context/ToastContext";
 import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
-import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";
 import { SaveMeasurementDigitProIDA } from "@/components/modals/save_measurement/save-measurement-digit-pro-ida";
 import { useSocketDigitProIDA } from "@/hooks/socket/devices/SocketDigitProIDA";
 
@@ -66,8 +55,6 @@ const DeviceIDAPage = () => {
   // });
   const { data } = useSocketDigitProIDA(mac!);
 
-  const { showToast } = useToast();
-  const { createHistoryDigitProIDA } = useDigitProIDA();
   const [saveModal, setSaveModal] = useState(false);
 
   const [showHistories, setShowHistories] = useState(false);
@@ -100,26 +87,6 @@ const DeviceIDAPage = () => {
       setPatient(JSON.parse(storedPatient));
     }
   }, []);
-
-  // handler create daa
-  const handleCreateData = () => {
-    if (
-      !mac ||
-      !patient.id ||
-      !patient.name ||
-      !data.weight_mother ||
-      !data.weight_child ||
-      !baby
-    )
-      return;
-    createHistoryDigitProIDA({
-      patient_id: patient.id,
-      baby_id: baby.id,
-      device_id: mac,
-      weight_mother: data.weight_mother,
-      weight_child: data.weight_child,
-    });
-  };
 
   return (
     <MainLayout title="Digit Pro IDA" state="Measurement">

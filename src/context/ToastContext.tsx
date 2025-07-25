@@ -4,7 +4,6 @@ import {
   useContext,
   useState,
   ReactNode,
-  useCallback,
 } from "react";
 
 type Toast = {

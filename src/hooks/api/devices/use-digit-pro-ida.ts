@@ -1,7 +1,7 @@
 import { useToast } from "@/context/ToastContext";
 import { DigitProIDAMeasurementHistory } from "@/models/Devices/DigitProIDAModel";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 

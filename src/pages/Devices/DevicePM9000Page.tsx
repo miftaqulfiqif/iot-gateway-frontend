@@ -1,33 +1,19 @@
 import MainLayout from "../../components/layouts/main-layout";
 import {
   Activity,
-  ArrowLeft,
-  AudioLines,
-  BatteryFull,
-  BatteryLow,
-  BatteryMedium,
-  HeartPulse,
-  Icon,
-  PersonStanding,
   Thermometer,
-  Weight,
 } from "lucide-react";
 import { PatientInfo } from "@/components/ui/patient-info";
-import { babyPacifier } from "@lucide/lab";
 
-import weighingIcon from "@/assets/icons/pediatrics.png";
 import spo2Icon from "@/assets/icons/spo2.png";
 import respIcon from "@/assets/icons/resp.png";
 import nibpIcon from "@/assets/icons/nibp.png";
 
-import heartBeatImg from "@/assets/imgs/hear-beat.png";
 import { HeartPulseChart } from "@/components/chart-heart-pusle";
 import { ECGChart } from "@/components/heart-beat-chart";
 import { useEffect, useState } from "react";
 import { Patients } from "@/models/PatientModel";
-import ChartDopplerRealtime from "@/components/charts/chart-doppler-realtime";
-import { data, useParams } from "react-router-dom";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
+import { useParams } from "react-router-dom";
 import HeartRateChart from "@/components/heart-rate-chart";
 import { HistoryPM9000Nibp } from "@/components/tables/history-pm9000-nibp";
 import { HistoriesPm900NibpChart } from "@/components/charts/histories-pm900-nibp-chart";

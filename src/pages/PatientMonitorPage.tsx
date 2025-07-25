@@ -8,19 +8,10 @@ import {
 import MainLayout from "../components/layouts/main-layout";
 import { useEffect, useRef, useState } from "react";
 import {
-  Activity,
-  EllipsisVertical,
   Funnel,
   Plus,
   Search,
-  SquareArrowOutUpRight,
-  Thermometer,
-  UserRoundPlus,
 } from "lucide-react";
-import spo2Icon from "@/assets/icons/spo2.png";
-import respIcon from "@/assets/icons/resp.png";
-import rrIcon from "@/assets/icons/lungs.png";
-import nibpIcon from "@/assets/icons/nibp.png";
 
 import { PatientMonitorPM9000Section } from "@/components/sections/patient_monitor_devices/pm-9000";
 import { PatientMonitorDS001Section } from "@/components/sections/patient_monitor_devices/ds-001";

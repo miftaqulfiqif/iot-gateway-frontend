@@ -1,7 +1,5 @@
 import { Socket } from "socket.io-client";
 import { BaseHandler } from "./BaseHandler";
-import { use, useRef, useState } from "react";
-import { data } from "react-router-dom";
 import { Devices } from "@/models/DeviceModel";
 
 export class DeviceManagementHandler extends BaseHandler {

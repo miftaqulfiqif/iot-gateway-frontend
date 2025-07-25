@@ -1,24 +1,10 @@
 import MainLayout from "@/components/layouts/main-layout";
 import CreateRoomModal from "@/components/modals/room_page/create-room-modal";
 import { RoomItems } from "@/components/sections/rooms-page/room-item";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { useToast } from "@/context/ToastContext";
-import {
-  EllipsisIcon,
-  EllipsisVertical,
-  Funnel,
-  Search,
-  Trash,
-  User,
-  UserRoundPlus,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Funnel, Search, UserRoundPlus } from "lucide-react";
+import { useRef, useState } from "react";
 
 export const dummyRooms = [
   {

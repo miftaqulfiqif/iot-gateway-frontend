@@ -1,17 +1,7 @@
-import DopplerChart from "@/components/charts/chart-digit-pro-baby-realtime";
 import MainLayout from "../../components/layouts/main-layout";
 import {
   Activity,
-  ArrowLeft,
-  AudioLines,
-  BatteryFull,
-  BatteryLow,
-  BatteryMedium,
-  HeartPulse,
-  Icon,
-  PersonStanding,
   Thermometer,
-  Weight,
 } from "lucide-react";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { HeartPulseChart } from "@/components/chart-heart-pusle";
@@ -26,9 +16,7 @@ import rrIcon from "@/assets/icons/lungs.png";
 import { useEffect, useState } from "react";
 import { Patients } from "@/models/PatientModel";
 import { HistoryDS001Nibp } from "@/components/tables/history-ds001-nibp";
-import { useSocketHandler } from "@/hooks/socket/SocketHandler";
 import { useParams } from "react-router-dom";
-import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
 import { TableHistoryDS001 } from "@/components/tables/history-ds001";
 import { useSocketDS001 } from "@/hooks/socket/devices/SocketDS001";
 
@@ -203,7 +191,7 @@ const historiesDataPM9000 = [
 const DeviceDS001Page = () => {
   const { ip } = useParams();
   // const { dataDS001 } = useSocketHandler({ ipDevice: ip });
-  const { data, dataNibp } = useSocketDS001(ip!);
+  const { data } = useSocketDS001(ip!);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",

@@ -3,67 +3,7 @@ import MainLayout from "../components/layouts/main-layout";
 import DeviceConnected from "@/components/ui/device-connected";
 import { useEffect, useState } from "react";
 import { SelectPatient } from "@/components/modals/select-patient-modal";
-import { BarcodePatient } from "@/components/modals/barcode-patient-model";
-import { UsePatientPage } from "@/hooks/pages/UsePatientPage";
-import { stat } from "fs";
 import { useDevices } from "@/hooks/api/use-device";
-
-const devices = [
-  {
-    icon: "",
-    id: "F1:Q1:G4:NT:EE:66",
-    device: "Digit Pro IDA",
-    device_function: "digitpro_ida",
-    connection: "bluetooth",
-    type: "measurement",
-    name: null,
-  },
-  {
-    icon: "",
-    id: "F1:Q1:G4:NT:EE:66",
-    device: "Digit Pro Baby",
-    device_function: "digitpro_baby",
-    connection: "bluetooth",
-    type: "measurement",
-    name: null,
-  },
-  {
-    icon: "",
-    id: "F1:Q1:G4:NT:EE:12",
-    device: "Doppler",
-    device_function: "ultrasonic_pocket_doppler",
-    connection: "bluetooth",
-    type: "measurement",
-    name: "Doppler 1",
-  },
-  {
-    icon: "",
-    id: "F1:Q1:G4:NT:EE:66",
-    device: "Doppler",
-    device_function: "ultrasonic_pocket_doppler",
-    connection: "bluetooth",
-    type: "measurement",
-    name: "Doppler 2",
-  },
-  {
-    icon: "",
-    id: "192.168.1.1",
-    device: "PM 9000",
-    device_function: "pasien_monitor_9000",
-    connection: "lan",
-    type: "patient_monitor",
-    name: "PM 9000",
-  },
-  {
-    icon: "",
-    id: "192.168.1.2",
-    device: "DS 001",
-    device_function: "diagnostic_station_001",
-    connection: "wifi",
-    type: "patient_monitor",
-    name: "DS 001",
-  },
-];
 
 const MeasurementPage = () => {
   const { getAllDevices, devices } = useDevices();

@@ -1,16 +1,12 @@
 import {
   BicepsFlexed,
-  ChevronDown,
   CircleHelp,
   Droplet,
-  EllipsisIcon,
-  ReceiptPoundSterling,
   ReceiptText,
 } from "lucide-react";
 import BMIRangeBar from "./bmi-range-bar";
 import { FitnessMetricSection } from "../fitness-metric-section";
 
-import weightIcon from "@/assets/icons/weighing.png";
 import bmiIcon from "@/assets/icons/bmi.png";
 import fatIcon from "@/assets/icons/fat.png";
 import visceralFatIcon from "@/assets/icons/visceral-fat.png";
@@ -20,7 +16,7 @@ import proteinIcon from "@/assets/icons/proteins.png";
 import obesityIcon from "@/assets/icons/obesity.png";
 import bodyAgeIcon from "@/assets/icons/body-age.png";
 import leanBodyMassIcon from "@/assets/icons/lean-body-mass.png";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import FatRangeBar from "./fat-range-bar";
 import MuscleRangeBar from "./muscle-range-bar";
 import WaterRangeBar from "./water-range-bar";
@@ -30,7 +26,6 @@ import MetabolismRangeBar from "./metabolism-range-bar";
 import ProteinRangeBar from "./protein-range-bar";
 import ObesityRangeBar from "./obesity-range-bar";
 import BodyAgeRangeBar from "./body-age-range-bar";
-import { useLinkClickHandler } from "react-router-dom";
 
 type BMIResultProps = {
   BMI: number;
