@@ -15,7 +15,7 @@ const AppSidebar = ({ icon, title, isActive, url }: AppSidebarProps) => {
         }`}
       >
         {icon}
-        <p className="text-xs">{title}</p>
+        <p className="text-sm">{title}</p>
       </div>
     </a>
   );
