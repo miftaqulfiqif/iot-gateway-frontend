@@ -1,5 +1,6 @@
 import {
   BedSingle,
+  HomeIcon,
   Lamp,
   LogOut,
   ScrollText,
@@ -21,8 +22,8 @@ interface SidebarProps {
 const Sidebar = ({ state }: SidebarProps) => {
   const { user, logout } = useAuth();
   return (
-    <div className="flex flex-col bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]  w-72 h-full justify-between">
-      <div className="flex flex-col gap-6 px-8 py-5">
+    <div className="flex flex-col bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] w-72 h-full justify-between">
+      <div className="flex flex-col gap-6 px-6 py-4 h-3/4">
         <div className="flex flex-row items-center gap-2">
           <img
             src={elitechLogo}
@@ -30,16 +31,16 @@ const Sidebar = ({ state }: SidebarProps) => {
           />
           {/* <p className="font-bold text-xl">Elitech</p> */}
         </div>
-        <div className="overflow-y-auto max-h-[500px]">
-          <div className="flex flex-col gap-4">
+        <div className="overflow-y-auto px-2 py-4">
+          <div className="flex flex-col gap-2">
             <p>Menu</p>
             <div className="flex flex-col gap-2 w-full">
               {/* <AppSidebar
-              icon={<HomeIcon />}
-              title="Dashboard"
-              isActive={state === "Dashboard"}
-              url="/"
-            /> */}
+                icon={<HomeIcon />}
+                title="Dashboard"
+                isActive={state === "Dashboard"}
+                url="/"
+              /> */}
               <AppSidebar
                 icon={<Stethoscope />}
                 title="Measurement"
@@ -78,7 +79,7 @@ const Sidebar = ({ state }: SidebarProps) => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2 mt-4">
             <p>Tools</p>
             <div className="flex flex-col gap-2 w-full">
               <AppSidebar
@@ -87,21 +88,25 @@ const Sidebar = ({ state }: SidebarProps) => {
                 isActive={state === "Settings"}
                 url="/settings"
               />
-              <AppSidebar
-                icon={<UsersRound />}
-                title="Users management"
-                isActive={state === "Users"}
-                url="/users"
-              />
+              {user?.role === "admin" && (
+                <AppSidebar
+                  icon={<UsersRound />}
+                  title="Users management"
+                  isActive={state === "Users"}
+                  url="/users"
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-row m-2 p-6 rounded-xl bg-gradient-to-b from-[#6e79f4] to-[#4956F4] text-white relative h-60">
+
+      {/* Footer */}
+      <div className="flex flex-row m-2 p-4 rounded-xl bg-gradient-to-b from-[#6e79f4] to-[#4956F4] text-white relative h-1/4">
         <img
           src={doctorImg}
           alt=""
-          className="absolute bottom-0 right-0 z-20 h-60"
+          className="absolute bottom-0 right-0 z-20 h-full"
         />
         <div className="flex flex-col justify-between">
           <div className="flex flex-col font-bold">
