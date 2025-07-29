@@ -1,11 +1,9 @@
-
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 import { SettingGateway } from "./gateway-setting";
 import { PasswordSetting } from "./password-setting";
 import { UserProfileSetting } from "./user-profile-setting";
 import { HospitalProfileSetting } from "./hospital-profile-setting";
+import { LanguageSetting } from "./language-setting";
 
 const dummyCurrentGateway = {
   id: "GW001",
@@ -91,6 +89,8 @@ export const MenuItems = ({
       {state === "Edit Profile" && <UserProfileSetting />}
       {/* Password */}
       {state === "Password" && <PasswordSetting />}
+      {/* Language */}
+      {state === "Language" && <LanguageSetting />}
       {/* Gateways */}
       {state === "Gateways" && (
         <SettingGateway
