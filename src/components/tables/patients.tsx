@@ -7,12 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  SquarePen,
-} from "lucide-react";
-
-
-
+import { SquarePen } from "lucide-react";
 
 import {
   Pagination,

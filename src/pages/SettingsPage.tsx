@@ -7,6 +7,7 @@ import profileIcon from "@/assets/icons/profile-icon.png";
 import hospitalIcon from "@/assets/icons/hospital-icon.png";
 import passwordIcon from "@/assets/icons/password-icon.png";
 import gatewayIcon from "@/assets/icons/gateway-icon.png";
+import languageIcon from "@/assets/icons/language.png";
 import { MenuItems } from "@/components/sections/settings-page/menu-items";
 import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-setting-modal";
 import { AddGatewayModal } from "@/components/modals/add-gateway-modal";
@@ -56,6 +57,12 @@ const SettingsPage = () => {
                 icon={passwordIcon}
                 isActive={state === "Password"}
                 onClick={() => handleMenuChange("Password")}
+              />
+              <MenuSettings
+                title="Language"
+                icon={languageIcon}
+                isActive={state === "Language"}
+                onClick={() => handleMenuChange("Language")}
               />
               <MenuSettings
                 title="Gateways"
