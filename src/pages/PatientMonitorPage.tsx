@@ -7,11 +7,7 @@ import {
 } from "@/components/ui/select";
 import MainLayout from "../components/layouts/main-layout";
 import { useEffect, useRef, useState } from "react";
-import {
-  Funnel,
-  Plus,
-  Search,
-} from "lucide-react";
+import { Funnel, Plus, Search } from "lucide-react";
 
 import { PatientMonitorPM9000Section } from "@/components/sections/patient_monitor_devices/pm-9000";
 import { PatientMonitorDS001Section } from "@/components/sections/patient_monitor_devices/ds-001";
@@ -146,7 +142,7 @@ const PatientMonitorPage = () => {
     <MainLayout title="Patient Monitor" state="Patient Monitor">
       <div className="flex flex-col gap-4 pb-20">
         {/* Sticky Top */}
-        <div className="sticky top-0 z-50 bg-[#ededf9] mb-2">
+        <div className="sticky top-0 z-10 bg-[#ededf9] mb-2">
           <div className="flex flex-col w-full gap-4">
             <div className="flex gap-6 w-full justify-between">
               <div className="flex items-center gap-2">

@@ -38,7 +38,7 @@ export const SetCurrentGateway = ({
 
   return (
     <div
-      className={`absolute right-0 z-60 mt-2 w-[600px] bg-white rounded-lg shadow-lg border border-gray-200 p-6 ${
+      className={`absolute right-0 z-20 mt-2 w-[600px] bg-white rounded-lg shadow-lg border border-gray-200 p-6 ${
         isOpen ? "block" : "hidden"
       }`}
     >
@@ -123,7 +123,7 @@ export const SetCurrentGateway = ({
               Save Changes
             </button>
           </AlertDialogTrigger>
-          <AlertDialogContent className="bg-white">
+          <AlertDialogContent className="bg-white z-60">
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>

@@ -82,7 +82,7 @@ export const RoomsPage = () => {
     <MainLayout title="Rooms" state="Rooms">
       <div className="flex flex-col w-full">
         {/* Sticky Top */}
-        <div className="sticky top-0 z-50 bg-[#ededf9] mb-2">
+        <div className="sticky top-0 z-10 bg-[#ededf9] mb-2">
           <div className="flex flex-col w-full gap-4">
             <div className="flex gap-6 w-full justify-end">
               <div className="flex gap-4 items-center">
