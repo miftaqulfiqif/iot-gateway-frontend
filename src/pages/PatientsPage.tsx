@@ -49,7 +49,7 @@ const Patients = () => {
     <MainLayout title="Patients" state="Patients">
       <div className="flex flex-col">
         {!patientSelected && (
-          <div className="sticky top-0 z-50 bg-[#ededf9] mb-2">
+          <div className="sticky top-0 z-10 bg-[#ededf9] mb-2">
             <div className="flex flex-col w-full gap-4">
               <div className="flex gap-6 w-full justify-between">
                 <div className="flex items-center gap-2">
