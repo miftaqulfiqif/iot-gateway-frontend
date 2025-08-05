@@ -1,6 +1,7 @@
 export type Devices = {
   id: string;
-  mac: string;
+  mac_address: string;
+  ip_address: string;
   device: string;
   device_function: string;
   type: string;

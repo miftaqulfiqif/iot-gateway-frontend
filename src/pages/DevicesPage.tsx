@@ -53,7 +53,7 @@ function Devices() {
                   .map((device) => (
                     <DevicesConnected
                       key={device.id}
-                      deviceMac={device.id}
+                      deviceMac={device.mac_address}
                       device={device.device}
                       deviceName={device.name || device.device}
                       deviceConnection={device.connection}
@@ -73,14 +73,13 @@ function Devices() {
           <div className="flex flex-col gap-2 mt-8">
             <p className="font-bold text-lg">TCP / IP</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              {devices.filter((d) => d.connection !== "bluetooth").length >
-              0 ? (
+              {devices.filter((d) => d.connection === "tcpip").length > 0 ? (
                 devices
-                  .filter((d) => d.connection !== "bluetooth")
+                  .filter((d) => d.connection === "tcpip")
                   .map((device) => (
                     <DevicesConnected
                       key={device.id}
-                      deviceMac={device.id}
+                      deviceMac={device.ip_address}
                       device={device.device}
                       deviceName={device.name || device.device}
                       deviceConnection={device.connection}

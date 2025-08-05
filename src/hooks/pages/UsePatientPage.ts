@@ -63,7 +63,7 @@ export const UsePatientPage = () => {
   // Get Patient / Fetch Patient
   const fetchPatients = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/patients-by-hospital`, {
+      const response = await axios.get(`${apiUrl}/api/patients`, {
         withCredentials: true,
         params: {
           page: currentPage,
@@ -83,7 +83,7 @@ export const UsePatientPage = () => {
   // Search Patients
   const searchPatients = debounce(async (searchQuery: string) => {
     try {
-      const response = await axios.get(`${apiUrl}/api/patients-by-hospital`, {
+      const response = await axios.get(`${apiUrl}/api/patients`, {
         withCredentials: true,
         params: {
           page: currentPage,
