@@ -1,6 +1,4 @@
-import {
-  X,
-} from "lucide-react";
+import { X } from "lucide-react";
 import Sidebar from "../layouts/sidebar";
 
 import barcodeImg from "@/assets/gif/scan-barcode.gif";

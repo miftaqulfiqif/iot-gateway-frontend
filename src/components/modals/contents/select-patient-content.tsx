@@ -52,6 +52,7 @@ export const SelectPatientContent = ({ patientSelected }: Props) => {
         <table className="w-full">
           <thead>
             <tr>
+              <th className="py-2">NIK</th>
               <th className="py-2">Name</th>
               <th className="py-2">Place of Birth</th>
               <th className="py-2">Date of Birth</th>
@@ -60,7 +61,7 @@ export const SelectPatientContent = ({ patientSelected }: Props) => {
           <tbody>
             {patients?.length === 0 ? (
               <tr>
-                <td colSpan={3} className="text-center p-4 text-gray-500">
+                <td colSpan={4} className="text-center p-4 text-gray-500">
                   {search.trim() === ""
                     ? "No patients found."
                     : "No patients found with the given search query."}
@@ -73,6 +74,7 @@ export const SelectPatientContent = ({ patientSelected }: Props) => {
                   className="cursor-pointer hover:bg-gray-200"
                   onClick={handlePatientSelect.bind(null, patient)}
                 >
+                  <td className="p-2">{patient.nik}</td>
                   <td className="p-2">{patient.name}</td>
                   <td className="p-2">{patient.place_of_birth}</td>
                   <td className="p-2">
