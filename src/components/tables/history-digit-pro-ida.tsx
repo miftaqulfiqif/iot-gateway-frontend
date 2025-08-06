@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-
 import {
   Pagination,
   PaginationContent,
@@ -21,15 +20,6 @@ import {
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
-
-// Utility function to format date
-const formatDate = (dateStr: string, showTime = true) => {
-  if (showTime) {
-    return format(new Date(dateStr), "d MMMM yyyy, HH:mm", { locale: id });
-  }
-
-  return format(new Date(dateStr), "d MMMM yyyy", { locale: id });
-};
 
 type Props = {
   data: any[];
@@ -120,9 +110,13 @@ export const TableHistoryDigitProIDA = ({
                         {patient?.name || "-"}
                       </TableCell>
                       <TableCell className="text-center">
-                        {patient?.date_of_birth
-                          ? formatDate(patient?.date_of_birth, false)
-                          : "--"}
+                        {format(
+                          new Date(patient?.date_of_birth),
+                          "d MMMM yyyy",
+                          {
+                            locale: id,
+                          }
+                        )}
                       </TableCell>
                     </>
                   )}
@@ -131,9 +125,9 @@ export const TableHistoryDigitProIDA = ({
                     {baby?.name || "-"}
                   </TableCell>
                   <TableCell className="text-center">
-                    {baby?.date_of_birth
-                      ? formatDate(baby.date_of_birth, false)
-                      : "--"}
+                    {format(new Date(baby?.date_of_birth), "d MMMM yyyy", {
+                      locale: id,
+                    })}
                   </TableCell>
                   <TableCell className="text-center">
                     {item.weight_mother}
@@ -142,7 +136,9 @@ export const TableHistoryDigitProIDA = ({
                     {item.weight_child}
                   </TableCell>
                   <TableCell className="text-center">
-                    {formatDate(item.timestamp)}
+                    {format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
+                      locale: id,
+                    })}
                   </TableCell>
                   {/* <TableCell className="text-center">
                     <AlertDialog>

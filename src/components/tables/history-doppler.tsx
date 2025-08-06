@@ -7,9 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Trash2,
-} from "lucide-react";
+import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -34,14 +32,6 @@ import {
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-
-const formatDate = (dateStr: string, showTime = true) => {
-  if (showTime) {
-    return format(new Date(dateStr), "d MMMM yyyy, HH:mm", { locale: id });
-  }
-
-  return format(new Date(dateStr), "d MMMM yyyy", { locale: id });
-};
 
 type Props = {
   data: any[];
@@ -125,15 +115,21 @@ export const TableHistoryDoppler = ({
                         {patient.gender}
                       </TableCell>
                       <TableCell className="text-center">
-                        {patient?.date_of_birth
-                          ? formatDate(patient?.date_of_birth, false)
-                          : "--"}
+                        {format(
+                          new Date(patient?.date_of_birth),
+                          "d MMMM yyyy",
+                          {
+                            locale: id,
+                          }
+                        )}
                       </TableCell>
                     </>
                   )}
                   <TableCell className="text-center">{`${item.heart_rate} bpm`}</TableCell>
                   <TableCell className="text-center">
-                    {formatDate(item.timestamp)}
+                    {format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
+                      locale: id,
+                    })}
                   </TableCell>
 
                   <TableCell className="text-center text-xl">
