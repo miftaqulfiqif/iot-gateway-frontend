@@ -50,7 +50,7 @@ const dummyPatient = {
 
 const dummyListBaby = [
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-8668c916acb6",
     name: "Test",
     gender: "male",
     date_of_birth: "2001-09-01",
@@ -58,7 +58,7 @@ const dummyListBaby = [
     patient_id: "PATL230000000000001",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9416-86686916acb6",
     name: "Prabowo Sinegar",
     gender: "female",
     date_of_birth: "2001-09-01",
@@ -66,7 +66,7 @@ const dummyListBaby = [
     patient_id: "PATL230000000000001",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-866y6916acb6",
     name: "Prabowo Sinegar",
     gender: "female",
     date_of_birth: "2001-09-01",
@@ -74,7 +74,7 @@ const dummyListBaby = [
     patient_id: "PATL230000000000001",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-866c86916acb6",
     name: "Prabowo Sinegar",
     gender: "female",
     date_of_birth: "2001-09-01",
@@ -82,7 +82,7 @@ const dummyListBaby = [
     patient_id: "PATL230000000000001",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-866g6916acb6",
     name: "Prabowo Sinegar",
     gender: "female",
     date_of_birth: "2001-09-01",
@@ -93,25 +93,25 @@ const dummyListBaby = [
 
 const dummyRecentDoctor = [
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86a86916acb6",
     doctor_name: "Dr. Prabowo Sinegar",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb1",
     doctor_name: "Dr. Prabowo Sinegar",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb2",
     doctor_name: "Dr. Prabowo Sinegar",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb9",
     doctor_name: "Dr. Prabowo Sinegar",
     speciality: "Dokter Umum",
     date: "2023-06-01",
@@ -126,19 +126,19 @@ const dummyMedicalActivity = [
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916ac16",
     title: "Pemeriksaan Fisik",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-8668691gacb6",
     title: "Pemeriksaan Fisik",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-866869x6acb6",
     title: "Pemeriksaan Fisik",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
