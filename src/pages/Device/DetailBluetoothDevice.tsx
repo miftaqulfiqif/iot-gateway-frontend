@@ -142,25 +142,25 @@ const dummyData = [
 
 const dummyRecentDoctor = [
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb1",
     doctor_name: "Dr. Prabowo Sinegar",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb2",
     doctor_name: "Dr. Prabowo Budi",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb3",
     doctor_name: "Dr. Changcuters",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb4",
     doctor_name: "Dr. Gunawan Dapit",
     speciality: "Dokter Umum",
     date: "2023-06-01",
@@ -169,25 +169,25 @@ const dummyRecentDoctor = [
 
 const dummyMedicalActivity = [
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb1",
     title: "Budi Sudarso",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb2",
     title: "Dapit Gunawan",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb3",
     title: "Ryan D'masive",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb4",
     title: "Farelia Budiarto",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",

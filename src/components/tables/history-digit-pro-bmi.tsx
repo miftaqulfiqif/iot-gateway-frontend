@@ -153,9 +153,15 @@ export const TableHistoryBMI = ({
                     {item.lbm || "-"}
                   </TableCell>
                   <TableCell className="text-center">
-                    {format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
-                      locale: id,
-                    })}
+                    {item.created_at
+                      ? format(
+                          new Date(item.recorded_at),
+                          "d MMMM yyyy, HH:mm",
+                          {
+                            locale: id,
+                          }
+                        )
+                      : "-"}
                   </TableCell>
                 </TableRow>
               );
