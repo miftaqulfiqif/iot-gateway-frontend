@@ -136,9 +136,9 @@ export const TableHistoryDigitProIDA = ({
                     {item.weight_child}
                   </TableCell>
                   <TableCell className="text-center">
-                    {format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
+                    {item.recorded_at ? format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
                       locale: id,
-                    })}
+                    }) : "--"}
                   </TableCell>
                   {/* <TableCell className="text-center">
                     <AlertDialog>
