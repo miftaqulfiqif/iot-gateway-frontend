@@ -8,6 +8,7 @@ import hospitalIcon from "@/assets/icons/hospital-icon.png";
 import passwordIcon from "@/assets/icons/password-icon.png";
 import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import languageIcon from "@/assets/icons/language.png";
+import satuSehatLogo from "@/assets/imgs/logo-satusehat.png";
 import { MenuItems } from "@/components/sections/settings-page/menu-items";
 import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-setting-modal";
 import { AddGatewayModal } from "@/components/modals/add-gateway-modal";
@@ -69,6 +70,12 @@ const SettingsPage = () => {
                 icon={gatewayIcon}
                 isActive={state === "Gateways"}
                 onClick={() => handleMenuChange("Gateways")}
+              />
+              <MenuSettings
+                title="SATUSEHAT"
+                icon={satuSehatLogo}
+                isActive={state === "SATUSEHAT"}
+                onClick={() => handleMenuChange("SATUSEHAT")}
               />
             </div>
             <div className="w-full p-2">

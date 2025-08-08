@@ -7,6 +7,7 @@ import { AddDeviceBluetooth } from "@/components/modals/add-device-bluetooth-mod
 import { AddDeviceLan } from "@/components/modals/add-device-lan-modal";
 import { DevicesConnected } from "@/components/ui/devices-connected";
 import { useDevices } from "@/hooks/api/use-device";
+import { AddDeviceUsb } from "@/components/modals/add-device-usb";
 
 function Devices() {
   const {
@@ -21,6 +22,7 @@ function Devices() {
   const [modalAddDevice, setModalAddDevice] = useState(false);
   const [modalAddDeviceBluetooth, setModalAddDeviceBluetooth] = useState(false);
   const [modalAddDeviceWifiOrLan, setModalAddDeviceWifiOrLan] = useState(false);
+  const [modalAddDeviceUsb, setModalAddDeviceUsb] = useState(false);
 
   // Get devices on mount
   useEffect(() => {
@@ -43,6 +45,7 @@ function Devices() {
             </div>
           </div>
 
+          {/* Bluetooth */}
           <div className="flex flex-col gap-2">
             <p className="font-bold text-lg">Bluetooth</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -54,8 +57,8 @@ function Devices() {
                     <DevicesConnected
                       key={device.id}
                       deviceMac={device.mac_address}
-                      device={device.device}
-                      deviceName={device.name || device.device}
+                      device={device.model}
+                      deviceName={device.name || device.model}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
                       onDelete={() => deleteDeviceBluetooth(device.id)}
@@ -70,6 +73,7 @@ function Devices() {
             </div>
           </div>
 
+          {/* TCP / IP */}
           <div className="flex flex-col gap-2 mt-8">
             <p className="font-bold text-lg">TCP / IP</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -80,11 +84,11 @@ function Devices() {
                     <DevicesConnected
                       key={device.id}
                       deviceMac={device.ip_address}
-                      device={device.device}
-                      deviceName={device.name || device.device}
+                      device={device.model}
+                      deviceName={device.name || device.model}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
-                      onDelete={() => deleteDeviceTcpIP(device.id)}
+                      onDelete={() => deleteDeviceTcpIP(device.ip_address)}
                       onUpdate={() => updateDeviceTcpIP}
                     />
                   ))
@@ -92,6 +96,36 @@ function Devices() {
                 <p className="text-gray-500 mx-auto">
                   No TCP / IP device connected
                 </p>
+              )}
+            </div>
+          </div>
+
+          {/* USB */}
+          <div className="flex flex-col gap-2 mt-8">
+            <p className="font-bold text-lg">USB</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {devices.filter(
+                (d) => d.connection === "usb_hid" || d.connection === "usb_vcp"
+              ).length > 0 ? (
+                devices
+                  .filter(
+                    (d) =>
+                      d.connection === "usb_hid" || d.connection === "usb_vcp"
+                  )
+                  .map((device) => (
+                    <DevicesConnected
+                      key={device.id}
+                      deviceMac={device.id}
+                      device={device.model}
+                      deviceName={device.name || device.model}
+                      deviceConnection={device.connection}
+                      deviceFunction={device.device_function}
+                      onDelete={() => deleteDeviceTcpIP(device.id)}
+                      onUpdate={() => updateDeviceTcpIP}
+                    />
+                  ))
+              ) : (
+                <p className="text-gray-500 mx-auto">No USB device connected</p>
               )}
             </div>
           </div>
@@ -108,6 +142,10 @@ function Devices() {
           setModalAddDeviceWifiOrLan(true);
           setModalAddDevice(false);
         }}
+        setUsbActive={() => {
+          setModalAddDeviceUsb(true);
+          setModalAddDevice(false);
+        }}
       />
       <AddDeviceBluetooth
         isActive={modalAddDeviceBluetooth}
@@ -117,6 +155,11 @@ function Devices() {
       <AddDeviceLan
         isActive={modalAddDeviceWifiOrLan}
         setInactive={() => setModalAddDeviceWifiOrLan(false)}
+        getAllDevices={getAllDevices}
+      />
+      <AddDeviceUsb
+        isActive={modalAddDeviceUsb}
+        setInactive={() => setModalAddDeviceUsb(false)}
         getAllDevices={getAllDevices}
       />
     </MainLayout>

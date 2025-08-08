@@ -7,7 +7,6 @@ import { InputSelect } from "../ui/input-select";
 import { useToast } from "@/context/ToastContext";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import { useGateway } from "@/hooks/api/use-gateway";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -17,27 +16,25 @@ type Props = {
   getAllDevices: () => void;
 };
 
-export const AddDeviceLan = ({
+export const AddDeviceUsb = ({
   isActive,
   setInactive,
   getAllDevices,
 }: Props) => {
-  const { selectedGateway } = useGateway();
   const { user } = useAuth();
   const { showToast } = useToast();
-  const [ipSegments, setIpSegments] = useState(["", "", "", ""]);
 
   const handleConnectDevice = async (value: any) => {
     try {
       const parsed = JSON.parse(value.device_function);
 
       const data = {
-        ip_address: value.ip_address,
-        gateway_id: selectedGateway?.id,
-        model: parsed.model,
+        id: value.id,
+        device: parsed.device,
         device_function: parsed.device_function,
         name: parsed.name ? parsed.name : value.name,
-        connection: "tcpip",
+        hospital_id: user?.hospital?.id,
+        connection: "lan",
       };
 
       console.log(data);
@@ -64,31 +61,15 @@ export const AddDeviceLan = ({
     }
   };
 
-  const handleIpChange = (index: number, value: string) => {
-    if (!/^\d{0,3}$/.test(value)) return; // hanya angka dan max 3 digit
-    const newSegments = [...ipSegments];
-    newSegments[index] = value;
-    setIpSegments(newSegments);
-
-    // Auto focus ke input berikutnya
-    if (value.length === 3 && index < 3) {
-      const nextInput = document.getElementById(`ip-segment-${index + 1}`);
-      nextInput?.focus();
-    }
-
-    // Update formik value
-    formik.setFieldValue("ip_address", newSegments.join("."));
-  };
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      ip_address: "",
+      id: "",
       name: "",
       device_function: "",
     },
     validationSchema: yup.object().shape({
-      ip_address: yup
+      id: yup
         .string()
         .required("IP address is required")
         .test("is-valid-ip", "Invalid IP address format", (value) => {
@@ -143,7 +124,7 @@ export const AddDeviceLan = ({
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-row items-center justify-between">
-            <p className="font-bold text-xl">Connection devices - WiFi / LAN</p>
+            <p className="font-bold text-xl">Connection devices - USB</p>
           </div>
           <ul className="mt-4 space-y-2">
             <div className="flex flex-row bg-white rounded-2xl gap-4 ">
@@ -160,70 +141,37 @@ export const AddDeviceLan = ({
                   onTouch={formik.touched.name}
                   onError={formik.errors.name}
                 />
-                <div className="flex flex-row gap-4">
-                  <div className="flex flex-col w-full">
-                    <label className="text-lg ml-1 mb-2">
-                      IP Address <span className="text-red-500">*</span>
-                    </label>
-                    <div className="flex items-center">
-                      {ipSegments.map((segment, i) => (
-                        <div key={i} className="flex items-center">
-                          <input
-                            id={`ip-segment-${i}`}
-                            type="text"
-                            inputMode="numeric"
-                            maxLength={3}
-                            className="bg-gray-100 text-sm px-4 py-2 rounded-lg w-16 text-center disabled:bg-slate-200 focus:outline-none"
-                            value={segment}
-                            onChange={(e) => handleIpChange(i, e.target.value)}
-                          />
-                          {i < 3 && (
-                            <span className="mx-1 text-lg font-semibold">
-                              .
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                    {formik.touched.ip_address && formik.errors.ip_address && (
-                      <p className="text-sm text-red-500 mt-1">
-                        {formik.errors.ip_address}
-                      </p>
-                    )}
-                  </div>
+                <InputSelect
+                  name="device_function"
+                  label="Device "
+                  placeholder="Select device "
+                  option={[
+                    {
+                      value: JSON.stringify({
+                        device_function: "abpm_50",
+                        model: "ABPM 50",
+                      }),
+                      label: "ABPM 50",
+                    },
+                    {
+                      value: JSON.stringify({
+                        device_function: "bpm_pro_2",
+                        model: "BPM Pro 2",
+                      }),
+                      label: "BPM Pro 2",
+                    },
+                  ]}
+                  onChange={(value) => {
+                    formik.setFieldValue("device_function", value);
+                  }}
+                  value={formik.values.device_function}
+                  onTouch={formik.touched.device_function}
+                  onError={formik.errors.device_function}
+                  isRequired
+                  className="w-40"
+                />
 
-                  <InputSelect
-                    name="device_function"
-                    label="Device "
-                    placeholder="Select device "
-                    option={[
-                      {
-                        value: JSON.stringify({
-                          device_function: "pasien_monitor_9000",
-                          model: "PM 9000",
-                        }),
-                        label: "PM 9000",
-                      },
-                      {
-                        value: JSON.stringify({
-                          device_function: "diagnostic_station_001",
-                          model: "DS 001",
-                        }),
-                        label: "DS 001",
-                      },
-                    ]}
-                    onChange={(value) => {
-                      formik.setFieldValue("device_function", value);
-                    }}
-                    value={formik.values.device_function}
-                    onTouch={formik.touched.device_function}
-                    onError={formik.errors.device_function}
-                    isRequired
-                    className="w-40"
-                  />
-                </div>
-
-                <div className="flex flex-row gap-2 w-full h-10">
+                <div className="flex flex-row gap-2 w-full h-10 mt-10">
                   <button
                     className="w-full border rounded-sm cursor-pointer"
                     onClick={() => setInactive()}

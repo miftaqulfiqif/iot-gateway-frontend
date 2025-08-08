@@ -2,13 +2,16 @@ import { InputDate } from "@/components/ui/input-date";
 import { InputText } from "@/components/ui/input-text";
 import { InputSelect } from "@/components/ui/input-select";
 
-
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Patients } from "@/models/PatientModel";
 import { X } from "lucide-react";
 import { UsePatient } from "@/hooks/api/use-patient";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import CitySelect, { CityOption } from "../forms/input/city-select";
+import ProvinceSelect, { ProvinceOption } from "../forms/input/province-select";
+import DistrictSelect, { DistrictOption } from "../forms/input/district-select";
+import VillageSelect, { VillageOption } from "../forms/input/village-select";
 
 type CreateNewPatientProps = {
   form: boolean;
@@ -17,7 +20,6 @@ type CreateNewPatientProps = {
   fetchPatients?: () => void;
   openFormSelectPatient?: () => void;
   openFormBarcode?: () => void;
-  buttonLoading?: boolean;
   patient?: Patients;
   showToast?: any;
 };
@@ -30,7 +32,6 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     fetchPatients,
     openFormSelectPatient,
     openFormBarcode,
-    buttonLoading,
     patient,
     showToast,
   } = props;
@@ -41,33 +42,111 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     showToast,
   });
 
+  const [selectedProvince, setSelectedProvince] =
+    useState<ProvinceOption | null>(null);
+  const [selectedCity, setSelectedCity] = useState<CityOption | null>(null);
+  const [selectedDistrict, setSelectedDistrict] =
+    useState<DistrictOption | null>(null);
+  const [selectedVillage, setSelectedVillage] = useState<VillageOption | null>(
+    null
+  );
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: patient?.name || "",
       nik: patient?.nik || "",
+      no_kk: patient?.no_kk || "",
       gender: patient?.gender || "",
       address: patient?.address || "",
       phone: patient?.phone || "",
-      last_education: patient?.last_education || "",
       place_of_birth: patient?.place_of_birth || "",
       date_of_birth: patient?.date_of_birth
         ? patient.date_of_birth.split("T")[0]
         : "",
-      work: patient?.work || "",
+      use: patient?.address.use || "",
+      line: patient?.address.line || "",
+      city: patient?.address.city || "",
+      postal_code: patient?.address.postal_code || "",
+      country: patient?.address.country || "ID",
+      rt: patient?.address.rt || "",
+      rw: patient?.address.rw || "",
+      province: patient?.address.province
+        ? {
+            value: patient.address.province.id,
+            label: patient.address.province.name,
+          }
+        : null,
+      regency: patient?.address.regency
+        ? {
+            value: patient.address.regency.id,
+            label: patient.address.regency.name,
+          }
+        : null,
+      district: patient?.address.district
+        ? {
+            value: patient.address.district.id,
+            label: patient.address.district.name,
+          }
+        : null,
+      village: patient?.address.village
+        ? {
+            value: patient.address.village.id,
+            label: patient.address.village.name,
+          }
+        : null,
+
+      // province_id: patient?.address.province_id || "",
+      // regency_id: patient?.address.regency_id || "",
+      // district_id: patient?.address.district_id || "",
+      // village_id: patient?.address.village_id || "",
     },
     validationSchema: yup.object().shape({
       name: yup.string().required("Name is required"),
       nik: yup.string().required("NIK is required"),
+      no_kk: yup.string(),
       gender: yup.string().required("Gender is required"),
-      address: yup.string(),
       phone: yup.number(),
-      last_education: yup.string(),
       place_of_birth: yup.string(),
       date_of_birth: yup.string().required("Date of birth is required"),
-      work: yup.string(),
+      use: yup.string().required("Use is required"),
+      line: yup.string().required("Line is required"),
+      city: yup.string().required("City is required"),
+      postal_code: yup.string().required("Postal code is required"),
+      country: yup.string().required("Country is required"),
+      rt: yup.string().required("RT is required"),
+      rw: yup.string().required("RW is required"),
+      province: yup.string().required("Province is required"),
+      regency: yup.string().required("Regency is required"),
+      district: yup.string().required("District is required"),
+      village: yup.string().required("Village is required"),
     }),
     onSubmit: (values) => {
+      console.log(values);
+
+      const data = {
+        name: values.name,
+        nik: values.nik,
+        no_kk: values.no_kk,
+        gender: values.gender,
+        phone: values.phone,
+        place_of_birth: values.place_of_birth,
+        date_of_birth: values.date_of_birth,
+        address: {
+          use: values.use,
+          line: values.line,
+          city: values.city,
+          postal_code: values.postal_code,
+          country: values.country,
+          rt: values.rt,
+          rw: values.rw,
+          province_id: values.province,
+          regency_id: values.regency,
+          district_id: values.district,
+          village_id: values.village,
+        },
+      };
+
       if (openFormSelectPatient) {
         if (!patient) {
           setPatient(values);
@@ -82,14 +161,12 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
             nik: values.nik,
             gender: values.gender,
             phone: values.phone,
-            last_education: values.last_education,
             place_of_birth: values.place_of_birth,
             date_of_birth: values.date_of_birth,
-            work: values.work,
           };
           updatePatient(updatedPatient);
         } else {
-          savePatient(values);
+          savePatient(data);
         }
       }
       closeModal();
@@ -120,7 +197,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-4xl h-[660px] transition-all duration-300 ease-in-out
+        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-4xl h-[700px] transition-all duration-300 ease-in-out
     ${
       form
         ? "opacity-100 scale-100 translate-x-[-50%] translate-y-[-50%]"
@@ -169,17 +246,28 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
           )}
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <div className="flex flex-col gap-5">
-            <InputText
-              name="nik"
-              label="NIK"
-              placeholder="Input NIK"
-              onChange={formik.handleChange}
-              value={formik.values.nik}
-              onTouch={formik.touched.nik}
-              onError={formik.errors.nik}
-              isRequired
-            />
+          <div className="flex flex-col gap-5 overflow-x-auto h-[500px] px-1 pb-30">
+            <div className="flex flex-row gap-4 justify-between w-full">
+              <InputText
+                name="nik"
+                label="NIK"
+                placeholder="Input NIK"
+                onChange={formik.handleChange}
+                value={formik.values.nik}
+                onTouch={formik.touched.nik}
+                onError={formik.errors.nik}
+                isRequired
+              />
+              <InputText
+                name="no_kk"
+                label="No KK"
+                placeholder="Input No KK"
+                onChange={formik.handleChange}
+                value={formik.values.no_kk}
+                onTouch={formik.touched.no_kk}
+                onError={formik.errors.no_kk}
+              />
+            </div>
             <div className="flex flex-row gap-4 justify-between w-full">
               <InputText
                 name="name"
@@ -191,7 +279,18 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                 onError={formik.errors.name}
                 isRequired
               />
-
+            </div>
+            <div className="flex flex-row gap-4 justify-between w-full">
+              <InputText
+                name="phone"
+                type="tel"
+                label="Phone"
+                placeholder="Input phone"
+                onChange={formik.handleChange}
+                value={formik.values.phone}
+                onTouch={formik.touched.phone}
+                onError={formik.errors.phone}
+              />
               <InputSelect
                 label="Gender"
                 name="gender"
@@ -207,64 +306,161 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                 isRequired
               />
             </div>
-            <div className="flex flex-row gap-4 justify-between w-full">
-              <InputText
-                name="phone"
-                type="tel"
-                label="Phone"
-                placeholder="Input phone"
-                onChange={formik.handleChange}
-                value={formik.values.phone}
-                onTouch={formik.touched.phone}
-                onError={formik.errors.phone}
+            <div className="flex flex-row gap-4">
+              <div className="w-full">
+                <InputText
+                  name="place_of_birth"
+                  label="Place of birth"
+                  placeholder="Input place of birth"
+                  onChange={formik.handleChange}
+                  value={formik.values.place_of_birth}
+                  onTouch={formik.touched.place_of_birth}
+                  onError={formik.errors.place_of_birth}
+                />
+              </div>
+              <div className="w-fit">
+                <InputDate
+                  name="date_of_birth"
+                  label="Date of birth"
+                  onChange={formik.handleChange}
+                  value={formik.values.date_of_birth}
+                  onTouch={formik.touched.date_of_birth}
+                  onError={formik.errors.date_of_birth}
+                  isRequired
+                />
+              </div>
+            </div>
+            <hr className="mt-4" />
+            <p>Address :</p>
+            <InputSelect
+              label="Use"
+              name="use"
+              placeholder="Select use"
+              value={formik.values.use}
+              onChange={(value) => formik.setFieldValue("use", value)}
+              option={[
+                { value: "home", label: "Home" },
+                { value: "work", label: "Work" },
+                { value: "other", label: "Other" },
+              ]}
+            />
+            {formik.touched.use && formik.errors.use && (
+              <p className="text-red-500 text-sm">{formik.errors.use}</p>
+            )}
+            <div className="flex flex-col gap-2">
+              <p>Province</p>
+              <ProvinceSelect
+                value={selectedProvince}
+                onChange={(option) => {
+                  setSelectedProvince(option);
+                  formik.setFieldValue("province", option || "");
+                }}
+                onBlur={() => formik.setFieldTouched("province", true)}
               />
-              <InputText
-                name="last_education"
-                label="Last education"
-                placeholder="Input last education"
-                onChange={formik.handleChange}
-                value={formik.values.last_education}
-                onTouch={formik.touched.last_education}
-                onError={formik.errors.last_education}
+              {formik.touched.province && formik.errors.province && (
+                <p className="text-red-500 text-sm">{formik.errors.province}</p>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <p>City</p>
+              <CitySelect
+                provinceId={selectedProvince?.value}
+                value={selectedCity}
+                onChange={(option) => {
+                  setSelectedCity(option);
+                  formik.setFieldValue("regency", option?.value || "");
+                  formik.setFieldValue("city", option?.label || "");
+                }}
+                onBlur={() => formik.setFieldTouched("regency", true)}
               />
+              {formik.touched.regency && formik.errors.regency && (
+                <p className="text-red-500 text-sm">{formik.errors.regency}</p>
+              )}
             </div>
             <div className="flex flex-row gap-4 justify-between w-full">
-              <InputText
-                name="place_of_birth"
-                label="Place of birth"
-                placeholder="Input place of birth"
-                onChange={formik.handleChange}
-                value={formik.values.place_of_birth}
-                onTouch={formik.touched.place_of_birth}
-                onError={formik.errors.place_of_birth}
-              />
-              <InputDate
-                name="date_of_birth"
-                label="Date of birth"
-                onChange={formik.handleChange}
-                value={formik.values.date_of_birth}
-                onTouch={formik.touched.date_of_birth}
-                onError={formik.errors.date_of_birth}
-                isRequired
-              />
+              <div className="flex flex-col gap-2 w-1/2">
+                <p>District</p>
+                <DistrictSelect
+                  regencyId={selectedCity?.value}
+                  value={selectedDistrict}
+                  onChange={(option) => {
+                    setSelectedDistrict(option);
+                    formik.setFieldValue("district", option?.value || "");
+                  }}
+                  onBlur={() => formik.setFieldTouched("district", true)}
+                />
+                {formik.touched.district && formik.errors.district && (
+                  <p className="text-red-500 text-sm">
+                    {formik.errors.district}
+                  </p>
+                )}
+              </div>
+              <div className="w-1/2">
+                <InputText
+                  name="postal_code"
+                  label="Postal Code"
+                  placeholder="Input Postal Code"
+                  onChange={formik.handleChange}
+                  value={formik.values.postal_code}
+                  onTouch={formik.touched.postal_code}
+                  onError={formik.errors.postal_code}
+                />
+              </div>
             </div>
-            <div className="flex flex-row gap-4 justify-between w-full">
-              <InputText
-                name="address"
-                label="Address"
-                placeholder="Input address"
-                onChange={formik.handleChange}
-                value={formik.values.address}
-                onTouch={formik.touched.address}
-                onError={formik.errors.address}
+            <div className="flex flex-col gap-2">
+              <p>Village</p>
+              <VillageSelect
+                districtId={selectedDistrict?.value}
+                value={selectedVillage}
+                onChange={(option) => {
+                  setSelectedVillage(option);
+                  formik.setFieldValue("village", option?.value || "");
+                }}
+                onBlur={() => formik.setFieldTouched("village", true)}
               />
+              {formik.touched.village && formik.errors.village && (
+                <p className="text-red-500 text-sm">{formik.errors.village}</p>
+              )}
+            </div>
+
+            <div className="flex flex-row gap-4 justify-between w-full">
+              <div className="w-3/4">
+                <InputText
+                  name="line"
+                  label="Line"
+                  placeholder="Input Line"
+                  onChange={formik.handleChange}
+                  value={formik.values.line}
+                  onTouch={formik.touched.line}
+                  onError={formik.errors.line}
+                />
+              </div>
+              <div className="flex gap-4 w-1/2">
+                <InputText
+                  name="rt"
+                  label="RT"
+                  placeholder="Input RT"
+                  onChange={formik.handleChange}
+                  value={formik.values.rt}
+                  onTouch={formik.touched.rt}
+                  onError={formik.errors.rt}
+                />
+                <InputText
+                  name="rw"
+                  label="RW"
+                  placeholder="Input RW"
+                  onChange={formik.handleChange}
+                  value={formik.values.rw}
+                  onTouch={formik.touched.rw}
+                  onError={formik.errors.rw}
+                />
+              </div>
             </div>
           </div>
           <div className="flex items-center justify-center">
             <button
               type="submit"
-              disabled={buttonLoading}
-              className="px-4 py-2 bg-blue-white border-blue-700 text-blue-700 border-2 rounded-full w-xs mt-8 disabled:bg-red-500 "
+              className="px-4 py-2 bg-blue-white border-blue-700 text-blue-700 border-2 rounded-full w-xs mt-8 disabled:bg-red-500 cursor-pointer"
             >
               Submit
             </button>

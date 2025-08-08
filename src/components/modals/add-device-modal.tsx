@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Bluetooth, EthernetPort, Wifi } from "lucide-react";
+import { Bluetooth, EthernetPort, Usb, Wifi } from "lucide-react";
 
 type Props = {
   isActive: boolean;
   setInactive: () => void;
   setBluetoothActive: () => void;
   setWifiOrLANActive: () => void;
+  setUsbActive: () => void;
 };
 
 export const AddDeviceModal = ({
@@ -13,6 +14,7 @@ export const AddDeviceModal = ({
   setInactive,
   setBluetoothActive,
   setWifiOrLANActive,
+  setUsbActive,
 }: Props) => {
   const handleKeyPress = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -48,6 +50,7 @@ export const AddDeviceModal = ({
       >
         <p className="font-semibold text-xl mb-2">Select Connection</p>
         <div className="flex flex-row gap-4">
+          {/* Bluetooth */}
           <div
             className="w-[300px] h-[300px] bg-blue-500 hover:bg-blue-400 rounded-2xl text-white items-center flex flex-col justify-center gap-2 shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
             onClick={setBluetoothActive}
@@ -55,6 +58,8 @@ export const AddDeviceModal = ({
             <Bluetooth className="w-10 h-10" />
             <p>Bluetooth</p>
           </div>
+
+          {/* Wi-Fi or LAN */}
           <div
             className="w-[300px] h-[300px] bg-blue-500 hover:bg-blue-400 rounded-2xl text-white items-center flex flex-row justify-center gap-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
             onClick={setWifiOrLANActive}
@@ -68,6 +73,15 @@ export const AddDeviceModal = ({
               <EthernetPort className="w-10 h-10" />
               <p>LAN</p>
             </div>
+          </div>
+
+          {/* USB */}
+          <div
+            className="w-[300px] h-[300px] bg-blue-500 hover:bg-blue-400 rounded-2xl text-white items-center flex flex-col justify-center gap-2 shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+            onClick={setUsbActive}
+          >
+            <Usb className="w-10 h-10" />
+            <p>USB</p>
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ export const SelectPatientContent = ({ patientSelected }: Props) => {
   }, []);
 
   return (
-    <div className="h-[470px]">
+    <div className="h-[580px]">
       <form
         className="flex flex-row items-center "
         onSubmit={(e) => {

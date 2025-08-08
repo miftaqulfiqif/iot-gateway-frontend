@@ -49,7 +49,7 @@ export const SelectPatient = ({
         }
       `}
       >
-        <div className="flex flex-col gap-4 h-[600px]">
+        <div className="flex flex-col gap-4 h-[700px]">
           {/* Option Select Patient */}
           <div className="flex flex-row items-center justify-between">
             <p className="font-bold text-xl">Select patient</p>

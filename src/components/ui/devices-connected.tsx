@@ -3,6 +3,7 @@ import {
   EllipsisVertical,
   EthernetPort,
   Trash,
+  Usb,
   Wifi,
 } from "lucide-react";
 import {
@@ -43,20 +44,19 @@ export const DevicesConnected = ({
       <div className="flex flex-row gap-2 items-center justify-between">
         <div className="flex flex-row gap-2 items-center">
           {deviceConnection === "bluetooth" ? (
-            <div className="bg-blue-500 p-1 rounded-full text-white">
-              <Bluetooth />
-            </div>
+            <Bluetooth className="text-white bg-blue-500 p-1 rounded-full" />
           ) : deviceConnection === "wifi" ? (
-            <div className="bg-blue-500 p-1 rounded-full text-white">
-              <Wifi />
-            </div>
+            <Wifi className="text-white bg-blue-500 p-1 rounded-full" />
+          ) : deviceConnection === "usb_hid" || deviceFunction === "usb_vcp" ? (
+            <Usb className="text-white bg-blue-500 p-1 rounded-full" />
           ) : (
-            <div className="bg-blue-500 p-1 rounded-full text-white">
-              <EthernetPort />
-            </div>
+            <EthernetPort className="text-white bg-blue-500 p-1 rounded-full" />
           )}
           <p className="font-bold">
-            {deviceConnection === "bluetooth" ? "Bluetooth" : "TCP / IP"}
+            {deviceConnection === "bluetooth" && "Bluetooth"}
+            {deviceConnection === "tcpip" && "TCP / IP"}
+            {deviceConnection === "usb_hid" && "USB HID"}
+            {deviceConnection === "usb_vcp" && "USB VCP"}
           </p>
         </div>
         {/* Button Action */}
@@ -132,10 +132,19 @@ export const DevicesConnected = ({
       </div>
       <div className="flex flex-col h-full justify-between mt-4">
         <div className="flex flex-col gap-1">
-          <div className="flex flex-row gap-2">
-            <p className="font-bold text-sm">{device}</p>
-          </div>
-          <p className="font-semibold text-sm text-gray-500">{deviceMac}</p>
+          {deviceConnection === "usb_hid" ||
+            (deviceConnection === "usb_vcp" ? (
+              ""
+            ) : (
+              <div className="flex flex-col gap-1">
+                <div className="flex flex-row gap-2">
+                  <p className="font-bold text-sm">{device}</p>
+                </div>
+                <p className="font-semibold text-sm text-gray-500">
+                  {deviceMac}
+                </p>
+              </div>
+            ))}
           <p className="font-bold text-xl">{deviceName}</p>
         </div>
         <div className="mt-4 flex flex-row justify-end">

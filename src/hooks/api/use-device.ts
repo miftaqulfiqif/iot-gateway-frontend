@@ -11,25 +11,25 @@ export const useDevices = () => {
 
   const getAllDevices = useCallback(async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/devices`, {
+      const response = await axios.get(`${apiUrl}/api/devices-connected`, {
         withCredentials: true,
       });
       setDevices(response.data.data);
     } catch (error) {
-      console.error("Error fetching babies:", error);
+      console.error("Error fetching device connected:", error);
     }
   }, []);
 
   const deleteDeviceBluetooth = async (deviceId: string) => {
     try {
-      await axios.delete(`${apiUrl}/api/devices/disconnect-ble/${deviceId}`, {
+      await axios.delete(`${apiUrl}/api/device/delete/${deviceId}`, {
         withCredentials: true,
       });
-      showToast(null, "Device disconnected successfully", "success");
+      showToast(null, "Delete device successfully", "success");
       await getAllDevices();
     } catch (error) {
       console.error("Error deleting device:", error);
-      showToast(null, "Failed to disconnect device", "error");
+      showToast(null, "Failed to deleted device", "error");
     }
   };
   const deleteDeviceTcpIP = async (deviceId: string) => {

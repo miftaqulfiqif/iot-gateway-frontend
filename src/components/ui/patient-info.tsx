@@ -1,8 +1,4 @@
-import {
-  Mars,
-  PersonStanding,
-  Venus,
-} from "lucide-react";
+import { Mars, PersonStanding, Venus } from "lucide-react";
 import { Icon } from "lucide-react";
 import { babyPacifier } from "@lucide/lab";
 import { useState } from "react";
@@ -89,7 +85,7 @@ export const PatientInfo = ({
                       )
                     : "--"}
                 </p>
-                <p>{patient?.address ? patient?.address : " -- "}</p>
+                <p>{patient?.address.line ? patient?.address.line : " -- "}</p>
                 <p>{patient?.phone ? patient?.phone : " -- "}</p>
               </div>
             </div>

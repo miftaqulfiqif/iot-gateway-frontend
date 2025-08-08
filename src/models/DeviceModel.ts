@@ -2,7 +2,7 @@ export type Devices = {
   id: string;
   mac_address: string;
   ip_address: string;
-  device: string;
+  model: string;
   device_function: string;
   type: string;
   connection: string;
