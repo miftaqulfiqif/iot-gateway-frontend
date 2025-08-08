@@ -229,6 +229,7 @@ export const UsePatientPage = () => {
   };
 
   const buttonAction = (action: string, patient: Patients) => {
+    console.log(patient);
     if (action === "edit") {
       setPatientEdit(patient);
       setForm(true);

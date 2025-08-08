@@ -9,35 +9,34 @@ import {
   AlertDialogDescription,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { InputSelect } from "@/components/ui/input-select";
-import { useState } from "react";
 
-export const LanguageSetting = () => {
-  const [language, setLanguage] = useState("id");
-
+export const SatusehatSetting = () => {
   return (
-    <div className="flex flex-col gap-8 h-[380px]">
-      <p className="text-2xl font-bold">Language</p>
-      <div className="flex flex-col gap-2 justify-between h-full">
+    <div className="flex flex-col gap-8">
+      <p className="text-2xl font-bold">SATUSEHAT Platform Setting</p>
+      {/* Content */}
+      <div className="flex flex-col gap-2 justify-between">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <InputSelect
-              name="language"
-              placeholder="Select your language"
-              label="Select Language"
-              value={language}
-              onChange={setLanguage}
-              option={[
-                { label: "Indonesia", value: "id" },
-                { label: "English", value: "en" },
-              ]}
-            />
-            {/* <p>Language</p>
+            <p>Organization ID</p>
             <input
-              type="select"
               className=" bg-gray-100 text-sm px-4 py-2 rounded-lg w-full disabled:bg-slate-200 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150 ease-in-out"
               placeholder="Input your organization ID"
-            /> */}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p>Client ID</p>
+            <input
+              className=" bg-gray-100 text-sm px-4 py-2 rounded-lg w-full disabled:bg-slate-200 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150 ease-in-out"
+              placeholder="Input your client ID"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p>Client Secret</p>
+            <input
+              className=" bg-gray-100 text-sm px-4 py-2 rounded-lg w-full disabled:bg-slate-200 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150 ease-in-out"
+              placeholder="Input your client secret"
+            />
           </div>
         </div>
         <AlertDialog>

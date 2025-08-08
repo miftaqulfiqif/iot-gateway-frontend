@@ -20,6 +20,7 @@ type Props = {
   setTempSelectedGateway: React.Dispatch<React.SetStateAction<any>>;
   setCurrentGateway: React.Dispatch<React.SetStateAction<any>>;
   gateways: any[];
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const SetCurrentGateway = ({
@@ -30,6 +31,7 @@ export const SetCurrentGateway = ({
   setTempSelectedGateway,
   setCurrentGateway,
   gateways,
+  setQuery,
 }: Props) => {
   const handleSelectGateway = () => {
     setCurrentGateway(tempSelectedGateway);
@@ -51,6 +53,7 @@ export const SetCurrentGateway = ({
               type="text"
               placeholder="Search"
               className="border-2 px-4 py-2 rounded-2xl focus:outline-blue-500 transition duration-150 ease-in-out"
+              onChange={(e) => setQuery(e.target.value)}
             />
           </div>
         </div>

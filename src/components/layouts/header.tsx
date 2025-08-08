@@ -3,6 +3,7 @@ import { Bell, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import { SetCurrentGateway } from "../dropdown/header-set-current-gateway";
+import { useGateway } from "@/hooks/api/use-gateway";
 
 interface NavbarProps {
   className?: string;
@@ -24,18 +25,35 @@ const dummyGateways = [
 
 export const Header = ({ className, title }: NavbarProps) => {
   const { user } = useAuth();
+  const {
+    selectedGateway,
+    setSelectedGateway,
+    getGateways,
+    gateways,
+    query,
+    setQuery,
+  } = useGateway();
+
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState("");
 
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const [currentGateway, setCurrentGateway] = useState(dummyGateways[0]);
-  const [tempSelectedGateway, setTempSelectedGateway] = useState(
-    dummyGateways[0]
-  );
-  const [selectedGateway, setSelectedGateway] = useState(dummyGateways[0]);
+  const [tempSelectedGateway, setTempSelectedGateway] = useState<any>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // fetch gateway when dropdown isOpen
+  useEffect(() => {
+    if (isOpen) getGateways();
+  }, [isOpen, query]);
+
+  // Save selectedGateway to localStorage when it change
+  useEffect(() => {
+    if (selectedGateway) {
+      localStorage.setItem("current_gateway", JSON.stringify(selectedGateway));
+    }
+  }, [selectedGateway]);
 
   useEffect(() => {
     setState(title);
@@ -80,13 +98,19 @@ export const Header = ({ className, title }: NavbarProps) => {
           <div ref={dropdownRef} className="relative">
             <div
               className="flex bg-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-full px-4 py-2 items-center justify-between cursor-pointer w-70"
-              onClick={() => setIsOpen((prev) => !prev)}
+              onClick={() => setIsOpen(!isOpen)}
             >
               <div className="flex gap-4 items-center">
                 <img src={gatewayIcon} alt="" className="w-8 h-8" />
                 <div className="flex flex-col">
-                  <p className="font-bold">{currentGateway.name}</p>
-                  <p className="text-sm text-gray-500">{currentGateway.id}</p>
+                  <p className="font-bold">
+                    {selectedGateway.name
+                      ? selectedGateway.name
+                      : "Gateway Name"}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {selectedGateway.id ? selectedGateway.id : "Gateway ID"}
+                  </p>
                 </div>
               </div>
               <ChevronDown className="w-6 h-6" />
@@ -95,11 +119,12 @@ export const Header = ({ className, title }: NavbarProps) => {
             <SetCurrentGateway
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
-              currentGateway={currentGateway}
+              currentGateway={selectedGateway}
               tempSelectedGateway={tempSelectedGateway}
               setTempSelectedGateway={setTempSelectedGateway}
-              setCurrentGateway={setCurrentGateway}
-              gateways={dummyGateways}
+              setCurrentGateway={setSelectedGateway}
+              gateways={gateways}
+              setQuery={setQuery}
             />
           </div>
 

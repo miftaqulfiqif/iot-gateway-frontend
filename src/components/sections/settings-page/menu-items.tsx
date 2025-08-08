@@ -4,6 +4,7 @@ import { PasswordSetting } from "./password-setting";
 import { UserProfileSetting } from "./user-profile-setting";
 import { HospitalProfileSetting } from "./hospital-profile-setting";
 import { LanguageSetting } from "./language-setting";
+import { SatusehatSetting } from "./satusehat-setting";
 
 const dummyCurrentGateway = {
   id: "GW001",
@@ -100,6 +101,7 @@ export const MenuItems = ({
           gateways={gateways}
         />
       )}
+      {state === "SATUSEHAT" && <SatusehatSetting />}
     </div>
   );
 };
