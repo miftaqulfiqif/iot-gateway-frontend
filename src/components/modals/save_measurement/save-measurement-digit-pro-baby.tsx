@@ -75,7 +75,7 @@ export const SaveMeasurementDigitProBaby = ({
             <p>Note :</p>
             <textarea
               maxLength={150}
-              className="border w-full h-20 border-gray-300 rounded-lg p-2 resize-none"
+              className="border w-full h-20 border-gray-300 rounded-lg p-2 resize-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
               placeholder="Input Note Here (max 150 characters)"
               onChange={(e) => setNote(e.target.value)}
             />

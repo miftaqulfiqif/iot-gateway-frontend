@@ -53,14 +53,14 @@ const MeasurementPage = () => {
                       <DeviceConnected
                         key={device.id}
                         deviceIcon={device.icon}
-                        deviceName={device.name ? device.name : device.device}
+                        deviceName={device.name ? device.name : device.model}
                         deviceMac={
                           device.connection === "bluetooth"
                             ? device.mac_address
                             : device.ip_address
                         }
                         deviceConnection={device.connection}
-                        url={`/device/${device.device_function}/${device.id}`}
+                        url={`/device/${device.device_function}/${device.mac_address}`}
                       />
                     )
                 )
