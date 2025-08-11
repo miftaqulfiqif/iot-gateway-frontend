@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "date-fns";
 import { useToast } from "@/context/ToastContext";
 import { BMIModel } from "@/models/Devices/BMIModel";
@@ -24,7 +24,7 @@ type Props = {
   isActive: boolean;
   setInactive: () => void;
   patient: any;
-  result: BMIModel;
+  result?: BMIModel;
 };
 
 export const SaveMeasurementBMI = ({
@@ -121,7 +121,7 @@ export const SaveMeasurementBMI = ({
             <p>Note :</p>
             <textarea
               maxLength={150}
-              className="border w-full h-20 border-gray-300 rounded-lg p-2 resize-none"
+              className="border w-full h-20 border-gray-300 rounded-lg p-2 resize-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
               placeholder="Input Note Here (max 150 characters)"
               onChange={(e) => setNote(e.target.value)}
             />

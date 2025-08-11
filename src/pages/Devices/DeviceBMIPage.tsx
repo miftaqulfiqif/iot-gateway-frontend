@@ -1,8 +1,4 @@
-import {
-  ArrowDownToLine,
-  PersonStanding,
-  RotateCcw,
-} from "lucide-react";
+import { ArrowDownToLine, PersonStanding, RotateCcw } from "lucide-react";
 import MainLayout from "../../components/layouts/main-layout";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { BMIResult } from "@/components/ui/bmi/bmi-result";
@@ -357,14 +353,12 @@ const DeviceBMIPage = () => {
           setPatient={setPatient}
         />
       )}
-      {data && (
-        <SaveMeasurementBMI
-          isActive={saveModal}
-          setInactive={() => setSaveModal(false)}
-          patient={patient}
-          result={data}
-        />
-      )}
+      <SaveMeasurementBMI
+        isActive={saveModal}
+        setInactive={() => setSaveModal(false)}
+        patient={patient}
+        result={data}
+      />
     </MainLayout>
   );
 };
