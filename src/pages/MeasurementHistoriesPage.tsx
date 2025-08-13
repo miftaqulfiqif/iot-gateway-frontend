@@ -37,7 +37,7 @@ const dummyDataDS001 = [
     spo2: 98,
     pr_spo2: 75,
     rr: 15,
-    timestamp: "2025-07-14T08:30:00Z",
+    recorded_at: "2025-07-14T08:30:00Z",
   },
   {
     id: "2",
@@ -54,7 +54,7 @@ const dummyDataDS001 = [
     spo2: 96,
     pr_spo2: 82,
     rr: 15,
-    timestamp: "2025-07-14T09:45:00Z",
+    recorded_at: "2025-07-14T09:45:00Z",
   },
   {
     id: "3",
@@ -71,7 +71,7 @@ const dummyDataDS001 = [
     spo2: 99,
     pr_spo2: 68,
     rr: 15,
-    timestamp: "2025-07-14T10:15:00Z",
+    recorded_at: "2025-07-14T10:15:00Z",
   },
   {
     id: "4",
@@ -88,7 +88,7 @@ const dummyDataDS001 = [
     spo2: 94,
     pr_spo2: 90,
     rr: 15,
-    timestamp: "2025-07-14T11:10:00Z",
+    recorded_at: "2025-07-14T11:10:00Z",
   },
   {
     id: "5",
@@ -105,7 +105,7 @@ const dummyDataDS001 = [
     spo2: 97,
     pr_spo2: 72,
     rr: 15,
-    timestamp: "2025-07-14T12:00:00Z",
+    recorded_at: "2025-07-14T12:00:00Z",
   },
 ];
 
@@ -126,7 +126,7 @@ const dummyDataPM9000 = [
     temp1: 36.5,
     temp2: 36.8,
     delta_temp: 0.3,
-    timestamp: "2023-09-01T08:30:00Z",
+    recorded_at: "2023-09-01T08:30:00Z",
   },
   {
     id: "2",
@@ -144,7 +144,7 @@ const dummyDataPM9000 = [
     temp1: 37.2,
     temp2: 37.4,
     delta_temp: 0.2,
-    timestamp: "2023-09-02T09:00:00Z",
+    recorded_at: "2023-09-02T09:00:00Z",
   },
   {
     id: "3",
@@ -162,7 +162,7 @@ const dummyDataPM9000 = [
     temp1: 36.9,
     temp2: 37.1,
     delta_temp: 0.2,
-    timestamp: "2023-09-03T09:45:00Z",
+    recorded_at: "2023-09-03T09:45:00Z",
   },
   {
     id: "4",
@@ -180,7 +180,7 @@ const dummyDataPM9000 = [
     temp1: 37.0,
     temp2: 36.9,
     delta_temp: -0.1,
-    timestamp: "2023-09-04T10:15:00Z",
+    recorded_at: "2023-09-04T10:15:00Z",
   },
   {
     id: "5",
@@ -198,7 +198,7 @@ const dummyDataPM9000 = [
     temp1: 36.8,
     temp2: 37.0,
     delta_temp: 0.2,
-    timestamp: "2023-09-05T11:00:00Z",
+    recorded_at: "2023-09-05T11:00:00Z",
   },
   {
     id: "6",
@@ -216,7 +216,7 @@ const dummyDataPM9000 = [
     temp1: 36.7,
     temp2: 36.9,
     delta_temp: 0.2,
-    timestamp: "2023-09-06T08:30:00Z",
+    recorded_at: "2023-09-06T08:30:00Z",
   },
   {
     id: "7",
@@ -234,7 +234,7 @@ const dummyDataPM9000 = [
     temp1: 37.5,
     temp2: 37.8,
     delta_temp: 0.3,
-    timestamp: "2023-09-07T09:00:00Z",
+    recorded_at: "2023-09-07T09:00:00Z",
   },
   {
     id: "8",
@@ -252,7 +252,7 @@ const dummyDataPM9000 = [
     temp1: 36.6,
     temp2: 36.8,
     delta_temp: 0.2,
-    timestamp: "2023-09-08T09:45:00Z",
+    recorded_at: "2023-09-08T09:45:00Z",
   },
   {
     id: "9",
@@ -270,7 +270,7 @@ const dummyDataPM9000 = [
     temp1: 38.1,
     temp2: 38.3,
     delta_temp: 0.2,
-    timestamp: "2023-09-09T10:15:00Z",
+    recorded_at: "2023-09-09T10:15:00Z",
   },
   {
     id: "10",
@@ -288,7 +288,7 @@ const dummyDataPM9000 = [
     temp1: 36.4,
     temp2: 36.6,
     delta_temp: 0.2,
-    timestamp: "2023-09-10T11:00:00Z",
+    recorded_at: "2023-09-10T11:00:00Z",
   },
   {
     id: "11",
@@ -306,7 +306,7 @@ const dummyDataPM9000 = [
     temp1: 36.9,
     temp2: 36.9,
     delta_temp: 0.0,
-    timestamp: "2023-09-11T08:30:00Z",
+    recorded_at: "2023-09-11T08:30:00Z",
   },
   {
     id: "12",
@@ -324,7 +324,7 @@ const dummyDataPM9000 = [
     temp1: 37.0,
     temp2: 37.1,
     delta_temp: 0.1,
-    timestamp: "2023-09-12T09:00:00Z",
+    recorded_at: "2023-09-12T09:00:00Z",
   },
 ];
 
@@ -332,7 +332,7 @@ const dummyDataDigitProBaby = [
   {
     id: "1",
     weight: "3.2 kg",
-    timestamp: "2025-07-16T10:15:00",
+    recorded_at: "2025-07-16T10:15:00",
     patient_handler: {
       patient: {
         name: "Ayu Kartika",
@@ -347,7 +347,7 @@ const dummyDataDigitProBaby = [
   {
     id: "2",
     weight: "3.0 kg",
-    timestamp: "2025-07-16T11:45:00",
+    recorded_at: "2025-07-16T11:45:00",
     patient_handler: {
       patient: {
         name: "Rina Marlina",
@@ -362,7 +362,7 @@ const dummyDataDigitProBaby = [
   {
     id: "3",
     weight: "2.8 kg",
-    timestamp: "2025-07-15T14:30:00",
+    recorded_at: "2025-07-15T14:30:00",
     patient_handler: {
       patient: {
         name: "Siti Aisyah",
@@ -377,7 +377,7 @@ const dummyDataDigitProBaby = [
   {
     id: "4",
     weight: "3.4 kg",
-    timestamp: "2025-07-14T09:00:00",
+    recorded_at: "2025-07-14T09:00:00",
     patient_handler: {
       patient: {
         name: "Desi Ratnasari",
@@ -392,7 +392,7 @@ const dummyDataDigitProBaby = [
   {
     id: "5",
     weight: "3.1 kg",
-    timestamp: "2025-07-14T13:20:00",
+    recorded_at: "2025-07-14T13:20:00",
     patient_handler: {
       patient: {
         name: "Indah Permata",
@@ -409,7 +409,7 @@ const dummyDataDigitProBaby = [
 const dummyDataIDA = [
   {
     id: "1",
-    timestamp: "2025-07-17T08:30:00",
+    recorded_at: "2025-07-17T08:30:00",
     weight_mother: "62.5 kg",
     weight_child: "3.1 kg",
     patient_handler: {
@@ -425,7 +425,7 @@ const dummyDataIDA = [
   },
   {
     id: "2",
-    timestamp: "2025-07-16T11:10:00",
+    recorded_at: "2025-07-16T11:10:00",
     weight_mother: "70.2 kg",
     weight_child: "3.3 kg",
     patient_handler: {
@@ -441,7 +441,7 @@ const dummyDataIDA = [
   },
   {
     id: "3",
-    timestamp: "2025-07-15T14:45:00",
+    recorded_at: "2025-07-15T14:45:00",
     weight_mother: "58.0 kg",
     weight_child: "2.9 kg",
     patient_handler: {
@@ -457,7 +457,7 @@ const dummyDataIDA = [
   },
   {
     id: "4",
-    timestamp: "2025-07-14T10:05:00",
+    recorded_at: "2025-07-14T10:05:00",
     weight_mother: "66.8 kg",
     weight_child: "3.5 kg",
     patient_handler: {
@@ -473,7 +473,7 @@ const dummyDataIDA = [
   },
   {
     id: "5",
-    timestamp: "2025-07-13T09:20:00",
+    recorded_at: "2025-07-13T09:20:00",
     weight_mother: "60.3 kg",
     weight_child: "3.0 kg",
     patient_handler: {
@@ -492,7 +492,7 @@ const dummyDataIDA = [
 const dummyDataBMI = [
   {
     id: "1",
-    timestamp: "2025-07-17T09:00:00",
+    recorded_at: "2025-07-17T09:00:00",
     weight: "68.5 kg",
     bmi: "23.2",
     body_fat: "22.5%",
@@ -515,7 +515,7 @@ const dummyDataBMI = [
   },
   {
     id: "2",
-    timestamp: "2025-07-16T14:20:00",
+    recorded_at: "2025-07-16T14:20:00",
     weight: "54.7 kg",
     bmi: "21.8",
     body_fat: "25.1%",
@@ -538,7 +538,7 @@ const dummyDataBMI = [
   },
   {
     id: "3",
-    timestamp: "2025-07-15T11:45:00",
+    recorded_at: "2025-07-15T11:45:00",
     weight: "75.0 kg",
     bmi: "25.6",
     body_fat: "28.0%",
@@ -561,7 +561,7 @@ const dummyDataBMI = [
   },
   {
     id: "4",
-    timestamp: "2025-07-14T16:10:00",
+    recorded_at: "2025-07-14T16:10:00",
     weight: "60.2 kg",
     bmi: "22.5",
     body_fat: "24.0%",
@@ -584,7 +584,7 @@ const dummyDataBMI = [
   },
   {
     id: "5",
-    timestamp: "2025-07-13T08:40:00",
+    recorded_at: "2025-07-13T08:40:00",
     weight: "82.0 kg",
     bmi: "27.8",
     body_fat: "30.2%",
@@ -611,7 +611,7 @@ const dummyDopplerData = [
   {
     id: "1",
     heart_rate: 145,
-    timestamp: "2025-07-15T14:25:00Z",
+    recorded_at: "2025-07-15T14:25:00Z",
     patient_handler: {
       patient: {
         name: "Dr. Amelia Hartono",
@@ -623,7 +623,7 @@ const dummyDopplerData = [
   {
     id: "2",
     heart_rate: 132,
-    timestamp: "2025-07-16T09:10:00Z",
+    recorded_at: "2025-07-16T09:10:00Z",
     patient_handler: {
       patient: {
         name: "Budi Santoso",
@@ -635,7 +635,7 @@ const dummyDopplerData = [
   {
     id: "3",
     heart_rate: 157,
-    timestamp: "2025-07-16T13:40:00Z",
+    recorded_at: "2025-07-16T13:40:00Z",
     patient_handler: {
       patient: {
         name: "Clara Wijaya",
@@ -647,7 +647,7 @@ const dummyDopplerData = [
   {
     id: "4",
     heart_rate: 123,
-    timestamp: "2025-07-17T08:20:00Z",
+    recorded_at: "2025-07-17T08:20:00Z",
     patient_handler: {
       patient: {
         name: "Dimas Prasetyo",
@@ -659,7 +659,7 @@ const dummyDopplerData = [
   {
     id: "5",
     heart_rate: 140,
-    timestamp: "2025-07-17T10:00:00Z",
+    recorded_at: "2025-07-17T10:00:00Z",
     patient_handler: {
       patient: {
         name: "Eka Lestari",

@@ -32,6 +32,7 @@ export const Header = ({ className, title }: NavbarProps) => {
     gateways,
     query,
     setQuery,
+    changeGateway,
   } = useGateway();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -125,6 +126,7 @@ export const Header = ({ className, title }: NavbarProps) => {
               setCurrentGateway={setSelectedGateway}
               gateways={gateways}
               setQuery={setQuery}
+              changeGateway={() => changeGateway(tempSelectedGateway)}
             />
           </div>
 

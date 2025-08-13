@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Cpu,
-  ScanSearch,
-} from "lucide-react";
+import { Cpu, ScanSearch } from "lucide-react";
 import { Devices } from "@/models/DeviceModel";
 import { ConnectingDeviceModal } from "./connecting-device-modal";
 import { useSocketDeviceManagement } from "@/hooks/socket/utils/SocketDeviceManagement";

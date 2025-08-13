@@ -33,7 +33,8 @@ export const AddDeviceLan = ({
 
       const data = {
         ip_address: value.ip_address,
-        gateway_id: selectedGateway?.id,
+        // gateway_id: selectedGateway?.id ,
+        gateway_id: user?.gateway?.id,
         model: parsed.model,
         device_function: parsed.device_function,
         name: parsed.name ? parsed.name : value.name,

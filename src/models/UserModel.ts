@@ -10,6 +10,7 @@ export type User = {
   status?: boolean;
   profile_picture?: ProfilePicture;
   hospital?: { id: string; name: string; logo_path: string };
+  gateway?: { id: string; name: string; description: string };
   admin?: { name: string };
   doctor?: { name: string };
   nurse?: { name: string };

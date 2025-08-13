@@ -125,8 +125,8 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
       console.log(values);
 
       const data = {
-        name: values.name,
         nik: values.nik,
+        name: values.name,
         no_kk: values.no_kk,
         gender: values.gender,
         phone: values.phone,
@@ -152,7 +152,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
           setPatient(values);
         }
       } else {
-        console.log("CREATED PATIENT");
+        console.log("CREATED PATIENT : ", data);
         if (patient) {
           console.log("UPDATE PATIENT");
           const updatedPatient = {
@@ -353,7 +353,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                 value={selectedProvince}
                 onChange={(option) => {
                   setSelectedProvince(option);
-                  formik.setFieldValue("province", option || "");
+                  formik.setFieldValue("province", option?.value || "");
                 }}
                 onBlur={() => formik.setFieldTouched("province", true)}
               />

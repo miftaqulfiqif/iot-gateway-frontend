@@ -37,9 +37,9 @@ export const ConnectingDeviceModal = ({
   const handleConnectDevice = async (value: any) => {
     try {
       const data = {
-        id: selectedDevice?.mac,
-        hospital_id: user?.hospital?.id,
-        device: selectedDevice?.device,
+        mac_address: selectedDevice?.mac,
+        gateway_id: user?.gateway?.id,
+        model: selectedDevice?.device,
         device_function: selectedDevice?.device_function,
         connection: selectedDevice?.connection,
         name: value.device_name ? value.device_name : selectedDevice?.device,

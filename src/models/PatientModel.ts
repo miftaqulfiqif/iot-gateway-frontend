@@ -16,7 +16,7 @@ export type Patients = {
   age: number;
 };
 
-type Address = {
+export type Address = {
   use: string;
   line: string;
   city: string;

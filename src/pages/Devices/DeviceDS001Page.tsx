@@ -1,8 +1,5 @@
 import MainLayout from "../../components/layouts/main-layout";
-import {
-  Activity,
-  Thermometer,
-} from "lucide-react";
+import { Activity, Thermometer } from "lucide-react";
 import { PatientInfo } from "@/components/ui/patient-info";
 import { HeartPulseChart } from "@/components/chart-heart-pusle";
 
@@ -191,7 +188,7 @@ const historiesDataPM9000 = [
 const DeviceDS001Page = () => {
   const { ip } = useParams();
   // const { dataDS001 } = useSocketHandler({ ipDevice: ip });
-  const { data } = useSocketDS001(ip!);
+  const { data, dataPleth, dataNibp } = useSocketDS001(ip!);
 
   const [patient, setPatient] = useState<Patients>({
     id: "",
@@ -367,7 +364,11 @@ const DeviceDS001Page = () => {
               </div>
             </div>
 
-            <HeartPulseChart className="h-[410px] mt-2" />
+            <HeartPulseChart
+              title="Plethysmogram"
+              className="h-[410px] mt-2"
+              pleth_data={dataPleth}
+            />
           </div>
         </div>
         <div className="w-full pb-5 ">

@@ -97,7 +97,11 @@ export function HistoryBMI({ historiesData }: Props) {
                   {formatNumber(item.water)}
                 </TableCell>
                 <TableCell className="text-center px-3 py-2">
-                  {formatDate(item.timestamp)}
+                  {new Date(item.timestamp).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}
                 </TableCell>
               </TableRow>
             ))

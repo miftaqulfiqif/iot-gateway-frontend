@@ -21,6 +21,7 @@ type Props = {
   setCurrentGateway: React.Dispatch<React.SetStateAction<any>>;
   gateways: any[];
   setQuery: React.Dispatch<React.SetStateAction<string>>;
+  changeGateway: () => void;
 };
 
 export const SetCurrentGateway = ({
@@ -32,9 +33,11 @@ export const SetCurrentGateway = ({
   setCurrentGateway,
   gateways,
   setQuery,
+  changeGateway,
 }: Props) => {
   const handleSelectGateway = () => {
     setCurrentGateway(tempSelectedGateway);
+    changeGateway();
     onClose();
   };
 

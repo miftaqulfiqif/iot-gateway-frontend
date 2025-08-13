@@ -79,7 +79,7 @@ export const TableHistoryDoppler = ({
             )}
             <TableHead className="text-center font-bold">Heart Rate</TableHead>
             <TableHead className="text-center font-bold">Date / Time</TableHead>
-            <TableHead className="text-center font-bold">Action</TableHead>
+            {/* <TableHead className="text-center font-bold">Action</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -127,55 +127,15 @@ export const TableHistoryDoppler = ({
                   )}
                   <TableCell className="text-center">{`${item.heart_rate} bpm`}</TableCell>
                   <TableCell className="text-center">
-                    {item.recorded_at ? format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
-                      locale: id,
-                    }) : "--"}
-                  </TableCell>
-
-                  <TableCell className="text-center text-xl">
-                    <div className="flex flex-row justify-center gap-5 text-base text-white items-center">
-                      {/* Delete */}
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Trash2
-                            className="w-7 h-7 cursor-pointer text-red-500"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                          />
-                          {/* <MdDeleteOutline
-                                  className="w-7 h-7 cursor-pointer"
-                                  color="red"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                /> */}
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="bg-white border-0">
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you absolutely sure?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete this item and remove it from
-                              our system.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel className="border-0 text-black cursor-pointer">
-                              Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => alert("Delete")}
-                              className="bg-red-500 text-white cursor-pointer"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
+                    {item.recorded_at
+                      ? format(
+                          new Date(item.recorded_at),
+                          "d MMMM yyyy, HH:mm",
+                          {
+                            locale: id,
+                          }
+                        )
+                      : "--"}
                   </TableCell>
                 </TableRow>
               );
