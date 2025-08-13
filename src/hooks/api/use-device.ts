@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import { Devices } from "@/models/DeviceModel";
 import axios from "axios";
@@ -6,6 +7,7 @@ import { useCallback, useState } from "react";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useDevices = () => {
+  const { user } = useAuth();
   const { showToast } = useToast();
   const [devices, setDevices] = useState<Devices[]>([]);
 
@@ -13,6 +15,9 @@ export const useDevices = () => {
     try {
       const response = await axios.get(`${apiUrl}/api/devices-connected`, {
         withCredentials: true,
+        params: {
+          gateway_id: user?.gateway?.id,
+        },
       });
       setDevices(response.data.data);
     } catch (error) {
@@ -32,6 +37,7 @@ export const useDevices = () => {
       showToast(null, "Failed to deleted device", "error");
     }
   };
+
   const deleteDeviceTcpIP = async (deviceId: string) => {
     try {
       await axios.delete(`${apiUrl}/api/devices/disconnect-tcpip/${deviceId}`, {
@@ -52,6 +58,7 @@ export const useDevices = () => {
       console.error("Error updating device:", error);
     }
   };
+
   const updateDeviceTcpIP = async (deviceId: string) => {
     try {
       alert("Device updated successfully! : " + deviceId);

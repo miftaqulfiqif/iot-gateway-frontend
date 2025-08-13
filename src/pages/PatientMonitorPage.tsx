@@ -137,7 +137,6 @@ const PatientMonitorPage = () => {
     }
   }, [patient]);
 
-  console.log(patient);
   return (
     <MainLayout title="Patient Monitor" state="Patient Monitor">
       <div className="flex flex-col gap-4 pb-20">

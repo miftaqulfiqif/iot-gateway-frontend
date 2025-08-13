@@ -5,12 +5,20 @@ export class DS001Handler extends BaseHandler {
   private ip: string;
   private setData: any;
   private setDataNibp: any;
+  private setDataPleth: any;
 
-  constructor(socket: Socket, ip: string, setData: any, setDataNibp: any) {
+  constructor(
+    socket: Socket,
+    ip: string,
+    setData: any,
+    setDataNibp: any,
+    setDataPleth: any
+  ) {
     super(socket);
     this.ip = ip;
     this.setData = setData;
     this.setDataNibp = setDataNibp;
+    this.setDataPleth = setDataPleth;
     this.register;
   }
 
@@ -48,10 +56,30 @@ export class DS001Handler extends BaseHandler {
         mean: last?.mean,
       });
     });
+
+    this.socket.on(
+      "listen_ds001_pleth",
+      (payload: { data_ds001_pleth: any }) => {
+        const data = payload.data_ds001_pleth[0];
+        const deviceIp = data?.ip;
+
+        console.log("DATA : ", data);
+        console.log("Device IP : ", deviceIp);
+
+        if (!data || deviceIp !== this.ip) return;
+
+        const lastPleth = data.pleth_data?.at(-1);
+
+        this.setDataPleth({
+          pleth_data: data.pleth_data || [],
+        });
+      }
+    );
   }
 
   unregister(): void {
     this.socket.off("listen_ds001");
     this.socket.off("listen_ds001_nibp");
+    this.socket.off("listen_ds001_pleth");
   }
 }

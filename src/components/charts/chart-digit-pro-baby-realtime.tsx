@@ -46,6 +46,16 @@ export default function DigitProBabyRealtimeChart({ chartData }: Props) {
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent indicator="line" />}
+                // content={({ active, payload }) => {
+                //   if (active && payload && payload.length) {
+                //     return (
+                //       <div className="bg-white p-2 shadow rounded text-sm">
+                //         Weight: {payload[0].value}
+                //       </div>
+                //     );
+                //   }
+                //   return null;
+                // }}
               />
               <Line
                 dataKey="weight"
@@ -55,12 +65,12 @@ export default function DigitProBabyRealtimeChart({ chartData }: Props) {
                 dot={false}
                 activeDot={{ r: 3, fill: "blue" }}
               >
-                <LabelList
+                {/* <LabelList
                   position="top"
                   offset={12}
                   className="fill-foreground"
                   fontSize={12}
-                />
+                /> */}
               </Line>
             </LineChart>
           ) : (

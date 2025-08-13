@@ -16,6 +16,9 @@ type DS001Data = {
 export const useSocketDS001 = (ipAddress: string) => {
   const [data, setData] = useState<DS001Data>();
   const [dataNibp, setDataNibp] = useState({});
+  const [dataPleth, setDataPleth] = useState({
+    pleth_data: [],
+  });
 
   const socketManagerRef = useRef<SocketManager | null>(null);
   const handlerRef = useRef<DS001Handler | null>(null);
@@ -31,7 +34,8 @@ export const useSocketDS001 = (ipAddress: string) => {
       manager.getSocket(),
       ipAddress,
       setData,
-      setDataNibp
+      setDataNibp,
+      setDataPleth
     );
 
     socketManagerRef.current = manager;
@@ -50,5 +54,6 @@ export const useSocketDS001 = (ipAddress: string) => {
   return {
     data,
     dataNibp,
+    dataPleth: dataPleth.pleth_data,
   };
 };

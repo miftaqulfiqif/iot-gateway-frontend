@@ -8,11 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-
-
-
-
-
 import {
   Pagination,
   PaginationContent,
@@ -57,8 +52,6 @@ export const TableHistoryDS001 = ({
   isDetailPatient,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
-
-  console.log(data);
 
   useEffect(() => {
     setAnimateRows(false);
@@ -131,7 +124,7 @@ export const TableHistoryDS001 = ({
                   <TableCell className="text-center">{item.pr_spo2}</TableCell>
                   <TableCell className="text-center">{item.rr}</TableCell>
                   <TableCell className="text-center">
-                    {format(new Date(item.timestamp), "MM/dd/yyyy, HH:mm")}
+                    {format(new Date(item.recorded_at), "MM/dd/yyyy, HH:mm")}
                   </TableCell>
                 </TableRow>
               );

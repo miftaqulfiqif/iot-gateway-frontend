@@ -49,7 +49,7 @@ const MeasurementPage = () => {
               {devices.length > 0 ? (
                 devices.map(
                   (device) =>
-                    device.connection === "bluetooth" && (
+                    device.connection !== "tcpip" && (
                       <DeviceConnected
                         key={device.id}
                         deviceIcon={device.icon}
