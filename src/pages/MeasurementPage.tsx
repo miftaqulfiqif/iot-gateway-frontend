@@ -13,7 +13,7 @@ const MeasurementPage = () => {
   }, []);
 
   const [state, setState] = useState("barcode");
-  const [patient, setPatient] = useState(null);
+  const [patient, setPatient] = useState<any>(null);
   const [baby, setBaby] = useState(null);
 
   // Get patient from local storage
@@ -24,10 +24,28 @@ const MeasurementPage = () => {
     }
   }, []);
 
-  // Save patient to local storage
+  // Update patient age
   useEffect(() => {
-    if (patient !== null) {
-      localStorage.setItem("patient", JSON.stringify(patient));
+    if (patient) {
+      const birthDate = new Date(patient.date_of_birth);
+      const today = new Date();
+
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      const dayDiff = today.getDate() - birthDate.getDate();
+
+      // Kurangi umur kalau ulang tahun belum lewat tahun ini
+      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+      }
+
+      localStorage.setItem(
+        "patient",
+        JSON.stringify({
+          ...patient,
+          age,
+        })
+      );
     }
   }, [patient]);
 

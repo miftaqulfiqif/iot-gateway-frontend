@@ -1,4 +1,5 @@
 import avatarIcon from "@/assets/icons/avatar.png";
+import { InputText } from "@/components/ui/input-text";
 
 import { useAuth } from "@/context/AuthContext";
 import { useModal } from "@/context/ConifmModalContext";
@@ -14,6 +15,9 @@ export const HospitalProfileSetting = () => {
   const [logo, setLogo] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState(0);
 
   const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -74,6 +78,32 @@ export const HospitalProfileSetting = () => {
             placeholder={user?.hospital?.name || "Input hospital name here"}
             onChange={(e) => setHospitalName(e.target.value)}
             className="w-full outline-none"
+          />
+        </div>
+      </div>
+      <hr className="border-1 border-gray-300 mt-4" />
+      <div className="w-full">
+        <p className="font-bold text-xl mb-4">Location</p>
+        <div className="flex flex-row gap-2">
+          <InputText
+            type="number"
+            label="Longitude"
+            name="longitude"
+            placeholder="Input longitude here"
+            value={longitude}
+            onTouch={""}
+            onError={""}
+            onChange={(e) => setLongitude(parseFloat(e.target.value))}
+          />
+          <InputText
+            type="number"
+            label="Latitude"
+            name="latitude"
+            placeholder="Input longitude here"
+            value={latitude}
+            onTouch={""}
+            onError={""}
+            onChange={(e) => setLatitude(parseFloat(e.target.value))}
           />
         </div>
       </div>

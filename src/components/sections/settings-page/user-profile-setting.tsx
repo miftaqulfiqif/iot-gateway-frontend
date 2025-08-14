@@ -1,5 +1,6 @@
 import avatarIcon from "@/assets/icons/avatar.png";
 import person from "@/assets/icons/profile-icon.png";
+import { InputText } from "@/components/ui/input-text";
 import { useAuth } from "@/context/AuthContext";
 import { useModal } from "@/context/ConifmModalContext";
 import { useToast } from "@/context/ToastContext";
@@ -14,6 +15,8 @@ export const UserProfileSetting = () => {
   const [name, setName] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [ihsNumber, setIhsNumber] = useState(0);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -74,6 +77,24 @@ export const UserProfileSetting = () => {
             placeholder={user?.name || "Input your text name here"}
             onChange={(e) => setName(e.target.value)}
             className="w-full outline-none"
+          />
+        </div>
+      </div>
+      <hr className="border-1 border-gray-300 mt-4" />
+      <div className="w-full">
+        <p className="font-bold text-xl mb-4">SATUSEHAT</p>
+        <div className="flex flex-row gap-2">
+          <InputText
+            type="number"
+            label="IHS Number "
+            name="longitude"
+            placeholder="Input your IHS Number here"
+            value={ihsNumber}
+            onTouch={""}
+            onError={""}
+            onChange={(e) => {
+              setIhsNumber(parseInt(e.target.value));
+            }}
           />
         </div>
       </div>
