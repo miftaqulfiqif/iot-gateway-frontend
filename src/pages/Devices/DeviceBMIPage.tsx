@@ -357,6 +357,7 @@ const DeviceBMIPage = () => {
         isActive={saveModal}
         setInactive={() => setSaveModal(false)}
         patient={patient}
+        deviceMac={mac}
         result={data}
       />
     </MainLayout>
