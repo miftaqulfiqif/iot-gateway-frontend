@@ -43,6 +43,8 @@ export const TableHistoryBMI = ({
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
 
+  console.log(data);
+
   useEffect(() => {
     setAnimateRows(false);
     setTimeout(() => {
@@ -60,7 +62,7 @@ export const TableHistoryBMI = ({
               <>
                 <TableHead className="text-center font-bold">Name</TableHead>
                 <TableHead className="text-center font-bold">Gender</TableHead>
-                <TableHead className="text-center font-bold">Age</TableHead>
+                {/* <TableHead className="text-center font-bold">Age</TableHead> */}
               </>
             )}
             <TableHead className="text-center font-bold">Weight</TableHead>
@@ -110,9 +112,9 @@ export const TableHistoryBMI = ({
                       <TableCell className="text-left">
                         {patient?.gender || "-"}
                       </TableCell>
-                      <TableCell className="text-center">
+                      {/* <TableCell className="text-center">
                         {patient?.age || "-"}
-                      </TableCell>
+                      </TableCell> */}
                     </>
                   )}
 

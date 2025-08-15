@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 
 type HistoryItem = {
-  timestamp: string;
+  recorded_at: string;
   systolic: number;
   diastolic: number;
   mean: number;
@@ -19,8 +19,8 @@ type Props = {
 };
 
 export function HistoryPM9000Nibp({ historiesData }: Props) {
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
+  const formatDate = (recorded_at: string) => {
+    const date = new Date(recorded_at);
     return date.toLocaleString("en-US", {
       year: "numeric",
       month: "2-digit",
@@ -79,7 +79,7 @@ export function HistoryPM9000Nibp({ historiesData }: Props) {
                     {item.mean}
                   </TableCell>
                   <TableCell className="text-center px-3 py-2">
-                    {formatDate(item.timestamp)}
+                    {formatDate(item.recorded_at)}
                   </TableCell>
                 </TableRow>
               ))

@@ -55,11 +55,11 @@ createRoot(document.getElementById("root")!).render(
                 <Route path="/devices" element={<Devices />} />
                 {/* Detail Device */}
                 <Route
-                  path="/device/bluetooth/:mac"
+                  path="/device/bluetooth/:device_id"
                   element={<DetailBluetoothDevice />}
                 />
                 <Route
-                  path="/device/tcpip/:ip"
+                  path="/device/tcpip/:device_id"
                   element={<DetailTcpIpDevice />}
                 />
                 <Route path="/patients" element={<Patients />} />

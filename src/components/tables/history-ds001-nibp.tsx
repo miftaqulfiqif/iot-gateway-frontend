@@ -9,11 +9,11 @@ import {
 import { format } from "date-fns";
 
 type HistoryItem = {
-  timestamp: string;
+  recorded_at: string;
   systolic: number;
   diastolic: number;
   map: number;
-  pulseRate: number;
+  pulse_rate: number;
 };
 
 type Props = {
@@ -69,10 +69,10 @@ export function HistoryDS001Nibp({ historiesData }: Props) {
                   {item.map}
                 </TableCell>
                 <TableCell className="text-center px-3 py-2">
-                  {item.pulseRate}
+                  {item.pulse_rate}
                 </TableCell>
                 <TableCell className="text-center px-3 py-2">
-                  {format(new Date(item.timestamp), "d MMMM yyyy, HH:mm")}
+                  {format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm")}
                 </TableCell>
               </TableRow>
             ))

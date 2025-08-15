@@ -22,8 +22,10 @@ import { useNavigate } from "react-router-dom";
 
 type DevicesConnectedProps = {
   device: string;
+  deviceId: string;
   deviceName: string;
-  deviceMac: string;
+  deviceMacAddress?: string;
+  deviceIpAddress?: string;
   deviceConnection: string;
   deviceFunction: string;
   onDelete: () => void;
@@ -31,8 +33,10 @@ type DevicesConnectedProps = {
 };
 export const DevicesConnected = ({
   device,
+  deviceId,
   deviceName,
-  deviceMac,
+  deviceMacAddress,
+  deviceIpAddress,
   deviceConnection,
   deviceFunction,
   onDelete,
@@ -65,7 +69,7 @@ export const DevicesConnected = ({
             className="flex items-center gap-1 cursor-pointer transition duration-150"
             onClick={() => {
               const optionsMenu = document.getElementById(
-                `options-${deviceMac}`
+                `options-${deviceId}`
               );
               if (optionsMenu) {
                 optionsMenu.classList.toggle("hidden");
@@ -75,7 +79,7 @@ export const DevicesConnected = ({
             <EllipsisVertical className="w-6 h-6" />
           </button>
           <div
-            id={`options-${deviceMac}`}
+            id={`options-${deviceId}`}
             className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
           >
             <ul className="py-1">
@@ -83,11 +87,11 @@ export const DevicesConnected = ({
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
                   deviceConnection === "bluetooth"
-                    ? navigate("/device/bluetooth/" + deviceMac)
+                    ? navigate("/device/bluetooth/" + deviceId)
                     : null;
 
                   deviceConnection !== "bluetooth"
-                    ? navigate("/device/tcpip/" + deviceMac)
+                    ? navigate("/device/tcpip/" + deviceId)
                     : null;
                 }}
               >
@@ -141,7 +145,7 @@ export const DevicesConnected = ({
                   <p className="font-bold text-sm">{device}</p>
                 </div>
                 <p className="font-semibold text-sm text-gray-500">
-                  {deviceMac}
+                  {deviceMacAddress ?? deviceIpAddress}
                 </p>
               </div>
             ))}
@@ -151,7 +155,9 @@ export const DevicesConnected = ({
           <p
             className="text-sm bg-blue-200 text-blue-800 px-3 py-2 rounded-lg font-bold cursor-pointer hover:bg-blue-300"
             onClick={() => {
-              window.location.href = `/device/${deviceFunction}/${deviceMac}`;
+              window.location.href = `/device/${deviceFunction}/${
+                deviceMacAddress || deviceIpAddress
+              }`;
             }}
           >
             Measurement

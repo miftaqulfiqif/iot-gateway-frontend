@@ -1,6 +1,7 @@
 import { useToast } from "@/context/ToastContext";
 import { DigitProBMIMeasurementHistory } from "@/models/Devices/BMIModel";
 import axios from "axios";
+import { set } from "lodash";
 import { useCallback, useState } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -39,7 +40,7 @@ export const useDigitProBMI = () => {
         }
 
         const response = await axios.get(
-          `${apiUrl}/api/measurement-histories-digit-pro-baby`,
+          `${apiUrl}/api/measurement-histories-digit-pro-bmi`,
           {
             params,
             withCredentials: true,
@@ -67,6 +68,28 @@ export const useDigitProBMI = () => {
     },
     []
   );
+
+  const getDataDigitProBmiByDevice = useCallback(async (device_id: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/measurement-histories-digit-pro-bmi/device/${device_id}`,
+        {
+          withCredentials: true,
+          params: {
+            page: currentPageBMI,
+            limit: limitBMI,
+            query: "",
+          },
+        }
+      );
+      setDataDigitProBMI(response.data.data);
+      setCurrentPageBMI(response.data.current_page);
+      setTotalItemBMI(response.data.total_items);
+      setTotalPageBMI(response.data.total_pages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
 
   const fetchDataBMIByPatientId = useCallback(
     async (patientId: string, page: number) => {
@@ -151,6 +174,7 @@ export const useDigitProBMI = () => {
   return {
     dataDigitProBMI,
     currentPageBMI,
+    setCurrentPageBMI,
     totalItemsBMI,
     totalPageBMI,
     limitBMI,
@@ -159,5 +183,6 @@ export const useDigitProBMI = () => {
     fetchDataBMIByPatientId,
     fetchDataBMIByDoctorId,
     createHistoryDigitProBMI,
+    getDataDigitProBmiByDevice,
   };
 };

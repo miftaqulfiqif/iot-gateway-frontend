@@ -56,7 +56,8 @@ function Devices() {
                   .map((device) => (
                     <DevicesConnected
                       key={device.id}
-                      deviceMac={device.mac_address}
+                      deviceId={device.id}
+                      deviceMacAddress={device.mac_address}
                       device={device.model}
                       deviceName={device.name || device.model}
                       deviceConnection={device.connection}
@@ -83,7 +84,8 @@ function Devices() {
                   .map((device) => (
                     <DevicesConnected
                       key={device.id}
-                      deviceMac={device.ip_address}
+                      deviceId={device.id}
+                      deviceIpAddress={device.ip_address}
                       device={device.model}
                       deviceName={device.name || device.model}
                       deviceConnection={device.connection}
@@ -115,7 +117,7 @@ function Devices() {
                   .map((device) => (
                     <DevicesConnected
                       key={device.id}
-                      deviceMac={device.id}
+                      deviceId={device.id}
                       device={device.model}
                       deviceName={device.name || device.model}
                       deviceConnection={device.connection}

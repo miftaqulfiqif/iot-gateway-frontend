@@ -18,16 +18,21 @@ const chartConfig = {
     label: "Diastolic",
     color: "blue",
   },
-  mean: {
-    label: "Mean",
+  map: {
+    label: "MAP",
     color: "green",
+  },
+  pulse_rate: {
+    label: "Pulse Rate",
+    color: "yellow",
   },
 } satisfies ChartConfig;
 
 type ChartData = {
   systolic: number;
   diastolic: number;
-  mean: number;
+  map: number;
+  pulse_rate: number;
   recorded_at: string;
 };
 
@@ -35,7 +40,7 @@ type Props = {
   chartData: ChartData[];
 };
 
-export function HistoriesPm900NibpChart({ chartData }: Props) {
+export function HistoriesDs001NibpChart({ chartData }: Props) {
   return (
     <Card className="shadow-[0_4px_4px_rgba(0,0,0,0.25)] h-full">
       <CardContent>
@@ -98,10 +103,18 @@ export function HistoriesPm900NibpChart({ chartData }: Props) {
               dot={true}
             />
             <Line
-              dataKey="mean"
-              name={chartConfig.mean.label}
+              dataKey="map"
+              name={chartConfig.map.label}
               type="monotone"
-              stroke={chartConfig.mean.color}
+              stroke={chartConfig.map.color}
+              strokeWidth={2}
+              dot={true}
+            />
+            <Line
+              dataKey="pulse_rate"
+              name={chartConfig.pulse_rate.label}
+              type="monotone"
+              stroke={chartConfig.pulse_rate.color}
               strokeWidth={2}
               dot={true}
             />

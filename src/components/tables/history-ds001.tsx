@@ -58,6 +58,8 @@ export const TableHistoryDS001 = ({
     setTimeout(() => setAnimateRows(true), 50);
   }, [currentPage]);
 
+  console.log("DATA : ", data);
+
   return (
     <div className="w-full bg-white rounded-2xl shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
       <Table className="min-w-full">

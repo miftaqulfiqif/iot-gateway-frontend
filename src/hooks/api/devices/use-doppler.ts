@@ -69,6 +69,28 @@ export const useDoppler = () => {
     []
   );
 
+  const getDataDopplerByDevice = useCallback(async (device_id: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/measurement-histories-doppler/device/${device_id}`,
+        {
+          withCredentials: true,
+          params: {
+            page: currentPageDoppler,
+            limit: limitDoppler,
+            query: "",
+          },
+        }
+      );
+      setHistoriesDoppler(response.data.data);
+      setCurrentPageDoppler(response.data.current_page);
+      setTotalPageDoppler(response.data.total_items);
+      setTotalPageDoppler(response.data.total_pages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+
   const fetchDataDopplerByPatientId = useCallback(
     async (patientId: string, page: number) => {
       // fetch data
@@ -128,8 +150,10 @@ export const useDoppler = () => {
     limitDoppler,
     searchDoppler,
     currentPageDoppler,
+    setCurrentPageDoppler,
     totalItemsDoppler,
     totalPageDoppler,
     createHistoryDoppler,
+    getDataDopplerByDevice,
   };
 };

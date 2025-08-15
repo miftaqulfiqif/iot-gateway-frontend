@@ -26,7 +26,11 @@ const chartData: { heart_rate: number }[] = [
 type Props = {
   id_device: string;
   patientName: string;
-  room: string;
+  room: {
+    id: string;
+    number: string;
+    type: string;
+  };
   ecg: number;
   spo2: number;
   resp: number;
@@ -34,6 +38,7 @@ type Props = {
   temp1: number;
   temp2: number;
   tempD: number;
+  isCrysis?: boolean;
 };
 
 export const PatientMonitorPM9000Section = ({
@@ -47,12 +52,25 @@ export const PatientMonitorPM9000Section = ({
   temp1,
   temp2,
   tempD,
+  isCrysis,
 }: Props) => {
   return (
     <>
-      <div className="bg-[#EDEDF9] flex flex-col gap-2 p-4 rounded-3xl w-full h-fit shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)] text-sm">
+      <div
+        className={`bg-[#EDEDF9] flex flex-col gap-2 p-4 rounded-3xl w-full h-fit text-sm ${
+          isCrysis
+            ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]"
+            : " shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)]"
+        }`}
+      >
         <div className="flex items-center justify-between">
-          <p className="font-bold">{room}</p>
+          <div className="flex gap-2 items-center">
+            <p className="font-bold text-xl">{room.number}</p>
+            <p className="font-bold">-</p>
+            <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-xl">
+              {room.type}
+            </p>
+          </div>
           {/* Button Action */}
           <div className="relative">
             <button
@@ -191,9 +209,9 @@ export const PatientMonitorPM9000Section = ({
             </div>
           </div>
         </div>
-        <ECGChart className="mt-4" />
+        {/* <ECGChart className="mt-4" />
         <HeartPulseChart className="" />
-        <HeartRateChart chartData={chartData} isPatientMonitor />
+        <HeartRateChart chartData={chartData} isPatientMonitor /> */}
       </div>
     </>
   );

@@ -46,6 +46,8 @@ export const TableHistoryDigitProIDA = ({
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
 
+  console.log(data);
+
   useEffect(() => {
     setAnimateRows(false);
     setTimeout(() => {
@@ -64,9 +66,9 @@ export const TableHistoryDigitProIDA = ({
                 <TableHead className="text-center font-bold">
                   Mother Name
                 </TableHead>
-                <TableHead className="text-center font-bold">
+                {/* <TableHead className="text-center font-bold">
                   Date of Birth Mother
-                </TableHead>
+                </TableHead> */}
               </>
             )}
             <TableHead className="text-center font-bold">Baby Name</TableHead>
@@ -109,15 +111,9 @@ export const TableHistoryDigitProIDA = ({
                       <TableCell className="text-left">
                         {patient?.name || "-"}
                       </TableCell>
-                      <TableCell className="text-center">
-                        {format(
-                          new Date(patient?.date_of_birth),
-                          "d MMMM yyyy",
-                          {
-                            locale: id,
-                          }
-                        )}
-                      </TableCell>
+                      {/* <TableCell className="text-center">
+                        {patient?.date_of_birth}
+                      </TableCell> */}
                     </>
                   )}
 
@@ -136,9 +132,15 @@ export const TableHistoryDigitProIDA = ({
                     {item.weight_child}
                   </TableCell>
                   <TableCell className="text-center">
-                    {item.recorded_at ? format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
-                      locale: id,
-                    }) : "--"}
+                    {item.recorded_at
+                      ? format(
+                          new Date(item.recorded_at),
+                          "d MMMM yyyy, HH:mm",
+                          {
+                            locale: id,
+                          }
+                        )
+                      : "--"}
                   </TableCell>
                   {/* <TableCell className="text-center">
                     <AlertDialog>

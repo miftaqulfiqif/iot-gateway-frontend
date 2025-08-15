@@ -1011,7 +1011,7 @@ const MeasurementHistoriesPage = () => {
               {/* Table */}
               {selectedDevice === "digit-pro-baby" && (
                 <TableHistoryDigitProBaby
-                  data={dummyDataDigitProBaby ?? dataDigitProBaby}
+                  data={dataDigitProBaby}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
@@ -1021,7 +1021,7 @@ const MeasurementHistoriesPage = () => {
               )}
               {selectedDevice === "digit-pro-ida" && (
                 <TableHistoryDigitProIDA
-                  data={dummyDataIDA ?? historiesDigitProIDA}
+                  data={historiesDigitProIDA}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
@@ -1031,7 +1031,7 @@ const MeasurementHistoriesPage = () => {
               )}
               {selectedDevice === "bmi" && (
                 <TableHistoryBMI
-                  data={dummyDataBMI ?? dataDigitProBMI}
+                  data={dataDigitProBMI}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
@@ -1041,7 +1041,7 @@ const MeasurementHistoriesPage = () => {
               )}
               {selectedDevice === "doppler" && (
                 <TableHistoryDoppler
-                  data={dummyDopplerData ?? historiesDoppler}
+                  data={historiesDoppler}
                   goToPreviousPage={goToPreviousPage}
                   goToNextPage={goToNextPage}
                   goToPage={goToPage}
