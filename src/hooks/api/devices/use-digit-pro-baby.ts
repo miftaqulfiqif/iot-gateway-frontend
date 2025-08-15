@@ -29,7 +29,7 @@ export const useDigitProBaby = () => {
   }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/measurement-histories-digit-pro-baby",
+        `${apiUrl}/api/measurement-histories-digit-pro-baby`,
         {
           patient_id,
           baby_id,
@@ -48,6 +48,28 @@ export const useDigitProBaby = () => {
       console.error("Error creating baby : ", error);
     }
   };
+
+  const getDataDigitProBabyByDevice = useCallback(async (device_id: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/measurement-histories-digit-pro-baby/device/${device_id}`,
+        {
+          withCredentials: true,
+          params: {
+            page: currentPageDigitProBaby,
+            limit: limitDigitProBaby,
+            query: "",
+          },
+        }
+      );
+      setDataDigitProBaby(response.data.data);
+      setCurrentPageDigitProBaby(response.data.current_page);
+      setTotalItemsDigitProBaby(response.data.total_items);
+      setTotalPageDigitProBaby(response.data.total_pages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
 
   const fetchDataDigitProBaby = useCallback(
     async ({
@@ -128,6 +150,7 @@ export const useDigitProBaby = () => {
   return {
     dataDigitProBaby,
     currentPageDigitProBaby,
+    setCurrentPageDigitProBaby,
     totalItemsDigitProBaby,
     totalPageDigitProBaby,
     limitDigitProBaby,
@@ -136,5 +159,6 @@ export const useDigitProBaby = () => {
     fetchDataDigitProBabyByPatientId,
     fetchDataDigitProBabyByDoctorId,
     createDigitProBabyHistory,
+    getDataDigitProBabyByDevice,
   };
 };

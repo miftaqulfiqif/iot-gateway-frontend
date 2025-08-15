@@ -1,10 +1,17 @@
+import { SetCurrentGateway } from "@/components/dropdown/header-set-current-gateway";
 import MainLayout from "@/components/layouts/main-layout";
 import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
+import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
+import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
+import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
+import { useDoppler } from "@/hooks/api/devices/use-doppler";
+import { useDevices } from "@/hooks/api/use-device";
+import { format } from "date-fns";
 import { RotateCcw, Settings, Unplug } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const dummyData = [
@@ -203,7 +210,53 @@ const device = {
 };
 
 export const DetailBluetoothDevice = () => {
-  const { mac } = useParams();
+  const { device_id } = useParams();
+  const { detailDevice, getDetailDevice } = useDevices();
+
+  const {
+    dataDigitProBMI,
+    currentPageBMI,
+    setCurrentPageBMI,
+    totalItemsBMI,
+    totalPageBMI,
+    getDataDigitProBmiByDevice,
+  } = useDigitProBMI();
+  const {
+    dataDigitProBaby,
+    currentPageDigitProBaby,
+    setCurrentPageDigitProBaby,
+    totalItemsDigitProBaby,
+    totalPageDigitProBaby,
+    getDataDigitProBabyByDevice,
+  } = useDigitProBaby();
+  const {
+    historiesDigitProIDA,
+    currentPageIDA,
+    setCurrentPageIDA,
+    totalItemsIDA,
+    totalPageIDA,
+    getDataDigitProIDAByDevice,
+  } = useDigitProIDA();
+  const {
+    historiesDoppler,
+    currentPageDoppler,
+    setCurrentPageDoppler,
+    totalItemsDoppler,
+    totalPageDoppler,
+    getDataDopplerByDevice,
+  } = useDoppler();
+
+  useEffect(() => {
+    if (device_id) {
+      getDetailDevice(device_id);
+      getDataDigitProBmiByDevice(device_id);
+      getDataDigitProBabyByDevice(device_id);
+      getDataDigitProIDAByDevice(device_id);
+      getDataDopplerByDevice(device_id);
+    }
+  }, [device_id, getDetailDevice, currentPageBMI]);
+
+  const [showAllRecentDoctor, setShowAllRecentDoctor] = useState(false);
 
   return (
     <MainLayout title="Detail Bluetooth Device" state="Devices">
@@ -213,19 +266,23 @@ export const DetailBluetoothDevice = () => {
             <div className="flex w-fit gap-4 text-white">
               <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
               <div className="flex flex-col gap-2 justify-end">
-                <p className="font-bold text-2xl">Digit Pro Baby</p>
-                <p className="text-sm">{mac}</p>
+                <p className="font-bold text-2xl">
+                  {detailDevice?.detail?.name}
+                </p>
+                <p className="text-sm">{detailDevice?.detail?.mac_address}</p>
               </div>
             </div>
             <div className="flex gap-4 mt-6">
               <div className="w-full flex flex-col gap-2 p-3 bg-[#EDEDF9] rounded-xl shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16)]">
                 <p className="font-semibold">Count Measurement</p>
                 <div className="flex gap-2 w-full justify-end">
-                  <p className="font-bold text-6xl">1092</p>
+                  <p className="font-bold text-6xl">
+                    {detailDevice?.detail?.count_used}
+                  </p>
                   <p className="text-sm flex justify-end items-end">Times</p>
                 </div>
               </div>
-              {device.device_function === "digitpro_baby" && (
+              {detailDevice?.detail?.device_function === "digitpro_baby" && (
                 <div className="w-full flex flex-col gap-2 p-3 bg-[#EDEDF9] rounded-xl shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16)]">
                   <div className="flex justify-between items-center">
                     <p className="font-semibold">Last Measurement</p>
@@ -237,7 +294,7 @@ export const DetailBluetoothDevice = () => {
                   </div>
                 </div>
               )}
-              {device.device_function === "digitpro_ida" && (
+              {detailDevice?.detail?.device_function === "digitpro_ida" && (
                 <div className="w-full flex flex-col gap-2 p-3 bg-[#EDEDF9] rounded-xl shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16)]">
                   <div className="flex justify-between items-center">
                     <p className="font-semibold">Last Measurement</p>
@@ -261,7 +318,7 @@ export const DetailBluetoothDevice = () => {
                   </div>
                 </div>
               )}
-              {device.device_function === "digitpro_bmi" && (
+              {detailDevice?.detail?.device_function === "digitpro_bmi" && (
                 <div className="w-full flex flex-col gap-2 p-3 bg-[#EDEDF9] rounded-xl shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16)]">
                   <div className="flex justify-between items-center">
                     <p className="font-semibold">Last Measurement</p>
@@ -293,29 +350,39 @@ export const DetailBluetoothDevice = () => {
               <div className="flex">
                 <p className="w-28">Device Name</p>
                 <p className="w-3">:</p>
-                <p>Digit Pro Baby</p>
+                <p>{detailDevice?.detail?.name}</p>
               </div>
               <div className="flex">
                 <p className="w-28">MAC Address</p>
                 <p className="w-3">:</p>
-                <p>{mac}</p>
+                <p>{detailDevice?.detail?.mac_address}</p>
               </div>
               <div className="flex">
                 <p className="w-28">Model</p>
                 <p className="w-3">:</p>
-                <p>Digit Pro Baby</p>
+                <p>{detailDevice?.detail?.model}</p>
               </div>
               <div className="flex items-center">
                 <p className="w-28">Status</p>
                 <p className="w-3">:</p>
                 <p className="text-green-900 bg-green-200 rounded-2xl px-3 font-semibold">
-                  Connected
+                  {detailDevice?.detail?.is_connected
+                    ? "Connected"
+                    : "Disconnected"}
                 </p>
               </div>
               <div className="flex">
                 <p className="w-28">Connected At</p>
                 <p className="w-3">:</p>
-                <p>20 Juli 2023, 21:09</p>
+                <p>
+                  {new Intl.DateTimeFormat("id-ID", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  }).format(
+                    new Date(detailDevice?.detail?.created_at || new Date())
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -325,20 +392,29 @@ export const DetailBluetoothDevice = () => {
           <div className="flex flex-col p-4 bg-white w-1/3 h-full rounded-2xl border-3 border-gray-200">
             <div className="flex justify-between">
               <p className="font-semibold">Recent Doctor Use</p>
-              <p className="text-blue-500 hover:underline cursor-pointer">
+              <p
+                className="text-blue-500 hover:underline cursor-pointer"
+                onClick={() => setShowAllRecentDoctor(!showAllRecentDoctor)}
+              >
                 See all
               </p>
             </div>
             {/* List doctor */}
-            <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              {dummyRecentDoctor.map((item) => (
+            <div
+              className={`flex flex-col gap-4 mt-4 overflow-y-auto  pr-2  ${
+                showAllRecentDoctor ? "max-h-fit" : "max-h-[260px]"
+              }`}
+            >
+              {detailDevice?.recent_users.map((item) => (
                 <div key={item.id} className="flex items-center gap-3">
                   <div className="w-18 h-18 rounded-full bg-gray-400"></div>
                   <div className="flex flex-col">
-                    <p className="font-semibold font-sm">{item.doctor_name}</p>
+                    <p className="font-semibold font-sm">{item.name}</p>
                     <p className="text-sm text-gray-500">{item.speciality}</p>
                     <div className="border px-2 py-1 rounded-full flex items-center mt-1">
-                      <p className="text-xs">{item.date}</p>
+                      <p className="text-xs">
+                        {format(new Date(item.timestamp), "dd/MM/yy")}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -355,17 +431,21 @@ export const DetailBluetoothDevice = () => {
             </div>
             {/* List */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
-              {dummyMedicalActivity.map((item) => (
+              {detailDevice?.recent_patient_use.map((item) => (
                 <div
                   key={item.id}
                   className="flex items-center border p-4 rounded-2xl"
                 >
                   <div className="flex flex-col w-full">
                     <div className="flex justify-between">
-                      <p className="text-base font-semibold">{item.title}</p>
-                      <p className="text-xs">{item.date}</p>
+                      <p className="text-base font-semibold">
+                        {item.patient_name}
+                      </p>
+                      <p className="text-xs">
+                        {format(new Date(item.recorded_at), "dd/MM/yy")}
+                      </p>
                     </div>
-                    <p className="text-sm font-normal">{item.note}</p>
+                    <p className="text-sm font-normal">{item.description}</p>
                   </div>
                   <div className="flex flex-col"></div>
                 </div>
@@ -383,53 +463,104 @@ export const DetailBluetoothDevice = () => {
                 <RotateCcw className="w-6 h-6" />
                 <p>Reconnect</p>
               </div>
-              <div className="flex items-center border border-blue-500 text-blue-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-blue-50">
-                <Settings className="w-6 h-6" />
-                <p>Setting</p>
-              </div>
+              {detailDevice?.detail?.connection === "tcpip" && (
+                <div className="flex items-center border border-blue-500 text-blue-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-blue-50">
+                  <Settings className="w-6 h-6" />
+                  <p>Setting</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
         <p className="text-2xl font-semibold">History measurement</p>
 
-        {device.device_function === "digitpro_baby" && (
+        {detailDevice?.detail?.device_function === "digitpro_baby" && (
           <TableHistoryDigitProBaby
-            data={dummyData}
-            goToPreviousPage={() => {}}
-            goToNextPage={() => {}}
-            goToPage={() => {}}
-            currentPage={1}
-            totalPage={6}
+            data={dataDigitProBaby}
+            goToPreviousPage={() => {
+              if (currentPageDigitProBaby > 1) {
+                setCurrentPageDigitProBaby(currentPageDigitProBaby - 1);
+              }
+            }}
+            goToNextPage={() => {
+              if (currentPageDigitProBaby < totalPageDigitProBaby) {
+                setCurrentPageDigitProBaby(currentPageDigitProBaby + 1);
+              }
+            }}
+            goToPage={(page: number) => {
+              if (page > 0 && page <= totalPageDigitProBaby) {
+                setCurrentPageDigitProBaby(page);
+              }
+            }}
+            currentPage={currentPageDigitProBaby}
+            totalPage={totalPageDigitProBaby}
           />
         )}
-        {device.device_function === "digitpro_ida" && (
+        {detailDevice?.detail?.device_function === "digitpro_ida" && (
           <TableHistoryDigitProIDA
-            data={dummyData}
-            goToPreviousPage={() => {}}
-            goToNextPage={() => {}}
-            goToPage={() => {}}
-            currentPage={1}
-            totalPage={6}
+            data={historiesDigitProIDA}
+            goToPreviousPage={() => {
+              if (currentPageDigitProBaby > 1) {
+                setCurrentPageDigitProBaby(currentPageDigitProBaby - 1);
+              }
+            }}
+            goToNextPage={() => {
+              if (currentPageDigitProBaby < totalPageDigitProBaby) {
+                setCurrentPageDigitProBaby(currentPageDigitProBaby + 1);
+              }
+            }}
+            goToPage={(page: number) => {
+              if (page > 0 && page <= totalPageDigitProBaby) {
+                setCurrentPageDigitProBaby(page);
+              }
+            }}
+            currentPage={currentPageIDA}
+            totalPage={totalPageIDA}
           />
         )}
-        {device.device_function === "digitpro_bmi" && (
+        {detailDevice?.detail?.device_function === "digitpro_bmi" && (
           <TableHistoryBMI
-            data={dummyData}
-            goToPreviousPage={() => {}}
-            goToNextPage={() => {}}
-            goToPage={() => {}}
-            currentPage={1}
-            totalPage={6}
+            data={dataDigitProBMI}
+            goToPreviousPage={() => {
+              if (currentPageBMI > 1) {
+                setCurrentPageBMI(currentPageBMI - 1);
+              }
+            }}
+            goToNextPage={() => {
+              if (currentPageBMI < totalPageBMI) {
+                setCurrentPageBMI(currentPageBMI + 1);
+              }
+            }}
+            goToPage={(page: number) => {
+              if (page > 0 && page <= totalPageBMI) {
+                setCurrentPageBMI(page);
+              }
+            }}
+            currentPage={currentPageBMI}
+            totalPage={totalPageBMI}
           />
         )}
-        {device.device_function === "ultrasonic_pocket_doppler" && (
+        {detailDevice?.detail?.device_function ===
+          "ultrasonic_pocket_doppler" && (
           <TableHistoryDoppler
-            data={dummyData}
-            goToPreviousPage={() => {}}
-            goToNextPage={() => {}}
-            goToPage={() => {}}
-            currentPage={1}
-            totalPage={6}
+            data={historiesDoppler}
+            goToPreviousPage={() => {
+              if (currentPageDoppler > 1) {
+                setCurrentPageDoppler(currentPageDoppler - 1);
+              }
+            }}
+            goToNextPage={() => {
+              if (currentPageDoppler < totalPageDoppler) {
+                setCurrentPageDoppler(currentPageDoppler + 1);
+              }
+            }}
+            goToPage={(page: number) => {
+              if (page > 0 && page <= totalPageDoppler) {
+                setCurrentPageDoppler(page);
+              }
+            }}
+            currentPage={currentPageDoppler}
+            totalPage={totalPageDoppler}
           />
         )}
       </div>

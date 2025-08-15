@@ -1,8 +1,5 @@
 import MainLayout from "../../components/layouts/main-layout";
-import {
-  Activity,
-  Thermometer,
-} from "lucide-react";
+import { Activity, Thermometer } from "lucide-react";
 import { PatientInfo } from "@/components/ui/patient-info";
 
 import spo2Icon from "@/assets/icons/spo2.png";
@@ -25,61 +22,61 @@ const historiesDataNibp = [
     systolic: 118,
     diastolic: 76,
     mean: 90,
-    timestamp: "2023-09-01 08:00:00",
+    recorded_at: "2023-09-01 08:00:00",
   },
   {
     systolic: 122,
     diastolic: 78,
     mean: 92,
-    timestamp: "2023-09-02 08:00:00",
+    recorded_at: "2023-09-02 08:00:00",
   },
   {
     systolic: 125,
     diastolic: 80,
     mean: 95,
-    timestamp: "2023-09-03 08:00:00",
+    recorded_at: "2023-09-03 08:00:00",
   },
   {
     systolic: 130,
     diastolic: 82,
     mean: 98,
-    timestamp: "2023-09-04 08:00:00",
+    recorded_at: "2023-09-04 08:00:00",
   },
   {
     systolic: 128,
     diastolic: 79,
     mean: 95,
-    timestamp: "2023-09-05 08:00:00",
+    recorded_at: "2023-09-05 08:00:00",
   },
   {
     systolic: 115,
     diastolic: 75,
     mean: 88,
-    timestamp: "2023-09-06 08:00:00",
+    recorded_at: "2023-09-06 08:00:00",
   },
   {
     systolic: 119,
     diastolic: 77,
     mean: 90,
-    timestamp: "2023-09-07 08:00:00",
+    recorded_at: "2023-09-07 08:00:00",
   },
   {
     systolic: 124,
     diastolic: 81,
     mean: 96,
-    timestamp: "2023-09-08 08:00:00",
+    recorded_at: "2023-09-08 08:00:00",
   },
   {
     systolic: 127,
     diastolic: 83,
     mean: 97,
-    timestamp: "2023-09-09 08:00:00",
+    recorded_at: "2023-09-09 08:00:00",
   },
   {
     systolic: 140,
     diastolic: 92,
     mean: 97,
-    timestamp: "2023-09-09 08:00:00",
+    recorded_at: "2023-09-09 08:00:00",
   },
 ];
 
@@ -100,7 +97,7 @@ const historiesDataPM9000 = [
     temp1: 36.5,
     temp2: 36.8,
     delta_temp: 0.3,
-    timestamp: "2023-09-01T08:30:00Z",
+    recorded_at: "2023-09-01T08:30:00Z",
   },
   {
     id: "2",
@@ -118,7 +115,7 @@ const historiesDataPM9000 = [
     temp1: 37.2,
     temp2: 37.4,
     delta_temp: 0.2,
-    timestamp: "2023-09-02T09:00:00Z",
+    recorded_at: "2023-09-02T09:00:00Z",
   },
   {
     id: "3",
@@ -136,7 +133,7 @@ const historiesDataPM9000 = [
     temp1: 36.9,
     temp2: 37.1,
     delta_temp: 0.2,
-    timestamp: "2023-09-03T09:45:00Z",
+    recorded_at: "2023-09-03T09:45:00Z",
   },
   {
     id: "4",
@@ -154,7 +151,7 @@ const historiesDataPM9000 = [
     temp1: 37.0,
     temp2: 36.9,
     delta_temp: -0.1,
-    timestamp: "2023-09-04T10:15:00Z",
+    recorded_at: "2023-09-04T10:15:00Z",
   },
   {
     id: "5",
@@ -172,7 +169,7 @@ const historiesDataPM9000 = [
     temp1: 36.8,
     temp2: 37.0,
     delta_temp: 0.2,
-    timestamp: "2023-09-05T11:00:00Z",
+    recorded_at: "2023-09-05T11:00:00Z",
   },
   {
     id: "6",
@@ -190,7 +187,7 @@ const historiesDataPM9000 = [
     temp1: 36.7,
     temp2: 36.9,
     delta_temp: 0.2,
-    timestamp: "2023-09-06T08:30:00Z",
+    recorded_at: "2023-09-06T08:30:00Z",
   },
   {
     id: "7",
@@ -208,7 +205,7 @@ const historiesDataPM9000 = [
     temp1: 37.5,
     temp2: 37.8,
     delta_temp: 0.3,
-    timestamp: "2023-09-07T09:00:00Z",
+    recorded_at: "2023-09-07T09:00:00Z",
   },
   {
     id: "8",
@@ -226,7 +223,7 @@ const historiesDataPM9000 = [
     temp1: 36.6,
     temp2: 36.8,
     delta_temp: 0.2,
-    timestamp: "2023-09-08T09:45:00Z",
+    recorded_at: "2023-09-08T09:45:00Z",
   },
   {
     id: "9",
@@ -244,7 +241,7 @@ const historiesDataPM9000 = [
     temp1: 38.1,
     temp2: 38.3,
     delta_temp: 0.2,
-    timestamp: "2023-09-09T10:15:00Z",
+    recorded_at: "2023-09-09T10:15:00Z",
   },
   {
     id: "10",
@@ -262,7 +259,7 @@ const historiesDataPM9000 = [
     temp1: 36.4,
     temp2: 36.6,
     delta_temp: 0.2,
-    timestamp: "2023-09-10T11:00:00Z",
+    recorded_at: "2023-09-10T11:00:00Z",
   },
   {
     id: "11",
@@ -280,7 +277,7 @@ const historiesDataPM9000 = [
     temp1: 36.9,
     temp2: 36.9,
     delta_temp: 0.0,
-    timestamp: "2023-09-11T08:30:00Z",
+    recorded_at: "2023-09-11T08:30:00Z",
   },
   {
     id: "12",
@@ -298,7 +295,7 @@ const historiesDataPM9000 = [
     temp1: 37.0,
     temp2: 37.1,
     delta_temp: 0.1,
-    timestamp: "2023-09-12T09:00:00Z",
+    recorded_at: "2023-09-12T09:00:00Z",
   },
 ];
 

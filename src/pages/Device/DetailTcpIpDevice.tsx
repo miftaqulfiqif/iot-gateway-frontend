@@ -2,8 +2,10 @@ import MainLayout from "@/components/layouts/main-layout";
 import { SettingTcpIpDeviceModal } from "@/components/modals/setting-tcpip-device-modal";
 import { TableHistoryDS001 } from "@/components/tables/history-ds001";
 import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
+import { useDevices } from "@/hooks/api/use-device";
+import { format } from "date-fns";
 import { RotateCcw, Settings, Unplug } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const historiesDataPM9000 = [
@@ -23,7 +25,7 @@ const historiesDataPM9000 = [
     temp1: 36.5,
     temp2: 36.8,
     delta_temp: 0.3,
-    timestamp: "2023-09-01T08:30:00Z",
+    recorded_at: "2023-09-01T08:30:00Z",
   },
   {
     id: "2",
@@ -41,7 +43,7 @@ const historiesDataPM9000 = [
     temp1: 37.2,
     temp2: 37.4,
     delta_temp: 0.2,
-    timestamp: "2023-09-02T09:00:00Z",
+    recorded_at: "2023-09-02T09:00:00Z",
   },
   {
     id: "3",
@@ -59,7 +61,7 @@ const historiesDataPM9000 = [
     temp1: 36.9,
     temp2: 37.1,
     delta_temp: 0.2,
-    timestamp: "2023-09-03T09:45:00Z",
+    recorded_at: "2023-09-03T09:45:00Z",
   },
   {
     id: "4",
@@ -77,7 +79,7 @@ const historiesDataPM9000 = [
     temp1: 37.0,
     temp2: 36.9,
     delta_temp: -0.1,
-    timestamp: "2023-09-04T10:15:00Z",
+    recorded_at: "2023-09-04T10:15:00Z",
   },
   {
     id: "5",
@@ -95,7 +97,7 @@ const historiesDataPM9000 = [
     temp1: 36.8,
     temp2: 37.0,
     delta_temp: 0.2,
-    timestamp: "2023-09-05T11:00:00Z",
+    recorded_at: "2023-09-05T11:00:00Z",
   },
   {
     id: "6",
@@ -113,7 +115,7 @@ const historiesDataPM9000 = [
     temp1: 36.7,
     temp2: 36.9,
     delta_temp: 0.2,
-    timestamp: "2023-09-06T08:30:00Z",
+    recorded_at: "2023-09-06T08:30:00Z",
   },
   {
     id: "7",
@@ -131,7 +133,7 @@ const historiesDataPM9000 = [
     temp1: 37.5,
     temp2: 37.8,
     delta_temp: 0.3,
-    timestamp: "2023-09-07T09:00:00Z",
+    recorded_at: "2023-09-07T09:00:00Z",
   },
   {
     id: "8",
@@ -149,7 +151,7 @@ const historiesDataPM9000 = [
     temp1: 36.6,
     temp2: 36.8,
     delta_temp: 0.2,
-    timestamp: "2023-09-08T09:45:00Z",
+    recorded_at: "2023-09-08T09:45:00Z",
   },
   {
     id: "9",
@@ -167,7 +169,7 @@ const historiesDataPM9000 = [
     temp1: 38.1,
     temp2: 38.3,
     delta_temp: 0.2,
-    timestamp: "2023-09-09T10:15:00Z",
+    recorded_at: "2023-09-09T10:15:00Z",
   },
   {
     id: "10",
@@ -185,7 +187,7 @@ const historiesDataPM9000 = [
     temp1: 36.4,
     temp2: 36.6,
     delta_temp: 0.2,
-    timestamp: "2023-09-10T11:00:00Z",
+    recorded_at: "2023-09-10T11:00:00Z",
   },
   {
     id: "11",
@@ -203,7 +205,7 @@ const historiesDataPM9000 = [
     temp1: 36.9,
     temp2: 36.9,
     delta_temp: 0.0,
-    timestamp: "2023-09-11T08:30:00Z",
+    recorded_at: "2023-09-11T08:30:00Z",
   },
   {
     id: "12",
@@ -221,7 +223,7 @@ const historiesDataPM9000 = [
     temp1: 37.0,
     temp2: 37.1,
     delta_temp: 0.1,
-    timestamp: "2023-09-12T09:00:00Z",
+    recorded_at: "2023-09-12T09:00:00Z",
   },
 ];
 
@@ -241,7 +243,7 @@ const historiesDataDS001 = [
     spo2: 98,
     pr_spo2: 75,
     rr: 15,
-    timestamp: "2025-07-14T08:30:00Z",
+    recorded_at: "2025-07-14T08:30:00Z",
   },
   {
     id: "2",
@@ -258,7 +260,7 @@ const historiesDataDS001 = [
     spo2: 96,
     pr_spo2: 82,
     rr: 15,
-    timestamp: "2025-07-14T09:45:00Z",
+    recorded_at: "2025-07-14T09:45:00Z",
   },
   {
     id: "3",
@@ -275,7 +277,7 @@ const historiesDataDS001 = [
     spo2: 99,
     pr_spo2: 68,
     rr: 15,
-    timestamp: "2025-07-14T10:15:00Z",
+    recorded_at: "2025-07-14T10:15:00Z",
   },
   {
     id: "4",
@@ -292,7 +294,7 @@ const historiesDataDS001 = [
     spo2: 94,
     pr_spo2: 90,
     rr: 15,
-    timestamp: "2025-07-14T11:10:00Z",
+    recorded_at: "2025-07-14T11:10:00Z",
   },
   {
     id: "5",
@@ -309,31 +311,31 @@ const historiesDataDS001 = [
     spo2: 97,
     pr_spo2: 72,
     rr: 15,
-    timestamp: "2025-07-14T12:00:00Z",
+    recorded_at: "2025-07-14T12:00:00Z",
   },
 ];
 
 const dummyRecentDoctor = [
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb1",
     doctor_name: "Dr. Prabowo Sinegar",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb2",
     doctor_name: "Dr. Prabowo Budi",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb3",
     doctor_name: "Dr. Changcuters",
     speciality: "Dokter Umum",
     date: "2023-06-01",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb4",
     doctor_name: "Dr. Gunawan Dapit",
     speciality: "Dokter Umum",
     date: "2023-06-01",
@@ -342,25 +344,25 @@ const dummyRecentDoctor = [
 
 const dummyMedicalActivity = [
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb1",
     title: "Budi Sudarso",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb2",
     title: "Dapit Gunawan",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb3",
     title: "Ryan D'masive",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
   },
   {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
+    id: "35b29da2-e59e-43d3-9486-86686916acb4",
     title: "Farelia Budiarto",
     date: "2023-06-01",
     note: "Pemeriksaan fisik dengan hasil normal",
@@ -377,8 +379,16 @@ const device = {
 };
 
 export const DetailTcpIpDevice = () => {
-  const { ip } = useParams();
+  const { device_id } = useParams();
+  const { detailDevice, getDetailDevice } = useDevices();
   const [settingModal, setSettingModal] = useState(false);
+
+  useEffect(() => {
+    if (device_id) {
+      getDetailDevice(device_id);
+    }
+    console.log("DETAIL DEVICE : ", detailDevice);
+  }, [device_id, getDetailDevice]);
 
   return (
     <MainLayout title="Detail Bluetooth Device" state="Devices">
@@ -389,14 +399,16 @@ export const DetailTcpIpDevice = () => {
               <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
               <div className="flex flex-col gap-2 justify-end">
                 <p className="font-bold text-2xl">{device.name}</p>
-                <p className="text-sm">{ip}</p>
+                <p className="text-sm">{detailDevice?.detail.ip_address}</p>
               </div>
             </div>
             <div className="flex gap-4 mt-6">
               <div className="w-full flex flex-col gap-2 p-3 bg-[#EDEDF9] rounded-xl shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16)]">
                 <p className="font-semibold">Count Measurement</p>
                 <div className="flex gap-2 w-full justify-end">
-                  <p className="font-bold text-6xl">1092</p>
+                  <p className="font-bold text-6xl">
+                    {detailDevice?.detail.count_used}
+                  </p>
                   <p className="text-sm flex justify-end items-end">Times</p>
                 </div>
               </div>
@@ -422,29 +434,39 @@ export const DetailTcpIpDevice = () => {
               <div className="flex">
                 <p className="w-28">Device Name</p>
                 <p className="w-3">:</p>
-                <p>{device.name}</p>
+                <p>{detailDevice?.detail.name}</p>
               </div>
               <div className="flex">
                 <p className="w-28">ip Address</p>
                 <p className="w-3">:</p>
-                <p>{ip}</p>
+                <p>{detailDevice?.detail.ip_address}</p>
               </div>
               <div className="flex">
                 <p className="w-28">Model</p>
                 <p className="w-3">:</p>
-                <p>{device.device}</p>
+                <p>{detailDevice?.detail.model}</p>
               </div>
               <div className="flex items-center">
                 <p className="w-28">Status</p>
                 <p className="w-3">:</p>
                 <p className="text-green-900 bg-green-200 rounded-2xl px-3 font-semibold">
-                  Connected
+                  {detailDevice?.detail.is_connected
+                    ? "Connected"
+                    : "Disconnected"}
                 </p>
               </div>
               <div className="flex">
                 <p className="w-28">Connected At</p>
                 <p className="w-3">:</p>
-                <p>20 Juli 2023, 21:09</p>
+                <p>
+                  {new Intl.DateTimeFormat("id-ID", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  }).format(
+                    new Date(detailDevice?.detail?.created_at || new Date())
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -460,14 +482,14 @@ export const DetailTcpIpDevice = () => {
             </div>
             {/* List doctor */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              {dummyRecentDoctor.map((item) => (
+              {detailDevice?.recent_users.map((item) => (
                 <div key={item.id} className="flex items-center gap-3">
                   <div className="w-18 h-18 rounded-full bg-gray-400"></div>
                   <div className="flex flex-col">
-                    <p className="font-semibold font-sm">{item.doctor_name}</p>
+                    <p className="font-semibold font-sm">{item.name}</p>
                     <p className="text-sm text-gray-500">{item.speciality}</p>
                     <div className="border px-2 py-1 rounded-full flex items-center mt-1">
-                      <p className="text-xs">{item.date}</p>
+                      <p className="text-xs">{item.timestamp}</p>
                     </div>
                   </div>
                 </div>
@@ -484,17 +506,21 @@ export const DetailTcpIpDevice = () => {
             </div>
             {/* List */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
-              {dummyMedicalActivity.map((item) => (
+              {detailDevice?.recent_patient_use.map((item) => (
                 <div
                   key={item.id}
                   className="flex items-center border p-4 rounded-2xl"
                 >
                   <div className="flex flex-col w-full">
                     <div className="flex justify-between">
-                      <p className="text-base font-semibold">{item.title}</p>
-                      <p className="text-xs">{item.date}</p>
+                      <p className="text-base font-semibold">
+                        {item.patient_name}
+                      </p>
+                      <p className="text-xs">
+                        {format(new Date(item.recorded_at), "dd/MM/yy")}
+                      </p>
                     </div>
-                    <p className="text-sm font-normal">{item.note}</p>
+                    <p className="text-sm font-normal">{item.description}</p>
                   </div>
                   <div className="flex flex-col"></div>
                 </div>
@@ -524,7 +550,7 @@ export const DetailTcpIpDevice = () => {
         </div>
         <p className="text-2xl font-semibold">History measurement</p>
 
-        {device.device_function === "pasien_monitor_9000" && (
+        {detailDevice?.detail?.device_function === "pasien_monitor_9000" && (
           <TableHistoryPM9000
             data={historiesDataPM9000}
             goToPreviousPage={() => {}}
@@ -534,7 +560,7 @@ export const DetailTcpIpDevice = () => {
             totalPage={6}
           />
         )}
-        {device.device_function === "diagnostic_station_001" && (
+        {detailDevice?.detail?.device_function === "diagnostic_station_001" && (
           <TableHistoryDS001
             data={historiesDataDS001}
             goToPreviousPage={() => {}}

@@ -13,6 +13,7 @@ import { PatientMonitorPM9000Section } from "@/components/sections/patient_monit
 import { PatientMonitorDS001Section } from "@/components/sections/patient_monitor_devices/ds-001";
 import { SelectPatient } from "@/components/modals/select-patient-modal";
 import { SelectDevicePatientMonitorModal } from "@/components/modals/select-device-patient-monitor-modal";
+import { is } from "date-fns/locale";
 
 const pm9000 = [
   {
@@ -20,8 +21,12 @@ const pm9000 = [
     name: "ACB-421",
     patient_id: {
       id: "1",
-      name: "Yasfa",
-      room: "ICU 1",
+      name: "Yosef Aminul Yakin",
+      room: {
+        id: "1",
+        number: "312",
+        type: "ICU",
+      },
     },
     ecg: 90,
     spo2: 95,
@@ -30,14 +35,19 @@ const pm9000 = [
     temp1: 34,
     temp2: 37,
     tempD: 39,
+    is_crysis: true,
   },
   {
     id: "192.168.1.2",
     name: "ACB-422",
     patient_id: {
       id: "2",
-      name: "Bagus",
-      room: "ICU 2",
+      name: "Bagas Ta'aruf",
+      room: {
+        id: "2",
+        number: "312",
+        type: "HCU",
+      },
     },
     ecg: 90,
     spo2: 95,
@@ -46,14 +56,19 @@ const pm9000 = [
     temp1: 34,
     temp2: 37,
     tempD: 39,
+    is_crysis: false,
   },
   {
     id: "192.168.1.3",
     name: "ACB-423",
     patient_id: {
       id: "3",
-      name: "Dapit",
-      room: "ICU 3",
+      name: "Siti Nurhasanah",
+      room: {
+        id: "3",
+        number: "312",
+        type: "Reguler",
+      },
     },
     ecg: 90,
     spo2: 95,
@@ -62,6 +77,7 @@ const pm9000 = [
     temp1: 34,
     temp2: 37,
     tempD: 39,
+    is_crysis: false,
   },
 ];
 
@@ -71,8 +87,12 @@ const ds001 = [
     name: "ACB-423",
     patient_id: {
       id: "1",
-      name: "Agus",
-      room: "ICU 3",
+      name: "Dian Puspita Sari",
+      room: {
+        id: "3",
+        number: "312",
+        type: "ICU",
+      },
     },
     systolic: 90,
     diastolic: 95,
@@ -82,14 +102,19 @@ const ds001 = [
     spo2: 37,
     pr_spo2: 39,
     rr: 39,
+    is_crysis: true,
   },
   {
     id: "192.168.2.3",
     name: "ACB-423",
     patient_id: {
       id: "2",
-      name: "Dapit",
-      room: "ICU 3",
+      name: "Nurfitriah Zahra",
+      room: {
+        id: "1",
+        number: "212",
+        type: "Reguler",
+      },
     },
     systolic: 90,
     diastolic: 95,
@@ -99,14 +124,19 @@ const ds001 = [
     spo2: 37,
     pr_spo2: 39,
     rr: 39,
+    is_crysis: false,
   },
   {
     id: "192.168.2.4",
     name: "ACB-423",
     patient_id: {
       id: "3",
-      name: "Rian",
-      room: "ICU 3",
+      name: "Ahmad Rifki",
+      room: {
+        id: "3",
+        number: "312",
+        type: "HCU",
+      },
     },
     systolic: 90,
     diastolic: 95,
@@ -116,6 +146,7 @@ const ds001 = [
     spo2: 37,
     pr_spo2: 39,
     rr: 39,
+    is_crysis: false,
   },
 ];
 
@@ -267,6 +298,7 @@ const PatientMonitorPage = () => {
                 temp1={item.temp1}
                 temp2={item.temp2}
                 tempD={item.tempD}
+                isCrysis={item.is_crysis}
               />
             ))}
           </div>
@@ -289,6 +321,7 @@ const PatientMonitorPage = () => {
                 spo2={item.spo2}
                 pr_spo2={item.pr_spo2}
                 rr={item.rr}
+                isCrysis={item.is_crysis}
               />
             ))}
           </div>

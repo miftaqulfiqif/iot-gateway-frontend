@@ -69,6 +69,28 @@ export const useDigitProIDA = () => {
     []
   );
 
+  const getDataDigitProIDAByDevice = useCallback(async (device_id: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/measurement-histories-digit-pro-ida/device/${device_id}`,
+        {
+          withCredentials: true,
+          params: {
+            page: currentPageIDA,
+            limit: limitIDA,
+            query: "",
+          },
+        }
+      );
+      setHistoriesDigitProIDA(response.data.data);
+      setCurrentPageIDA(response.data.current_page);
+      setTotalItemsIDA(response.data.total_items);
+      setTotalPageIDA(response.data.total_pages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+
   const fetchDataIDAByPatientId = useCallback(
     async (patientId: string, page: number) => {
       // fetch data
@@ -128,8 +150,10 @@ export const useDigitProIDA = () => {
     limitIDA,
     searchIDA,
     currentPageIDA,
+    setCurrentPageIDA,
     totalItemsIDA,
     totalPageIDA,
     createHistoryDigitProIDA,
+    getDataDigitProIDAByDevice,
   };
 };

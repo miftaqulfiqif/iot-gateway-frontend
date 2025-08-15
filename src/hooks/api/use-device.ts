@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { Devices } from "@/models/DeviceModel";
+import { DetailDevice, Devices } from "@/models/DeviceModel";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
@@ -10,6 +10,7 @@ export const useDevices = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
   const [devices, setDevices] = useState<Devices[]>([]);
+  const [detailDevice, setDetailDevice] = useState<DetailDevice>();
 
   const getAllDevices = useCallback(async () => {
     try {
@@ -22,6 +23,20 @@ export const useDevices = () => {
       setDevices(response.data.data);
     } catch (error) {
       console.error("Error fetching device connected:", error);
+    }
+  }, []);
+
+  const getDetailDevice = useCallback(async (deviceId: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/detail-device/${deviceId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setDetailDevice(response.data.data);
+    } catch (error) {
+      console.error("Error get detail device connected:", error);
     }
   }, []);
 
@@ -70,9 +85,11 @@ export const useDevices = () => {
   return {
     getAllDevices,
     devices,
+    detailDevice,
     deleteDeviceBluetooth,
     deleteDeviceTcpIP,
     updateDeviceBluetooth,
     updateDeviceTcpIP,
+    getDetailDevice,
   };
 };
