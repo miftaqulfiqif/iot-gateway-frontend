@@ -5,11 +5,18 @@ import { Devices } from "@/models/DeviceModel";
 export class DeviceManagementHandler extends BaseHandler {
   private setData: any;
   private setIsScaning: any;
+  private gatewayId: string;
 
-  constructor(socket: Socket, setData: any, setIsScanning: any) {
+  constructor(
+    socket: Socket,
+    setData: any,
+    setIsScanning: any,
+    gatewayId: string
+  ) {
     super(socket);
     this.setData = setData;
     this.setIsScaning = setIsScanning;
+    this.gatewayId = gatewayId;
   }
 
   register(): void {
@@ -33,7 +40,7 @@ export class DeviceManagementHandler extends BaseHandler {
     this.socket.emit("scan", {
       user_id: "UserTest",
       data: {
-        topic: "iotgateway/{id-unik}/bluetooth/scan",
+        topic: `iotgateway/${this.gatewayId}/bluetooth/scan`,
         payload: "start",
       },
     });

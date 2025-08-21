@@ -398,7 +398,9 @@ export const DetailTcpIpDevice = () => {
             <div className="flex w-fit gap-4 text-white">
               <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
               <div className="flex flex-col gap-2 justify-end">
-                <p className="font-bold text-2xl">{device.name}</p>
+                <p className="font-bold text-2xl">
+                  {detailDevice?.detail.name}
+                </p>
                 <p className="text-sm">{detailDevice?.detail.ip_address}</p>
               </div>
             </div>
@@ -482,18 +484,24 @@ export const DetailTcpIpDevice = () => {
             </div>
             {/* List doctor */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              {detailDevice?.recent_users.map((item) => (
-                <div key={item.id} className="flex items-center gap-3">
-                  <div className="w-18 h-18 rounded-full bg-gray-400"></div>
-                  <div className="flex flex-col">
-                    <p className="font-semibold font-sm">{item.name}</p>
-                    <p className="text-sm text-gray-500">{item.speciality}</p>
-                    <div className="border px-2 py-1 rounded-full flex items-center mt-1">
-                      <p className="text-xs">{item.timestamp}</p>
+              {detailDevice?.recent_users.length === 0 ? (
+                <p className="text-center text-sm text-gray-500">
+                  No data available
+                </p>
+              ) : (
+                detailDevice?.recent_users.map((item) => (
+                  <div key={item.id} className="flex items-center gap-3">
+                    <div className="w-18 h-18 rounded-full bg-gray-400"></div>
+                    <div className="flex flex-col">
+                      <p className="font-semibold font-sm">{item.name}</p>
+                      <p className="text-sm text-gray-500">{item.speciality}</p>
+                      <div className="border px-2 py-1 rounded-full flex items-center mt-1">
+                        <p className="text-xs">{item.timestamp}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
           {/* Medical Activity */}
@@ -506,25 +514,31 @@ export const DetailTcpIpDevice = () => {
             </div>
             {/* List */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
-              {detailDevice?.recent_patient_use.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center border p-4 rounded-2xl"
-                >
-                  <div className="flex flex-col w-full">
-                    <div className="flex justify-between">
-                      <p className="text-base font-semibold">
-                        {item.patient_name}
-                      </p>
-                      <p className="text-xs">
-                        {format(new Date(item.recorded_at), "dd/MM/yy")}
-                      </p>
+              {detailDevice?.recent_patient_use.length === 0 ? (
+                <p className="text-center text-sm text-gray-500">
+                  No data available
+                </p>
+              ) : (
+                detailDevice?.recent_patient_use.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center border p-4 rounded-2xl"
+                  >
+                    <div className="flex flex-col w-full">
+                      <div className="flex justify-between">
+                        <p className="text-base font-semibold">
+                          {item.patient_name}
+                        </p>
+                        <p className="text-xs">
+                          {format(new Date(item.recorded_at), "dd/MM/yy")}
+                        </p>
+                      </div>
+                      <p className="text-sm font-normal">{item.description}</p>
                     </div>
-                    <p className="text-sm font-normal">{item.description}</p>
+                    <div className="flex flex-col"></div>
                   </div>
-                  <div className="flex flex-col"></div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
           <div className="bg-white w-1/3 h-full rounded-2xl border-3 border-gray-200 p-4">

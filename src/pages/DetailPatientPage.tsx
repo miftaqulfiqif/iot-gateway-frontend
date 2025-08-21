@@ -1,5 +1,5 @@
 import { Mars, Venus } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/main-layout";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
+import { usePatient } from "@/hooks/api/use-patient";
 
 const state = [
   {
@@ -146,6 +147,9 @@ const dummyMedicalActivity = [
 ];
 const DetailPatientPage = () => {
   const { patientId } = useParams();
+
+  const { getDetailPatient, detailPatient } = usePatient({});
+
   const { historiesDigitProIDA, fetchDataIDA, currentPageIDA } =
     useDigitProIDA();
   const { dataDigitProBaby, fetchDataDigitProBaby, currentPageDigitProBaby } =
@@ -154,11 +158,22 @@ const DetailPatientPage = () => {
   const { historiesDoppler, fetchDataDoppler, currentPageDoppler } =
     useDoppler();
 
-  const [show, setShow] = useState(false);
   const stateRef = useRef(state);
   const [selectedDevice, setSelectedDevice] = useState<string | null>(
     "digit-pro-baby"
   );
+
+  useEffect(() => {
+    if (patientId) {
+      getDetailPatient(patientId);
+    }
+  }, [patientId, getDetailPatient]);
+
+  useEffect(() => {
+    if (detailPatient) {
+      console.log("DETAIL PATIENT UPDATED: ", detailPatient);
+    }
+  }, [detailPatient]);
 
   useEffect(() => {
     if (selectedDevice === "digit-pro-ida") {
@@ -179,7 +194,13 @@ const DetailPatientPage = () => {
         patient_id: patientId,
       });
     }
-  }, [selectedDevice]);
+    if (selectedDevice === "doppler") {
+      fetchDataDoppler({
+        page: 1,
+        patient_id: patientId,
+      });
+    }
+  }, [selectedDevice, patientId]);
 
   const [paginationState, setPaginationState] = useState<{
     [key: string]: {
@@ -232,6 +253,14 @@ const DetailPatientPage = () => {
         }));
       });
     }
+    if (selectedDevice === "doppler") {
+      fetchDataDoppler({ page, limit, search }).then((res) => {
+        setTotalPageState((prev) => ({
+          ...prev,
+          doppler: res?.total_pages ?? 0,
+        }));
+      });
+    }
   }, [paginationState, selectedDevice]);
   const [totalPageState, setTotalPageState] = useState<{
     [key: string]: number;
@@ -270,8 +299,10 @@ const DetailPatientPage = () => {
               <div className="flex gap-4">
                 <div className="rounded-full bg-gray-200 w-20 h-20"></div>
                 <div className="flex flex-col gap-2 justify-end">
-                  <p className="text-2xl font-bold">{dummyPatient.name}</p>
-                  <p className="text-sm">{patientId} </p>
+                  <p className="text-2xl font-bold">
+                    {detailPatient?.detail.name}
+                  </p>
+                  <p className="text-sm">{detailPatient?.detail.id} </p>
                 </div>
               </div>
               <div className="flex gap-2 rounded-xl border items-center h-fit p-4 cursor-pointer bg-white text-black shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16),inset_-6px_-6px_5px_rgba(255,255,255,1)]">
@@ -332,21 +363,25 @@ const DetailPatientPage = () => {
             <div className="mt-4">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
+                  <p className="font-semibold">IHS Number :</p>
+                  <p>{detailPatient?.detail.ihs_number ?? " -- "}</p>
+                </div>
+                <div className="flex justify-between">
                   <p className="font-semibold">NIK :</p>
-                  <p>{dummyPatient.nik}</p>
+                  <p>{detailPatient?.detail.nik}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Name :</p>
-                  <p>{dummyPatient.name}</p>
+                  <p>{detailPatient?.detail.name}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Age :</p>
-                  <p>{dummyPatient.age} years</p>
+                  <p>{detailPatient?.detail.age} years</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Gender :</p>
                   <p>
-                    {dummyPatient.gender
+                    {detailPatient?.detail.gender
                       ? dummyPatient.gender.charAt(0).toUpperCase() +
                         dummyPatient.gender.slice(1)
                       : "Unknown"}
@@ -354,28 +389,23 @@ const DetailPatientPage = () => {
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Place of Birth :</p>
-                  <p>{dummyPatient.place_of_birth}</p>
+                  <p>{detailPatient?.detail.place_of_birth}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Date of Birth :</p>
                   <p>
-                    {new Date(dummyPatient.date_of_birth).toLocaleDateString(
-                      "en-GB",
-                      { day: "2-digit", month: "long", year: "numeric" }
-                    )}
+                    {detailPatient?.detail.date_of_birth
+                      ? new Intl.DateTimeFormat("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        }).format(new Date(detailPatient.detail.date_of_birth))
+                      : "Unknown"}
                   </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-semibold">Phone :</p>
-                  <p>{dummyPatient.phone}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Work :</p>
-                  <p>{dummyPatient.work}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Last Education :</p>
-                  <p>{dummyPatient.last_education}</p>
+                  <p>{detailPatient?.detail.phone}</p>
                 </div>
               </div>
             </div>
@@ -387,27 +417,33 @@ const DetailPatientPage = () => {
           <div className="flex flex-col bg-gradient-to-l from-[#4956F4] to-[#6e79f4] w-1/3 h-full rounded-2xl border-3 border-gray-200 p-4 text-white">
             <p className="font-semibold text-lg">List baby</p>
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              {dummyListBaby.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-4 border rounded-3xl items-center px-4 py-2"
-                >
-                  {item.gender === "male" ? (
-                    <Mars className="w-6 h-6" />
-                  ) : (
-                    <Venus className="w-6 h-6" />
-                  )}
-                  <div className="flex flex-col gap-1">
-                    <p className="font-semibold">{item.name}</p>
-                    <p className="text-sm">
-                      {new Date(item.date_of_birth).toLocaleDateString(
-                        "en-GB",
-                        { day: "2-digit", month: "long", year: "numeric" }
-                      )}
-                    </p>
+              {detailPatient?.babies.length === 0 ? (
+                <p className="text-center text-sm text-white">
+                  No data available
+                </p>
+              ) : (
+                detailPatient?.babies.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex gap-4 border rounded-3xl items-center px-4 py-2"
+                  >
+                    {item.gender === "male" ? (
+                      <Mars className="w-6 h-6" />
+                    ) : (
+                      <Venus className="w-6 h-6" />
+                    )}
+                    <div className="flex flex-col gap-1">
+                      <p className="font-semibold">{item.name}</p>
+                      <p className="text-sm">
+                        {new Date(item.date_of_birth).toLocaleDateString(
+                          "en-GB",
+                          { day: "2-digit", month: "long", year: "numeric" }
+                        )}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
           {/* Recent Doctor */}
@@ -420,18 +456,34 @@ const DetailPatientPage = () => {
             </div>
             {/* List doctor */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[260px] pr-2">
-              {dummyRecentDoctor.map((item) => (
-                <div key={item.id} className="flex items-center gap-3">
-                  <div className="w-18 h-18 rounded-full bg-gray-400"></div>
-                  <div className="flex flex-col">
-                    <p className="font-semibold font-sm">{item.doctor_name}</p>
-                    <p className="text-sm text-gray-500">{item.speciality}</p>
-                    <div className="border px-2 py-1 rounded-full flex items-center mt-1">
-                      <p className="text-xs">{item.date}</p>
+              {detailPatient?.recent_doctor.length === 0 ? (
+                <p className="text-center text-sm text-gray-500">
+                  No data available
+                </p>
+              ) : (
+                detailPatient?.recent_doctor.map((item) => (
+                  <div key={item.id} className="flex items-center gap-3">
+                    <div className="w-18 h-18 rounded-full bg-gray-400"></div>
+                    <div className="flex flex-col">
+                      <p className="font-semibold font-sm">{item.name}</p>
+                      <p className="text-sm text-gray-500">
+                        {item.speciality ? item.speciality : " -- "}
+                      </p>
+                      <div className="border px-2 py-1 rounded-full flex items-center mt-1">
+                        <p className="text-xs">
+                          {new Intl.DateTimeFormat("en-GB", {
+                            year: "2-digit",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }).format(new Date(item.recorded_at))}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
           {/* Medical Activity */}
@@ -444,21 +496,35 @@ const DetailPatientPage = () => {
             </div>
             {/* List */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
-              {dummyMedicalActivity.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center border p-4 rounded-2xl"
-                >
-                  <div className="flex flex-col w-full">
-                    <div className="flex justify-between">
-                      <p className="text-base font-semibold">{item.title}</p>
-                      <p className="text-xs">{item.date}</p>
+              {detailPatient?.medical_activities.length === 0 ? (
+                <p className="text-center text-sm text-gray-500">
+                  No data available
+                </p>
+              ) : (
+                detailPatient?.medical_activities.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center border p-4 rounded-2xl"
+                  >
+                    <div className="flex flex-col w-full">
+                      <div className="flex justify-between">
+                        <p className="text-base font-semibold">{item.title}</p>
+                        <p className="text-xs">
+                          {new Intl.DateTimeFormat("en-GB", {
+                            year: "2-digit",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }).format(new Date(item.recorded_at))}
+                        </p>
+                      </div>
+                      <p className="text-sm font-normal">{item.description}</p>
                     </div>
-                    <p className="text-sm font-normal">{item.note}</p>
+                    <div className="flex flex-col"></div>
                   </div>
-                  <div className="flex flex-col"></div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>

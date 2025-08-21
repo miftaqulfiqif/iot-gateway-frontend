@@ -87,7 +87,7 @@ export const AddDeviceBluetooth = ({
                   <ul className="space-y-3 max-h-80 overflow-y-auto px-2 pb-10">
                     {devices.map((device) => (
                       <div
-                        key={device.mac}
+                        key={device.mac_address}
                         onClick={() => handleSelectDevice(device)}
                         className={`flex px-4 py-2 items-center rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] pl-4 cursor-pointer justify-between ${
                           selectedDevice?.id === device.id
@@ -98,8 +98,8 @@ export const AddDeviceBluetooth = ({
                         <div className="flex flex-row gap-3 items-center">
                           <Cpu className="w-10 h-10" />
                           <div className="flex flex-col">
-                            <p className="text-lg">{device.device}</p>
-                            <p className="text-sm">{device.mac}</p>
+                            <p className="text-lg">{device.model}</p>
+                            <p className="text-sm">{device.mac_address}</p>
                           </div>
                         </div>
                         <div className="flex flex-row gap-2 bg-green-300 px-4 py-2 rounded-full">

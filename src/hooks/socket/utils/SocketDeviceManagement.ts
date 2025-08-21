@@ -2,8 +2,10 @@ import { Devices } from "@/models/DeviceModel";
 import { useEffect, useRef, useState } from "react";
 import { SocketManager } from "../SocketManager";
 import { DeviceManagementHandler } from "../handlers/DeviceManagementHandler";
+import { useAuth } from "@/context/AuthContext";
 
 export const useSocketDeviceManagement = () => {
+  const { user } = useAuth();
   const [devices, setDevices] = useState<Devices[]>([]);
   const [isScanning, setIsScanning] = useState(false);
 
@@ -13,13 +15,14 @@ export const useSocketDeviceManagement = () => {
   useEffect(() => {
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      "UserTest"
+      user?.gateway?.id!
     );
 
     const handler = new DeviceManagementHandler(
       manager.getSocket(),
       setDevices,
-      setIsScanning
+      setIsScanning,
+      user?.gateway?.id!
     );
 
     socketManagerRef.current = manager;
