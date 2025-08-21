@@ -11,9 +11,12 @@ export const useBabies = (patientId: string) => {
 
   const getBabiesByPatientId = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/baby/${patientId}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${apiUrl}/api/baby-by-patient-id/${patientId}`,
+        {
+          withCredentials: true,
+        }
+      );
       setBabies(response.data.data);
     } catch (error) {
       console.error("Error fetching babies:", error);

@@ -1,4 +1,4 @@
-import { UsePatient } from "@/hooks/api/use-patient";
+import { usePatient } from "@/hooks/api/use-patient";
 import Sidebar from "../layouts/sidebar";
 import { useEffect, useRef, useState } from "react";
 
@@ -13,7 +13,7 @@ export const InputHeightModal = ({
   patientId,
   setPatient,
 }: Props) => {
-  const { updatePatientHeight } = UsePatient({});
+  const { updatePatientHeight } = usePatient({});
   const [height, setHeight] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +29,7 @@ export const InputHeightModal = ({
     console.log("Height:", height);
     updatePatientHeight(patientId, height);
     setPatient((prev: any) => ({ ...prev, height }));
-  };  
+  };
 
   return (
     <div

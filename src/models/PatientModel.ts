@@ -44,3 +44,26 @@ export type Address = {
     district_id: string;
   };
 };
+
+export type DetailPatient = {
+  detail: {
+    id: string;
+    nik: string;
+    no_kk: string;
+    ihs_number: string;
+    barcode_img: string;
+    name: string;
+    gender: string;
+    phone: string;
+    place_of_birth: string;
+    date_of_birth: string;
+    height: number;
+    age: number;
+    address_id: string;
+    created_at: string;
+    updated_at: string;
+  };
+  babies: Array<any>;
+  recent_doctor: Array<any>;
+  medical_activities: Array<any>;
+};

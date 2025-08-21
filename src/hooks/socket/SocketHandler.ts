@@ -9,6 +9,9 @@ import { BMIModel } from "@/models/Devices/BMIModel";
 import { useAuth } from "@/context/AuthContext";
 import { PM9000Model } from "@/models/Devices/PM9000Model";
 
+const { user } = useAuth();
+
+// const userId = user?.gateway?.id || null;
 const userId = "UserTest";
 const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -513,7 +516,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
   };
 
   useEffect(() => {
-    startSocket(userId);
+    startSocket(userId!);
 
     return () => {
       socketRef.current?.disconnect();

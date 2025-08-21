@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { Patients } from "@/models/PatientModel";
 import { X } from "lucide-react";
-import { UsePatient } from "@/hooks/api/use-patient";
+import { usePatient } from "@/hooks/api/use-patient";
 import { useEffect, useState } from "react";
 import CitySelect, { CityOption } from "../forms/input/city-select";
 import ProvinceSelect, { ProvinceOption } from "../forms/input/province-select";
@@ -36,7 +36,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
     showToast,
   } = props;
 
-  const { updatePatient, savePatient } = UsePatient({
+  const { updatePatient, savePatient } = usePatient({
     fetchPatients,
     closeModal,
     showToast,

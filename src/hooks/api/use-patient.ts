@@ -1,5 +1,6 @@
-import { Patients } from "@/models/PatientModel";
+import { DetailPatient, Patients } from "@/models/PatientModel";
 import axios from "axios";
+import { useCallback, useState } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -9,11 +10,13 @@ type CreateNewPatientProps = {
   showToast?: any;
 };
 
-export const UsePatient = ({
+export const usePatient = ({
   fetchPatients,
   closeModal,
   showToast,
 }: CreateNewPatientProps) => {
+  const [detailPatient, setDetailPatient] = useState<DetailPatient>();
+
   // Update patient
   const updatePatient = async (patient: Patients) => {
     try {
@@ -76,6 +79,27 @@ export const UsePatient = ({
     } catch (error) {}
   };
 
+  const getDetailPatient = useCallback(async (patientId: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/patient/detail/${patientId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setDetailPatient(response.data.data);
+    } catch (error) {
+      console.error("Error get detail patient : ", error);
+      throw error;
+    }
+  }, []);
+
   // Return callback
-  return { updatePatient, savePatient, updatePatientHeight };
+  return {
+    updatePatient,
+    savePatient,
+    updatePatientHeight,
+    getDetailPatient,
+    detailPatient,
+  };
 };
