@@ -5,16 +5,17 @@ export class SocketManager {
   private socket: Socket;
   private handler: BaseHandler[] = [];
 
-  constructor(private url: string, private userId: string) {
+  constructor(private url: string, private gatewaySn: string) {
     this.socket = io(this.url, {
       reconnection: true,
       reconnectionAttempts: 3,
-      query: { user_id: this.userId },
+      query: { gateway_sn: this.gatewaySn },
     });
 
     this.socket.on("connect", () => {
-      console.log("Socket connected : ", this.socket?.id);
-      this.socket?.emit("join", this.userId);
+      console.log("Socket connected : ", this.socket.id);
+      console.log("Room connected : ", this.gatewaySn);
+      this.socket?.emit("join", this.gatewaySn);
     });
 
     this.socket.onAny((event, ...args) => {

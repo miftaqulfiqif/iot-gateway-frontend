@@ -2,8 +2,11 @@ import { PM9000Model } from "@/models/Devices/PM9000Model";
 import { useEffect, useRef, useState } from "react";
 import { SocketManager } from "../SocketManager";
 import { PM9000Handler } from "../handlers/PM9000Handler";
+import { useAuth } from "@/context/AuthContext";
 
 export const useSocketPM9000 = (ipAddress: string) => {
+  const { user } = useAuth();
+  const gatewaySn = user?.gateway?.id;
   const [data, setData] = useState<PM9000Model>();
   const [dataNibp, setDataNibp] = useState({
     mean: 0,
@@ -19,7 +22,7 @@ export const useSocketPM9000 = (ipAddress: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      "UserTest"
+      gatewaySn!
     );
 
     const handler = new PM9000Handler(

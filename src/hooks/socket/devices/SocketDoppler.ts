@@ -2,8 +2,11 @@ import { DopplerModel } from "@/models/Devices/DopplerModel";
 import { useEffect, useRef, useState } from "react";
 import { SocketManager } from "../SocketManager";
 import { DopplerHandler } from "../handlers/DopplerHandler";
+import { useAuth } from "@/context/AuthContext";
 
 export const useSocketDoppler = (macDevice: string) => {
+  const { user } = useAuth();
+  const gatewaySn = user?.gateway?.id;
   const [data, setData] = useState<DopplerModel>({
     heart_rate: 0,
     sound_quality: "",
@@ -22,7 +25,7 @@ export const useSocketDoppler = (macDevice: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      "UserTest"
+      gatewaySn!
     );
 
     const handler = new DopplerHandler(

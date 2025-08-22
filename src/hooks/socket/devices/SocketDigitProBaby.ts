@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { SocketManager } from "../SocketManager";
 import { DigitProBabyHandler } from "../handlers/DigitProBabyHandler";
 import { useToast } from "@/context/ToastContext";
+import { useAuth } from "@/context/AuthContext";
 
 export const useSocketDigitProBaby = (macDevice: string) => {
+  const { user } = useAuth();
   const { showToast } = useToast();
   const [data, setData] = useState<DigitProBabyModel>({
     mac: "",
@@ -23,14 +25,15 @@ export const useSocketDigitProBaby = (macDevice: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      "UserTest"
+      user?.gateway?.id!
     );
 
     const handler = new DigitProBabyHandler(
       manager.getSocket(),
       macDevice,
       setData,
-      setRealtime
+      setRealtime,
+      user?.gateway?.id!
     );
 
     socketManagerRef.current = manager;
@@ -47,7 +50,7 @@ export const useSocketDigitProBaby = (macDevice: string) => {
   }, [macDevice]);
 
   const eventTareDigitProBaby = () => {
-    handlerRef.current?.handleTare();
+  handlerRef.current?.handleTare();
     showToast(null, "Tare successfully", "success");
   };
 

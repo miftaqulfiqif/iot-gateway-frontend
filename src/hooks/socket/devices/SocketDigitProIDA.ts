@@ -2,8 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { DigitProIDAHandler } from "../handlers/DigitProIDAHandler";
 import { DigitProIDAModel } from "@/models/Devices/DigitProIDAModel";
 import { SocketManager } from "../SocketManager";
+import { useAuth } from "@/context/AuthContext";
 
 export const useSocketDigitProIDA = (macDevice: string) => {
+  const { user } = useAuth();
+  const gatewaySn = user?.gateway?.id;
+
   const [data, setData] = useState<DigitProIDAModel>({
     weight_mother: 0,
     weight_child: 0,
@@ -21,7 +25,7 @@ export const useSocketDigitProIDA = (macDevice: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      "UserTest"
+      gatewaySn!
     );
 
     const handler = new DigitProIDAHandler(

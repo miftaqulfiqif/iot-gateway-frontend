@@ -9,6 +9,7 @@ export class DigitProBabyHandler extends BaseHandler {
   private setRealtime: (
     data: RealtimeData[] | ((prev: RealtimeData[]) => RealtimeData[])
   ) => void;
+  private gatewaySn: string;
 
   constructor(
     socket: Socket,
@@ -16,13 +17,15 @@ export class DigitProBabyHandler extends BaseHandler {
     setData: (data: any) => void,
     setRealtime: (
       data: RealtimeData[] | ((prev: RealtimeData[]) => RealtimeData[])
-    ) => void
+    ) => void,
+    gatewaySn: string
   ) {
     super(socket);
     this.mac = mac;
     this.setData = setData;
     this.setRealtime = setRealtime;
     this.register();
+    this.gatewaySn = gatewaySn;
   }
 
   register() {
@@ -61,9 +64,9 @@ export class DigitProBabyHandler extends BaseHandler {
 
   handleTare() {
     this.socket.emit("tare_digit_pro_baby", {
-      user_id: "UserTest",
+      gateway_sn: this.gatewaySn,
       data: {
-        topic: "iotgateway/{id-unik}/bluetooth/digitpro_baby_tare",
+        topic: `iotgateway/${this.gatewaySn}/bluetooth/digitpro_baby_tare`,
         payload: "tare",
       },
     });
