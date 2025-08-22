@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SocketManager } from "../SocketManager";
 import { DS001Handler } from "../handlers/DS001Handler";
+import { useAuth } from "@/context/AuthContext";
 
 type DS001Data = {
   systolic: number;
@@ -14,6 +15,9 @@ type DS001Data = {
 };
 
 export const useSocketDS001 = (ipAddress: string) => {
+  const { user } = useAuth();
+  const gatewaySn = user?.gateway?.id;
+
   const [data, setData] = useState<DS001Data>();
   const [dataNibp, setDataNibp] = useState({});
   const [dataPleth, setDataPleth] = useState({
@@ -27,7 +31,7 @@ export const useSocketDS001 = (ipAddress: string) => {
     if (!ipAddress || ipAddress === "") return;
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      "UserTest"
+      gatewaySn!
     );
 
     const handler = new DS001Handler(

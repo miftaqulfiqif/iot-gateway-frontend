@@ -15,16 +15,6 @@ export const AddDeviceBluetooth = ({
   setInactive,
   getAllDevices,
 }: Props) => {
-  // const {
-  //   userId,
-  //   eventScan,
-  //   devices,
-  //   deleteDevice,
-  //   isScanning,
-  //   eventConnectDevice,
-  //   startDigitProIDA,
-  // } = useSocketHandler();
-
   const { isScanning, devices, eventScanBluetoothDevice } =
     useSocketDeviceManagement();
 

@@ -12,7 +12,7 @@ import { PM9000Model } from "@/models/Devices/PM9000Model";
 const { user } = useAuth();
 
 // const userId = user?.gateway?.id || null;
-const userId = "UserTest";
+const userId = user?.gateway?.id || null;
 const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
 console.log("Socket URL : ", socketUrl);

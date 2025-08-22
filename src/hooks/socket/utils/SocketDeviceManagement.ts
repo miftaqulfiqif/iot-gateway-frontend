@@ -6,6 +6,9 @@ import { useAuth } from "@/context/AuthContext";
 
 export const useSocketDeviceManagement = () => {
   const { user } = useAuth();
+  // const gatewayId = "gateway1";
+  const gatewayId = user?.gateway?.id;
+
   const [devices, setDevices] = useState<Devices[]>([]);
   const [isScanning, setIsScanning] = useState(false);
 
@@ -15,14 +18,14 @@ export const useSocketDeviceManagement = () => {
   useEffect(() => {
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      user?.gateway?.id!
+      gatewayId!
     );
 
     const handler = new DeviceManagementHandler(
       manager.getSocket(),
       setDevices,
       setIsScanning,
-      user?.gateway?.id!
+      gatewayId!
     );
 
     socketManagerRef.current = manager;

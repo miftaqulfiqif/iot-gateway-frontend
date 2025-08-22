@@ -22,6 +22,8 @@ export class DeviceManagementHandler extends BaseHandler {
   register(): void {
     this.socket.on("found_devices", (payload: { devices?: Devices[] }) => {
       if (payload?.devices && Array.isArray(payload.devices)) {
+        console.log("Devices found:", payload.devices);
+
         this.setData((prev: any) => {
           const newDevices = payload.devices || [];
 
@@ -38,7 +40,7 @@ export class DeviceManagementHandler extends BaseHandler {
 
   handleScan() {
     this.socket.emit("scan", {
-      user_id: "UserTest",
+      user_id: this.gatewayId,
       data: {
         topic: `iotgateway/${this.gatewayId}/bluetooth/scan`,
         payload: "start",
