@@ -10,7 +10,7 @@ export const useSocketDigitProIDA = (macDevice: string) => {
 
   const [data, setData] = useState<DigitProIDAModel>({
     weight_mother: 0,
-    weight_child: 0,
+    weight_baby: 0,
   });
 
   const [realtime, setRealtime] = useState<

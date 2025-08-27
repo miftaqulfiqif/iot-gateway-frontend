@@ -8,6 +8,7 @@ interface CreateRoomModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (roomData: {
+    name: string;
     number: string;
     type: string;
     capacity: number;
@@ -21,13 +22,15 @@ export default function CreateRoomModal({
 }: CreateRoomModalProps) {
   const formik = useFormik({
     initialValues: {
+      name: "",
       number: "",
       type: "",
       capacity: 0,
     },
     validationSchema: yup.object().shape({
-      number: yup.string().required("Room number is required"),
-      type: yup.string().required("Room type is required"),
+      name: yup.string().required("Room name is required"),
+      number: yup.string().required("Is required"),
+      type: yup.string().required("Is required"),
       capacity: yup
         .number()
         .typeError("Room capacity must be a number")
@@ -36,6 +39,7 @@ export default function CreateRoomModal({
     }),
     onSubmit: (values) => {
       onSubmit({
+        name: values.name,
         number: values.number,
         type: values.type,
         capacity: Number(values.capacity),
@@ -76,15 +80,27 @@ export default function CreateRoomModal({
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div className="flex w-full gap-3">
             <InputText
-              label="Room Number"
-              name="number"
-              placeholder="Room Number"
-              value={formik.values.number}
+              label="Room Name"
+              name="name"
+              placeholder="Room Name"
+              value={formik.values.name}
               onChange={formik.handleChange}
-              onTouch={formik.touched.number}
-              onError={formik.errors.number}
+              onTouch={formik.touched.name}
+              onError={formik.errors.name}
               isRequired
             />
+            <div className="w-1/2">
+              <InputText
+                label="Room Number"
+                name="number"
+                placeholder="Room Number"
+                value={formik.values.number}
+                onChange={formik.handleChange}
+                onTouch={formik.touched.number}
+                onError={formik.errors.number}
+                isRequired
+              />
+            </div>
             <div className="w-1/4">
               <InputSelect
                 name="type"

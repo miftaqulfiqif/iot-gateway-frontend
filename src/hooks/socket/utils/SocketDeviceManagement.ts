@@ -46,9 +46,14 @@ export const useSocketDeviceManagement = () => {
     handlerRef.current?.handleScan();
   };
 
+  const evetGetIpAddressIotGateway = () => {
+    handlerRef.current?.handleGetIpAddressIotGateway();
+  };
+
   return {
     devices,
     isScanning,
     eventScanBluetoothDevice,
+    evetGetIpAddressIotGateway,
   };
 };

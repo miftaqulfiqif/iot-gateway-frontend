@@ -3,14 +3,17 @@ import CreateRoomModal from "@/components/modals/room_page/create-room-modal";
 import { RoomItems } from "@/components/sections/rooms-page/room-item";
 
 import { useToast } from "@/context/ToastContext";
+import { useRooms } from "@/hooks/api/use-room";
 import { Funnel, Search, UserRoundPlus } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const dummyRooms = [
   {
+    id: "123",
+    roomName: "Cendrawasih",
     roomNumber: "312",
     unit: "ICU",
-    status: "Full",
+    status: "full",
     capacity: {
       current: 2,
       total: 2,
@@ -34,9 +37,11 @@ export const dummyRooms = [
     ],
   },
   {
+    id: "124",
+    roomName: "Cakrawala",
     roomNumber: "208",
     unit: "HCU",
-    status: "Available",
+    status: "available",
     capacity: {
       current: 1,
       total: 3,
@@ -50,9 +55,11 @@ export const dummyRooms = [
     ],
   },
   {
+    id: "125",
+    roomName: "Teratai",
     roomNumber: "101",
     unit: "General Ward",
-    status: "Available",
+    status: "available",
     capacity: {
       current: 0,
       total: 2,
@@ -62,21 +69,17 @@ export const dummyRooms = [
 ];
 
 export const RoomsPage = () => {
-  const { showToast } = useToast();
+  const { rooms, getAllRooms, createNewRoom } = useRooms();
+
   const [showFilter, setShowFilter] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const [search, setSearch] = useState("");
 
   const filterRef = useRef<HTMLDivElement>(null);
 
-  const handleCreateRoom = (data: {
-    number: string;
-    type: string;
-    capacity: number;
-  }) => {
-    console.log("Room Created:", data);
-    showToast(null, "Room created successfully", "success");
-  };
+  useEffect(() => {
+    getAllRooms();
+  }, []);
 
   return (
     <MainLayout title="Rooms" state="Rooms">
@@ -167,15 +170,15 @@ export const RoomsPage = () => {
         {/* Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
           {/* List Room */}
-          {dummyRooms.map((room) => (
-            <RoomItems key={room.roomNumber} room={room} />
+          {rooms.map((room) => (
+            <RoomItems key={room.id} room={room} />
           ))}
         </div>
       </div>
       <CreateRoomModal
         isOpen={createModal}
         onClose={() => setCreateModal(false)}
-        onSubmit={handleCreateRoom}
+        onSubmit={createNewRoom}
       />
     </MainLayout>
   );

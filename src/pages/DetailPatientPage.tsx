@@ -289,6 +289,8 @@ const DetailPatientPage = () => {
     }
   };
 
+  console.log("PATIENT ROOM : ", detailPatient?.detail?.patient_room?.room);
+
   return (
     <MainLayout title="Patients" state="Patients">
       <div className="flex flex-col gap-6 w-full pb-5">
@@ -305,13 +307,20 @@ const DetailPatientPage = () => {
                   <p className="text-sm">{detailPatient?.detail.id} </p>
                 </div>
               </div>
-              <div className="flex gap-2 rounded-xl border items-center h-fit p-4 cursor-pointer bg-white text-black shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16),inset_-6px_-6px_5px_rgba(255,255,255,1)]">
-                <p className="font-bold">312</p>
-                <p>-</p>
-                <p className="bg-green-200 text-green-900 rounded-2xl p-2 w-20 text-center">
-                  ICU
-                </p>
-              </div>
+              {detailPatient?.detail?.patient_room?.room && (
+                <div className="flex gap-2 rounded-xl border items-center h-fit px-3 py-1 cursor-pointer bg-white text-black shadow-[inset_6px_6px_5px_rgba(0,0,0,0.16),inset_-6px_-6px_5px_rgba(255,255,255,1)]">
+                  <p className="w-full font-bold text-lg">
+                    {detailPatient?.detail.patient_room?.room?.name ?? "--"}
+                  </p>
+                  <p className="font-bold">
+                    {detailPatient?.detail.patient_room?.room?.number ?? "--"}
+                  </p>
+                  <p>-</p>
+                  <p className="bg-green-200 text-green-900 rounded-2xl p-2 w-20 text-center">
+                    {detailPatient?.detail.patient_room?.room?.type ?? "--"}
+                  </p>
+                </div>
+              )}
             </div>
             <p className="mt-4 font-bold">Last Measurement</p>
             <div className="flex flex-row gap-6">

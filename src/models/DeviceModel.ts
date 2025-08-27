@@ -13,6 +13,12 @@ export type Devices = {
   icon: string;
 };
 
+export type PatientMonitoringDevices = {
+  id: string;
+  name: string;
+  ip_address: string;
+};
+
 export type DetailDevice = {
   detail: {
     id: string;

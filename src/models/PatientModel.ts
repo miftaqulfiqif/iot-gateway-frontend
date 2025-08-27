@@ -1,3 +1,5 @@
+import { StringNullableChain } from "lodash";
+
 export type Patients = {
   id: string;
   barcode_image: string;
@@ -59,6 +61,13 @@ export type DetailPatient = {
     date_of_birth: string;
     height: number;
     age: number;
+    patient_room: {
+      room: {
+        name: string;
+        number: string;
+        type: string;
+      };
+    };
     address_id: string;
     created_at: string;
     updated_at: string;

@@ -37,10 +37,6 @@ const historiesData = [
 
 const DeviceDopplerPage = () => {
   const { mac } = useParams();
-  // const { dataDopplerChartData, dataDoppler } = useSocketHandler({
-  //   macDevice: mac,
-  // });
-
   const { data, realtime } = useSocketDoppler(mac!);
 
   const [patient, setPatient] = useState<Patients>();
@@ -105,9 +101,9 @@ const DeviceDopplerPage = () => {
                 <div className="flex flex-gap gap-8">
                   <AudioLines
                     className={`w-8 h-8 ${
-                      data.sound_quality === "poor"
+                      data.sound_quality === "Poor"
                         ? "text-red-500"
-                        : data.sound_quality === "medium"
+                        : data.sound_quality === "Medium"
                         ? "text-yellow-300"
                         : "text-green-400"
                     }`}
@@ -161,6 +157,7 @@ const DeviceDopplerPage = () => {
         isActive={saveModal}
         setInactive={() => setSaveModal(false)}
         patient={patient}
+        deviceMac={mac!}
         result={result}
       />
     </MainLayout>

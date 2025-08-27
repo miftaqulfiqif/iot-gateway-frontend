@@ -31,13 +31,13 @@ export class DigitProIDAHandler extends BaseHandler {
         (item: any, index: number) => ({
           index,
           weight_mother: item.weight_mother,
-          weight_child: item.weight_child,
+          weight_baby: item.weight_baby,
         })
       );
 
       this.setData({
         weight_mother: last?.weight_mother ?? 0,
-        weight_child: last?.weight_child ?? 0,
+        weight_baby: last?.weight_baby ?? 0,
       });
 
       this.setRealtime(processed);

@@ -157,7 +157,9 @@ const DeviceDigitProBabyPage = () => {
       <SaveMeasurementDigitProBaby
         isActive={saveModal}
         setInactive={() => setSaveModal(false)}
+        patient={patient}
         baby={baby}
+        deviceMac={mac!}
         result={data.weight}
       />
     </MainLayout>

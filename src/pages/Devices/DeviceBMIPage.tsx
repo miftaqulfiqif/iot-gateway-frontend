@@ -306,7 +306,7 @@ const DeviceBMIPage = () => {
                   </div>
                 </div>
               </div>
-              {data?.impedence !== 0 && data && (
+              {data?.impedance !== 0 && data && (
                 <BMIResult
                   BMI={data.bmi}
                   age={data.age}

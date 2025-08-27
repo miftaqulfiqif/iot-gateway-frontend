@@ -160,7 +160,7 @@ const DeviceIDAPage = () => {
                         />
                         <p className="bg-blue-400 px-6 py-2 rounded-full text-center w-fit text-4xl">
                           <span className="pr-2">
-                            {data.weight_child ? data.weight_child : "--"}
+                            {data.weight_baby ? data.weight_baby : "--"}
                           </span>
                           Kg
                         </p>
@@ -171,7 +171,7 @@ const DeviceIDAPage = () => {
               </div>
               <div
                 className={`flex flex-row border-2 bg-white border-[#3062E5] text-[#3062E5] w-[250px] items-center mx-auto px-6 py-2 font-bold rounded-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-2xl mt-6 ${
-                  data.weight_child === 0
+                  data.weight_baby === 0
                     ? "cursor-not-allowed"
                     : "cursor-pointer"
                 }`}
@@ -198,6 +198,7 @@ const DeviceIDAPage = () => {
         setInactive={() => setSaveModal(false)}
         patient={patient}
         baby={baby}
+        deviceMac={mac!}
         result={data}
       />
     </MainLayout>

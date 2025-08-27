@@ -49,19 +49,23 @@ export const PatientMonitorDS001Section = ({
     <div
       className={`bg-[#EDEDF9] flex flex-col gap-2 p-4 rounded-3xl w-full h-fit text-sm ${
         isCrysis
-          ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]"
+          ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)] bg-red-500"
           : " shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)]"
       }`}
     >
       {" "}
       <div className="flex items-center justify-between">
-        <div className="flex gap-2 items-center">
+        <div
+          className={`flex gap-2 items-center ${
+            isCrysis ? "text-white" : "text-black"
+          }`}
+        >
           <p className="font-bold text-xl">{room.number}</p>
           <p className="font-bold">-</p>
           <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-xl">
             {room.type}
           </p>
-        </div>{" "}
+        </div>
         <div className="relative">
           <button
             className="flex items-center gap-1 cursor-pointer transition duration-150"
@@ -96,7 +100,9 @@ export const PatientMonitorDS001Section = ({
           </div>
         </div>
       </div>
-      <p className="text-xl">{patientName} </p>
+      <p className={`text-xl ${isCrysis ? "text-white" : "text-black"}`}>
+        {patientName}{" "}
+      </p>
       <div className="flex flex-col gap-2 w-full mt-4">
         <div className="flex flex-row gap-4 rounded-2xl">
           {/* NIBP */}
