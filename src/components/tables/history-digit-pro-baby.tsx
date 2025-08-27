@@ -108,13 +108,9 @@ export const TableHistoryDigitProBaby = ({
                   </TableCell>
                   <TableCell className="text-center">{item.weight}</TableCell>
                   <TableCell className="text-center">
-                    {format(
-                      new Date(baby?.date_of_birth),
-                      "d MMMM yyyy, HH:mm",
-                      {
-                        locale: id,
-                      }
-                    )}
+                    {format(new Date(item.recorded_at), "d MMMM yyyy, HH:mm", {
+                      locale: id,
+                    })}
                   </TableCell>
                   {/* <TableCell className="text-center text-xl">
                     <div className="flex flex-row justify-center gap-5 text-base text-white items-center">
