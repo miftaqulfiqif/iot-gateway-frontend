@@ -35,7 +35,7 @@ export class DopplerHandler extends BaseHandler {
       });
 
       this.setRealtime((prev: any) => {
-        if (last.sound_quality !== "good") return prev;
+        if (last.sound_quality !== "Good") return prev;
         let heartRateSum = 0;
         let heartRateCount = 0;
 

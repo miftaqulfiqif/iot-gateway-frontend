@@ -3,7 +3,7 @@ import { Patients } from "../PatientModel";
 export type DigitProIDAModel = {
   mac?: string;
   weight_mother: number;
-  weight_child: number;
+  weight_baby: number;
 };
 
 export type DigitProIDAMeasurementHistory = {

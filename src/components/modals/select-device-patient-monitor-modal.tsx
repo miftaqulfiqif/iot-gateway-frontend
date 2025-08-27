@@ -1,14 +1,11 @@
-import { useState } from "react";
-import {
-  X,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { TrainTrack, X } from "lucide-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { InputSelect } from "../ui/input-select";
 import { useToast } from "@/context/ToastContext";
-
-
 import Sidebar from "../layouts/sidebar";
+import { useDevices } from "@/hooks/api/use-device";
 
 const dummyDeviceAvailable = [
   {
@@ -57,42 +54,32 @@ export const SelectDevicePatientMonitorModal = ({
   closeAllModals,
   patientSelected,
 }: Props) => {
+  const { patientMonitoringDevices, getPatientMonitoringDevices } =
+    useDevices();
+
   const { showToast } = useToast();
   const [selectedDevice, setSelectedDevice] = useState<any>(null);
+  const [search, setSearch] = useState("");
+  const [deviceFunction, setDeviceFunction] = useState("");
+
+  useEffect(() => {
+    getPatientMonitoringDevices(search, deviceFunction);
+  }, [search, deviceFunction]);
 
   const handleSubmit = () => {
-    showToast(null, "Device selected successfully", "success");
-    closeAllModals();
+    try {
+      const data = {
+        patient_id: patientSelected.id,
+        device_id: selectedDevice.id,
+      };
+      console.log("DATA : ", data);
+
+      showToast(null, "Device selected successfully", "success");
+      // closeAllModals();
+    } catch (error) {
+      console.error("❌ Error connecting device:", error);
+    }
   };
-
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      id: "",
-      name: "",
-      device_function: "",
-    },
-    validationSchema: yup.object().shape({
-      id: yup
-        .string()
-        .required("IP address is required")
-        .test("is-valid-ip", "Invalid IP address format", (value) => {
-          if (!value) return false;
-          const segments = value.split(".");
-          if (segments.length !== 4) return false;
-
-          return segments.every((seg) => {
-            const num = Number(seg);
-            return /^\d+$/.test(seg) && num >= 0 && num <= 255;
-          });
-        }),
-      name: yup.string(),
-      device_function: yup.string().required("Device function is required"),
-    }),
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
 
   return (
     <div
@@ -135,7 +122,8 @@ export const SelectDevicePatientMonitorModal = ({
             <div className="flex flex-col bg-gradient-to-b from-[#6e79f4] to-[#4956F4] shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)] p-4 rounded-xl text-white w-full">
               <div className="flex justify-between w-full">
                 <p className="font-semibold text-xl">{patientSelected?.name}</p>
-                <div className="flex w-40 bg-white text-black justify-center gap-2 px-4 py-2 rounded-2xl font-bold">
+                <div className="flex w-fit bg-white text-black justify-center gap-2 px-4 py-2 rounded-2xl font-bold">
+                  <p className="font-bold mr-4">Merpati</p>
                   <p>312</p>
                   <p>-</p>
                   <p className="bg-green-200 text-green-900 w-20 text-center rounded-full">
@@ -158,6 +146,8 @@ export const SelectDevicePatientMonitorModal = ({
                 </div>
               </div>
             </div>
+
+            {/* LIST DEVICE */}
             <p className="mt-2 font-semibold">Device available</p>
             <div className="flex flex-col gap-4">
               <div className="flex flex-row gap-2 w-full">
@@ -166,6 +156,7 @@ export const SelectDevicePatientMonitorModal = ({
                   type="text"
                   className=" bg-gray-100 text-sm px-4 py-2 rounded-lg w-full border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150 ease-in-out"
                   placeholder="Search"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
                 <div className="w-1/4">
                   <InputSelect
@@ -173,39 +164,28 @@ export const SelectDevicePatientMonitorModal = ({
                     placeholder="Filter  device"
                     option={[
                       {
-                        value: JSON.stringify({
-                          device_function: "pasien_monitor_9000",
-                          device: "PM 9000",
-                        }),
+                        value: "pasien_monitor_9000",
                         label: "PM 9000",
                       },
                       {
-                        value: JSON.stringify({
-                          device_function: "diagnostic_station_001",
-                          device: "DS 001",
-                        }),
+                        value: "diagnostic_station_001",
                         label: "DS 001",
                       },
                       {
-                        value: JSON.stringify({
-                          device_function: "all",
-                          device: "All Device",
-                        }),
+                        value: "all",
                         label: "All",
                       },
                     ]}
                     onChange={(value) => {
-                      formik.setFieldValue("device_function", value);
+                      setDeviceFunction(value);
                     }}
-                    value={formik.values.device_function}
-                    onTouch={formik.touched.device_function}
-                    onError={formik.errors.device_function}
+                    value={deviceFunction}
                   />
                 </div>
               </div>
               {/* List of devices */}
               <div className="flex flex-col gap-3 overflow-x-auto h-[250px]">
-                {dummyDeviceAvailable.map((device) => (
+                {patientMonitoringDevices?.map((device) => (
                   <div
                     key={device.id}
                     className={`flex flex-col gap-2 border rounded-2xl px-4 py-2 cursor-pointer hover:bg-gray-100 transition duration-150 ease-in-out ${
@@ -216,7 +196,9 @@ export const SelectDevicePatientMonitorModal = ({
                     onClick={() => setSelectedDevice(device)}
                   >
                     <p className="font-semibold">{device.name}</p>
-                    <p className="text-base text-gray-500">{device.ip}</p>
+                    <p className="text-base text-gray-500">
+                      {device.ip_address}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -229,6 +211,7 @@ export const SelectDevicePatientMonitorModal = ({
           : "bg-gray-300 text-gray-600 cursor-not-allowed"
       }
     `}
+              typeof=""
               disabled={!selectedDevice}
               onClick={handleSubmit}
             >

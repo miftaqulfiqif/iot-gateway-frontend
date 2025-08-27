@@ -48,5 +48,15 @@ export class DeviceManagementHandler extends BaseHandler {
     });
   }
 
+  handleGetIpAddressIotGateway() {
+    this.socket.emit("get_ip_address_iot_gateway", {
+      gateway_sn: this.gatewayId,
+      data: {
+        topic: `iotgateway/${this.gatewayId}/ip/get`,
+        payload: "get",
+      },
+    });
+  }
+
   unregister(): void {}
 }

@@ -29,20 +29,20 @@ export const ConnectingDeviceModal = ({
   const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
-    if (selectedDevice?.device) {
-      setDisplayName(selectedDevice.device);
+    if (selectedDevice?.model) {
+      setDisplayName(selectedDevice.model);
     }
   }, [selectedDevice]);
 
   const handleConnectDevice = async (value: any) => {
     try {
       const data = {
-        mac_address: selectedDevice?.mac,
+        mac_address: selectedDevice?.mac_address,
         gateway_id: user?.gateway?.id,
-        model: selectedDevice?.device,
+        model: selectedDevice?.model,
         device_function: selectedDevice?.device_function,
         connection: selectedDevice?.connection,
-        name: value.device_name ? value.device_name : selectedDevice?.device,
+        name: value.device_name ? value.device_name : selectedDevice?.name,
       };
 
       console.log(data);
@@ -112,8 +112,8 @@ export const ConnectingDeviceModal = ({
             <div className="flex flex-row gap-3 items-center">
               <Cpu className="w-10 h-10" />
               <div className="flex flex-col">
-                <p className="text-lg">{selectedDevice.device}</p>
-                <p className="text-sm">{selectedDevice.mac}</p>
+                <p className="text-lg">{selectedDevice.model}</p>
+                <p className="text-sm">{selectedDevice.mac_address}</p>
               </div>
             </div>
             <div className="flex flex-row gap-2 bg-green-300 px-4 py-2 rounded-full">

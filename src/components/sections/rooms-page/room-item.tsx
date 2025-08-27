@@ -1,7 +1,9 @@
+import { RoomsModel } from "@/models/RoomModel";
 import { EllipsisVertical, Trash, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 type Room = {
+  roomName: string;
   roomNumber: string;
   unit: string;
   status: string;
@@ -13,7 +15,7 @@ type Room = {
   }[];
 };
 
-export const RoomItems = ({ room }: { room: Room }) => {
+export const RoomItems = ({ room }: { room: RoomsModel }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -36,15 +38,24 @@ export const RoomItems = ({ room }: { room: Room }) => {
   return (
     <div className="flex flex-col gap-2 bg-white rounded-2xl p-4 shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
       <div className="flex justify-between">
-        <div className="flex gap-2 items-center">
-          <p className="font-bold text-xl">{room.roomNumber}</p>
-          <p>-</p>
-          <p className="bg-green-200 text-green-900 font-bold flex rounded-full px-4 items-center">
-            {room.unit}
-          </p>
+        <div className="flex flex-col gap-2">
+          <p className="font-bold text-lg">{room.name}</p>
+          <div className="flex gap-2 items-center">
+            <p className="bg-green-200 text-green-900 flex rounded-full px-4 font-bold text-xl">
+              {room.number}
+            </p>
+            <p>-</p>
+            <p className="font-bold items-center">{room.type}</p>
+          </div>
         </div>
-        <div className="flex items-center gap-4">
-          <p className="bg-red-200 text-red-900 font-bold flex rounded-full px-4 items-center">
+        <div className="flex items-start   gap-4">
+          <p
+            className={`font-bold flex rounded-full px-4 items-center ${
+              room.status === "full"
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
             {room.status}
           </p>
           <div className="relative" ref={dropdownRef}>
@@ -56,10 +67,7 @@ export const RoomItems = ({ room }: { room: Room }) => {
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
                 <ul className="py-1 text-sm text-gray-700">
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
-                    <a
-                      href={`/room/${room.roomNumber}`}
-                      className="block w-full"
-                    >
+                    <a href={`/room/${room.number}`} className="block w-full">
                       Lihat Detail
                     </a>
                   </li>
@@ -82,7 +90,7 @@ export const RoomItems = ({ room }: { room: Room }) => {
           <p>Capacity</p>
         </div>
         <div className="flex bg-blue-200 font-bold rounded-sm px-2 items-center">
-          <p>{room.capacity.current}</p>
+          <p>{room.capacity.used}</p>
           <p>/</p>
           <p>{room.capacity.total}</p>
         </div>
@@ -107,7 +115,12 @@ export const RoomItems = ({ room }: { room: Room }) => {
                   <div className="flex flex-col">
                     <p className="font-semibold">{patient.name}</p>
                     <p className="text-sm text-gray-500">
-                      Entry: {patient.entryDate}
+                      Entry:{" "}
+                      {new Intl.DateTimeFormat("id-ID", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      }).format(new Date(patient.assigned_at))}
                     </p>
                   </div>
                 </div>

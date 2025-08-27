@@ -65,9 +65,10 @@ export const PatientMonitorPM9000Section = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex gap-2 items-center">
-            <p className="font-bold text-xl">{room.number}</p>
+            <p className="font-bold text-xl mr-4">Merpati</p>
+            <p className="font-bold text-lg">{room.number}</p>
             <p className="font-bold">-</p>
-            <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-xl">
+            <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-lg">
               {room.type}
             </p>
           </div>

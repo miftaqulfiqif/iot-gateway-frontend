@@ -83,7 +83,7 @@ const pm9000 = [
 
 const ds001 = [
   {
-    id: "192.168.2.1",
+    id: "192.168.8.142",
     name: "ACB-423",
     patient_id: {
       id: "1",
@@ -94,14 +94,14 @@ const ds001 = [
         type: "ICU",
       },
     },
-    systolic: 90,
-    diastolic: 95,
-    mean: 22,
-    pulse_rate: 70,
-    temp: 34,
-    spo2: 37,
-    pr_spo2: 39,
-    rr: 39,
+    systolic: 170,
+    diastolic: 100,
+    mean: 90,
+    pulse_rate: 130,
+    temp: 40,
+    spo2: 75,
+    pr_spo2: 125,
+    rr: 50,
     is_crysis: true,
   },
   {

@@ -110,7 +110,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
       place_of_birth: yup.string(),
       date_of_birth: yup.string().required("Date of birth is required"),
       use: yup.string().required("Use is required"),
-      line: yup.string().required("Line is required"),
+      // line: yup.string().required("Line is required"),
       city: yup.string().required("City is required"),
       postal_code: yup.string().required("Postal code is required"),
       country: yup.string().required("Country is required"),
@@ -122,8 +122,6 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
       village: yup.string().required("Village is required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
-
       const data = {
         nik: values.nik,
         name: values.name,

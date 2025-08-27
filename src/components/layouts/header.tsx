@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import { SetCurrentGateway } from "../dropdown/header-set-current-gateway";
 import { useGateway } from "@/hooks/api/use-gateway";
+import { useSocketDeviceManagement } from "@/hooks/socket/utils/SocketDeviceManagement";
+import PPDoctor from "@/assets/imgs/profile-picture-doctor.jpg";
 
 interface NavbarProps {
   className?: string;
@@ -34,6 +36,7 @@ export const Header = ({ className, title }: NavbarProps) => {
     setQuery,
     changeGateway,
   } = useGateway();
+  const { evetGetIpAddressIotGateway } = useSocketDeviceManagement();
 
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState("");
@@ -88,6 +91,11 @@ export const Header = ({ className, title }: NavbarProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleOpen = () => {
+    evetGetIpAddressIotGateway();
+    setIsOpen(!isOpen);
+  };
+
   return (
     <nav className={`h-30 flex items-center ${className}`}>
       <div className="flex flex-row justify-between w-full mx-10">
@@ -98,8 +106,8 @@ export const Header = ({ className, title }: NavbarProps) => {
           {/* Current Gateway */}
           <div ref={dropdownRef} className="relative">
             <div
-              className="flex bg-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-full px-4 py-2 items-center justify-between cursor-pointer w-70"
-              onClick={() => setIsOpen(!isOpen)}
+              className="flex bg-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-full px-4 py-2 items-center justify-between cursor-pointer w-80"
+              onClick={handleOpen}
             >
               <div className="flex gap-4 items-center">
                 <img src={gatewayIcon} alt="" className="w-8 h-8" />
@@ -109,9 +117,13 @@ export const Header = ({ className, title }: NavbarProps) => {
                       ? selectedGateway.name
                       : "Gateway Name"}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    {selectedGateway.id ? selectedGateway.id : "Gateway ID"}
-                  </p>
+                  <div className="flex gap-2 text-sm text-gray-500">
+                    <p className="">
+                      {selectedGateway.id ? selectedGateway.id : "Gateway ID"}
+                    </p>
+                    <p>|</p>
+                    <p>{selectedGateway.ip_address}</p>
+                  </div>
                 </div>
               </div>
               <ChevronDown className="w-6 h-6" />
@@ -138,8 +150,8 @@ export const Header = ({ className, title }: NavbarProps) => {
           {/* Current User */}
           <div className="flex flex-row gap-5 p-5 items-center">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5UtRnIwPFHN2qIv5B3PP5cPMVbLKQYxd8j7eRCElLzErsAJCo4I1jEgAX2iQP-QFu1-M&usqp=CAU"
-              alt=""
+              src={PPDoctor}
+              alt="Gambar Doctor"
               className="w-18 h-18 rounded-full object-cover shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
             />
             <div className="flex flex-col gap-2">

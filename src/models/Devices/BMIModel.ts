@@ -4,7 +4,7 @@ export type BMIModel = {
   mac?: string;
   weight: number;
   age: number;
-  impedence: number;
+  impedance: number;
   bmi: number;
   bodyFat: number;
   muscleMass: number;

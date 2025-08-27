@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { DetailDevice, Devices } from "@/models/DeviceModel";
+import { DetailDevice, Devices, PatientMonitoringDevices } from "@/models/DeviceModel";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
@@ -11,6 +11,9 @@ export const useDevices = () => {
   const { showToast } = useToast();
   const [devices, setDevices] = useState<Devices[]>([]);
   const [detailDevice, setDetailDevice] = useState<DetailDevice>();
+  const [patientMonitoringDevices, setPatientMonitoringDevices] = useState<
+    PatientMonitoringDevices[]
+  >([]);
 
   const getAllDevices = useCallback(async () => {
     try {
@@ -82,14 +85,38 @@ export const useDevices = () => {
     }
   };
 
+  const getPatientMonitoringDevices = useCallback(
+    async (query: string, device_function: string) => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/device-connected/monitor`,
+          {
+            withCredentials: true,
+            params: {
+              gateway_id: user?.gateway?.id,
+              query: query,
+              device_function: device_function,
+            },
+          }
+        );
+        setPatientMonitoringDevices(response.data.data);
+      } catch (error) {
+        console.error("Error fetching device connected:", error);
+      }
+    },
+    []
+  );
+
   return {
     getAllDevices,
     devices,
     detailDevice,
+    patientMonitoringDevices,
     deleteDeviceBluetooth,
     deleteDeviceTcpIP,
     updateDeviceBluetooth,
     updateDeviceTcpIP,
     getDetailDevice,
+    getPatientMonitoringDevices,
   };
 };

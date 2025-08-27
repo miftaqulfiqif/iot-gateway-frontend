@@ -47,36 +47,63 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
       country: "ID",
       rt: "",
       rw: "",
-      province_id: "",
-      regency_id: "",
-      district_id: "",
-      village_id: "",
+      province: null,
+      regency: null,
+      district: null,
+      village: null,
     },
     validationSchema: yup.object().shape({
       name: yup.string().required("Name is required"),
       nik: yup.string().required("NIK is required"),
       no_kk: yup.string(),
       gender: yup.string().required("Gender is required"),
-      address: yup.string(),
       phone: yup.number(),
       place_of_birth: yup.string(),
       date_of_birth: yup.string().required("Date of birth is required"),
       use: yup.string().required("Use is required"),
-      line: yup.string().required("Line is required"),
+      // line: yup.string().required("Line is required"),
       city: yup.string().required("City is required"),
       postal_code: yup.string().required("Postal code is required"),
       country: yup.string().required("Country is required"),
       rt: yup.string().required("RT is required"),
       rw: yup.string().required("RW is required"),
-      province_id: yup.string().required("Province is required"),
-      regency_id: yup.string().required("Regency is required"),
-      district_id: yup.string().required("District is required"),
-      village_id: yup.string().required("Village is required"),
+      province: yup.string().required("Province is required"),
+      regency: yup.string().required("Regency is required"),
+      district: yup.string().required("District is required"),
+      village: yup.string().required("Village is required"),
     }),
 
     onSubmit: (values, { resetForm }) => {
-      patientSelected(values);
-      resetForm();
+      const data = {
+        nik: values.nik,
+        name: values.name,
+        no_kk: values.no_kk,
+        gender: values.gender,
+        phone: values.phone,
+        place_of_birth: values.place_of_birth,
+        date_of_birth: values.date_of_birth,
+        address: {
+          use: values.use,
+          line: values.line,
+          city: values.city,
+          postal_code: values.postal_code,
+          country: values.country,
+          rt: values.rt,
+          rw: values.rw,
+          province_id: values.province,
+          regency_id: values.regency,
+          district_id: values.district,
+          village_id: values.village,
+        },
+      };
+
+      try {
+        console.log("Submit Data:", values);
+        patientSelected(values);
+        resetForm();
+      } catch (error) {
+        console.error("Submit Error", error);
+      }
     },
   });
 
@@ -185,16 +212,31 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
           <p>Province</p>
           <ProvinceSelect
             value={selectedProvince}
-            onChange={setSelectedProvince}
+            onChange={(option) => {
+              setSelectedProvince(option);
+              formik.setFieldValue("province", option?.value || "");
+            }}
+            onBlur={() => formik.setFieldTouched("province", true)}
           />
+          {formik.touched.province && formik.errors.province && (
+            <p className="text-red-500 text-sm">{formik.errors.province}</p>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <p>City</p>
           <CitySelect
             provinceId={selectedProvince?.value}
             value={selectedCity}
-            onChange={setSelectedCity}
+            onChange={(option) => {
+              setSelectedCity(option);
+              formik.setFieldValue("regency", option?.value || "");
+              formik.setFieldValue("city", option?.value || "");
+            }}
+            onBlur={() => formik.setFieldTouched("regency", true)}
           />
+          {formik.touched.regency && formik.errors.regency && (
+            <p className="text-red-500 text-sm">{formik.errors.regency}</p>
+          )}
         </div>
         <div className="flex flex-row gap-4 justify-between w-full">
           <div className="flex flex-col gap-2 w-1/2">
@@ -202,8 +244,15 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
             <DistrictSelect
               regencyId={selectedCity?.value}
               value={selectedDistrict}
-              onChange={setSelectedDistrict}
+              onChange={(option) => {
+                setSelectedDistrict(option);
+                formik.setFieldValue("district", option?.value || "");
+              }}
+              onBlur={() => formik.setFieldTouched("district", true)}
             />
+            {formik.touched.district && formik.errors.district && (
+              <p className="text-red-500 text-sm">{formik.errors.district}</p>
+            )}
           </div>
           <div className="w-1/2">
             <InputText
@@ -222,14 +271,21 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
           <VillageSelect
             districtId={selectedDistrict?.value}
             value={selectedVillage}
-            onChange={setSelectedVillage}
+            onChange={(option) => {
+              setSelectedVillage(option);
+              formik.setFieldValue("village", option?.value || "");
+            }}
+            onBlur={() => formik.setFieldTouched("village", true)}
           />
+          {formik.touched.village && formik.errors.village && (
+            <p className="text-red-500 text-sm">{formik.errors.village}</p>
+          )}
         </div>
 
         <div className="flex flex-row gap-4 justify-between w-full">
           <div className="w-3/4">
             <InputText
-              name="Line"
+              name="line"
               label="Line"
               placeholder="Input Line"
               onChange={formik.handleChange}
