@@ -1,5 +1,5 @@
 import { useToast } from "@/context/ToastContext";
-import { RoomsModel } from "@/models/RoomModel";
+import { BedsModel, DetailRoom, RoomsModel } from "@/models/RoomModel";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
@@ -8,6 +8,9 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export const useRooms = () => {
   const { showToast } = useToast();
   const [rooms, setRooms] = useState<RoomsModel[]>([]);
+  const [beds, setBeds] = useState<BedsModel[]>([]);
+  const [detailRoom, setDetailRoom] = useState<DetailRoom | null>(null);
+  const [patientRoom, setPatientRoom] = useState<any>(null);
 
   const getAllRooms = useCallback(async () => {
     try {
@@ -17,6 +20,48 @@ export const useRooms = () => {
       setRooms(response.data.data);
     } catch (error) {
       console.error("Error fetching rooms:", error);
+      throw error;
+    }
+  }, []);
+
+  const getPatientRooms = useCallback(
+    async (
+      patientId: string,
+      setShowSelectRoomModal: (value: boolean) => void
+    ) => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/patient-room/patient/${patientId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        setPatientRoom(response.data.data);
+        setShowSelectRoomModal(false);
+      } catch (error) {
+        setPatientRoom(null);
+
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          setShowSelectRoomModal(true);
+        }
+
+        console.error("Error fetching patient rooms:", error);
+      }
+    },
+    []
+  );
+
+  const getDetailRoom = useCallback(async (roomId: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/patient-rooms/detail/${roomId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setDetailRoom(response.data.data);
+    } catch (error) {
+      console.error("Error fetching room details:", error);
       throw error;
     }
   }, []);
@@ -46,5 +91,31 @@ export const useRooms = () => {
     }
   };
 
-  return { rooms, getAllRooms, createNewRoom };
+  const getBeds = useCallback(async (roomId: string, isAvailable: string) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/beds-by-room-id/${roomId}`,
+        {
+          withCredentials: true,
+          params: { is_available: isAvailable },
+        }
+      );
+      setBeds(response.data.data);
+    } catch (error) {
+      console.error("Error fetching beds:", error);
+      throw error;
+    }
+  }, []);
+
+  return {
+    rooms,
+    beds,
+    detailRoom,
+    patientRoom,
+    getBeds,
+    getAllRooms,
+    getDetailRoom,
+    createNewRoom,
+    getPatientRooms,
+  };
 };

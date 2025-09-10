@@ -1,6 +1,10 @@
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { DetailDevice, Devices, PatientMonitoringDevices } from "@/models/DeviceModel";
+import {
+  DetailDevice,
+  Devices,
+  PatientMonitoringDevices,
+} from "@/models/DeviceModel";
 import axios from "axios";
 import { useCallback, useState } from "react";
 

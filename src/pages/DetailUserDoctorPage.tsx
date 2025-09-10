@@ -11,6 +11,7 @@ import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
 import { format } from "date-fns";
+import { useUsers } from "@/hooks/api/use-user";
 
 const state = [
   {
@@ -114,6 +115,7 @@ const dummyMeasurementActivity = [
 
 const DetailUserDoctorPage = () => {
   const { userId } = useParams();
+  const { getDetailUser, detailUser } = useUsers();
   const stateRef = useRef(state);
   const { historiesDigitProIDA, fetchDataIDAByDoctorId, currentPageIDA } =
     useDigitProIDA();
@@ -126,10 +128,14 @@ const DetailUserDoctorPage = () => {
     useDigitProBMI();
   const { historiesDoppler, fetchDataDopplerByDoctorId, currentPageDoppler } =
     useDoppler();
-
   const [selectedDevice, setSelectedDevice] = useState<string | null>(
     "digit-pro-baby"
   );
+
+  useEffect(() => {
+    getDetailUser(userId!);
+  }, [userId]);
+  
   const [totalPageState, setTotalPageState] = useState<{
     [key: string]: number;
   }>({

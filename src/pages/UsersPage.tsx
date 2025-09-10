@@ -9,8 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUsers } from "@/hooks/api/use-user";
 import { Funnel, Search, UserRoundPlus } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Dummy Admin
 const dummyUsers = [
@@ -77,6 +78,9 @@ const role = [
 ];
 
 export const UsersPage = () => {
+
+  const {users, getAllUsers} = useUsers();
+  
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -84,6 +88,10 @@ export const UsersPage = () => {
   const filterRef = useRef<HTMLDivElement>(null);
   const [userSelected, setUserSelected] = useState(null);
 
+  useEffect(() => {
+    getAllUsers(1,10,"")
+  }, [limit, search]) 
+  
   const handleChangeShowTable = (value: string) => {
     alert(value);
   };
@@ -183,7 +191,7 @@ export const UsersPage = () => {
               {/* Table */}
               {!userSelected && (
                 <TableAdminUsers
-                  data={dummyUsers}
+                  data={users}
                   goToPreviousPage={() => {}}
                   goToNextPage={() => {}}
                   goToPage={(page) => console.log("Go to page", page)}

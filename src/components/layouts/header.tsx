@@ -113,16 +113,16 @@ export const Header = ({ className, title }: NavbarProps) => {
                 <img src={gatewayIcon} alt="" className="w-8 h-8" />
                 <div className="flex flex-col">
                   <p className="font-bold">
-                    {selectedGateway.name
-                      ? selectedGateway.name
-                      : "Gateway Name"}
+                    {selectedGateway?.name
+                      ? selectedGateway?.name
+                      : " -- "}
                   </p>
                   <div className="flex gap-2 text-sm text-gray-500">
                     <p className="">
-                      {selectedGateway.id ? selectedGateway.id : "Gateway ID"}
+                      {selectedGateway?.id ? selectedGateway?.id : " -- "}
                     </p>
                     <p>|</p>
-                    <p>{selectedGateway.ip_address}</p>
+                    <p>{selectedGateway?.ip_address}</p>
                   </div>
                 </div>
               </div>

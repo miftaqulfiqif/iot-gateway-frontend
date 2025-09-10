@@ -11,17 +11,19 @@ export type VillageOption = {
 };
 
 interface VillageSelectProps {
+  name: string;
   districtId?: string;
   onChange: (selectedVillage: VillageOption | null) => void;
   value: VillageOption | null;
   onBlur?: () => void;
+  disabled?: boolean;
 }
 
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
     borderRadius: "0.75rem",
-    backgroundColor: "#f3f4f6",
+    backgroundColor: state.isDisabled ? "#f3f4f6" : "#ffffffff",
     borderColor: state.isFocused ? "#2563eb" : "#d1d5db",
     boxShadow: state.isFocused ? "0 0 0 1px #2563eb" : "none",
     "&:hover": {
@@ -45,15 +47,17 @@ const customStyles = {
 };
 
 const VillageSelect: React.FC<VillageSelectProps> = ({
+  name,
   districtId,
   onChange,
   value,
   onBlur,
+  disabled,
 }) => {
   const [options, setOptions] = useState<VillageOption[]>([]);
   const [inputValue, setInputValue] = useState("");
 
-  const fetchCities = async (search: string) => {
+  const fetchVillage = async (search: string) => {
     try {
       const response = await axios.get(`${apiUrl}/api/village`, {
         withCredentials: true,
@@ -77,7 +81,7 @@ const VillageSelect: React.FC<VillageSelectProps> = ({
   // Memoized debounced function
   const debouncedFetch = useCallback(
     debounce((search: string) => {
-      fetchCities(search);
+      fetchVillage(search);
     }, 500),
     [districtId]
   );
@@ -94,12 +98,13 @@ const VillageSelect: React.FC<VillageSelectProps> = ({
   // Fetch all province options when provinceId changes and input kosong
   useEffect(() => {
     if (districtId && inputValue.length === 0) {
-      fetchCities("");
+      fetchVillage("");
     }
   }, [districtId]);
 
   return (
     <Select
+      name={name}
       styles={customStyles}
       value={value}
       onChange={onChange}
@@ -114,9 +119,10 @@ const VillageSelect: React.FC<VillageSelectProps> = ({
       noOptionsMessage={() => "Villlage not found"}
       onMenuOpen={() => {
         if (options.length === 0) {
-          fetchCities("");
+          fetchVillage("");
         }
       }}
+      isDisabled={disabled}
     />
   );
 };

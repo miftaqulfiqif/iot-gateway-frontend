@@ -211,10 +211,20 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
         <div className="flex flex-col gap-2">
           <p>Province</p>
           <ProvinceSelect
+            name="province"
             value={selectedProvince}
             onChange={(option) => {
               setSelectedProvince(option);
               formik.setFieldValue("province", option?.value || "");
+              if (option !== selectedProvince) {
+                setSelectedCity(null);
+                setSelectedDistrict(null);
+                setSelectedVillage(null);
+                formik.setFieldValue("regency", null);
+                formik.setFieldValue("city", null);
+                formik.setFieldValue("district", null);
+                formik.setFieldValue("village", null);
+              }
             }}
             onBlur={() => formik.setFieldTouched("province", true)}
           />
@@ -225,14 +235,22 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
         <div className="flex flex-col gap-2">
           <p>City</p>
           <CitySelect
+            name="city"
             provinceId={selectedProvince?.value}
             value={selectedCity}
             onChange={(option) => {
               setSelectedCity(option);
               formik.setFieldValue("regency", option?.value || "");
               formik.setFieldValue("city", option?.value || "");
+              if (option !== selectedCity) {
+                setSelectedDistrict(null);
+                setSelectedVillage(null);
+                formik.setFieldValue("district", null);
+                formik.setFieldValue("village", null);
+              }
             }}
             onBlur={() => formik.setFieldTouched("regency", true)}
+            disabled={!selectedProvince}
           />
           {formik.touched.regency && formik.errors.regency && (
             <p className="text-red-500 text-sm">{formik.errors.regency}</p>
@@ -242,13 +260,19 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
           <div className="flex flex-col gap-2 w-1/2">
             <p>District</p>
             <DistrictSelect
+              name="district"
               regencyId={selectedCity?.value}
               value={selectedDistrict}
               onChange={(option) => {
                 setSelectedDistrict(option);
                 formik.setFieldValue("district", option?.value || "");
+                if (option !== selectedDistrict) {
+                  setSelectedVillage(null);
+                  formik.setFieldValue("village", null);
+                }
               }}
               onBlur={() => formik.setFieldTouched("district", true)}
+              disabled={!selectedCity}
             />
             {formik.touched.district && formik.errors.district && (
               <p className="text-red-500 text-sm">{formik.errors.district}</p>
@@ -269,13 +293,15 @@ export const CreatePatientContent = ({ patientSelected }: Props) => {
         <div className="flex flex-col gap-2">
           <p>Village</p>
           <VillageSelect
+            name="village"
             districtId={selectedDistrict?.value}
-            value={selectedVillage}
+            value={!selectedCity ? null : selectedVillage}
             onChange={(option) => {
               setSelectedVillage(option);
               formik.setFieldValue("village", option?.value || "");
             }}
             onBlur={() => formik.setFieldTouched("village", true)}
+            disabled={!selectedDistrict}
           />
           {formik.touched.village && formik.errors.village && (
             <p className="text-red-500 text-sm">{formik.errors.village}</p>

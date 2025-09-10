@@ -1,5 +1,8 @@
 import MainLayout from "@/components/layouts/main-layout";
 import UpdateRoomModal from "@/components/modals/room_page/update-room-modal";
+import { useRooms } from "@/hooks/api/use-room";
+import { format } from "date-fns";
+import { de } from "date-fns/locale";
 import {
   User,
   Bed,
@@ -10,7 +13,8 @@ import {
   History,
   SquarePen,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const dummyData = {
   room: {
@@ -51,40 +55,51 @@ const dummyData = {
 export default function DetailRoomPage() {
   const { room, stats, patients, activityLog } = dummyData;
 
+  const { roomId } = useParams();
+
+  const { detailRoom, getDetailRoom } = useRooms();
   const [updateRoomModal, setUpdateRoomModal] = useState(false);
+
+  useEffect(() => {
+    getDetailRoom(roomId!);
+  }, []);
 
   return (
     <MainLayout title="Detail Room" state="Rooms">
       <div className="p-6 w-full mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">
-            Room {room.number} - {room.type}
-          </h1>
+          <div className="flex gap-2 items-center">
+            <h1 className="text-2xl font-bold">
+              Room {detailRoom?.detail?.name} - {detailRoom?.detail?.number}
+            </h1>
+            <p className="bg-blue-300 text-blue-900 text-xl px-4 py-1 rounded-full font-bold">
+              {detailRoom?.detail?.type}
+            </p>
+          </div>
           <span
             className={`px-4 py-1 rounded-full font-semibold text-white 
-          ${room.status === "Full" ? "bg-red-500" : "bg-green-500"}`}
+          ${
+            detailRoom?.detail?.status === "full"
+              ? "bg-red-500"
+              : "bg-green-500"
+          }`}
           >
-            {room.status}
+            {detailRoom?.detail?.status}
           </span>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <StatCard
             icon={<Bed className="w-6 h-6" />}
             title="Capacity"
-            value={`${room.occupied}/${room.capacity}`}
+            value={`${detailRoom?.utils?.capacity?.total_patient}/${detailRoom?.utils?.capacity?.room_capacity}`}
           />
           <StatCard
             icon={<Clock className="w-6 h-6" />}
             title="Admissions Today"
-            value={stats.admittedToday}
-          />
-          <StatCard
-            icon={<Activity className="w-6 h-6" />}
-            title="Observations Today"
-            value={stats.observation}
+            value={detailRoom?.utils?.admissions_today}
           />
         </div>
         <div className="flex gap-6">
@@ -97,25 +112,22 @@ export default function DetailRoomPage() {
                   <h2 className="text-lg font-semibold"> Room Information</h2>
                 </div>
                 <div
-                  className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-full cursor-pointer"
+                  className="flex items-center gap-2 bg-blue-500 text-white px-2 py-1 rounded-full cursor-pointer"
                   onClick={() => setUpdateRoomModal(true)}
                 >
-                  <SquarePen className="w-6 h-6 " />
-                  <h2 className="text-lg font-semibold"> Edit room</h2>
+                  <SquarePen className="w-4 h-4 " />
+                  <h2 className="text-base"> Edit room</h2>
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-2 text-gray-700">
                 <p>
-                  <strong>Room Number:</strong> {room.number}
+                  <strong>Room Name :</strong> {detailRoom?.detail?.name}
                 </p>
                 <p>
-                  <strong>Nurse Manager:</strong> {room.nurseManager.name}
+                  <strong>Room Number :</strong> {detailRoom?.detail?.number}
                 </p>
                 <p>
-                  <strong>Type:</strong> {room.type}
-                </p>
-                <p>
-                  <strong>Doctor:</strong> {room.doctor.name}
+                  <strong>Type :</strong> {detailRoom?.detail?.type}
                 </p>
               </div>
             </div>
@@ -124,35 +136,54 @@ export default function DetailRoomPage() {
             <div>
               <div className="flex flex-row gap-2 items-center mb-4 mt-10">
                 <Users className="w-6 h-6 text-blue-600" />
-                <h2 className="text-lg font-semibold">Patient List</h2>
+                <h2 className="text-lg font-semibold">Bed List</h2>
               </div>
               <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4 bg-white p-8 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-                {patients.map((p, i) => (
-                  <div
-                    key={i}
-                    className="bg-white p-4 rounded-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex justify-between items-center"
-                  >
-                    <div className="flex gap-3 items-start">
-                      <User className="w-6 h-6 text-blue-500 mt-1" />
-                      <div>
-                        <p className="font-semibold">{p.name}</p>
-                        <p className="text-sm text-gray-500">
-                          Entry: {p.admittedAt}
-                        </p>
+                {detailRoom?.patients.length ? (
+                  detailRoom?.patients?.map((patient) => (
+                    <div
+                      key={patient.id}
+                      className="bg-white p-4 rounded-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+                    >
+                      <div className="flex items-center gap-2 border w-fit px-3 py-1 rounded-full mb-2">
+                        <Bed className="w-6 h-6 text-blue-500" />
+                        <p className="font-bold">{patient.bed_number}</p>
+                      </div>
+                      <div className="flex justify-between items-center mt-1">
+                        <div className="flex gap-3 items-center">
+                          <User className="w-6 h-6 text-blue-500 mt-1" />
+                          <div>
+                            <p className="font-semibold">
+                              {patient.patient?.name || " -- "}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Entry:{" "}
+                              {patient.patient?.assigned_at
+                                ? format(
+                                    new Date(patient.patient.assigned_at),
+                                    "dd MMMM yyyy"
+                                  )
+                                : " --/--/--"}
+                            </p>
+                          </div>
+                        </div>
+                        <span
+                          className={`text-sm px-3 py-1 rounded-full font-semibold ${
+                            patient.status === "active"
+                              ? "bg-green-200 text-green-800"
+                              : "bg-yellow-200 text-yellow-800"
+                          }`}
+                        >
+                          {patient.status}
+                        </span>
                       </div>
                     </div>
-                    <span
-                      className={`text-sm font-medium px-3 py-1 rounded-full
-                ${
-                  p.status === "Aktif"
-                    ? "bg-green-200 text-green-800 font-semibold"
-                    : "bg-yellow-200 text-yellow-800 font-semibold"
-                }`}
-                    >
-                      {p.status}
-                    </span>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-gray-500">
+                    No patients assigned to this room.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -163,12 +194,21 @@ export default function DetailRoomPage() {
                 <History className="w-6 h-6 text-blue-600" />
                 <h2 className="text-lg font-semibold">Recent Activity</h2>
               </div>
-              {activityLog.map((log, idx) => (
-                <p key={idx} className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-blue-600" />
-                  <strong>{log.time}</strong> - {log.desc}
+              {detailRoom?.recent_activities.length ? (
+                detailRoom?.recent_activities.map((log) => (
+                  <p key={log.id} className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-blue-600" />
+                    <strong>
+                      {format(new Date(log.timestamp), "dd/MM/yyyy")}
+                    </strong>
+                    - {log.activity}
+                  </p>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center">
+                  No activity log found for this room.
                 </p>
-              ))}
+              )}
             </div>
           </div>
         </div>

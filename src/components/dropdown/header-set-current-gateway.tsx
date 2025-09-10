@@ -1,4 +1,4 @@
-import { Check, Search } from "lucide-react";
+import { Check, Plus, Search } from "lucide-react";
 import gatewayIcon from "@/assets/icons/gateway.png";
 import {
   AlertDialog,
@@ -58,6 +58,7 @@ export const SetCurrentGateway = ({
               className="border-2 px-4 py-2 rounded-2xl focus:outline-blue-500 transition duration-150 ease-in-out"
               onChange={(e) => setQuery(e.target.value)}
             />
+            <Plus className="bg-blue-500 text-white rounded" />
           </div>
         </div>
 

@@ -11,6 +11,7 @@ import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
 import { format } from "date-fns";
+import { useUsers } from "@/hooks/api/use-user";
 
 const state = [
   {
@@ -113,6 +114,9 @@ const dummyMeasurementActivity = [
 
 const DetailUserAdminPage = () => {
   const { userId } = useParams();
+
+  const {getDetailUser, detailUser} = useUsers()
+  
   const stateRef = useRef(state);
   const { historiesDigitProIDA, fetchDataIDAByDoctorId, currentPageIDA } =
     useDigitProIDA();
@@ -125,10 +129,16 @@ const DetailUserAdminPage = () => {
     useDigitProBMI();
   const { historiesDoppler, fetchDataDopplerByDoctorId, currentPageDoppler } =
     useDoppler();
-
   const [selectedDevice, setSelectedDevice] = useState<string | null>(
     "digit-pro-baby"
   );
+
+
+
+  useEffect(() => {
+    getDetailUser(userId!);
+  }, [userId]);
+
   const [totalPageState, setTotalPageState] = useState<{
     [key: string]: number;
   }>({
@@ -203,12 +213,12 @@ const DetailUserAdminPage = () => {
               <div className="flex flex-row gap-4 items-center">
                 <div className="w-30 h-30 rounded-full bg-gray-400"></div>
                 <div className="flex flex-col gap-2">
-                  <p className="text-xl font-bold">{dummyUser.name}</p>
-                  <p>{userId}</p>
+                  <p className="text-xl font-bold">{detailUser?.detail.name}</p>
+                  <p>{detailUser?.detail.email}</p>
                   <div className="flex items-center gap-2">
                     <p>username : </p>
                     <p className="bg-blue-400 rounded-full w-fit px-4 py-2">
-                      {dummyUser.username}
+                      {detailUser?.detail.username}
                     </p>
                   </div>
                 </div>
@@ -224,8 +234,8 @@ const DetailUserAdminPage = () => {
             <div className="flex flex-row gap-2">
               <div className="w-full bg-white shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl p-4 text-black">
                 <p>Status</p>
-                <p className="font-bold bg-green-200 text-green-900 w-fit px-4 rounded-full">
-                  {dummyUser.status}
+                <p className={`font-bold w-fit px-4 rounded-full ${detailUser?.is_active ? "bg-green-200 text-green-900" : "bg-gray-200 text-gray-900"}`}>
+                  {detailUser?.is_active ? "Active" : "Inactive"}
                 </p>
               </div>
             </div>
@@ -236,29 +246,29 @@ const DetailUserAdminPage = () => {
               <div className="flex">
                 <p className="w-30">Email</p>
                 <p className="w-3 ">:</p>
-                <p>{dummyUser.email}</p>
+                <p>{detailUser?.detail.email}</p>
               </div>
               <div className="flex">
                 <p className="w-30">Phone</p>
                 <p className="w-3 ">:</p>
-                <p>{dummyUser.phone}</p>
+                <p>{detailUser?.detail.phone}</p>
               </div>
               <div className="flex">
                 <p className="w-30">Place of Birth</p>
                 <p className="w-3 ">:</p>
-                <p>{dummyUser.place_of_birth}</p>
+                <p>{detailUser?.detail.place_of_birth ?? "--"}</p>
               </div>
               <div className="flex">
                 <p className="w-30">Date of Birth</p>
                 <p className="w-3 ">:</p>
                 <p>
-                  {format(new Date(dummyUser.date_of_birth), "dd MMMM yyyy")}
+                  {detailUser?.detail.date_of_birth ? format(new Date(detailUser?.detail.date_of_birth), "dd MMMM yyyy") : "--"}
                 </p>
               </div>
               <div className="flex h-14">
                 <p className="w-30">Address</p>
                 <p className="w-3 ">:</p>
-                <p className="w-[490px]">{dummyUser.address}</p>
+                <p className="w-[490px]">{detailUser?.detail.address.line ?? ""}</p>
               </div>
             </div>
           </div>
@@ -274,19 +284,22 @@ const DetailUserAdminPage = () => {
             </div>
             {/* List patient */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[350px] pr-2">
-              {dummyRecentPatient.map((item) => (
+              {detailUser?.recent_patients.map((item) => (
                 <div key={item.id} className="flex items-center gap-3">
                   <div className="w-18 h-18 rounded-full bg-gray-400"></div>
                   <div className="flex flex-col">
                     <p className="font-semibold font-sm">{item.patient_name}</p>
                     <div className="border px-2 py-1 rounded-full flex items-center mt-1 w-fit">
                       <p className="text-xs">
-                        {format(new Date(item.date), "dd-MM-yyyy")}
+                        {format(new Date(item.timestamp), "dd-MM-yyyy")}
                       </p>
                     </div>
                   </div>
                 </div>
               ))}
+              {detailUser?.recent_patients.length === 0 && (
+                <p className="text-gray-500 text-sm mx-auto">No recent patients</p>
+              )}
             </div>
           </div>
           {/* Measurement Activity */}
@@ -299,7 +312,7 @@ const DetailUserAdminPage = () => {
             </div>
             {/* List */}
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[350px] pr-2">
-              {dummyMeasurementActivity.map((item) => (
+              {detailUser?.measurement_activity.map((item) => (
                 <div
                   key={item.id}
                   className="flex items-center border p-4 rounded-2xl"
@@ -320,6 +333,9 @@ const DetailUserAdminPage = () => {
                   <div className="flex flex-col"></div>
                 </div>
               ))}
+              {detailUser?.measurement_activity.length === 0 && (
+                <p className="text-gray-500 text-sm mx-auto">No measurement activity</p>
+              )}
             </div>
           </div>
         </div>

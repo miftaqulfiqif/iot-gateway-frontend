@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SettingGateway } from "./gateway-setting";
 import { PasswordSetting } from "./password-setting";
 import { UserProfileSetting } from "./user-profile-setting";
 import { HospitalProfileSetting } from "./hospital-profile-setting";
 import { LanguageSetting } from "./language-setting";
 import { SatusehatSetting } from "./satusehat-setting";
+import { useGateway } from "@/hooks/api/use-gateway";
 
 const dummyCurrentGateway = {
   id: "GW001",
@@ -76,9 +77,12 @@ export const MenuItems = ({
   setAddGatewayModal,
 }: MenuItemsProps) => {
   // Gateways
-  const [currentGateway, setCurrentGateway] = useState(dummyCurrentGateway);
-  const [gateways, setGateways] = useState(dummyGateways);
+  const {gateways, getGateways, selectedGateway, setSelectedGateway, changeGateway} = useGateway()
 
+  useEffect(() => {
+    getGateways();
+  },[])
+  
   return (
     <div
       key={animationKey}
@@ -96,8 +100,8 @@ export const MenuItems = ({
       {state === "Gateways" && (
         <SettingGateway
           setAddGatewayModal={setAddGatewayModal}
-          setCurrentGateway={setCurrentGateway}
-          currentGateway={currentGateway}
+          setCurrentGateway={changeGateway}
+          currentGateway={selectedGateway}
           gateways={gateways}
         />
       )}

@@ -3,7 +3,7 @@ import DeviceConnected from "../components/ui/device-connected";
 
 const Dashboard = () => {
   const handleClickDevice = () => {
-    alert("OK");
+    alert("SUDAH BUKAN OKE");
   };
   return (
     <MainLayout title="Dashboard" state="Dashboard">

@@ -67,7 +67,7 @@ export const RoomItems = ({ room }: { room: RoomsModel }) => {
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
                 <ul className="py-1 text-sm text-gray-700">
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
-                    <a href={`/room/${room.number}`} className="block w-full">
+                    <a href={`/room/${room.id}`} className="block w-full">
                       Lihat Detail
                     </a>
                   </li>

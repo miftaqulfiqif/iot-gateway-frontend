@@ -11,17 +11,19 @@ export type DistrictOption = {
 };
 
 interface DistrictSelectProps {
+  name: string;
   regencyId?: string;
   onChange: (selectedDistrict: DistrictOption | null) => void;
   value: DistrictOption | null;
   onBlur?: () => void;
+  disabled?: boolean;
 }
 
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
     borderRadius: "0.75rem",
-    backgroundColor: "#f3f4f6",
+    backgroundColor: state.isDisabled ? "#f3f4f6" : "#ffffffff",
     borderColor: state.isFocused ? "#2563eb" : "#d1d5db",
     boxShadow: state.isFocused ? "0 0 0 1px #2563eb" : "none",
     "&:hover": {
@@ -45,10 +47,12 @@ const customStyles = {
 };
 
 const DistrictSelect: React.FC<DistrictSelectProps> = ({
+  name,
   regencyId,
   onChange,
   value,
   onBlur,
+  disabled
 }) => {
   const [options, setOptions] = useState<DistrictOption[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -100,6 +104,7 @@ const DistrictSelect: React.FC<DistrictSelectProps> = ({
 
   return (
     <Select
+      name={name}
       styles={customStyles}
       value={value}
       onChange={onChange}
@@ -117,6 +122,7 @@ const DistrictSelect: React.FC<DistrictSelectProps> = ({
           fetchCities("");
         }
       }}
+      isDisabled={disabled}
     />
   );
 };

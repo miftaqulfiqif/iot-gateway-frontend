@@ -14,6 +14,8 @@ import { PatientMonitorDS001Section } from "@/components/sections/patient_monito
 import { SelectPatient } from "@/components/modals/select-patient-modal";
 import { SelectDevicePatientMonitorModal } from "@/components/modals/select-device-patient-monitor-modal";
 import { is } from "date-fns/locale";
+import { SelectPatientRoomModal } from "@/components/modals/select-patient-room-modal";
+import { AddDevicePatientMonitorModal } from "@/components/modals/add-device-patient-monitor-modal";
 
 const pm9000 = [
   {
@@ -155,6 +157,7 @@ const PatientMonitorPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [showSelectDeviceModal, setShowSelectDeviceModal] = useState(false);
+  const [showSelectRoomModal, setShowSelectRoomModal] = useState(false);
   const [patient, setPatient] = useState<any>(null);
   const [state, setState] = useState("barcode");
   const [limit, setLimit] = useState(10);
@@ -344,7 +347,12 @@ const PatientMonitorPage = () => {
           </div>
         </div>
       </div>
-      <SelectPatient
+      <AddDevicePatientMonitorModal
+        isActive={showAddPatientModal}
+        setNonactive={() => setShowAddPatientModal(false)}
+        stateSidebar="Patient Monitor"
+      />
+      {/* <SelectPatient
         isActive={showAddPatientModal}
         setNonactive={() => setShowAddPatientModal(false)}
         state={state}
@@ -353,6 +361,20 @@ const PatientMonitorPage = () => {
         openCreateModal={() => setState("create")}
         patientSelected={(patient) => setPatient(patient)}
         stateSidebar={"Patient Monitor"}
+      /> */}
+      <SelectPatientRoomModal
+        isActive={showSelectRoomModal}
+        setInactive={() => {
+          setShowSelectRoomModal(false);
+          setShowAddPatientModal(true);
+          setPatient(null);
+        }}
+        closeAllModals={() => {
+          setShowSelectRoomModal(false);
+          setShowAddPatientModal(false);
+        }}
+        patientSelected={patient}
+        setShowSelectDeviceModal={setShowSelectDeviceModal}
       />
       <SelectDevicePatientMonitorModal
         isActive={showSelectDeviceModal}
@@ -366,6 +388,8 @@ const PatientMonitorPage = () => {
           setShowAddPatientModal(false);
         }}
         patientSelected={patient}
+        setShowSelectRoomModal={setShowSelectRoomModal}
+        setShowSelectDeviceModal={setShowSelectDeviceModal}
       />
     </MainLayout>
   );

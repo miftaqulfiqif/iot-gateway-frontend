@@ -32,7 +32,7 @@ export function InputDate(props: InputDateProps) {
         name={name}
         onChange={onChange}
         value={value}
-        className="bg-gray-100 text-sm px-4 py-2 rounded-lg w-fit disabled:bg-slate-200"
+            className={`text-sm px-4 py-2 rounded-lg w-full disabled:bg-slate-200 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150 ease-in-out ${disabled ? "bg-gray-100" : "bg-white"}`}
       />
       {onTouch && onError && <p className="text-sm text-red-500">{onError}</p>}
     </label>
