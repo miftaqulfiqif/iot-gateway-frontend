@@ -16,7 +16,7 @@ export const UserProfileSetting = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [ihsNumber, setIhsNumber] = useState(0);
+  const [ihsNumber, setIhsNumber] = useState("");
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -56,7 +56,7 @@ export const UserProfileSetting = () => {
           />
           <div className="flex flex-col gap-2 ">
             <div
-              className="border-2 border-[#ECECEC] rounded-xl px-6 py-2 w-fit cursor-pointer"
+              className="rounded-xl px-6 py-2 w-fit cursor-pointer bg-blue-400 text-white"
               onClick={() => fileInputRef.current?.click()}
             >
               <p>Change new image</p>
@@ -67,25 +67,24 @@ export const UserProfileSetting = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col">
         <p>Name</p>
-        <div className="flex bg-[#ECECEC] rounded-xl px-6 py-4 gap-4">
-          <img src={person} className="w-8 h-8" alt="" />
-          <input
-            type="text"
-            name="name"
-            placeholder={user?.name || "Input your text name here"}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full outline-none"
-          />
-        </div>
+        <InputText
+          name="name"
+          type="text"
+          placeholder={user?.name || "Input your name here"}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full outline-none"
+          value={name}
+          onTouch={() => {}}
+        />
       </div>
       <hr className="border-1 border-gray-300 mt-4" />
       <div className="w-full">
         <p className="font-bold text-xl mb-4">SATUSEHAT</p>
         <div className="flex flex-row gap-2">
           <InputText
-            type="number"
+            type="text"
             label="IHS Number "
             name="longitude"
             placeholder="Input your IHS Number here"
@@ -93,7 +92,7 @@ export const UserProfileSetting = () => {
             onTouch={""}
             onError={""}
             onChange={(e) => {
-              setIhsNumber(parseInt(e.target.value));
+              setIhsNumber(e.target.value);
             }}
           />
         </div>

@@ -56,8 +56,6 @@ export default function UpdateRoomModal({
       number: room.number,
       type: room.type,
       capacity: room.capacity,
-      nurseManager: room.nurseManager.id || "",
-      doctor: room.doctor.id || "",
     },
     validationSchema: yup.object().shape({
       number: yup.string().required("Room number is required"),
@@ -67,8 +65,6 @@ export default function UpdateRoomModal({
         .typeError("Room capacity must be a number")
         .min(1, "Minimum capacity is 1")
         .required("Room capacity is required"),
-      nurseManager: yup.string().required("Nurse manager is required"),
-      doctor: yup.string().required("Doctor is required"),
     }),
     onSubmit: (values) => {
       handleSubmit(values);
@@ -157,35 +153,6 @@ export default function UpdateRoomModal({
             onError={formik.errors.capacity}
             isRequired
           />
-          <InputSelectWithSearch
-            label="Nurse Manager"
-            name="nurseManager"
-            placeholder="Select Nurse Manager"
-            onChange={(value) => formik.setFieldValue("nurseManager", value)}
-            value={formik.values.nurseManager}
-            onTouch={formik.touched.nurseManager}
-            onError={formik.errors.nurseManager}
-            option={dummyNurses.map((nurse) => ({
-              value: nurse.id,
-              label: nurse.name,
-            }))}
-            isRequired
-          />
-          <InputSelectWithSearch
-            label="Doctor"
-            name="doctor"
-            placeholder="Select Doctor"
-            onChange={(value) => formik.setFieldValue("doctor", value)}
-            value={formik.values.doctor}
-            onTouch={formik.touched.doctor}
-            onError={formik.errors.doctor}
-            option={dummyDoctors.map((doctor) => ({
-              value: doctor.id,
-              label: doctor.name,
-            }))}
-            isRequired
-          />
-
           <div className="flex justify-end gap-2 mt-4">
             <button
               type="button"

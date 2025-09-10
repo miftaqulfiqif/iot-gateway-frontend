@@ -108,7 +108,11 @@ export default function CreateRoomModal({
                 placeholder="Room Type"
                 option={[
                   { value: "ICU", label: "ICU" },
+                  { value: "PICU", label: "PICU" },
+                  { value: "NICU", label: "NICU" },
+                  { value: "ICCU", label: "ICCU" },
                   { value: "HCU", label: "HCU" },
+                  { value: "Recovery Room", label: "Recovery Room" },
                 ]}
                 onChange={(value) => formik.setFieldValue("type", value)}
                 value={formik.values.type}

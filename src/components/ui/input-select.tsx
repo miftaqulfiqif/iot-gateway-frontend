@@ -49,7 +49,7 @@ export const InputSelect = (props: InputSelectProps) => {
         disabled={disabled}
         value={value?.toString()}
       >
-        <SelectTrigger className="w-full h-full rounded-lg bg-gray-100 border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        <SelectTrigger className={`w-full h-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition ${disabled ? "bg-gray-100" : "bg-white"}`}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
 

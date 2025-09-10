@@ -51,8 +51,8 @@ export const InputMultiSelect = ({
           <Button
             variant="outline"
             disabled={disabled}
-            className="w-full justify-start bg-gray-100"
-          >
+            className={`w-full justify-start ${disabled ? "bg-gray-100" : "bg-white"}`}
+          >s
             {value.length > 0
               ? option
                   .filter((opt) => value.includes(opt.value))

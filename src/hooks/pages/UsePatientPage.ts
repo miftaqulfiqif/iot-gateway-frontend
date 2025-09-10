@@ -10,9 +10,10 @@ export const UsePatientPage = () => {
   const { fetchAndFormatData, chartData } = useHistoryMeasurement();
 
   // Data
-  const [patients, setPatients] = useState<Patients[]>();
+  const [patients, setPatients] = useState<Patients[]>([]);
   const [patientId, setPatientId] = useState(0);
-  const [patient, setPatient] = useState<Patients[]>();
+  const [patient, setPatient] = useState<Patients[]>([]);
+  const [countCriticalPatient, setCountCriticalPatient] = useState(0);
   const [patientEdit, setPatientEdit] = useState<Patients>();
   const selectedPatient = patients?.find(
     (item) => item.id === String(patientId)
@@ -72,6 +73,7 @@ export const UsePatientPage = () => {
       });
 
       setPatients(response.data.data);
+      setCountCriticalPatient(response.data.critical_patient);
       setCurrentPage(response.data.current_page);
       setTotalItems(response.data.total_items);
       setTotalPage(response.data.total_pages);
@@ -251,6 +253,7 @@ export const UsePatientPage = () => {
     handleSearchChange,
     patientId,
     patients,
+    countCriticalPatient,
     openDetail,
     animateRows,
     goToPreviousPage,
@@ -271,5 +274,6 @@ export const UsePatientPage = () => {
     patientEdit,
     buttonAction,
     searchPatients,
+    totalItems,
   };
 };

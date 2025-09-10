@@ -7,18 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash2 } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTrigger,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogDescription,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 import {
   Pagination,
   PaginationContent,
@@ -31,20 +20,17 @@ import {
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ListUsers } from "@/models/UserModel";
 
-// Utility function to format date
-const formatDate = (dateStr: string, showTime = true) => {
-  if (showTime) {
-    return format(new Date(dateStr), "d MMMM yyyy, HH:mm", { locale: id });
-  }
-
-  return format(new Date(dateStr), "d MMMM yyyy", { locale: id });
+type Data = {
+  id: string;
+  parameter: string;
+  value: string;
+  device: string;
+  room: string;
+  timestamp: string;
 };
-
 type Props = {
-  data: ListUsers[];
+  data: Data[];
   goToPreviousPage: () => void;
   goToNextPage: () => void;
   goToPage: (page: number) => void;
@@ -52,9 +38,10 @@ type Props = {
   totalPage?: number;
   limit?: number;
   search?: string;
+  isDetailPatient?: boolean;
 };
 
-export const TableAdminUsers = ({
+export const RecentMeasurementsPatientTable = ({
   data,
   goToPreviousPage,
   goToNextPage,
@@ -63,9 +50,11 @@ export const TableAdminUsers = ({
   totalPage,
   limit,
   search,
+  isDetailPatient,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
-  const navigate = useNavigate();
+
+  console.log(data);
 
   useEffect(() => {
     setAnimateRows(false);
@@ -79,14 +68,12 @@ export const TableAdminUsers = ({
       <Table className="min-w-full">
         <TableHeader className="min-w-full">
           <TableRow className="h-14 ">
-            <TableHead className="text-center font-bold">NO</TableHead>
-            <TableHead className="text-center font-bold">Name</TableHead>
-            <TableHead className="text-center font-bold">Email</TableHead>
-            <TableHead className="text-center font-bold">Phone</TableHead>
-            <TableHead className="text-center font-bold">Username</TableHead>
-            <TableHead className="text-center font-bold">Role</TableHead>
-            <TableHead className="text-center font-bold">Created At</TableHead>
-            <TableHead className="text-center font-bold">Action</TableHead>
+            <TableHead className="text-center font-bold">No</TableHead>
+            <TableHead className="text-left font-bold">Parameter</TableHead>
+            <TableHead className="text-left font-bold">Value</TableHead>
+            <TableHead className="text-left font-bold">Device</TableHead>
+            <TableHead className="text-left font-bold">Room</TableHead>
+            <TableHead className="text-center font-bold">Date & Time</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -95,17 +82,13 @@ export const TableAdminUsers = ({
               return (
                 <TableRow
                   key={item.id}
-                  onClick={() => {
-                    if (item.role.name === "admin") {
-                      navigate("/users/detail-user/admin/" + item.id);
-                    } else if (item.role.name === "doctor") {
-                      navigate("/users/detail-user/doctor/" + item.id);
-                    } else if (item.role.name === "nurse") {
-                      navigate("/users/detail-user/nurse/" + item.id);
-                    } else {
-                      navigate("/error");
-                    }
-                    // window.location.href = `/users/detail-user/${item.id}`;
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (
+                      target.closest("button") ||
+                      target.closest("[data-stop-click]")
+                    )
+                      return;
                   }}
                   className={`transition-all duration-300 cursor-pointer ${
                     animateRows ? "opacity-100" : "opacity-0 translate-y-2"
@@ -114,54 +97,54 @@ export const TableAdminUsers = ({
                 >
                   <TableCell className="text-center">{index + 1}</TableCell>
                   <TableCell className="text-left">
-                    {item.name || "-"}
+                    {item.parameter || "-"}
+                  </TableCell>
+                  <TableCell className="text-left text-blue-500 font-bold">
+                    {item.value || "-"}
                   </TableCell>
                   <TableCell className="text-left">
-                    {item.email || "-"}
+                    {item.device || "-"}
+                  </TableCell>
+                  <TableCell className="text-left">
+                    {item.room || "-"}
                   </TableCell>
                   <TableCell className="text-center">
-                    {item.phone || "-"}
+                    {format(new Date(item.timestamp), "d MMMM yyyy", {
+                      locale: id,
+                    })}
                   </TableCell>
-                  <TableCell className="text-center">{item.username}</TableCell>
-                  <TableCell className="text-center">{item.role.name}</TableCell>
-
-                  <TableCell className="text-center">
-                    {formatDate(item.created_at)}
-                  </TableCell>
-                  <TableCell className=" px-2 py-1">
-                    <div className="flex justify-center items-center">
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Trash2
-                            className="w-6 h-6 text-red-500 hover:text-red-700"
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="bg-white">
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you absolutely sure?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete this item.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel className="text-black border">
-                              Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => alert("delete")}
-                              className="bg-red-500 text-white"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </TableCell>
+                  {/* <TableCell className="text-center">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Trash2
+                          className="w-6 h-6 text-red-500 hover:text-red-700"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="bg-white">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete this item.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="text-black border">
+                            Cancel
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => buttonAction("delete", item)}
+                            className="bg-red-500 text-white"
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </TableCell> */}
                 </TableRow>
               );
             })

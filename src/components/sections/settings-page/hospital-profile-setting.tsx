@@ -57,7 +57,7 @@ export const HospitalProfileSetting = () => {
           />
           <div className="flex flex-col gap-2 ">
             <div
-              className="border-2 border-[#ECECEC] rounded-xl px-6 py-2 w-fit cursor-pointer"
+              className="rounded-xl px-6 py-2 w-fit cursor-pointer bg-blue-400 text-white"
               onClick={() => fileInputRef.current?.click()}
             >
               <p>Change new image</p>
@@ -70,18 +70,16 @@ export const HospitalProfileSetting = () => {
       </div>
       <div className="flex flex-col gap-2">
         <p>Hospital Name</p>
-        <div className="flex bg-[#ECECEC] rounded-xl px-6 py-4 gap-4">
-          {/* <img src={person} className="w-8 h-8" alt="" /> */}
-          <input
-            type="text"
-            name="hospital_name"
-            placeholder={user?.hospital?.name || "Input hospital name here"}
-            onChange={(e) => setHospitalName(e.target.value)}
-            className="w-full outline-none"
-          />
-        </div>
+        <InputText
+          type="text"
+          name="hospital_name"
+          placeholder={user?.hospital?.name || "Input hospital name here"}
+          onChange={(e) => setHospitalName(e.target.value)}
+          value={hospitalName}
+          onTouch={() => {}}
+        />
       </div>
-      <hr className="border-1 border-gray-300 mt-4" />
+      {/* <hr className="border-1 border-gray-300 mt-4" />
       <div className="w-full">
         <p className="font-bold text-xl mb-4">Location</p>
         <div className="flex flex-row gap-2">
@@ -106,7 +104,7 @@ export const HospitalProfileSetting = () => {
             onChange={(e) => setLatitude(parseFloat(e.target.value))}
           />
         </div>
-      </div>
+      </div> */}
       <div
         onClick={handleChangeHospitalProfile}
         className="border-2 bg-[#35AAFF] text-white rounded-xl px-6 py-2 mt-10 cursor-pointer"

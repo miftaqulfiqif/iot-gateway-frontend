@@ -348,6 +348,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
             <div className="flex flex-col gap-2">
               <p>Province</p>
               <ProvinceSelect
+                name="province"
                 value={selectedProvince}
                 onChange={(option) => {
                   setSelectedProvince(option);
@@ -362,6 +363,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
             <div className="flex flex-col gap-2">
               <p>City</p>
               <CitySelect
+                name="regency"
                 provinceId={selectedProvince?.value}
                 value={selectedCity}
                 onChange={(option) => {
@@ -370,6 +372,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                   formik.setFieldValue("city", option?.label || "");
                 }}
                 onBlur={() => formik.setFieldTouched("regency", true)}
+                disabled={!selectedProvince}
               />
               {formik.touched.regency && formik.errors.regency && (
                 <p className="text-red-500 text-sm">{formik.errors.regency}</p>
@@ -379,6 +382,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
               <div className="flex flex-col gap-2 w-1/2">
                 <p>District</p>
                 <DistrictSelect
+                  name="district"
                   regencyId={selectedCity?.value}
                   value={selectedDistrict}
                   onChange={(option) => {
@@ -386,6 +390,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                     formik.setFieldValue("district", option?.value || "");
                   }}
                   onBlur={() => formik.setFieldTouched("district", true)}
+                  disabled={!selectedCity}
                 />
                 {formik.touched.district && formik.errors.district && (
                   <p className="text-red-500 text-sm">
@@ -408,6 +413,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
             <div className="flex flex-col gap-2">
               <p>Village</p>
               <VillageSelect
+                name="village"
                 districtId={selectedDistrict?.value}
                 value={selectedVillage}
                 onChange={(option) => {
@@ -415,6 +421,7 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                   formik.setFieldValue("village", option?.value || "");
                 }}
                 onBlur={() => formik.setFieldTouched("village", true)}
+                disabled={!selectedDistrict}
               />
               {formik.touched.village && formik.errors.village && (
                 <p className="text-red-500 text-sm">{formik.errors.village}</p>
