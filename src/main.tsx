@@ -31,6 +31,9 @@ import DetailUserNursePage from "./pages/DetailUserNursePage.tsx";
 import { DetailBluetoothDevice } from "./pages/Device/DetailBluetoothDevice.tsx";
 import { DetailTcpIpDevice } from "./pages/Device/DetailTcpIpDevice.tsx";
 import { ConfirmModalProvider } from "./context/ConifmModalContext.tsx";
+import PatientMonitorPage1 from "./pages/PatientMonitorPage1.tsx";
+import Devices1 from "./pages/DevicesPage1.tsx";
+import Gateways from "./pages/GatewaysPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -50,9 +53,15 @@ createRoot(document.getElementById("root")!).render(
                 <Route path="/measurement" element={<MeasurementPage />} />
                 <Route
                   path="/patient-monitor"
-                  element={<PatientMonitorPage />}
+                  element={<PatientMonitorPage1 />}
+                  // element={<PatientMonitorPage />}
                 />
-                <Route path="/devices" element={<Devices />} />
+                <Route
+                  path="/devices"
+                  // element={<Devices />}
+                  element={<Devices1 />}
+                />
+                <Route path="/gateways" element={<Gateways />} />
                 {/* Detail Device */}
                 <Route
                   path="/device/bluetooth/:device_id"

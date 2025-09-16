@@ -1,9 +1,11 @@
 import avatarIcon from "@/assets/icons/avatar.png";
+import { InputLongtext } from "@/components/ui/input-longtext";
 import { InputText } from "@/components/ui/input-text";
 
 import { useAuth } from "@/context/AuthContext";
 import { useModal } from "@/context/ConifmModalContext";
 import { useToast } from "@/context/ToastContext";
+import { Save } from "lucide-react";
 import React, { ChangeEvent, useRef, useState } from "react";
 
 export const HospitalProfileSetting = () => {
@@ -11,7 +13,11 @@ export const HospitalProfileSetting = () => {
   const { showConfirm } = useModal();
   const { showToast } = useToast();
 
-  const [hospitalName, setHospitalName] = useState("");
+  const [hospitalName, setHospitalName] = useState(user?.hospital?.name || "");
+  const [hospitalAddress, setHospitalAddress] = useState("");
+  const [hospitalPhone, setHospitalPhone] = useState("");
+  const [hospitalWebsite, setHospitalWebsite] = useState("");
+
   const [logo, setLogo] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -43,11 +49,26 @@ export const HospitalProfileSetting = () => {
       <div className="flex flex-col gap-2">
         <p>Logo</p>
         <div className="flex flex-row gap-6">
-          <img
-            src={logo || avatarIcon}
-            className="w-26 h-26 rounded-full object-cover"
-            alt="Logo"
-          />
+          <div className="w-26 h-26 rounded-full overflow-hidden border-2 flex items-center justify-center bg-gray-200">
+            {logo ? (
+              <img
+                src={logo}
+                alt="Avatar"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-xl font-semibold text-gray-700">
+                {user?.hospital?.name
+                  ? user?.hospital?.name
+                      .split(" ")
+                      .map((word) => word[0])
+                      .join("")
+                      .substring(0, 3)
+                      .toUpperCase()
+                  : "?"}
+              </span>
+            )}
+          </div>
           <input
             type="file"
             accept="image/*"
@@ -68,16 +89,44 @@ export const HospitalProfileSetting = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <p>Hospital Name</p>
+      <div className="flex flex-col gap-4">
         <InputText
+          label="Hospital Name"
           type="text"
           name="hospital_name"
-          placeholder={user?.hospital?.name || "Input hospital name here"}
+          placeholder={"Input hospital name here"}
           onChange={(e) => setHospitalName(e.target.value)}
           value={hospitalName}
           onTouch={() => {}}
         />
+        <InputLongtext
+          label="Hospital Address"
+          name="hospital_address"
+          placeholder={"Input hospital address here"}
+          onChange={(e) => setHospitalAddress(e.target.value)}
+          value={""}
+          onTouch={() => {}}
+        />
+        <div className="flex gap-4">
+          <InputText
+            label="Phone"
+            type="text"
+            name="hospital_phone"
+            placeholder={"Input Hospital Phone here"}
+            onChange={(e) => setHospitalPhone(e.target.value)}
+            value={""}
+            onTouch={() => {}}
+          />
+          <InputText
+            label="Website"
+            type="text"
+            name="hospital_website"
+            placeholder={"Input Hospital Website here"}
+            onChange={(e) => setHospitalWebsite(e.target.value)}
+            value={""}
+            onTouch={() => {}}
+          />
+        </div>
       </div>
       {/* <hr className="border-1 border-gray-300 mt-4" />
       <div className="w-full">
@@ -107,8 +156,9 @@ export const HospitalProfileSetting = () => {
       </div> */}
       <div
         onClick={handleChangeHospitalProfile}
-        className="border-2 bg-[#35AAFF] text-white rounded-xl px-6 py-2 mt-10 cursor-pointer"
+        className="bg-[#35AAFF] text-white rounded-xl px-6 py-2 mt-10 cursor-pointer flex items-center justify-center"
       >
+        <Save className="inline mr-2" />
         <p className="text-center"> Save Changes</p>
       </div>
     </div>

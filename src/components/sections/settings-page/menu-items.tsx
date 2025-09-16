@@ -77,12 +77,18 @@ export const MenuItems = ({
   setAddGatewayModal,
 }: MenuItemsProps) => {
   // Gateways
-  const {gateways, getGateways, selectedGateway, setSelectedGateway, changeGateway} = useGateway()
+  const {
+    gateways,
+    getGateways,
+    selectedGateway,
+    setSelectedGateway,
+    changeGateway,
+  } = useGateway();
 
   useEffect(() => {
     getGateways();
-  },[])
-  
+  }, []);
+
   return (
     <div
       key={animationKey}

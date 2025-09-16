@@ -72,9 +72,9 @@ export const PatientMonitorPM9000Section = ({
               {room.type}
             </p>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
             {isCrysis && (
-              <p className="bg-red-200 text-red-900 flex rounded-full px-4 font-bold">
+              <p className="bg-red-500 text-white flex rounded-full px-4 font-bold">
                 Critical
               </p>
             )}
@@ -217,9 +217,9 @@ export const PatientMonitorPM9000Section = ({
             </div>
           </div>
         </div>
-        {/* <ECGChart className="mt-4" />
-        <HeartPulseChart className="" />
-        <HeartRateChart chartData={chartData} isPatientMonitor /> */}
+        <ECGChart className="mt-4" />
+        <HeartPulseChart className="" title="Plethysmogram" />
+        {/* <HeartRateChart chartData={chartData} isPatientMonitor /> */}
       </div>
     </>
   );

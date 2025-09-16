@@ -8,6 +8,7 @@ import {
 import MainLayout from "../components/layouts/main-layout";
 import {
   CircleAlert,
+  CircleCheck,
   Funnel,
   Search,
   UserRoundPlus,
@@ -62,7 +63,7 @@ const Patients = () => {
               <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
                 <div className="">
                   <p className="">Total Patients</p>
-                  <p className="font-semibold text-3xl text-blue-900">
+                  <p className="font-semibold text-3xl text-blue-500">
                     {totalItems}
                   </p>
                 </div>
@@ -70,8 +71,17 @@ const Patients = () => {
               </div>
               <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
                 <div className="">
+                  <p className="">Stable</p>
+                  <p className="font-semibold text-3xl text-green-500">
+                    {totalItems - countCriticalPatient}
+                  </p>
+                </div>
+                <CircleCheck className="w-10 h-10 text-green-500" />
+              </div>
+              <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+                <div className="">
                   <p className="">Critical</p>
-                  <p className="font-semibold text-3xl text-red-700">
+                  <p className="font-semibold text-3xl text-red-500">
                     {countCriticalPatient}
                   </p>
                 </div>

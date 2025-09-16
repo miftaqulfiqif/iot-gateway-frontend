@@ -10,7 +10,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUsers } from "@/hooks/api/use-user";
-import { Funnel, Search, UserRoundPlus } from "lucide-react";
+import {
+  CircleAlert,
+  CircleCheck,
+  Funnel,
+  Search,
+  Shield,
+  UserCheck,
+  UserRoundPlus,
+  Users,
+  UserX,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 // Dummy Admin
@@ -78,9 +88,15 @@ const role = [
 ];
 
 export const UsersPage = () => {
+  const {
+    users,
+    usersActive,
+    usersInactive,
+    usersAdmin,
+    totalItems,
+    getAllUsers,
+  } = useUsers();
 
-  const {users, getAllUsers} = useUsers();
-  
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -89,9 +105,9 @@ export const UsersPage = () => {
   const [userSelected, setUserSelected] = useState(null);
 
   useEffect(() => {
-    getAllUsers(1,10,"")
-  }, [limit, search]) 
-  
+    getAllUsers(1, 10, "");
+  }, [limit, search]);
+
   const handleChangeShowTable = (value: string) => {
     alert(value);
   };
@@ -100,6 +116,44 @@ export const UsersPage = () => {
     <MainLayout title="Users" state="Users">
       <div className="flex flex-col">
         <div className="sticky top-0 z-10 bg-[#ededf9] mb-2">
+          <div className="flex gap-4 mb-4">
+            <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+              <div className="">
+                <p className="">Total Users</p>
+                <p className="font-semibold text-3xl text-blue-500">
+                  {totalItems}
+                </p>
+              </div>
+              <Users className="w-10 h-10 text-blue-500" />
+            </div>
+            <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+              <div className="">
+                <p className="">Users Active</p>
+                <p className="font-semibold text-3xl text-green-500">
+                  {usersActive}
+                </p>
+              </div>
+              <UserCheck className="w-10 h-10 text-green-500" />
+            </div>
+            <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+              <div className="">
+                <p className="">Users Inactive</p>
+                <p className="font-semibold text-3xl text-red-500">
+                  {usersInactive}
+                </p>
+              </div>
+              <UserX className="w-10 h-10 text-red-500" />
+            </div>
+            <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+              <div className="">
+                <p className="">Administrator</p>
+                <p className="font-semibold text-3xl text-cyan-500">
+                  {usersAdmin}
+                </p>
+              </div>
+              <Shield className="w-10 h-10 text-cyan-500" />
+            </div>
+          </div>
           <div className="flex flex-col w-full gap-4">
             <div className="flex gap-6 w-full justify-between">
               <div className="flex items-center gap-2">

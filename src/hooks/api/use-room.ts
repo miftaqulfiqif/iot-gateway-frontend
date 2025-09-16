@@ -8,6 +8,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export const useRooms = () => {
   const { showToast } = useToast();
   const [rooms, setRooms] = useState<RoomsModel[]>([]);
+  const [totalRooms, setTotalRooms] = useState<number>(0);
   const [beds, setBeds] = useState<BedsModel[]>([]);
   const [detailRoom, setDetailRoom] = useState<DetailRoom | null>(null);
   const [patientRoom, setPatientRoom] = useState<any>(null);
@@ -18,6 +19,7 @@ export const useRooms = () => {
         withCredentials: true,
       });
       setRooms(response.data.data);
+      setTotalRooms(response.data.total_rooms);
     } catch (error) {
       console.error("Error fetching rooms:", error);
       throw error;
@@ -109,6 +111,7 @@ export const useRooms = () => {
 
   return {
     rooms,
+    totalRooms,
     beds,
     detailRoom,
     patientRoom,

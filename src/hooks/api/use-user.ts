@@ -6,6 +6,9 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useUsers = () => {
   const [users, setUsers] = useState<ListUsers[]>([]);
+  const [usersActive, setUsersActive] = useState<number>(0);
+  const [usersInactive, setUsersInactive] = useState<number>(0);
+  const [usersAdmin, setUsersAdmin] = useState<number>(0);
   const [detailUser, setDetailUser] = useState<DetailUser | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
@@ -29,11 +32,14 @@ export const useUsers = () => {
         setCurrentPage(response.data.current_page);
         setTotalItems(response.data.total_items);
         setTotalPage(response.data.total_page);
+        setUsersActive(response.data.users_active);
+        setUsersInactive(response.data.users_inactive);
+        setUsersAdmin(response.data.users_admin);
 
         return {
-            total_pages: response.data.total_page,
-            total_items: response.data.total_items,
-        }
+          total_pages: response.data.total_page,
+          total_items: response.data.total_items,
+        };
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -56,6 +62,12 @@ export const useUsers = () => {
 
   return {
     users,
+    totalItems,
+    usersActive,
+    usersInactive,
+    usersAdmin,
+    currentPage,
+    totalPage,
     detailUser,
     getAllUsers,
     getDetailUser,

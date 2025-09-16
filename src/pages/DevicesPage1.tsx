@@ -16,7 +16,7 @@ import { DevicesConnected } from "@/components/ui/devices-connected";
 import { useDevices } from "@/hooks/api/use-device";
 import { AddDeviceUsb } from "@/components/modals/add-device-usb";
 
-function Devices() {
+function Devices1() {
   const {
     devices,
     getAllDevices,
@@ -205,4 +205,4 @@ function Devices() {
   );
 }
 
-export default Devices;
+export default Devices1;

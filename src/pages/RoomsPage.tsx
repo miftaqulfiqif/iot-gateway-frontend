@@ -4,7 +4,16 @@ import { RoomItems } from "@/components/sections/rooms-page/room-item";
 
 import { useToast } from "@/context/ToastContext";
 import { useRooms } from "@/hooks/api/use-room";
-import { Funnel, Search, UserRoundPlus } from "lucide-react";
+import {
+  CircleAlert,
+  CircleCheck,
+  CircleX,
+  Funnel,
+  Map,
+  MapPin,
+  Search,
+  UserRoundPlus,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export const dummyRooms = [
@@ -69,7 +78,7 @@ export const dummyRooms = [
 ];
 
 export const RoomsPage = () => {
-  const { rooms, getAllRooms, createNewRoom } = useRooms();
+  const { rooms, totalRooms, getAllRooms, createNewRoom } = useRooms();
 
   const [showFilter, setShowFilter] = useState(false);
   const [createModal, setCreateModal] = useState(false);
@@ -86,7 +95,57 @@ export const RoomsPage = () => {
       <div className="flex flex-col w-full">
         {/* Sticky Top */}
         <div className="sticky top-0 z-10 bg-[#ededf9] mb-2">
-          <div className="flex flex-col w-full gap-4">
+          {/* Summary Card */}
+          <div className="grid grid-cols-4 gap-4">
+            <div className="bg-white p-6 rounded-xl border">
+              <div className="flex justify-between items-center">
+                <div className="space-y-2">
+                  <p>Total Rooms</p>
+                  <p className="text-2xl font-bold text-blue-500">
+                    {totalRooms}
+                  </p>
+                </div>
+                <MapPin className="w-10 h-10 text-blue-500" />
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-xl border">
+              <div className="flex justify-between items-center">
+                <div className="space-y-2">
+                  <p>Available</p>
+                  <p className="text-2xl font-bold text-green-500">
+                    {rooms.filter((room) => room.status === "available").length}
+                  </p>
+                </div>
+                <CircleCheck className="w-10 h-10 text-green-500" />
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-xl border">
+              <div className="flex justify-between items-center">
+                <div className="space-y-2">
+                  <p>Full</p>
+                  <p className="text-2xl font-bold text-red-500">
+                    {rooms.filter((room) => room.status === "full").length}
+                  </p>
+                </div>
+                <CircleX className="w-10 h-10 text-red-500" />
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-xl border">
+              <div className="flex justify-between items-center">
+                <div className="space-y-2">
+                  <p>Maintenance</p>
+                  <p className="text-2xl font-bold text-orange-500">
+                    {
+                      rooms.filter((room) => room.status === "maintenance")
+                        .length
+                    }
+                  </p>
+                </div>
+                <CircleAlert className="w-10 h-10 text-orange-500" />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col w-full gap-4 mt-8">
             <div className="flex gap-6 w-full justify-end">
               <div className="flex gap-4 items-center">
                 <div ref={filterRef} className="flex flex-col gap-2">

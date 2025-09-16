@@ -27,11 +27,11 @@ export const MenuSettings = ({
       transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-[#f0f0f0] ${className}`}
     >
       {isStringIcon ? (
-        <img src={icon} className="w-8 h-8" alt={title + " icon"} />
+        <img src={icon} className="w-6 h-6" alt={title + " icon"} />
       ) : (
-        <span className="w-8 h-8 flex items-center justify-center">{icon}</span>
+        <span className="w-6 h-6 flex items-center justify-center">{icon}</span>
       )}
-      <p className="text-lg font-semibold">{title}</p>
+      <p className="text-base font-semibold">{title}</p>
     </div>
   );
 };

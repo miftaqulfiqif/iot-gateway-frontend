@@ -37,46 +37,63 @@ const SettingsPage = () => {
         <div className="flex flex-col gap-8">
           <div className="flex flex-row gap-10 bg-white rounded-xl w-full h-full shadow-[0px_4px_4px_rgba(0,0,0,0.3)] p-8">
             <div className="flex flex-col w-3xs gap-4">
-              {user?.role === "admin" && (
-                <>
+              <div className="">
+                <p>Account</p>
+                <div className="flex flex-col gap-2">
+                  {user?.role === "admin" && (
+                    <>
+                      <MenuSettings
+                        title="Organization"
+                        icon={hospitalIcon}
+                        isActive={state === "Edit Hospital Profile"}
+                        onClick={() =>
+                          handleMenuChange("Edit Hospital Profile")
+                        }
+                      />
+                    </>
+                  )}
                   <MenuSettings
-                    title="Hospital Profile"
-                    icon={hospitalIcon}
-                    isActive={state === "Edit Hospital Profile"}
-                    onClick={() => handleMenuChange("Edit Hospital Profile")}
+                    title="My Profile"
+                    icon={profileIcon}
+                    isActive={state === "Edit Profile"}
+                    onClick={() => handleMenuChange("Edit Profile")}
                   />
-                </>
-              )}
-              <MenuSettings
-                title="Profile"
-                icon={profileIcon}
-                isActive={state === "Edit Profile"}
-                onClick={() => handleMenuChange("Edit Profile")}
-              />
-              <MenuSettings
-                title="Password"
-                icon={passwordIcon}
-                isActive={state === "Password"}
-                onClick={() => handleMenuChange("Password")}
-              />
-              <MenuSettings
-                title="Language"
-                icon={languageIcon}
-                isActive={state === "Language"}
-                onClick={() => handleMenuChange("Language")}
-              />
-              <MenuSettings
-                title="Gateways"
-                icon={gatewayIcon}
-                isActive={state === "Gateways"}
-                onClick={() => handleMenuChange("Gateways")}
-              />
-              <MenuSettings
-                title="SATUSEHAT"
-                icon={satuSehatLogo}
-                isActive={state === "SATUSEHAT"}
-                onClick={() => handleMenuChange("SATUSEHAT")}
-              />
+                  <MenuSettings
+                    title="Password"
+                    icon={passwordIcon}
+                    isActive={state === "Password"}
+                    onClick={() => handleMenuChange("Password")}
+                  />
+                </div>
+              </div>
+              <div className="">
+                <p>General</p>
+                <div className="flex flex-col gap-2">
+                  <MenuSettings
+                    title="Language"
+                    icon={languageIcon}
+                    isActive={state === "Language"}
+                    onClick={() => handleMenuChange("Language")}
+                  />
+                  <MenuSettings
+                    title="Gateways"
+                    icon={gatewayIcon}
+                    isActive={state === "Gateways"}
+                    onClick={() => handleMenuChange("Gateways")}
+                  />
+                </div>
+              </div>
+              <div className="">
+                <p>Integration</p>
+                <div className="flex flex-col gap-2">
+                  <MenuSettings
+                    title="SATUSEHAT"
+                    icon={satuSehatLogo}
+                    isActive={state === "SATUSEHAT"}
+                    onClick={() => handleMenuChange("SATUSEHAT")}
+                  />
+                </div>
+              </div>
             </div>
             <div className="w-full p-2">
               <MenuItems

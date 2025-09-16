@@ -18,7 +18,7 @@ export const useAuthHook = () => {
           if (response.status === 200) {
             const user = response.data;
             login(user);
-            window.location.href = "/measurement";
+            window.location.href = "/patient-monitor";
           } else {
             formik.setStatus(response.data.errors || "Login failed.");
           }
