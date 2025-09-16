@@ -118,7 +118,7 @@ export const AddDevicePatientMonitorModal = ({
     >
       <div className="w-full h-full p-4">
         {/* Component Sidebar */}
-        <Sidebar state={stateSidebar} />
+        <Sidebar state={stateSidebar} cannotHide />
       </div>
 
       {/* Show Modal */}

@@ -15,14 +15,18 @@ import AppSidebar from "../ui/app-sidebar";
 
 import elitechLogo from "@/assets/imgs/Logo Elitech.png";
 import doctorImg from "@/assets/imgs/doctor-img.png";
+import gatewayIcon from "@/assets/icons/gateway-icon.png";
+import gatewayIconWhite from "@/assets/icons/gateway-icon-white.png";
+
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 
 interface SidebarProps {
   state: string;
+  cannotHide?: boolean;
 }
 
-const Sidebar = ({ state }: SidebarProps) => {
+const Sidebar = ({ state, cannotHide }: SidebarProps) => {
   const { user, logout } = useAuth();
   const [isHide, setIsHide] = useState(false);
 
@@ -35,8 +39,10 @@ const Sidebar = ({ state }: SidebarProps) => {
       {/* Toggle button di samping kanan sidebar */}
       <button
         onClick={() => setIsHide(!isHide)}
-        className="absolute top-1/20 -right-3 transform -translate-y-1/2 
-                   bg-white border shadow rounded-full w-8 h-8 flex items-center justify-center"
+        className={`absolute top-1/20 -right-3 transform -translate-y-1/2 
+                   bg-white border shadow rounded-full w-8 h-8 items-center justify-center  ${
+                     cannotHide ? "hidden" : "flex"
+                   } `}
       >
         {isHide ? (
           <ChevronRight className="w-5 h-5" />
@@ -121,6 +127,14 @@ const Sidebar = ({ state }: SidebarProps) => {
               title={!isHide ? "Devices" : ""}
               isActive={state === "Devices"}
               url="/devices"
+              isHide={isHide}
+            />
+            <AppSidebar
+              icon={gatewayIconWhite}
+              iconInactive={gatewayIcon}
+              title={!isHide ? "Gateways" : ""}
+              isActive={state === "Gateways"}
+              url="/gateways"
               isHide={isHide}
             />
           </div>

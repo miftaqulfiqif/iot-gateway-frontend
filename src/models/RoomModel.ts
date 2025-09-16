@@ -8,6 +8,7 @@ export type RoomsModel = {
     used: number;
   };
   status: string;
+  total_patients: number;
   patients: any[];
 };
 

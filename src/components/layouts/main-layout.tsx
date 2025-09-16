@@ -15,7 +15,7 @@ const MainLayout = ({ children, title, state }: MainLayoutProps) => {
       </div>
       <div className="flex flex-col w-full">
         <Header title={title} />
-        <div className="flex flex-col px-6 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div className="flex flex-col px-4 overflow-y-auto h-[calc(100vh-4rem)]">
           {children}
         </div>
       </div>

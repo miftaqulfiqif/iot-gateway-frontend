@@ -619,12 +619,12 @@ const DetailPatientPage = () => {
             <ChartBiaBodyComposition
               label="Body Fat Trend"
               color="#17cfb9"
-              chartData={historiesData}
+              chartData={historiesData.slice(0, 8)}
             />
             <ChartBiaBodyComposition
               label="Muscle Mass Trend"
               color="#1095c1"
-              chartData={historiesData}
+              chartData={historiesData.slice(0, 8)}
             />
           </div>
           <hr className="my-4 border-gray-300" />

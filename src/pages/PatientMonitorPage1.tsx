@@ -159,24 +159,94 @@ const ds001 = [
   },
 ];
 
-const PatientMonitorPage = () => {
+const randomRange = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+const checkPm9000Crysis = (item: any) => {
+  return (
+    item.hr < 50 ||
+    item.hr > 120 ||
+    item.spo2 < 90 ||
+    item.resp < 12 ||
+    item.resp > 30 ||
+    item.temp1 < 35 ||
+    item.temp1 > 39 ||
+    item.temp2 < 35 ||
+    item.temp2 > 39 ||
+    item.tempD < 35 ||
+    item.tempD > 39
+  );
+};
+
+const checkDs001Crysis = (item: any) => {
+  return (
+    item.systolic < 90 ||
+    item.systolic > 160 ||
+    item.diastolic < 50 ||
+    item.diastolic > 100 ||
+    item.spo2 < 90 ||
+    item.temp < 35 ||
+    item.temp > 39 ||
+    item.pulse_rate < 50 ||
+    item.pulse_rate > 130 ||
+    item.rr < 12 ||
+    item.rr > 30
+  );
+};
+
+const PatientMonitorPage1 = () => {
   const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
-  const [showSelectDeviceModal, setShowSelectDeviceModal] = useState(false);
-  const [showSelectRoomModal, setShowSelectRoomModal] = useState(false);
-  const [patient, setPatient] = useState<any>(null);
-  const [state, setState] = useState("barcode");
   const [limit, setLimit] = useState(10);
+
+  const [pm9000Data, setPm9000Data] = useState(pm9000);
+  const [ds001Data, setDs001Data] = useState(ds001);
+  const stableCountPm9000 = pm9000Data.filter((p) => !p.is_crysis).length;
+  const stableCountDS001 = ds001Data.filter((p) => !p.is_crysis).length;
+  const crisisCountPM9000 = pm9000Data.filter((p) => p.is_crysis).length;
+  const crisisCountDS001 = ds001Data.filter((p) => p.is_crysis).length;
 
   const filterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (patient !== null) {
-      setShowAddPatientModal(false);
-      setShowSelectDeviceModal(true);
-    }
-  }, [patient]);
+    const interval = setInterval(() => {
+      setPm9000Data((prev) =>
+        prev.map((item) => {
+          const updated = {
+            ...item,
+            ecg: randomRange(80, 120),
+            spo2: randomRange(85, 100),
+            resp: randomRange(15, 30),
+            hr: randomRange(60, 140),
+            temp1: randomRange(33, 40),
+            temp2: randomRange(33, 40),
+            tempD: randomRange(33, 40),
+          };
+          return { ...updated, is_crysis: checkPm9000Crysis(updated) };
+        })
+      );
+
+      setDs001Data((prev) =>
+        prev.map((item) => {
+          const updated = {
+            ...item,
+            systolic: randomRange(80, 180),
+            diastolic: randomRange(45, 110),
+            mean: randomRange(60, 100),
+            pulse_rate: randomRange(40, 140),
+            temp: randomRange(34, 41),
+            spo2: randomRange(70, 100),
+            pr_spo2: randomRange(70, 130),
+            rr: randomRange(10, 40),
+          };
+          return { ...updated, is_crysis: checkDs001Crysis(updated) };
+        })
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <MainLayout title="Patient Monitor" state="Patient Monitor">
@@ -187,21 +257,27 @@ const PatientMonitorPage = () => {
             <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
               <div className="">
                 <p className="">Total Patients</p>
-                <p className="font-semibold text-3xl text-blue-500">6</p>
+                <p className="font-semibold text-3xl text-blue-500">
+                  {pm9000Data.length + ds001Data.length}
+                </p>
               </div>
               <Users className="w-10 h-10 text-blue-500" />
             </div>
             <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
               <div className="">
                 <p className="">Stable</p>
-                <p className="font-semibold text-3xl text-green-500">4</p>
+                <p className="font-semibold text-3xl text-green-500">
+                  {stableCountPm9000 + stableCountDS001}
+                </p>
               </div>
               <CircleCheck className="w-10 h-10 text-green-500" />
             </div>
             <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
               <div className="">
                 <p className="">Critical</p>
-                <p className="font-semibold text-3xl text-red-500">2</p>
+                <p className="font-semibold text-3xl text-red-500">
+                  {crisisCountPM9000 + crisisCountDS001}
+                </p>
               </div>
               <CircleAlert className="w-10 h-10 text-red-500" />
             </div>
@@ -315,10 +391,10 @@ const PatientMonitorPage = () => {
 
         {/* Content */}
         {/* PM-9000 */}
-        <div className="flex flex-col gap-2 px-1">
+        <div className="flex flex-col gap-2 px-4">
           <p className="font-bold">PM 9000</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 gap-6">
-            {pm9000.map((item) => (
+            {pm9000Data.map((item) => (
               <PatientMonitorPM9000Section
                 key={item.id}
                 id_device={item.id}
@@ -337,10 +413,10 @@ const PatientMonitorPage = () => {
           </div>
         </div>
         {/* DS-001 */}
-        <div className="flex flex-col gap-2 px-1">
+        <div className="flex flex-col gap-2 px-4">
           <p className="font-bold">DS 001</p>
           <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
-            {ds001.map((item) => (
+            {ds001Data.map((item) => (
               <PatientMonitorDS001Section
                 key={item.id}
                 id_device={item.id}
@@ -382,46 +458,7 @@ const PatientMonitorPage = () => {
         setNonactive={() => setShowAddPatientModal(false)}
         stateSidebar="Patient Monitor"
       />
-      {/* <SelectPatient
-        isActive={showAddPatientModal}
-        setNonactive={() => setShowAddPatientModal(false)}
-        state={state}
-        openBarcodeModal={() => setState("barcode")}
-        openSelectModal={() => setState("select")}
-        openCreateModal={() => setState("create")}
-        patientSelected={(patient) => setPatient(patient)}
-        stateSidebar={"Patient Monitor"}
-      /> */}
-      <SelectPatientRoomModal
-        isActive={showSelectRoomModal}
-        setInactive={() => {
-          setShowSelectRoomModal(false);
-          setShowAddPatientModal(true);
-          setPatient(null);
-        }}
-        closeAllModals={() => {
-          setShowSelectRoomModal(false);
-          setShowAddPatientModal(false);
-        }}
-        patientSelected={patient}
-        setShowSelectDeviceModal={setShowSelectDeviceModal}
-      />
-      <SelectDevicePatientMonitorModal
-        isActive={showSelectDeviceModal}
-        setInactive={() => {
-          setShowSelectDeviceModal(false);
-          setShowAddPatientModal(true);
-          setPatient(null);
-        }}
-        closeAllModals={() => {
-          setShowSelectDeviceModal(false);
-          setShowAddPatientModal(false);
-        }}
-        patientSelected={patient}
-        setShowSelectRoomModal={setShowSelectRoomModal}
-        setShowSelectDeviceModal={setShowSelectDeviceModal}
-      />
     </MainLayout>
   );
 };
-export default PatientMonitorPage;
+export default PatientMonitorPage1;
