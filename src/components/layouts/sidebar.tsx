@@ -158,7 +158,7 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
 
         {/* Tools */}
         <div className="flex flex-col gap-1 mt-4">
-          {!isHide && <p className="text-gray-500 text-sm">Tools</p>}
+          {!isHide && <hr className="border-t border-gray-300 my-4" />}
           <div className="flex flex-col gap-2 w-full">
             <AppSidebar
               icon={<Settings />}

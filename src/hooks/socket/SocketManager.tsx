@@ -1,5 +1,6 @@
 import { io, Socket } from "socket.io-client";
 import { BaseHandler } from "./handlers/BaseHandler";
+import mqtt, { MqttClient } from "mqtt";
 
 export class SocketManager {
   private socket: Socket;

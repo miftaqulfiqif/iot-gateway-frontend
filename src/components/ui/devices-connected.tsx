@@ -28,6 +28,7 @@ type DevicesConnectedProps = {
   deviceIpAddress?: string;
   deviceConnection: string;
   deviceFunction: string;
+  deviceIsConnected: boolean;
   onDelete: () => void;
   onUpdate: () => void;
 };
@@ -39,6 +40,7 @@ export const DevicesConnected = ({
   deviceIpAddress,
   deviceConnection,
   deviceFunction,
+  deviceIsConnected,
   onDelete,
   onUpdate,
 }: DevicesConnectedProps) => {
@@ -63,74 +65,85 @@ export const DevicesConnected = ({
             {deviceConnection === "usb_vcp" && "USB VCP"}
           </p>
         </div>
-        {/* Button Action */}
-        <div className="relative">
-          <button
-            className="flex items-center gap-1 cursor-pointer transition duration-150"
-            onClick={() => {
-              const optionsMenu = document.getElementById(
-                `options-${deviceId}`
-              );
-              if (optionsMenu) {
-                optionsMenu.classList.toggle("hidden");
-              }
-            }}
-          >
-            <EllipsisVertical className="w-6 h-6" />
-          </button>
-          <div
-            id={`options-${deviceId}`}
-            className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
-          >
-            <ul className="py-1">
-              <li
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  deviceConnection === "bluetooth"
-                    ? navigate("/device/bluetooth/" + deviceId)
-                    : null;
+        <div className="flex items-center gap-2">
+          {deviceIsConnected === true ? (
+            <p className="bg-green-100 text-green-900 px-2 py-1 rounded-full font-bold text-sm">
+              Connected
+            </p>
+          ) : (
+            <p className="bg-red-100 text-red-900 px-2 py-1 rounded-full font-bold text-sm">
+              Disconnect
+            </p>
+          )}
+          {/* Button Action */}
+          <div className="relative">
+            <button
+              className="flex items-center gap-1 cursor-pointer transition duration-150"
+              onClick={() => {
+                const optionsMenu = document.getElementById(
+                  `options-${deviceId}`
+                );
+                if (optionsMenu) {
+                  optionsMenu.classList.toggle("hidden");
+                }
+              }}
+            >
+              <EllipsisVertical className="w-6 h-6" />
+            </button>
+            <div
+              id={`options-${deviceId}`}
+              className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
+            >
+              <ul className="py-1">
+                <li
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    deviceConnection === "bluetooth"
+                      ? navigate("/device/bluetooth/" + deviceId)
+                      : null;
 
-                  deviceConnection !== "bluetooth"
-                    ? navigate("/device/tcpip/" + deviceId)
-                    : null;
-                }}
-              >
-                <div className="flex items-center gap-2">Detail</div>
-              </li>
+                    deviceConnection !== "bluetooth"
+                      ? navigate("/device/tcpip/" + deviceId)
+                      : null;
+                  }}
+                >
+                  <div className="flex items-center gap-2">Detail</div>
+                </li>
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <li className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                    <div className="flex items-center gap-2 text-red-500">
-                      <Trash className="w-5 h-5" />
-                      Delete
-                    </div>
-                  </li>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="bg-white">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      this item.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="text-black border">
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={onDelete}
-                      className="bg-red-500 text-white"
-                    >
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </ul>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <li className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                      <div className="flex items-center gap-2 text-red-500">
+                        <Trash className="w-5 h-5" />
+                        Delete
+                      </div>
+                    </li>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-white">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete this item.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="text-black border">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={onDelete}
+                        className="bg-red-500 text-white"
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ export const useSocketDeviceManagement = () => {
   const gatewayId = user?.gateway?.id;
 
   const [devices, setDevices] = useState<Devices[]>([]);
-  const [isScanning, setIsScanning] = useState(false);
+  const [isScanning, setIsScanning] = useState<boolean>(false);
 
   const socketManagerRef = useRef<SocketManager | null>(null);
   const handlerRef = useRef<DeviceManagementHandler | null>(null);
