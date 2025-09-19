@@ -123,7 +123,7 @@ export const TableGateways = ({
                     </div>
                   </TableCell>
 
-                  <TableCell className="text-center">
+                  <TableCell className="text-left">
                     {item.location || "-"}
                   </TableCell>
                   <TableCell className="text-center">

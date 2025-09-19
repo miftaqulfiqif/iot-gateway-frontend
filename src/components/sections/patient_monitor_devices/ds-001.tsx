@@ -56,9 +56,10 @@ export const PatientMonitorDS001Section = ({
     >
       <div className="flex items-center justify-between">
         <div className="flex gap-2 items-center text-black">
-          <p className="font-bold text-xl">{room.number}</p>
+          <p className="font-bold text-lg mr-4">Merpati</p>
+          <p className="font-bold text-base">{room.number}</p>
           <p className="font-bold">-</p>
-          <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-xl">
+          <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-base">
             {room.type}
           </p>
         </div>
@@ -110,32 +111,34 @@ export const PatientMonitorDS001Section = ({
           {/* NIBP */}
           <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-full h-full justify-between gap-2">
             <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-3 items-center font-semibold">
+              <div className="flex flex-row gap-3 items-center">
                 <div className="bg-[#ededf9] text-red-600 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                   <img src={nibpIcon} className="w-5 h-5" />
                 </div>
-                <p className="text-lg">NIBP</p>
+                <p className="text-sm">NIBP</p>
               </div>
               <div className="flex flex-row items-end gap-4 ml-4">
-                <div className="flex flex-row items-center text-4xl gap-2">
+                <div className="flex flex-row items-center text-2xl gap-2 font-bold">
                   <p className="">{systolic}</p>/<p>{diastolic}</p>
                 </div>
-                <p className="text-sm pb-2">mmHg</p>
+                <p className="text-xs pb-2">mmHg</p>
               </div>
               <div className="ml-4 flex flex-row gap-4 mt-2">
                 <div className="flex flex-row w-fit text-white items-center gap-2 bg-red-400 px-3 py-1 rounded-full h-fit">
-                  <Activity className="w-6 h-6" />
+                  <Activity className="w-4 h-4" />
                   <p className="text-sm">{mean} bpm</p>
                 </div>
               </div>
             </div>
-            <div className="w-1/3 h-34 bg-white text-red-700 rounded-2xl shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] p-4">
+            <div className="w-1/3 h-26 bg-white text-red-700 rounded-2xl shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] p-4">
               <div className="flex flex-row justify-center gap-4 items-center">
                 <img src={prIcon} alt="" className="w-6 h-6" />
-                <p className=" font-bold text-xl">PR</p>
+                <p className=" font-bold text-base">PR</p>
               </div>
               <div className="flex h-2/3 items-end justify-self-center gap-2">
-                <p className="text-5xl">{pulse_rate ? pulse_rate : "--"}</p>
+                <p className="text-2xl font-bold">
+                  {pulse_rate ? pulse_rate : "--"}
+                </p>
                 <p>bpm</p>
               </div>
             </div>
@@ -144,18 +147,18 @@ export const PatientMonitorDS001Section = ({
           <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/4 justify-between gap-2">
             <div className="flex flex-row gap-2 w-full">
               <div className="flex flex-col gap-2 w-full">
-                <div className="flex flex-row gap-3 items-center font-semibold">
+                <div className="flex flex-row gap-3 items-center">
                   <div className="bg-[#ededf9] text-yellow-500 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                     <Thermometer className="w-5 h-5" />
                   </div>
-                  <p className="text-lg">Temp</p>
+                  <p className="text-base">Temp</p>
                 </div>
                 <div className="flex flex-row w-full items-center justify-center h-full">
-                  <div className="flex flex-row items-center justify-center text-5xl h-full px-4 py-2">
+                  <div className="flex flex-row items-center justify-center text-2xl px-4 py-2 font-bold">
                     <p>{temp}</p>
                   </div>
-                  <div className="h-full flex items-end">
-                    <p className="text-lg pb-4">°C</p>
+                  <div className="flex items-end">
+                    <p className="text-sm pb-4">°C</p>
                   </div>
                 </div>
               </div>
@@ -168,7 +171,7 @@ export const PatientMonitorDS001Section = ({
           <div className="bg-blue-200 text-black rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/2 h-full justify-between gap-2">
             <div className="flex flex-row gap-2">
               <div className="flex flex-col gap-2">
-                <div className="flex flex-row gap-3 items-center font-semibold">
+                <div className="flex flex-row gap-3 items-center">
                   <div className="bg-[#ededf9] text-blue-800 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                     <img src={spo2Icon} className="w-5 h-5" />
                   </div>
@@ -178,7 +181,7 @@ export const PatientMonitorDS001Section = ({
                 </div>
                 <div className="flex flex-row items-end ">
                   <div className="flex flex-row items-center text-2xl px-4 py-2 rounded-4xl gap-2">
-                    <p className="text-4xl">{spo2}</p>
+                    <p className="text-2xl font-bold">{spo2}</p>
                   </div>
                   <p className="text-sm pb-4">%</p>
                 </div>
@@ -186,10 +189,10 @@ export const PatientMonitorDS001Section = ({
             </div>
           </div>
           {/* RR - Sp02 */}
-          <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/3 h-fit justify-between gap-2">
+          <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/2 h-fit justify-between gap-2">
             <div className="flex flex-row gap-2">
               <div className="flex flex-col gap-2">
-                <div className="flex flex-row gap-3 items-center font-semibold">
+                <div className="flex flex-row gap-3 items-center">
                   <div className="bg-[#ededf9] text-blue-800 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                     <img src={respIcon} className="w-5 h-5" />
                   </div>
@@ -198,8 +201,8 @@ export const PatientMonitorDS001Section = ({
                   </p>
                 </div>
                 <div className="flex flex-row items-end">
-                  <div className="flex flex-row items-center text-2xl px-4 py-2 rounded-4xl">
-                    <p className="text-4xl">{pr_spo2}</p>
+                  <div className="flex flex-row items-center text-2xl px-4 py-2">
+                    <p className="text-2xl font-bold">{pr_spo2}</p>
                   </div>
                   <p className="text-sm pb-4">bpm</p>
                 </div>
@@ -210,7 +213,7 @@ export const PatientMonitorDS001Section = ({
           <div className="bg-green-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/3 h-fit justify-between gap-2">
             <div className="flex flex-row gap-2">
               <div className="flex flex-col gap-2">
-                <div className="flex flex-row gap-3 items-center font-semibold">
+                <div className="flex flex-row gap-3 items-center">
                   <div className="bg-[#ededf9] text-yellow-500 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
                     <img src={rrIcon} className="w-5 h-5" />
                   </div>
@@ -218,7 +221,7 @@ export const PatientMonitorDS001Section = ({
                 </div>
                 <div className="flex flex-row items-end">
                   <div className="flex flex-row items-center text-2xl px-4 py-2 rounded-4xl">
-                    <p className="text-4xl">{rr}</p>
+                    <p className="text-2xl font-bold">{rr}</p>
                   </div>
                   <p className="text-sm pb-4">rpm</p>
                 </div>
@@ -226,8 +229,8 @@ export const PatientMonitorDS001Section = ({
             </div>
           </div>
         </div>
-        <ECGChart className="mt-4" />
-        <HeartPulseChart className="" title="Plethysmogram" />
+        {/* <ECGChart className="mt-4" /> */}
+        <HeartPulseChart className="mt-2" title="Plethysmogram" />
       </div>
     </div>
   );

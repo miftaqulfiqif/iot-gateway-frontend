@@ -365,7 +365,13 @@ export const DetailBluetoothDevice = () => {
               <div className="flex items-center">
                 <p className="w-28">Status</p>
                 <p className="w-3">:</p>
-                <p className="text-green-900 bg-green-200 rounded-2xl px-3 font-semibold">
+                <p
+                  className={`rounded-2xl px-3 font-semibold  ${
+                    detailDevice?.detail?.is_connected
+                      ? "bg-green-200 text-green-900"
+                      : "bg-red-200 text-red-900"
+                  }`}
+                >
                   {detailDevice?.detail?.is_connected
                     ? "Connected"
                     : "Disconnected"}

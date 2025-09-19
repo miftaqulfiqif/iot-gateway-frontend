@@ -42,6 +42,8 @@ import { ca, vi } from "date-fns/locale";
 import ChartBiaBodyComposition from "@/components/charts/chart-bia-body-composition";
 import { RecentMeasurementsPatientTable } from "@/components/tables/recent-measurements-patient-table";
 import { times } from "lodash";
+import spo2Icon from "@/assets/icons/spo2-1.png";
+import weightScaleIcon from "@/assets/icons/weight-scale.png";
 
 const state = [
   {
@@ -492,18 +494,18 @@ const DetailPatientPage = () => {
         {/* Last Measurement */}
         <div className="flex gap-4 h-fit">
           {lastMeasurement({
-            label: "Heart Rate",
-            value: 120,
-            unit: "bpm",
-            timestamp: "23 September 2023 23:59",
-            icon: <Heart className="w-10 h-10 text-red-500" />,
+            label: "Blood Pressure",
+            value: "120/80",
+            unit: "mmHg",
+            timestamp: "22 September 2023 23:59",
+            icon: <Activity className="w-10 h-10 text-red-500" />,
           })}
           {lastMeasurement({
             label: "Sp02",
             value: 99,
             unit: "%",
             timestamp: "23 September 2023 23:59",
-            icon: <Droplets className="w-10 h-10 text-blue-500" />,
+            icon: spo2Icon,
           })}
           {lastMeasurement({
             label: "Temperature",
@@ -513,18 +515,18 @@ const DetailPatientPage = () => {
             icon: <Thermometer className="w-10 h-10 text-orange-500" />,
           })}
           {lastMeasurement({
-            label: "Weight",
+            label: "Body Weight",
             value: 70,
             unit: "kg",
             timestamp: "23 September 2023 23:59",
-            icon: <Weight className="w-10 h-10 text-green-500" />,
+            icon: weightScaleIcon,
           })}
           {lastMeasurement({
-            label: "Blood Pressure",
-            value: "120/80",
-            unit: "mmHg",
-            timestamp: "22 September 2023 23:59",
-            icon: <Activity className="w-10 h-10 text-red-500" />,
+            label: "Body Height",
+            value: 170,
+            unit: "cm",
+            timestamp: "23 September 2023 23:59",
+            icon: <PersonStanding className="w-10 h-10 text-purple-500" />,
           })}
         </div>
 
@@ -812,7 +814,7 @@ const lastMeasurement = ({
   value: number | string;
   unit: string;
   timestamp: string;
-  icon: React.ReactNode;
+  icon: React.ReactNode | string;
 }) => {
   return (
     <div className="flex justify-between items-center p-4 bg-white w-1/3 h-full rounded-2xl border-3 border-gray-200">
@@ -824,7 +826,13 @@ const lastMeasurement = ({
         </div>
         <p className="text-xs">{timestamp}</p>
       </div>
-      {icon}
+      <div className="">
+        {typeof icon === "string" ? (
+          <img src={icon} alt={label} className="w-10 h-10" />
+        ) : (
+          icon
+        )}
+      </div>
     </div>
   );
 };

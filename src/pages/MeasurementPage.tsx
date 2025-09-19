@@ -6,10 +6,10 @@ import { SelectPatient } from "@/components/modals/select-patient-modal";
 import { useDevices } from "@/hooks/api/use-device";
 
 const MeasurementPage = () => {
-  const { getAllDevices, devices } = useDevices();
+  const { getAllDevicesConnected, devicesConnected } = useDevices();
 
   useEffect(() => {
-    getAllDevices();
+    getAllDevicesConnected();
   }, []);
 
   const [state, setState] = useState("barcode");
@@ -64,8 +64,8 @@ const MeasurementPage = () => {
           <div className="w-1/2">
             <p className="font-bold text-2xl">Devices already to use</p>
             <div className="flex flex-col gap-4 mt-3">
-              {devices.length > 0 ? (
-                devices.map(
+              {devicesConnected.length > 0 ? (
+                devicesConnected.map(
                   (device) =>
                     device.connection !== "tcpip" && (
                       <DeviceConnected

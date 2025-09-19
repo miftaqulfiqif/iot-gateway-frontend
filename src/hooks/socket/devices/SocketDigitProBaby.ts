@@ -4,6 +4,7 @@ import { SocketManager } from "../SocketManager";
 import { DigitProBabyHandler } from "../handlers/DigitProBabyHandler";
 import { useToast } from "@/context/ToastContext";
 import { useAuth } from "@/context/AuthContext";
+import { set } from "lodash";
 
 export const useSocketDigitProBaby = (macDevice: string) => {
   const { user } = useAuth();
@@ -50,7 +51,12 @@ export const useSocketDigitProBaby = (macDevice: string) => {
   }, [macDevice]);
 
   const eventTareDigitProBaby = () => {
-  handlerRef.current?.handleTare();
+    setData({
+      mac: "",
+      weight: 0,
+    });
+    setRealtime([]);
+    handlerRef.current?.handleTare();
     showToast(null, "Tare successfully", "success");
   };
 

@@ -14,6 +14,7 @@ export const useDevices = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
   const [devices, setDevices] = useState<Devices[]>([]);
+  const [devicesConnected, setDevicesConnected] = useState<Devices[]>([]);
   const [detailDevice, setDetailDevice] = useState<DetailDevice>();
   const [patientMonitoringDevices, setPatientMonitoringDevices] = useState<
     PatientMonitoringDevices[]
@@ -21,13 +22,27 @@ export const useDevices = () => {
 
   const getAllDevices = useCallback(async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/devices-connected`, {
+      const response = await axios.get(`${apiUrl}/api/devices`, {
         withCredentials: true,
         params: {
           gateway_id: user?.gateway?.id,
         },
       });
       setDevices(response.data.data);
+    } catch (error) {
+      console.error("Error fetching device connected:", error);
+    }
+  }, []);
+
+  const getAllDevicesConnected = useCallback(async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/api/devices-connected`, {
+        withCredentials: true,
+        params: {
+          gateway_id: user?.gateway?.id,
+        },
+      });
+      setDevicesConnected(response.data.data);
     } catch (error) {
       console.error("Error fetching device connected:", error);
     }
@@ -112,10 +127,12 @@ export const useDevices = () => {
   );
 
   return {
-    getAllDevices,
     devices,
+    devicesConnected,
     detailDevice,
     patientMonitoringDevices,
+    getAllDevices,
+    getAllDevicesConnected,
     deleteDeviceBluetooth,
     deleteDeviceTcpIP,
     updateDeviceBluetooth,

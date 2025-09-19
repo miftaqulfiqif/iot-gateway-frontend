@@ -99,6 +99,7 @@ function Devices1() {
                       deviceName={device.name || device.model}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
+                      deviceIsConnected={device.is_connected}
                       onDelete={() => deleteDeviceBluetooth(device.id)}
                       onUpdate={() => updateDeviceBluetooth}
                     />
@@ -127,6 +128,7 @@ function Devices1() {
                       deviceName={device.name || device.model}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
+                      deviceIsConnected={device.is_connected}
                       onDelete={() => deleteDeviceTcpIP(device.ip_address)}
                       onUpdate={() => updateDeviceTcpIP}
                     />
@@ -159,6 +161,7 @@ function Devices1() {
                       deviceName={device.name || device.model}
                       deviceConnection={device.connection}
                       deviceFunction={device.device_function}
+                      deviceIsConnected={device.is_connected}
                       onDelete={() => deleteDeviceTcpIP(device.id)}
                       onUpdate={() => updateDeviceTcpIP}
                     />

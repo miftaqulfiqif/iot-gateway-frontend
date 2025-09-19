@@ -88,6 +88,27 @@ const pm9000 = [
     tempD: 39,
     is_crysis: false,
   },
+  {
+    id: "192.168.1.10",
+    name: "ACB-421",
+    patient_id: {
+      id: "1",
+      name: "Miftaqul Huda",
+      room: {
+        id: "1",
+        number: "312",
+        type: "ICU",
+      },
+    },
+    ecg: 90,
+    spo2: 95,
+    resp: 22,
+    hr: 70,
+    temp1: 34,
+    temp2: 37,
+    tempD: 39,
+    is_crysis: true,
+  },
 ];
 
 const ds001 = [
@@ -393,7 +414,7 @@ const PatientMonitorPage1 = () => {
         {/* PM-9000 */}
         <div className="flex flex-col gap-2 px-4">
           <p className="font-bold">PM 9000</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
             {pm9000Data.map((item) => (
               <PatientMonitorPM9000Section
                 key={item.id}
@@ -415,7 +436,7 @@ const PatientMonitorPage1 = () => {
         {/* DS-001 */}
         <div className="flex flex-col gap-2 px-4">
           <p className="font-bold">DS 001</p>
-          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
             {ds001Data.map((item) => (
               <PatientMonitorDS001Section
                 key={item.id}
@@ -432,23 +453,6 @@ const PatientMonitorPage1 = () => {
                 rr={item.rr}
                 isCrysis={item.is_crysis}
               />
-            ))}
-          </div>
-        </div>
-        {/* OTHER */}
-        <div className="flex flex-col gap-2 px-1">
-          <p className="font-bold">OTHER</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {[...Array(2)].map((_, i) => (
-              <div
-                key={i}
-                className="bg-white flex flex-col p-4 rounded-lg w-full h-60 shadow-[0px_2px_4px_rgba(0,0,0,0.2)] text-sm"
-              >
-                <p>Patient Name</p>
-                <p>Device Name</p>
-                <p>Device IP</p>
-                <div className="w-full h-40 bg-gray-200 rounded-xl"></div>
-              </div>
             ))}
           </div>
         </div>
