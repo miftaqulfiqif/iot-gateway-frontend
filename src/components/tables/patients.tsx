@@ -119,15 +119,14 @@ export const TablePatients = ({
                   <div className="flex flex-row justify-center gap-5 text-base text-white items-center">
                     {/* Edit */}
                     <button
-                      className="flex flex-row items-center gap-2 bg-blue-500 px-5 py-1 rounded-full cursor-pointer"
+                      className="flex flex-row items-center gap-2 border-blue-500 border-1 px-3 py-1 rounded-full cursor-pointer"
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         buttonAction("edit", item);
                       }}
                     >
-                      <SquarePen className="w-5 h-5" />
-                      Edit
+                      <SquarePen className="w-5 h-5 text-blue-500" />
                     </button>
                   </div>
                 </TableCell>
@@ -143,7 +142,7 @@ export const TablePatients = ({
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={9} className="p-4 text-center">
+            <TableCell colSpan={10} className="p-4 text-center">
               <Pagination>
                 <PaginationContent className="flex w-full justify-between">
                   <PaginationItem>

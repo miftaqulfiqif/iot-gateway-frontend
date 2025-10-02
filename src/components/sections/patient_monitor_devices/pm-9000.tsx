@@ -48,7 +48,6 @@ export const PatientMonitorPM9000Section = ({
   ecg,
   spo2,
   resp,
-  hr,
   temp1,
   temp2,
   tempD,
@@ -57,166 +56,136 @@ export const PatientMonitorPM9000Section = ({
   return (
     <>
       <div
-        className={`bg-[#EDEDF9] flex flex-col gap-2 p-4 rounded-3xl w-full h-fit text-sm ${
-          isCrysis
-            ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]"
-            : " shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)]"
-        }`}
+        className={`bg-white flex flex-col gap-2 p-4 rounded-xl w-full h-fit text-sm
+    ${isCrysis ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]" : "border"}`}
       >
-        <div className="flex items-center justify-between">
-          <div className="flex gap-2 items-center">
-            <p className="font-bold text-lg mr-4">Merpati</p>
-            <p className="font-bold text-base">{room.number}</p>
-            <p className="font-bold">-</p>
-            <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-base">
-              {room.type}
+        {/* Header */}
+        <div className="flex flex-row sm:flex-row items-start sm:items-center justify-between gap-2">
+          <div className="flex flex-wrap gap-1 items-center text-sm">
+            <p>Merpati</p>
+            <p>|</p>
+            <p>{room.number}</p>
+            <p>-</p>
+            <p>{room.type}</p>
+          </div>
+
+          {/* Button Action */}
+          <div className="relative self-end sm:self-auto">
+            <button
+              className="flex items-center gap-1 cursor-pointer transition duration-150"
+              onClick={() => {
+                const optionsMenu = document.getElementById(
+                  `options-${id_device}`
+                );
+                if (optionsMenu) optionsMenu.classList.toggle("hidden");
+              }}
+            >
+              <EllipsisVertical className="w-5 h-5" />
+            </button>
+            <div
+              id={`options-${id_device}`}
+              className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg hidden"
+            >
+              <ul className="py-1 text-sm">
+                <li
+                  className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    window.location.href = `/device/pasien_monitor_9000/${id_device}`;
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <SquarePen className="w-4 h-4" />
+                    Detail
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Patient name */}
+        <p className="text-base sm:text-lg font-bold">{patientName}</p>
+        <hr
+          className={`border-t my-2 ${
+            isCrysis ? "border-red-500" : "border-gray-400"
+          }`}
+        />
+
+        {/* Main content */}
+        <div className="flex flex-col flex-1 gap-2">
+          {/* SPO2 */}
+          <div className="bg-white rounded-lg flex items-center justify-between p-2 border-2">
+            <img src={spo2Icon} className="w-5 h-5" />
+            <p className="text-sm sm:text-base font-semibold text-blue-600">
+              {spo2} %
             </p>
           </div>
-          <div className="flex items-center gap-1">
-            {isCrysis && (
-              <p className="bg-red-500 text-white flex rounded-full px-4 font-bold">
-                Critical
-              </p>
-            )}
-            {/* Button Action */}
-            <div className="relative">
-              <button
-                className="flex items-center gap-1 cursor-pointer transition duration-150"
-                onClick={() => {
-                  const optionsMenu = document.getElementById(
-                    `options-${id_device}`
-                  );
-                  if (optionsMenu) {
-                    optionsMenu.classList.toggle("hidden");
-                  }
-                }}
-              >
-                <EllipsisVertical className="w-6 h-6" />
-              </button>
-              <div
-                id={`options-${id_device}`}
-                className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
-              >
-                <ul className="py-1">
-                  <li
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      window.location.href = `/device/pasien_monitor_9000/${id_device}`;
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <SquarePen className="w-5 h-5" />
-                      Detail
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p className="text-lg">{patientName} </p>
-        <div className="flex flex-row w-full h-fit space-x-1 mt-4 gap-2">
-          <div className="flex flex-col w-full gap-3">
-            {/* ECG */}
-            <div className="bg-green-200 text-black rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-              <div className="flex flex-row gap-2">
-                <div className="flex flex-col">
-                  <div className="flex flex-row gap-2 items-center">
-                    <div className="bg-[#ededf9] text-green-700 rounded-sm p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                      <Activity className="w-4 h-4" />
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-sm">ECG</p>
-                      <div className="flex flex-row gap-1">
-                        <div className="flex flex-row items-center text-2xl rounded-4xl">
-                          <p className="text-2xl font-bold">{ecg}</p>
-                        </div>
-                        <div className="flex flex-row items-end">
-                          <p className="text-base">rpm</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          <div className="flex flex-col md:flex-col lg:flex-row w-full gap-2">
+            {/* Left column */}
+            <div className="flex flex-row lg:flex-col flex-1 gap-2">
+              {/* ECG */}
+              <div className="bg-white rounded-lg flex flex-col p-2 border-2 w-full">
+                <div className="flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-green-500" />
+                  <p className="text-xs sm:text-sm">ECG</p>
+                </div>
+                <div className="flex gap-1 items-end">
+                  <p className="text-lg sm:text-xl font-bold text-green-500">
+                    {ecg}
+                  </p>
+                  <span className="text-xs sm:text-base">rpm</span>
                 </div>
               </div>
-            </div>
 
-            {/* RESP */}
-            <div className="bg-blue-200 text-black rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-              <div className="flex flex-row gap-2 w-full">
-                <div className="bg-[#ededf9] text-green-700 rounded-sm p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
+              {/* RESP */}
+              <div className="bg-white rounded-lg flex flex-col p-2 border-2 w-full">
+                <div className="flex items-center gap-2">
                   <img src={respIcon} className="w-4 h-4" />
+                  <p className="text-xs sm:text-sm">RESP</p>
                 </div>
-                <div className="flex flex-col">
-                  <p className="text-sm">RESP</p>
-                  <div className="flex flex-row gap-1 ">
-                    <div className="flex flex-row items-end text-2xl rounded-4xl">
-                      <p className="text-2xl font-bold">{resp}</p>
-                    </div>
-                    <div className="flex flex-row items-end">
-                      <p className="text-base">rpm</p>
-                    </div>
-                  </div>
+                <div className="flex gap-1 items-end">
+                  <p className="text-lg sm:text-xl font-bold text-blue-600">
+                    {resp}
+                  </p>
+                  <span className="text-xs sm:text-base">rpm</span>
                 </div>
               </div>
             </div>
 
-            {/* SPO-2 */}
-            <div className="bg-blue-200 text-black rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-2 w-full justify-between gap-2">
-              <div className="flex flex-row gap-2">
-                <div className="flex flex-col">
-                  <div className="flex flex-row gap-2">
-                    <div className="bg-[#ededf9] text-green-700 rounded-sm p-1 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                      <img src={spo2Icon} className="w-6 h-6" />
-                    </div>
-                    <div className="flex flex-col">
-                      {/* <p className="text-xs">ECG</p> */}
-                      <div className="flex flex-row gap-1">
-                        <div className="flex flex-row items-center text-2xl rounded-4xl">
-                          <p className="font-semibold">{spo2} %</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            {/* Right column */}
+            <div className="flex flex-col flex-1 gap-2">
+              {/* TEMP */}
+              <div className="bg-white rounded-lg p-2 border-2">
+                <div className="flex items-center gap-2 mb-2">
+                  <Thermometer className="w-6 h-6 text-yellow-500" />
+                  <p className="text-xs sm:text-sm">Temp</p>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2 w-1/2 h-full">
-            <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-full h-full justify-between gap-2">
-              <div className="flex flex-col gap-2 w-full">
-                <div className="flex flex-row gap-3 items-center">
-                  <div className="bg-[#ededf9] text-yellow-500 rounded-sm p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                    <Thermometer className="w-4 h-4" />
-                  </div>
-                  <p className="text-sm">Temp</p>
-                </div>
-                <div className="flex flex-col w-full items-center">
-                  <div className="flex flex-row items-center gap-12">
-                    <p className="w-1">T1</p>
+                <div className="flex flex-col w-full gap-1">
+                  <div className="flex flex-row items-center justify-between">
+                    <p className="w-6 text-xs sm:text-sm">T1</p>
                     <div className="flex flex-row items-end gap-1">
-                      <p className="text-xl w-10 text-end font-semibold">
+                      <p className="text-sm sm:text-lg font-semibold text-yellow-500">
                         {temp1}
                       </p>
-                      <p className="text-sm pb-0.5">°C</p>
+                      <p className="text-xs sm:text-sm pb-0.5">°C</p>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center gap-12">
-                    <p className="w-1">T2</p>
+                  <div className="flex flex-row items-center justify-between">
+                    <p className="w-6 text-xs sm:text-sm">T2</p>
                     <div className="flex flex-row items-end gap-1">
-                      <p className="text-xl w-10 text-end font-semibold">
+                      <p className="text-sm sm:text-lg font-semibold text-yellow-500">
                         {temp2}
                       </p>
-                      <p className="text-sm pb-0.5">°C</p>
+                      <p className="text-xs sm:text-sm pb-0.5">°C</p>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center gap-12">
-                    <p className="w-1">TD</p>
+                  <div className="flex flex-row items-center justify-between">
+                    <p className="w-6 text-xs sm:text-sm">TD</p>
                     <div className="flex flex-row items-end gap-1">
-                      <p className="text-xl w-10 text-end font-semibold">
+                      <p className="text-sm sm:text-lg font-semibold text-yellow-500">
                         {tempD}
                       </p>
-                      <p className="text-sm pb-0.5">°C</p>
+                      <p className="text-xs sm:text-sm pb-0.5">°C</p>
                     </div>
                   </div>
                 </div>
@@ -224,9 +193,23 @@ export const PatientMonitorPM9000Section = ({
             </div>
           </div>
         </div>
-        <ECGChart className="mt-2" />
-        <HeartPulseChart title="Plethysmogram" />
-        {/* <HeartRateChart chartData={chartData} isPatientMonitor /> */}
+
+        {/* Footer icons */}
+        <hr
+          className={`border-t my-2 ${
+            isCrysis ? "border-red-500" : "border-gray-400"
+          }`}
+        />
+        <div className="flex flex-wrap gap-2">
+          <Activity
+            className={`w-5 h-5 ${isCrysis ? "text-red-500" : "text-gray-300"}`}
+          />
+          <img src={respIcon} className="w-5 h-5" />
+          <img src={spo2Icon} className="w-5 h-5" />
+          <Thermometer
+            className={`w-5 h-5 ${isCrysis ? "text-red-500" : "text-gray-300"}`}
+          />
+        </div>
       </div>
     </>
   );

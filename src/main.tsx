@@ -17,6 +17,7 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import { PublicRoute } from "./routes/PublicRoute.tsx";
 import { PrivateRoute } from "./routes/PrivateRoute.tsx";
 import MeasurementHistoriesPage from "./pages/MeasurementHistoriesPage.tsx";
+import MeasurementHistoriesPage1 from "./pages/MeasurementHistoriesPage1.tsx";
 import { ToastProvider } from "./context/ToastContext.tsx";
 import PatientMonitorPage from "./pages/PatientMonitorPage.tsx";
 import DetailPatientPage from "./pages/DetailPatientPage.tsx";
@@ -34,6 +35,7 @@ import { ConfirmModalProvider } from "./context/ConifmModalContext.tsx";
 import PatientMonitorPage1 from "./pages/PatientMonitorPage1.tsx";
 import Devices1 from "./pages/DevicesPage1.tsx";
 import Gateways from "./pages/GatewaysPage.tsx";
+import MeasurementPage1 from "./pages/MeasurementPage1.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -50,7 +52,11 @@ createRoot(document.getElementById("root")!).render(
               <Route element={<PrivateRoute />}>
                 {/* MainPages */}
                 <Route path="/" element={<MeasurementPage />} />
-                <Route path="/measurement" element={<MeasurementPage />} />
+                <Route
+                  path="/measurement"
+                  // element={<MeasurementPage />}
+                  element={<MeasurementPage1 />}
+                />
                 <Route
                   path="/patient-monitor"
                   element={<PatientMonitorPage1 />}
@@ -98,7 +104,8 @@ createRoot(document.getElementById("root")!).render(
                 />
                 <Route
                   path="/measurement-histories"
-                  element={<MeasurementHistoriesPage />}
+                  // element={<MeasurementHistoriesPage />}
+                  element={<MeasurementHistoriesPage1 />}
                 />
                 {/* DevicePages */}
                 <Route

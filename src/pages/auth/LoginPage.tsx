@@ -11,7 +11,7 @@ export const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="flex flex-row bg-white rounded-3xl shadow-lg overflow-hidden max-w-6xl w-full">
         {/* Kiri: Gambar dan Slogan */}
-        <div className="w-1/2 bg-blue-600 text-white p-10 flex flex-col justify-center">
+        <div className="w-1/2 bg-blue-600 text-white p-10 flex-col justify-center hidden md:flex">
           <h1 className="text-3xl font-bold mb-2">
             Welcome to Elitech Gateway
           </h1>
@@ -29,13 +29,8 @@ export const LoginPage = () => {
         </div>
 
         {/* Kanan: Form Login */}
-        <div className="w-1/2 p-10 bg-white">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Login</h2>
-            {formik.status && (
-              <p className="text-sm text-red-500">{formik.status}</p>
-            )}
-          </div>
+        <div className="w-full md:w-1/2 lg:w-1/2 p-10 bg-white">
+          <h2 className="text-2xl font-bold text-gray-800 mb-8">Login</h2>
 
           <form onSubmit={formik.handleSubmit} className="space-y-5">
             {/* Email */}

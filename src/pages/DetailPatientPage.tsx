@@ -340,6 +340,7 @@ const DetailPatientPage = () => {
   const [search, setSearch] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
   const [showFilter, setShowFilter] = useState(false);
+  const [patientImage, setPatientImage] = useState("");
 
   useEffect(() => {
     if (patientId) {
@@ -353,6 +354,29 @@ const DetailPatientPage = () => {
     }
   }, [detailPatient]);
 
+  // Close the filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
+        setShowFilter(false);
+      }
+    };
+
+    if (showFilter) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // cleanup
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFilter]);
+
   return (
     <MainLayout title="Patients" state="Patients">
       <div className="flex flex-col gap-6 w-full pb-5">
@@ -363,7 +387,26 @@ const DetailPatientPage = () => {
             <div className="flex flex-row justify-between">
               <div className="flex gap-4 w-full">
                 {/* Profile Picture */}
-                <div className="rounded-full bg-gray-200 w-25 h-25"></div>
+                <div className="w-26 h-26 rounded-full overflow-hidden border-2 flex items-center justify-center bg-gray-200">
+                  {patientImage ? (
+                    <img
+                      src={patientImage}
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xl font-semibold text-gray-700">
+                      {detailPatient?.detail?.name
+                        ? detailPatient?.detail?.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .join("")
+                            .substring(0, 3)
+                            .toUpperCase()
+                        : "?"}
+                    </span>
+                  )}
+                </div>
                 <div className="flex flex-col gap-2 justify-between">
                   <p className="text-2xl font-bold">
                     {detailPatient?.detail.name}
@@ -666,7 +709,26 @@ const DetailPatientPage = () => {
               ) : (
                 detailPatient?.recent_doctor.map((item) => (
                   <div key={item.id} className="flex items-center gap-3">
-                    <div className="w-18 h-18 rounded-full bg-gray-400"></div>
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 flex items-center justify-center bg-gray-200">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt="Avatar"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-semibold text-gray-700">
+                          {item.name
+                            ? item.name
+                                .split(" ")
+                                .map((word) => word[0])
+                                .join("")
+                                .substring(0, 3)
+                                .toUpperCase()
+                            : "?"}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex flex-col">
                       <p className="font-semibold font-sm">{item.name}</p>
                       <p className="text-sm text-gray-500">

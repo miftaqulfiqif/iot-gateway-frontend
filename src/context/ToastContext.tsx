@@ -1,10 +1,5 @@
 import { Ban, CheckCheck, Info, TriangleAlert, X } from "lucide-react";
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
 type Toast = {
   id: number;
@@ -95,7 +90,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-10 right-8 space-y-2 z-50">
+      <div className="fixed top-5 right-4 lg:right-8 lg:bottom-10 space-y-2 z-50">
         {toasts.map((toast) => (
           <div
             key={toast.id}
@@ -110,7 +105,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
             >
               {getIcon(toast.type)}
             </div>
-            <div className="flex flex-col w-62">
+            <div className="flex flex-col w-36 md:w-52 lg:w-62">
               <p className="text-black font-bold capitalize">
                 {toast.title ?? toast.type}
               </p>

@@ -19,7 +19,7 @@ import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import gatewayIconWhite from "@/assets/icons/gateway-icon-white.png";
 
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SidebarProps {
   state: string;
@@ -30,26 +30,43 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
   const { user, logout } = useAuth();
   const [isHide, setIsHide] = useState(false);
 
+  // Auto hide kalau ukuran layar kecil
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1280) {
+        setIsHide(true); // auto hide
+      } else {
+        setIsHide(false); // auto show di desktop besar
+      }
+    };
+
+    // cek pertama kali
+    handleResize();
+    // listener resize
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [state]);
+
   return (
     <div
-      className={`relative flex flex-col bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] h-full justify-between transition-all duration-300 ${
-        isHide ? "w-20 pt-10" : "w-72"
-      }`}
+      className={`relative flex flex-col bg-white rounded-2xl shadow h-full justify-between transition-all duration-300
+      ${isHide ? "w-20 pt-10" : "w-72"}`}
     >
-      {/* Toggle button di samping kanan sidebar */}
-      <button
-        onClick={() => setIsHide(!isHide)}
-        className={`absolute top-1/20 -right-3 transform -translate-y-1/2 
-                   bg-white border shadow rounded-full w-8 h-8 items-center justify-center  ${
-                     cannotHide ? "hidden" : "flex"
-                   } `}
-      >
-        {isHide ? (
-          <ChevronRight className="w-5 h-5" />
-        ) : (
-          <ChevronLeft className="w-5 h-5" />
-        )}
-      </button>
+      {/* Toggle button */}
+      {!cannotHide && (
+        <button
+          onClick={() => setIsHide(!isHide)}
+          className="absolute top-1/20 -right-3 transform -translate-y-1/2 
+      bg-white border shadow rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          {isHide ? (
+            <ChevronRight className="w-5 h-5" />
+          ) : (
+            <ChevronLeft className="w-5 h-5" />
+          )}
+        </button>
+      )}
 
       {/* Logo */}
       <div className="flex flex-row items-center justify-center py-4">
@@ -62,14 +79,18 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
       </div>
 
       {/* Menu */}
-      <div className="flex flex-col gap-4 px-4 py-2 h-3/4 overflow-y-auto">
+      <div
+        className={`flex flex-col gap-4 px-4 py-2 overflow-y-auto border${
+          isHide ? "items-center" : "h-3/4"
+        }`}
+      >
         <div className="flex flex-col gap-1">
           {!isHide && <p className="text-gray-500 text-sm">Dashboard</p>}
           <div className="flex flex-col gap-1 w-full">
             <AppSidebar
               icon={<SquareActivity className="w-5 h-5" />}
-              title={!isHide ? "Patient Monitor" : ""}
-              isActive={state === "Patient Monitor"}
+              title={!isHide ? "Central Monitoring" : ""}
+              isActive={state === "Central Monitoring"}
               url="/patient-monitor"
               isHide={isHide}
             />
@@ -89,8 +110,8 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
             />
             <AppSidebar
               icon={<ScrollText />}
-              title={!isHide ? "Measurement Histories" : ""}
-              isActive={state === "Measurement Histories"}
+              title={!isHide ? "Histories Measurement" : ""}
+              isActive={state === "Histories Measurement"}
               url="/measurement-histories"
               isHide={isHide}
             />
@@ -172,7 +193,13 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
       </div>
 
       {/* Footer */}
-      <div className="flex flex-row m-2 p-4 rounded-xl bg-gradient-to-b from-[#6e79f4] to-[#4956F4] text-white relative h-1/4">
+      <div
+        className={`flex flex-row m-2 p-4 rounded-xl text-white relative ${
+          isHide
+            ? "justify-center bg-white"
+            : "h-1/4 bg-gradient-to-b from-[#6e79f4] to-[#4956F4]"
+        }`}
+      >
         {!isHide && (
           <>
             <img
@@ -198,14 +225,6 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
             </div>
           </>
         )}
-        {/* {isHide && (
-          <div
-            className="flex flex-row gap-2 cursor-pointer bg-red-500 rounded-2xl px-2 py-2 w-full justify-center items-center"
-            onClick={logout}
-          >
-            <LogOut />
-          </div>
-        )} */}
       </div>
     </div>
   );

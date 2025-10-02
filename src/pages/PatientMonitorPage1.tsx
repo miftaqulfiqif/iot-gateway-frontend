@@ -5,24 +5,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import MainLayout from "../components/layouts/main-layout";
 import { useEffect, useRef, useState } from "react";
 import {
+  ArrowDown,
+  ArrowDownUp,
+  ArrowUp,
   CircleAlert,
   CircleCheck,
+  Filter,
   Funnel,
   Plus,
+  PlusIcon,
   Search,
   Users,
 } from "lucide-react";
 
 import { PatientMonitorPM9000Section } from "@/components/sections/patient_monitor_devices/pm-9000";
 import { PatientMonitorDS001Section } from "@/components/sections/patient_monitor_devices/ds-001";
-import { SelectPatient } from "@/components/modals/select-patient-modal";
-import { SelectDevicePatientMonitorModal } from "@/components/modals/select-device-patient-monitor-modal";
-import { is } from "date-fns/locale";
-import { SelectPatientRoomModal } from "@/components/modals/select-patient-room-modal";
 import { AddDevicePatientMonitorModal } from "@/components/modals/add-device-patient-monitor-modal";
+import { motion, AnimatePresence } from "framer-motion";
 
 const pm9000 = [
   {
@@ -215,11 +222,34 @@ const checkDs001Crysis = (item: any) => {
   );
 };
 
+// ✅ Hook reusable
+function useOutsideClick<T extends HTMLElement>(
+  refs: React.RefObject<T>[],
+  onClose: () => void
+) {
+  useEffect(() => {
+    function handleClick(e: MouseEvent | TouchEvent) {
+      const target = e.target as Node;
+      if (refs.every((ref) => ref.current && !ref.current.contains(target))) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("touchstart", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("touchstart", handleClick);
+    };
+  }, [refs, onClose]);
+}
+
 const PatientMonitorPage1 = () => {
   const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [limit, setLimit] = useState(10);
+  const [mobile, setMobile] = useState(false);
+  const [showStickyTop, setShowStickyTop] = useState(!mobile);
 
   const [pm9000Data, setPm9000Data] = useState(pm9000);
   const [ds001Data, setDs001Data] = useState(ds001);
@@ -228,7 +258,32 @@ const PatientMonitorPage1 = () => {
   const crisisCountPM9000 = pm9000Data.filter((p) => p.is_crysis).length;
   const crisisCountDS001 = ds001Data.filter((p) => p.is_crysis).length;
 
+  // Ref for filter dropdown
   const filterRef = useRef<HTMLDivElement>(null);
+
+  const [deviceType, setDeviceType] = useState("all");
+  const [sortBy, setSortBy] = useState("patient_name");
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  const handleFilterSubmit = (
+    deviceType: string,
+    sortBy: string,
+    sortOrder: string
+  ) => {
+    alert(
+      `Filter applied with deviceType: ${deviceType}, sortBy: ${sortBy}, sortOrder: ${sortOrder}`
+    );
+    setShowFilter(false);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -270,125 +325,100 @@ const PatientMonitorPage1 = () => {
   }, []);
 
   return (
-    <MainLayout title="Patient Monitor" state="Patient Monitor">
+    <MainLayout title="Central Monitoring" state="Central Monitoring">
       <div className="flex flex-col gap-4 pb-20">
         {/* Sticky Top */}
-        <div className="sticky top-0 z-10 bg-[#ededf9] mb-2">
-          <div className="flex gap-4 mb-4">
-            <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
-              <div className="">
-                <p className="">Total Patients</p>
-                <p className="font-semibold text-3xl text-blue-500">
-                  {pm9000Data.length + ds001Data.length}
-                </p>
-              </div>
-              <Users className="w-10 h-10 text-blue-500" />
-            </div>
-            <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
-              <div className="">
-                <p className="">Stable</p>
-                <p className="font-semibold text-3xl text-green-500">
-                  {stableCountPm9000 + stableCountDS001}
-                </p>
-              </div>
-              <CircleCheck className="w-10 h-10 text-green-500" />
-            </div>
-            <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
-              <div className="">
-                <p className="">Critical</p>
-                <p className="font-semibold text-3xl text-red-500">
-                  {crisisCountPM9000 + crisisCountDS001}
-                </p>
-              </div>
-              <CircleAlert className="w-10 h-10 text-red-500" />
-            </div>
-          </div>
-          <div className="flex flex-col w-full gap-4">
-            <div className="flex gap-6 w-full justify-between">
-              <div className="flex items-center gap-2">
-                <p>Showing</p>
-                <Select
-                  value={limit.toString()}
-                  onValueChange={(value) => setLimit(Number(value))}
-                >
-                  <SelectTrigger className="w-fit bg-[rgba(117,195,255,0.5)]">
-                    <SelectValue placeholder="10" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10" className="hover:bg-[#ECECEC]">
-                      10
-                    </SelectItem>
-                    <SelectItem value="20" className="hover:bg-[#ECECEC]">
-                      20
-                    </SelectItem>
-                    <SelectItem value="30" className="hover:bg-[#ECECEC]">
-                      30
-                    </SelectItem>
-                    <SelectItem value="50" className="hover:bg-[#ECECEC]">
-                      50
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+        <AnimatePresence>
+          {showStickyTop && (
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -50 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="sticky top-0 z-10 bg-[#ededf9] mb-2"
+            >
+              {/* Summary Cards */}
+              <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-1 lg:gap-4 mb-4">
+                <div className="flex items-center justify-between p-4 md:p-6 lg:p-6 rounded-xl bg-white border gap-2">
+                  <div>
+                    <p className="text-xs md:text-base">Total Patients</p>
+                    <p className="font-semibold text-xl lg:text-3xl text-blue-500">
+                      {pm9000Data.length + ds001Data.length}
+                    </p>
+                  </div>
+                  <div className="hidden sm:block">
+                    <Users className="w-10 h-10 text-blue-500" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between  p-4 md:p-6 lg:p-6  rounded-xl bg-white border gap-2">
+                  <div>
+                    <p className="text-xs md:text-base">Stable</p>
+                    <p className="font-semibold text-xl lg:text-3xl text-green-500">
+                      {stableCountPm9000 + stableCountDS001}
+                    </p>
+                  </div>
+                  <div className="hidden sm:block">
+                    <CircleCheck className="w-10 h-10 text-green-500" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between  p-4 md:p-6 lg:p-6 rounded-xl bg-white border gap-2">
+                  <div>
+                    <p className="text-xs md:text-base">Critical</p>
+                    <p className="font-semibold text-xl lg:text-3xl text-red-500">
+                      {crisisCountPM9000 + crisisCountDS001}
+                    </p>
+                  </div>
+                  <div className="hidden sm:block">
+                    <CircleAlert className="w-10 h-10 text-red-500" />
+                  </div>
+                </div>
               </div>
 
-              <div className="flex gap-4 items-center">
-                <div ref={filterRef} className="flex flex-col gap-2">
-                  <div
-                    className="flex cursor-pointer bg-white items-center gap-2 px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowFilter((prev) => !prev);
-                    }}
+              {/* Controls */}
+              <div className="flex flex-col-reverse flex-wrap lg:flex-row gap-4 w-full justify-between">
+                {/* Limit select */}
+                <div className="flex items-center gap-2">
+                  <p className="text-sm lg:text-base">Showing</p>
+                  <Select
+                    value={limit.toString()}
+                    onValueChange={(value) => setLimit(Number(value))}
                   >
-                    <Funnel className="w-5 h-5" />
-                    <p className="text-sm">Filter</p>
-                  </div>
-                  {/* Filter Dropdown */}
-                  {showFilter && (
-                    <div
-                      className="absolute z-10 bg-white p-4  rounded-xl mt-12 min-w-[200px] text-sm"
-                      style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.3)" }}
-                    >
-                      <div className="flex flex-col gap-3">
-                        <div className="flex flex-row justify-between">
-                          <span title="Filter users by role">
-                            Filter contents
-                          </span>
-                          {/* <p
-                          className="cursor-pointer text-red-500"
-                          onClick={() => {}}
-                        >
-                          Reset filter
-                        </p> */}
-                        </div>
-                        <button
-                          className="text-white bg-[#0D00FF] px-4 py-1.5 rounded-lg"
-                          onClick={() => {
-                            alert("OK");
-                          }}
-                        >
-                          Apply
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                    <SelectTrigger className="w-fit bg-[rgba(117,195,255,0.5)]">
+                      <SelectValue placeholder="10" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="20">20</SelectItem>
+                      <SelectItem value="30">30</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                <div className="relative">
-                  <div
-                    className="flex bg-[#3885FD] items-center gap-2 px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)] cursor-pointer text-white "
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowAddPatientModal(true);
-                    }}
+                {/* Actions */}
+                <div className="flex flex-wrap gap-3 items-center">
+                  {/* Filter */}
+                  {showFilterModal(
+                    deviceType,
+                    sortBy,
+                    sortOrder,
+                    setDeviceType,
+                    setSortBy,
+                    setSortOrder,
+                    handleFilterSubmit
+                  )}
+
+                  {/* Add Patient */}
+                  <button
+                    className="hidden md:flex lg:flex bg-[#3885FD] items-center gap-2 px-4 py-2 rounded-lg shadow text-white"
+                    onClick={() => setShowAddPatientModal(true)}
                   >
                     <Plus className="w-5 h-5" />
-                    <p className="text-white">Add Patient</p>
-                  </div>
-                </div>
+                    <span>Add Patient</span>
+                  </button>
 
-                <div className="relative">
-                  <div className="bg-white rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.3)]">
+                  {/* Search */}
+                  <div className="bg-white rounded-lg shadow">
                     <label
                       htmlFor="search"
                       className="flex items-center gap-2 px-4 py-2"
@@ -400,69 +430,184 @@ const PatientMonitorPage1 = () => {
                         placeholder="Search"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="px-2 focus:outline-none"
+                        className="px-2 focus:outline-none w-32 sm:w-48"
                       />
                     </label>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Button Show Sticky Top for Mobile */}
+        {mobile && (
+          <button
+            className="fixed top-3 right-4 bg-white p-2 rounded-full shadow-lg z-50"
+            onClick={() => setShowStickyTop((prev) => !prev)}
+          >
+            <Filter className="w-5 h-5" />
+          </button>
+        )}
+
+        {/* Button Add Patient Monitor */}
+        {mobile && (
+          <button className="fixed bottom-24 right-4 bg-[#3885FD] text-white p-3 rounded-full shadow-lg z-50">
+            <PlusIcon className="w-6 h-6" />
+          </button>
+        )}
 
         {/* Content */}
-        {/* PM-9000 */}
-        <div className="flex flex-col gap-2 px-4">
-          <p className="font-bold">PM 9000</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
-            {pm9000Data.map((item) => (
-              <PatientMonitorPM9000Section
-                key={item.id}
-                id_device={item.id}
-                patientName={item.patient_id.name}
-                room={item.patient_id.room}
-                ecg={item.ecg}
-                spo2={item.spo2}
-                resp={item.resp}
-                hr={item.hr}
-                temp1={item.temp1}
-                temp2={item.temp2}
-                tempD={item.tempD}
-                isCrysis={item.is_crysis}
-              />
-            ))}
+        <div className="flex flex-col gap-6 px-4">
+          <div>
+            <p className="font-bold text-xl mb-2">Patient Monitor</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+              {pm9000Data.map((item) => (
+                <PatientMonitorPM9000Section
+                  key={item.id}
+                  id_device={item.id}
+                  patientName={item.patient_id.name}
+                  room={item.patient_id.room}
+                  ecg={item.ecg}
+                  spo2={item.spo2}
+                  resp={item.resp}
+                  hr={item.hr}
+                  temp1={item.temp1}
+                  temp2={item.temp2}
+                  tempD={item.tempD}
+                  isCrysis={item.is_crysis}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-        {/* DS-001 */}
-        <div className="flex flex-col gap-2 px-4">
-          <p className="font-bold">DS 001</p>
-          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
-            {ds001Data.map((item) => (
-              <PatientMonitorDS001Section
-                key={item.id}
-                id_device={item.id}
-                patientName={item.patient_id.name}
-                room={item.patient_id.room}
-                systolic={item.systolic}
-                diastolic={item.diastolic}
-                mean={item.mean}
-                pulse_rate={item.pulse_rate}
-                temp={item.temp}
-                spo2={item.spo2}
-                pr_spo2={item.pr_spo2}
-                rr={item.rr}
-                isCrysis={item.is_crysis}
-              />
-            ))}
+
+          <div>
+            <p className="font-bold text-xl mb-2">Vital Sign Monitor</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+              {ds001Data.map((item) => (
+                <PatientMonitorDS001Section
+                  key={item.id}
+                  id_device={item.id}
+                  patientName={item.patient_id.name}
+                  room={item.patient_id.room}
+                  systolic={item.systolic}
+                  diastolic={item.diastolic}
+                  mean={item.mean}
+                  pulse_rate={item.pulse_rate}
+                  temp={item.temp}
+                  spo2={item.spo2}
+                  pr_spo2={item.pr_spo2}
+                  rr={item.rr}
+                  isCrysis={item.is_crysis}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
       <AddDevicePatientMonitorModal
         isActive={showAddPatientModal}
         setNonactive={() => setShowAddPatientModal(false)}
-        stateSidebar="Patient Monitor"
+        stateSidebar="Central Monitoring"
       />
     </MainLayout>
   );
 };
+
+const showFilterModal = (
+  deviceType: string,
+  sortBy: string,
+  sortOrder: string,
+  setDeviceType: (value: string) => void,
+  setSortBy: (value: string) => void,
+  setSortOrder: (value: string) => void,
+  handleSubmit: (deviceType: string, sortBy: string, sortOrder: string) => void
+) => {
+  return (
+    <Popover>
+      {/* Trigger */}
+      <PopoverTrigger asChild>
+        <div className="flex cursor-pointer bg-white items-center gap-2 px-4 py-2 rounded-lg shadow">
+          <Funnel className="w-5 h-5" />
+          <p className="text-sm">Filter</p>
+        </div>
+      </PopoverTrigger>
+
+      {/* Content */}
+      <PopoverContent className="w-[300px] lg:w-[400px] p-4 rounded-xl shadow">
+        <div className="flex flex-col gap-3 w-full">
+          {/* Header + Sort */}
+          <div className="flex justify-between items-center">
+            <p className="font-semibold">Filter Options</p>
+            <Select value={sortBy} onValueChange={(value) => setSortBy(value)}>
+              <SelectTrigger className="w-fit">
+                <ArrowDownUp className="w-5 h-5" />
+              </SelectTrigger>
+              <SelectContent className="p-4">
+                <p className="text-gray-500 text-sm mb-2">Sort by</p>
+                <SelectItem value="patient_name">Patient Name</SelectItem>
+                <SelectItem value="room_number">Room Number</SelectItem>
+                <SelectItem value="admission_date">Admission Date</SelectItem>
+                <hr className="my-2 border-gray-300" />
+                <div
+                  className={`flex items-center cursor-pointer rounded-lg px-2 py-1 ${
+                    sortOrder === "asc"
+                      ? "border border-blue-500 bg-blue-100 text-blue-600"
+                      : ""
+                  }`}
+                  onClick={() => setSortOrder("asc")}
+                >
+                  <ArrowUp className="w-5 h-5 inline-block mr-2" />
+                  <span>Ascending</span>
+                </div>
+                <div
+                  className={`flex items-center cursor-pointer rounded-lg px-2 py-1 ${
+                    sortOrder === "desc"
+                      ? "border border-blue-500 bg-blue-100 text-blue-600"
+                      : ""
+                  }`}
+                  onClick={() => setSortOrder("desc")}
+                >
+                  <ArrowDown className="w-5 h-5 inline-block mr-2" />
+                  <span>Descending</span>
+                </div>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Device Type */}
+          <div className="flex flex-row gap-1 w-full justify-between items-center">
+            <p>Show content</p>
+            <Select
+              value={deviceType}
+              onValueChange={(value) => setDeviceType(value)}
+            >
+              <SelectTrigger className="w-1/2">
+                <SelectValue placeholder="All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="patient_monitor">Patient Monitor</SelectItem>
+                <SelectItem value="vital_sign_monitor">
+                  Vital Sign Monitor
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Apply Button */}
+          <button
+            className="text-white bg-[#0D00FF] px-4 py-1.5 rounded-lg"
+            onClick={() => {
+              handleSubmit(deviceType, sortBy, sortOrder);
+            }}
+          >
+            Apply
+          </button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
 export default PatientMonitorPage1;

@@ -23,55 +23,6 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-// Dummy Admin
-const dummyUsers = [
-  {
-    id: "ADM001",
-    name: "Budi Santoso",
-    email: "budi.admin@rsprima.com",
-    phone: "081234567890",
-    username: "budiadmin",
-    role: "admin",
-    created_at: "2025-06-01T10:15:00",
-  },
-  {
-    id: "ADM002",
-    name: "Siti Marlina",
-    email: "siti.marlina@rsprima.com",
-    phone: "081234567891",
-    username: "sitimarlina",
-    role: "admin",
-    created_at: "2025-06-05T14:20:00",
-  },
-  {
-    id: "DCT003",
-    name: "Agus Wijaya",
-    email: "agus.wijaya@rsprima.com",
-    phone: "081234567892",
-    username: "aguswijaya",
-    role: "doctor",
-    created_at: "2025-06-10T09:30:00",
-  },
-  {
-    id: "DCT004",
-    name: "Dewi Lestari",
-    email: "dewi.lestari@rsprima.com",
-    phone: "081234567893",
-    username: "dewiles",
-    role: "doctor",
-    created_at: "2025-06-15T08:45:00",
-  },
-  {
-    id: "NUR005",
-    name: "Joko Prabowo",
-    email: "joko.prabowo@rsprima.com",
-    phone: "081234567894",
-    username: "jokoprbw",
-    role: "nurse",
-    created_at: "2025-06-20T13:00:00",
-  },
-];
-
 const role = [
   {
     id: 1,
@@ -108,9 +59,32 @@ export const UsersPage = () => {
     getAllUsers(1, 10, "");
   }, [limit, search]);
 
-  const handleChangeShowTable = (value: string) => {
-    alert(value);
+  const handleChangeShowTable = () => {
+    alert("FILTER");
   };
+
+  // Close the filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
+        setShowFilter(false);
+      }
+    };
+
+    if (showFilter) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // cleanup
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFilter]);
 
   return (
     <MainLayout title="Users" state="Users">

@@ -101,7 +101,7 @@ export const SelectDevicePatientMonitorModal = ({
     >
       <div className="w-full h-full p-4">
         {/* Component Sidebar */}
-        <Sidebar state="Patient Monitor" />
+        <Sidebar state="Central Monitoring" />
       </div>
       {/* Show Modal */}
       <div
