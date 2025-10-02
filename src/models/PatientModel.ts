@@ -96,6 +96,12 @@ export type DetailPatient = {
     updated_at: string;
   };
   babies: Array<any>;
-  recent_doctor: Array<any>;
+  recent_doctor: Array<{
+    id: string;
+    name: string;
+    image: string;
+    speciality: string;
+    recorded_at: string;
+  }>;
   medical_activities: Array<any>;
 };

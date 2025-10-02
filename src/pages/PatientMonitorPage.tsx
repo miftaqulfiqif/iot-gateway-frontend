@@ -380,7 +380,7 @@ const PatientMonitorPage = () => {
       <AddDevicePatientMonitorModal
         isActive={showAddPatientModal}
         setNonactive={() => setShowAddPatientModal(false)}
-        stateSidebar="Patient Monitor"
+        stateSidebar="Central Monitoring"
       />
       {/* <SelectPatient
         isActive={showAddPatientModal}

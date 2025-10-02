@@ -97,12 +97,12 @@ export const Header = ({ className, title }: NavbarProps) => {
   };
 
   return (
-    <nav className={`h-30 flex items-center ${className}`}>
+    <nav className={`h-16 lg:h-30 flex items-center ${className}`}>
       <div className="flex flex-row justify-between w-full mx-10">
         <div className="flex flex-row items-center">
-          <p className="text-3xl font-bold">{state}</p>
+          <p className="text-xl lg:text-3xl font-bold">{state}</p>
         </div>
-        <div className="flex flex-row gap-4 items-center">
+        <div className="hidden md:flex lg:flex flex-row gap-4 items-center">
           {/* Current Gateway */}
           <div ref={dropdownRef} className="relative">
             <div
@@ -113,9 +113,7 @@ export const Header = ({ className, title }: NavbarProps) => {
                 <img src={gatewayIcon} alt="" className="w-8 h-8" />
                 <div className="flex flex-col">
                   <p className="font-bold">
-                    {selectedGateway?.name
-                      ? selectedGateway?.name
-                      : " -- "}
+                    {selectedGateway?.name ? selectedGateway?.name : " -- "}
                   </p>
                   <div className="flex gap-2 text-sm text-gray-500">
                     <p className="">

@@ -10,17 +10,10 @@ import respIcon from "@/assets/icons/resp.png";
 import rrIcon from "@/assets/icons/lungs.png";
 import prIcon from "@/assets/icons/pr-red.png";
 
-import { HeartPulseChart } from "@/components/chart-heart-pusle";
-import { ECGChart } from "@/components/heart-beat-chart";
-
 type Props = {
   id_device: string;
   patientName: string;
-  room: {
-    id: string;
-    number: string;
-    type: string;
-  };
+  room: { id: string; number: string; type: string };
   systolic: number;
   diastolic: number;
   mean: number;
@@ -48,189 +41,184 @@ export const PatientMonitorDS001Section = ({
 }: Props) => {
   return (
     <div
-      className={`bg-[#EDEDF9] flex flex-col gap-2 p-4 rounded-3xl w-full h-fit text-sm ${
-        isCrysis
-          ? " shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]"
-          : " shadow-[4px_4px_4px_rgba(0,0,0,0.16),-4px_-4px_4px_rgba(255,255,255,1)]"
-      }`}
+      className={`bg-white flex flex-col gap-2 p-4 rounded-xl w-full h-fit text-sm
+      ${isCrysis ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]" : "border"}`}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2 items-center text-black">
-          <p className="font-bold text-lg mr-4">Merpati</p>
-          <p className="font-bold text-base">{room.number}</p>
-          <p className="font-bold">-</p>
-          <p className="font-bold bg-green-200 text-green-900 rounded-full px-4 text-base">
-            {room.type}
-          </p>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <div className="flex flex-wrap gap-1 items-center text-xs sm:text-sm">
+          <p>Merpati</p>
+          <p>|</p>
+          <p>{room.number}</p>
+          <p>-</p>
+          <p>{room.type}</p>
         </div>
-        <div className="flex items-center gap-4">
-          {isCrysis && (
-            <p className="bg-red-500 text-white flex rounded-full px-4 font-bold">
-              Critical
-            </p>
-          )}
-          {/* Button Action */}
-          <div className="relative">
-            <button
-              className="flex items-center gap-1 cursor-pointer transition duration-150"
-              onClick={() => {
-                const optionsMenu = document.getElementById(
-                  `options-${id_device}`
-                );
-                if (optionsMenu) {
-                  optionsMenu.classList.toggle("hidden");
+
+        {/* Button Action */}
+        <div className="relative self-end sm:self-auto">
+          <button
+            className="flex items-center gap-1 cursor-pointer"
+            onClick={() => {
+              const optionsMenu = document.getElementById(
+                `options-${id_device}`
+              );
+              if (optionsMenu) optionsMenu.classList.toggle("hidden");
+            }}
+          >
+            <EllipsisVertical className="w-5 h-5" />
+          </button>
+          <div
+            id={`options-${id_device}`}
+            className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg hidden"
+          >
+            <ul className="py-1 text-sm">
+              <li
+                className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() =>
+                  (window.location.href = `/device/diagnostic_station_001/${id_device}`)
                 }
-              }}
-            >
-              <EllipsisVertical className="w-6 h-6" />
-            </button>
-            <div
-              id={`options-${id_device}`}
-              className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden"
-            >
-              <ul className="py-1">
-                <li
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    window.location.href = `/device/diagnostic_station_001/${id_device}`;
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <SquarePen className="w-5 h-5" />
-                    Detail
-                  </div>
-                </li>
-              </ul>
-            </div>
+              >
+                <div className="flex items-center gap-2">
+                  <SquarePen className="w-4 h-4" />
+                  Detail
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <p className="text-xl text-black">{patientName}</p>
-      <div className="flex flex-col gap-2 w-full mt-4">
-        <div className="flex flex-row gap-4 rounded-2xl">
-          {/* NIBP */}
-          <div className="bg-red-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-full h-full justify-between gap-2">
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-3 items-center">
-                <div className="bg-[#ededf9] text-red-600 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                  <img src={nibpIcon} className="w-5 h-5" />
-                </div>
-                <p className="text-sm">NIBP</p>
-              </div>
-              <div className="flex flex-row items-end gap-4 ml-4">
-                <div className="flex flex-row items-center text-2xl gap-2 font-bold">
-                  <p className="">{systolic}</p>/<p>{diastolic}</p>
-                </div>
-                <p className="text-xs pb-2">mmHg</p>
-              </div>
-              <div className="ml-4 flex flex-row gap-4 mt-2">
-                <div className="flex flex-row w-fit text-white items-center gap-2 bg-red-400 px-3 py-1 rounded-full h-fit">
-                  <Activity className="w-4 h-4" />
-                  <p className="text-sm">{mean} bpm</p>
-                </div>
-              </div>
-            </div>
-            <div className="w-1/3 h-26 bg-white text-red-700 rounded-2xl shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)] p-4">
-              <div className="flex flex-row justify-center gap-4 items-center">
-                <img src={prIcon} alt="" className="w-6 h-6" />
-                <p className=" font-bold text-base">PR</p>
-              </div>
-              <div className="flex h-2/3 items-end justify-self-center gap-2">
-                <p className="text-2xl font-bold">
-                  {pulse_rate ? pulse_rate : "--"}
-                </p>
-                <p>bpm</p>
-              </div>
+
+      {/* Patient name */}
+      <p className="text-base sm:text-lg font-bold">{patientName}</p>
+      <hr
+        className={`border-t my-2 ${
+          isCrysis ? "border-red-500" : "border-gray-300"
+        }`}
+      />
+
+      {/* Main Content */}
+      {/* NIBP */}
+      <div className="bg-white rounded-lg flex flex-row justify-between p-3 border-2">
+        <div className="flex flex-col gap-2 flex-1">
+          <div className="flex flex-row gap-2 items-center">
+            <img src={nibpIcon} className="w-5 h-5" />
+            <p className="text-sm font-medium">NIBP</p>
+          </div>
+          <div className="flex flex-row items-end gap-2 ml-2 text-red-500">
+            <p className="text-xl sm:text-2xl font-bold">{systolic}</p>
+            <span className="text-xl sm:text-2xl font-bold">/</span>
+            <p className="text-xl sm:text-2xl font-bold">{diastolic}</p>
+            <span className="text-xs sm:text-sm pb-1">mmHg</span>
+          </div>
+          <div className="ml-2 flex flex-row gap-2 mt-1">
+            <div className="flex items-center gap-1 bg-red-400 text-white px-3 py-1 rounded-full">
+              <Activity className="w-4 h-4" />
+              <p className="text-xs sm:text-sm">{mean} bpm</p>
             </div>
           </div>
-          {/* TEMP */}
-          <div className="bg-yellow-100 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/4 justify-between gap-2">
-            <div className="flex flex-row gap-2 w-full">
-              <div className="flex flex-col gap-2 w-full">
-                <div className="flex flex-row gap-3 items-center">
-                  <div className="bg-[#ededf9] text-yellow-500 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                    <Thermometer className="w-5 h-5" />
-                  </div>
-                  <p className="text-base">Temp</p>
-                </div>
-                <div className="flex flex-row w-full items-center justify-center h-full">
-                  <div className="flex flex-row items-center justify-center text-2xl px-4 py-2 font-bold">
-                    <p>{temp}</p>
-                  </div>
-                  <div className="flex items-end">
-                    <p className="text-sm pb-4">°C</p>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <div className="mt-2 sm:mt-0 sm:w-1/3 bg-white text-red-700 rounded-xl shadow-inner p-3 flex flex-col items-center justify-center">
+          <div className="flex items-center gap-2">
+            <img src={prIcon} className="w-6 h-6" />
+            <p className="font-bold text-sm">PR</p>
+          </div>
+          <div className="flex gap-1 items-end">
+            <p className="text-xl sm:text-2xl font-bold">
+              {pulse_rate || "--"}
+            </p>
+            <span className="text-xs sm:text-sm">bpm</span>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {/* Temp */}
+        <div className="bg-white rounded-lg flex justify-between p-3 border-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2 items-center">
+              <Thermometer className="w-5 h-5 text-yellow-500" />
+              <p className="text-sm sm:text-base">Temp</p>
+            </div>
+            <div className="flex items-end gap-1">
+              <p className="text-xl sm:text-2xl font-bold text-yellow-500">
+                {spo2}
+              </p>
+              <span className="text-xs sm:text-sm pb-1">°C</span>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-row gap-4 rounded-2xl mt-2">
-          {/* SPO2 */}
-          <div className="bg-blue-200 text-black rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/2 h-full justify-between gap-2">
-            <div className="flex flex-row gap-2">
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-row gap-3 items-center">
-                  <div className="bg-[#ededf9] text-blue-800 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                    <img src={spo2Icon} className="w-5 h-5" />
-                  </div>
-                  <p>
-                    Sp0<sub>2</sub>
-                  </p>
-                </div>
-                <div className="flex flex-row items-end ">
-                  <div className="flex flex-row items-center text-2xl px-4 py-2 rounded-4xl gap-2">
-                    <p className="text-2xl font-bold">{spo2}</p>
-                  </div>
-                  <p className="text-sm pb-4">%</p>
-                </div>
-              </div>
+        {/* SpO2 */}
+        <div className="bg-white rounded-lg flex justify-between p-3 border-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2 items-center">
+              <img src={spo2Icon} className="w-5 h-5" />
+              <p>
+                SpO<sub>2</sub>
+              </p>
             </div>
-          </div>
-          {/* RR - Sp02 */}
-          <div className="bg-blue-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/2 h-fit justify-between gap-2">
-            <div className="flex flex-row gap-2">
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-row gap-3 items-center">
-                  <div className="bg-[#ededf9] text-blue-800 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                    <img src={respIcon} className="w-5 h-5" />
-                  </div>
-                  <p>
-                    PR - Sp0<sub>2</sub>
-                  </p>
-                </div>
-                <div className="flex flex-row items-end">
-                  <div className="flex flex-row items-center text-2xl px-4 py-2">
-                    <p className="text-2xl font-bold">{pr_spo2}</p>
-                  </div>
-                  <p className="text-sm pb-4">bpm</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* RR */}
-          <div className="bg-green-200 text-black rounded-2xl  shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-row p-3 w-1/3 h-fit justify-between gap-2">
-            <div className="flex flex-row gap-2">
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-row gap-3 items-center">
-                  <div className="bg-[#ededf9] text-yellow-500 rounded-lg p-2 w-fit h-fit shadow-[inset_0_4px_4px_rgba(0,0,0,0.25)]">
-                    <img src={rrIcon} className="w-5 h-5" />
-                  </div>
-                  <p>RR</p>
-                </div>
-                <div className="flex flex-row items-end">
-                  <div className="flex flex-row items-center text-2xl px-4 py-2 rounded-4xl">
-                    <p className="text-2xl font-bold">{rr}</p>
-                  </div>
-                  <p className="text-sm pb-4">rpm</p>
-                </div>
-              </div>
+            <div className="flex items-end gap-1">
+              <p className="text-xl sm:text-2xl font-bold text-blue-500">
+                {spo2}
+              </p>
+              <span className="text-xs sm:text-sm pb-1">%</span>
             </div>
           </div>
         </div>
-        {/* <ECGChart className="mt-4" /> */}
-        <HeartPulseChart className="mt-2" title="Plethysmogram" />
+
+        {/* PR-SpO2 */}
+        <div className="bg-white rounded-lg flex justify-between p-3 border-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2 items-center">
+              <img src={respIcon} className="w-5 h-5" />
+              <p>
+                PR - SpO<sub>2</sub>
+              </p>
+            </div>
+            <div className="flex items-end gap-1">
+              <p className="text-xl sm:text-2xl font-bold text-blue-500">
+                {pr_spo2}
+              </p>
+              <span className="text-xs sm:text-sm pb-1">bpm</span>
+            </div>
+          </div>
+        </div>
+
+        {/* RR */}
+        <div className="bg-white rounded-lg flex justify-between p-3 border-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2 items-center">
+              <img src={rrIcon} className="w-5 h-5" />
+              <p>RR</p>
+            </div>
+            <div className="flex items-end gap-1">
+              <p className="text-xl sm:text-2xl font-bold text-green-500">
+                {rr}
+              </p>
+              <span className="text-xs sm:text-sm pb-1">rpm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr
+        className={`border-t my-2 ${
+          isCrysis ? "border-red-500" : "border-gray-300"
+        }`}
+      />
+
+      {/* Footer icons */}
+      <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+        <img src={nibpIcon} className="w-6 h-6" />
+        <Activity
+          className={`w-5 h-5 ${isCrysis ? "text-red-500" : "text-gray-300"}`}
+        />
+        <img src={prIcon} className="w-6 h-6" />
+        <Thermometer
+          className={`w-5 h-5 ${isCrysis ? "text-red-500" : "text-gray-300"}`}
+        />
+        <img src={spo2Icon} className="w-6 h-6" />
+        <img src={respIcon} className="w-6 h-6" />
+        <img src={rrIcon} className="w-6 h-6" />
       </div>
     </div>
   );

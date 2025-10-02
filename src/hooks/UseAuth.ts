@@ -2,11 +2,13 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useAuthHook = () => {
   const { login } = useAuth();
+  const { showToast } = useToast();
 
   const loginUser = async () => {
     try {
@@ -20,12 +22,15 @@ export const useAuthHook = () => {
             login(user);
             window.location.href = "/patient-monitor";
           } else {
+            showToast(null, response.data.message, "error");
             formik.setStatus(response.data.errors || "Login failed.");
           }
         });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
+          showToast(null, "Login failed", "error");
+
           formik.setStatus(
             error.response.data.message || "Invalid credentials"
           );

@@ -70,7 +70,7 @@ export default function ChartPatientVital({ chartData }: Props) {
               tickLine={true}
               axisLine={true}
               tickMargin={8}
-              tickFormatter={(value: number) => `${value} Kg`}
+              tickFormatter={(value: number) => `${value} bpm`}
             />
             <CartesianGrid vertical={false} />
             <ChartTooltip

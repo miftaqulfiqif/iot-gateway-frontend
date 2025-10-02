@@ -887,7 +887,7 @@ const MeasurementHistoriesPage = () => {
   };
 
   return (
-    <MainLayout title="Measurement Histories" state="Measurement Histories">
+    <MainLayout title="Histories Measurement" state="Histories Measurement">
       <div className="flex flex-col">
         {/* Filter by device */}
         <div className="flex flex-row mb-10 gap-6">
