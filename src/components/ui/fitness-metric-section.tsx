@@ -8,6 +8,7 @@ interface FitnessMetricSectionProps {
   statusLabel?: string;
   statusColor?: string;
   children?: ReactNode;
+  unit?: string;
 }
 
 export const FitnessMetricSection = ({
@@ -17,6 +18,7 @@ export const FitnessMetricSection = ({
   statusLabel,
   statusColor,
   children,
+  unit,
 }: FitnessMetricSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,8 +32,9 @@ export const FitnessMetricSection = ({
         </div>
 
         <div className="ml-8 flex flex-row gap-9 items-center justify-between">
-          <p className="font-semibold bg-gray-200 w-15 text-center px-3 py-2 rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+          <p className="font-semibold bg-gray-200 w-fit text-center px-3 py-2 rounded-xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex items-baseline gap-1">
             {percentage}
+            {unit && <span className="text-xs">{unit}</span>}
           </p>
           <p
             className={`px-4 py-1 ${statusColor} text-black rounded-full w-30 text-center`}

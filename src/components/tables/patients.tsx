@@ -134,7 +134,7 @@ export const TablePatients = ({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={7} className="text-center">
+              <TableCell colSpan={10} className="text-center">
                 No data
               </TableCell>
             </TableRow>

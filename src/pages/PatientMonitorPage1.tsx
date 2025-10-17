@@ -222,27 +222,6 @@ const checkDs001Crysis = (item: any) => {
   );
 };
 
-// ✅ Hook reusable
-function useOutsideClick<T extends HTMLElement>(
-  refs: React.RefObject<T>[],
-  onClose: () => void
-) {
-  useEffect(() => {
-    function handleClick(e: MouseEvent | TouchEvent) {
-      const target = e.target as Node;
-      if (refs.every((ref) => ref.current && !ref.current.contains(target))) {
-        onClose();
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    document.addEventListener("touchstart", handleClick);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("touchstart", handleClick);
-    };
-  }, [refs, onClose]);
-}
-
 const PatientMonitorPage1 = () => {
   const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -259,8 +238,6 @@ const PatientMonitorPage1 = () => {
   const crisisCountDS001 = ds001Data.filter((p) => p.is_crysis).length;
 
   // Ref for filter dropdown
-  const filterRef = useRef<HTMLDivElement>(null);
-
   const [deviceType, setDeviceType] = useState("all");
   const [sortBy, setSortBy] = useState("patient_name");
   const [sortOrder, setSortOrder] = useState("asc");

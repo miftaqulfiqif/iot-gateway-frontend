@@ -11,15 +11,15 @@ import { useEffect } from "react";
 import { Weight } from "lucide-react";
 
 const chartConfig = {
-  weight: {
+  value: {
     label: "Weight",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
 type ChartData = {
-  weight: number;
-  timestamp: string;
+  value: number;
+  recorded_at: string;
 };
 
 type Props = {
@@ -46,7 +46,7 @@ export default function ChartPatientWeightTrend({ chartData }: Props) {
             <LineChart data={chartData}>
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="timestamp"
+                dataKey="recorded_at"
                 tickLine={true}
                 axisLine={true}
                 tickMargin={8}
@@ -70,7 +70,7 @@ export default function ChartPatientWeightTrend({ chartData }: Props) {
                 content={<ChartTooltipContent indicator="line" />}
               />
               <Line
-                dataKey="weight"
+                dataKey="value"
                 type="monotone"
                 stroke="blue"
                 strokeWidth={2}

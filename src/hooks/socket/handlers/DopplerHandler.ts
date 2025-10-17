@@ -3,7 +3,11 @@ import { BaseHandler } from "./BaseHandler";
 
 export class DopplerHandler extends BaseHandler {
   private mac: string;
-  private setData: any;
+  private setData: (data: {
+    heart_rate: number;
+    sound_quality: string;
+    battery_level: number;
+  }) => void;
   private setRealtime: any;
 
   constructor(
@@ -22,20 +26,18 @@ export class DopplerHandler extends BaseHandler {
   register(): void {
     this.socket.on("listen_doppler", (payload) => {
       console.log("[Doppler] Reviced:", payload);
-      const deviceMac = payload.data_doppler[0].mac;
-      if (deviceMac !== this.mac) return;
-      if (!payload?.data_doppler) return;
+      const data = payload.data_doppler;
 
-      const last = payload.data_doppler.at(-1);
+      console.log("Data Doppler:", data);
 
       this.setData({
-        heart_rate: last.heart_rate,
-        sound_quality: last.sound_quality,
-        battery_level: last.battery_level,
+        heart_rate: data.heart_rate,
+        sound_quality: data.sound_quality,
+        battery_level: data.battery_level,
       });
 
       this.setRealtime((prev: any) => {
-        if (last.sound_quality !== "Good") return prev;
+        if (data.sound_quality !== "good") return prev;
         let heartRateSum = 0;
         let heartRateCount = 0;
 
@@ -51,7 +53,7 @@ export class DopplerHandler extends BaseHandler {
           ...prev,
           {
             index: prev.length,
-            heart_rate: last.heart_rate,
+            heart_rate: data.heart_rate,
             heart_rate_avg: parseFloat(heartRateAvg.toFixed(1)),
           },
         ];

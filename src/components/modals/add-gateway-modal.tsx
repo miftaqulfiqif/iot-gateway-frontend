@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { InputText } from "../ui/input-text";
 import { useFormik } from "formik";
 import { InputLongtext } from "../ui/input-longtext";
 import * as yup from "yup";
 import { useToast } from "@/context/ToastContext";
+import RoomSelect, { RoomOption } from "../forms/input/room-select";
 
 type Props = {
   isActive: boolean;
@@ -12,7 +13,7 @@ type Props = {
 
 export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
   const { showToast } = useToast();
-
+  const [selectedRoom, setSelectedRoom] = useState<RoomOption | null>(null);
   const handleKeyPress = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       setInactive();
@@ -28,22 +29,24 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
   }, []);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       gateway_sn: "",
       ip_address: "",
       gateway_name: "",
-      location: "",
+      location: selectedRoom?.value || "",
       description: "",
     },
     validationSchema: yup.object().shape({
       gateway_sn: yup.string().required("Gateway serial number is required"),
       ip_address: yup.string().required("IP address is required"),
       gateway_name: yup.string().required("Gateway name is required"),
-      location: yup.string().required("Location is required"),
-      description: yup.string().required("Description is required"),
+      location: yup.string().nullable(),
+      description: yup.string().nullable(),
     }),
     onSubmit: (values) => {
-      showToast(null, "Gateway added successfully", "success");
+      console.log(values);
+      showToast("Add Gateway", "Gateway added successfully", "success");
       setInactive();
     },
   });
@@ -90,27 +93,31 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
               isRequired
             />
           </div>
-          <div className="flex gap-4">
-            <InputText
-              name="ip_address"
-              label="IP Address"
-              placeholder="Input Gateway IP Address"
-              onChange={formik.handleChange}
-              value={formik.values.ip_address}
-              onTouch={formik.touched.ip_address}
-              onError={formik.errors.ip_address}
-              isRequired
-            />
-            <InputText
-              name="location"
-              label="Gateway Location"
-              placeholder="Input Gateway Location"
-              onChange={formik.handleChange}
-              value={formik.values.location}
-              onTouch={formik.touched.location}
-              onError={formik.errors.location}
-              isRequired
-            />
+          <div className="flex gap-4 ">
+            <div className="w-1/2">
+              <InputText
+                name="ip_address"
+                label="IP Address"
+                placeholder="Input Gateway IP Address"
+                onChange={formik.handleChange}
+                value={formik.values.ip_address}
+                onTouch={formik.touched.ip_address}
+                onError={formik.errors.ip_address}
+                isRequired
+              />
+            </div>
+            <div className="w-1/2">
+              <p className="mb-2">Location</p>
+              <RoomSelect
+                name="location"
+                value={selectedRoom}
+                onChange={(option) => {
+                  setSelectedRoom(option);
+                  formik.setFieldValue("location", option?.value || "");
+                }}
+                onBlur={() => formik.setFieldTouched("location", true)}
+              />
+            </div>
           </div>
           <InputLongtext
             name="description"

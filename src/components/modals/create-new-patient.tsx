@@ -95,11 +95,6 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
             label: patient.address.village.name,
           }
         : null,
-
-      // province_id: patient?.address.province_id || "",
-      // regency_id: patient?.address.regency_id || "",
-      // district_id: patient?.address.district_id || "",
-      // village_id: patient?.address.village_id || "",
     },
     validationSchema: yup.object().shape({
       name: yup.string().required("Name is required"),
@@ -353,6 +348,15 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                 onChange={(option) => {
                   setSelectedProvince(option);
                   formik.setFieldValue("province", option?.value || "");
+                  if (option !== selectedProvince) {
+                    setSelectedCity(null);
+                    setSelectedDistrict(null);
+                    setSelectedVillage(null);
+                    formik.setFieldValue("regency", null);
+                    formik.setFieldValue("city", null);
+                    formik.setFieldValue("district", null);
+                    formik.setFieldValue("village", null);
+                  }
                 }}
                 onBlur={() => formik.setFieldTouched("province", true)}
               />
@@ -370,6 +374,12 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                   setSelectedCity(option);
                   formik.setFieldValue("regency", option?.value || "");
                   formik.setFieldValue("city", option?.label || "");
+                  if (option !== selectedCity) {
+                    setSelectedDistrict(null);
+                    setSelectedVillage(null);
+                    formik.setFieldValue("district", null);
+                    formik.setFieldValue("village", null);
+                  }
                 }}
                 onBlur={() => formik.setFieldTouched("regency", true)}
                 disabled={!selectedProvince}
@@ -388,6 +398,10 @@ export const CreateNewPatient = (props: CreateNewPatientProps) => {
                   onChange={(option) => {
                     setSelectedDistrict(option);
                     formik.setFieldValue("district", option?.value || "");
+                    if (option !== selectedDistrict) {
+                      setSelectedVillage(null);
+                      formik.setFieldValue("village", null);
+                    }
                   }}
                   onBlur={() => formik.setFieldTouched("district", true)}
                   disabled={!selectedCity}

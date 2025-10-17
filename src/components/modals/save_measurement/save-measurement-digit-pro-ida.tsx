@@ -11,8 +11,9 @@ type Props = {
   isActive: boolean;
   setInactive: () => void;
   patient: any;
-  baby: any;
   deviceMac: string;
+  room: String;
+  baby: any;
   result: {
     weight_mother: number;
     weight_baby: number;
@@ -23,6 +24,7 @@ export const SaveMeasurementDigitProIDA = ({
   isActive,
   setInactive,
   patient,
+  room,
   baby,
   deviceMac,
   result,
@@ -55,6 +57,7 @@ export const SaveMeasurementDigitProIDA = ({
       patient_id: patient?.id,
       baby_id: baby?.id,
       device_mac: deviceMac,
+      room: room,
       description: note,
       weight_mother: result.weight_mother,
       weight_baby: result.weight_baby,
@@ -63,6 +66,7 @@ export const SaveMeasurementDigitProIDA = ({
       patient_id: yup.string().nullable(),
       baby_id: yup.string().nullable(),
       device_mac: yup.string().required("Device MAC is required"),
+      room: yup.string().required("Room is required"),
       description: yup.string().nullable(),
       weight_mother: yup.number().required("Weight mother is required"),
       weight_baby: yup.number().required("Weight baby is required"),

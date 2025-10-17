@@ -51,7 +51,7 @@ createRoot(document.getElementById("root")!).render(
 
               <Route element={<PrivateRoute />}>
                 {/* MainPages */}
-                <Route path="/" element={<MeasurementPage />} />
+                <Route path="/" element={<PatientMonitorPage1 />} />
                 <Route
                   path="/measurement"
                   // element={<MeasurementPage />}

@@ -7,6 +7,8 @@ import { useFormik } from "formik";
 import { useAuth } from "@/context/AuthContext";
 import * as yup from "yup";
 import axios from "axios";
+import { Mars, Venus } from "lucide-react";
+import { PatientInfoMeasurement } from "@/components/ui/patient-info-measurement";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -31,7 +33,9 @@ type Props = {
   isActive: boolean;
   setInactive: () => void;
   patient: any;
-  deviceMac: any;
+  device: any;
+  room: String;
+  patientHeight?: number;
   result?: BMIModel;
 };
 
@@ -39,10 +43,13 @@ export const SaveMeasurementBMI = ({
   isActive,
   setInactive,
   patient,
-  deviceMac,
+  device,
+  room,
+  patientHeight,
   result,
 }: Props) => {
   const { showToast } = useToast();
+  const [patientImage, setPatientImage] = useState<string | null>(null);
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -69,7 +76,9 @@ export const SaveMeasurementBMI = ({
     enableReinitialize: true,
     initialValues: {
       patient_id: patient?.id,
-      device_mac: deviceMac,
+      device_mac: device?.mac_address,
+      room: room,
+      height: patientHeight === 0 ? null : patientHeight,
       weight: result?.weight,
       age: result?.age,
       bmi: result?.bmi,
@@ -90,6 +99,8 @@ export const SaveMeasurementBMI = ({
     validationSchema: yup.object().shape({
       patient_id: yup.string().required("Patient id is required"),
       device_mac: yup.string().required("Mac Address id is required"),
+      room: yup.string().required(),
+      height: yup.number().nullable(),
       weight: yup.number().required("Weight is required"),
       age: yup.number().required("Age is required"),
       bmi: yup.number().required("BMI is required"),
@@ -105,9 +116,13 @@ export const SaveMeasurementBMI = ({
       lbm: yup.number().required("LBM is required"),
     }),
     onSubmit: (values) => {
+      console.log("Form Values: ", values);
+
       const data = {
         patient_id: values.patient_id,
         device_mac: values.device_mac,
+        room: values.room,
+        height: values.height,
         weight: values.weight,
         age: values.age,
         bmi: values.bmi,
@@ -154,34 +169,20 @@ export const SaveMeasurementBMI = ({
         <div className="flex flex-col gap-3">
           {/* Patient Info */}
           <p>Patient info : </p>
-          <div className="flex flex-col gap-2 w-full rounded-lg p-4  bg-gradient-to-b from-[#4956F4] to-[#6e79f4] text-white">
-            <div className="flex justify-between">
-              <p>Patient ID</p>
-              <p className="font-semibold">{patient?.id}</p>
-            </div>
-            <div className="flex justify-between">
-              <p>Patient IHS Number</p>
-              <p className="font-semibold">{patient?.ihs_number ?? "--"}</p>
-            </div>
-            <div className="flex justify-between">
-              <p>Name</p>
-              <p className="font-semibold">{patient?.name}</p>
-            </div>
-            <div className="flex justify-between">
-              <p>Date of Birth</p>
-              <p className="font-semibold">
-                {patient?.date_of_birth
-                  ? formatDate(new Date(patient.date_of_birth), "dd MMMM yyyy")
-                  : ""}
-              </p>
-            </div>
-          </div>
+          <PatientInfoMeasurement patient={patient} />
 
           {/* Result */}
           <form onSubmit={formik.handleSubmit}>
             <div>
               <p className="text-gray-700 font-semibold mb-1">Result:</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                {formik.values.height && (
+                  <ResultItem
+                    label="Height"
+                    value={formik.values.height}
+                    unit="cm"
+                  />
+                )}
                 <ResultItem
                   label="Weight"
                   value={formik.values.weight}

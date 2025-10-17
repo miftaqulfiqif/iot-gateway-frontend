@@ -4,15 +4,19 @@ import { SocketManager } from "../SocketManager";
 import { DopplerHandler } from "../handlers/DopplerHandler";
 import { useAuth } from "@/context/AuthContext";
 
-export const useSocketDoppler = (macDevice: string) => {
-  const { user } = useAuth();
-  const gatewaySn = user?.gateway?.id;
-  const [data, setData] = useState<DopplerModel>({
-    heart_rate: 0,
-    sound_quality: "",
-    battery_level: 0,
-  });
+type Props = {
+  gatewayId?: string;
+  macDevice: string;
+  clearTrigger?: boolean;
+};
 
+export const useSocketDoppler = ({
+  gatewayId,
+  macDevice,
+  clearTrigger,
+}: Props) => {
+  const { user } = useAuth();
+  const [data, setData] = useState<DopplerModel | null>(null);
   const [realtime, setRealtime] = useState<
     { index: number; heart_rate: number; heart_rate_avg: number }[]
   >([]);
@@ -25,7 +29,7 @@ export const useSocketDoppler = (macDevice: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      gatewaySn!
+      gatewayId ? gatewayId : user?.gateway?.id!
     );
 
     const handler = new DopplerHandler(
@@ -48,8 +52,17 @@ export const useSocketDoppler = (macDevice: string) => {
     };
   }, [macDevice]);
 
+  useEffect(() => {
+    if (clearTrigger) {
+      setData(null);
+      setRealtime([]);
+    }
+  }, [clearTrigger]);
+
   return {
     data,
     realtime,
+    setData,
+    setRealtime,
   };
 };

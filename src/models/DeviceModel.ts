@@ -3,6 +3,7 @@ export type Devices = {
   mac_address: string;
   ip_address: string;
   is_connected: boolean;
+  gateway_id: string;
   model: string;
   device_function: string;
   type: string;

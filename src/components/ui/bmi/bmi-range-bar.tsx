@@ -52,7 +52,6 @@ const BMIRangeBar: React.FC<BMIRangeBarProps> = ({ value, onChangeValue }) => {
   }, [category, onChangeValue]);
 
   useEffect(() => {
-    // Hindari pemanggilan jika kategori tidak berubah
     if (
       previousCategoryRef.current.label !== category.label ||
       previousCategoryRef.current.color !== category.color

@@ -4,210 +4,28 @@ import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-
 import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
 import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
 import { TableHistoryDoppler } from "@/components/tables/history-doppler";
+import {
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
 import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
 import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
 import { useDevices } from "@/hooks/api/use-device";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@radix-ui/react-alert-dialog";
 import { format } from "date-fns";
-import { RotateCcw, Settings, Unplug } from "lucide-react";
+import { RotateCcw, Settings, Trash, Unplug } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-const dummyData = [
-  {
-    id: "1",
-    patient_handler: {
-      patient: { name: "Siti Aisyah" },
-      baby: {
-        name: "Alya",
-        gender: "Female",
-        date_of_birth: "2023-05-12T00:00:00Z",
-      },
-    },
-    weight: 3.2,
-    timestamp: "2025-07-17T10:30:00Z",
-  },
-  {
-    id: "2",
-    patient_handler: {
-      patient: { name: "Dewi Lestari" },
-      baby: {
-        name: "Rafi",
-        gender: "Male",
-        date_of_birth: "2023-06-02T00:00:00Z",
-      },
-    },
-    weight: 3.5,
-    timestamp: "2025-07-17T11:00:00Z",
-  },
-  {
-    id: "3",
-    patient_handler: {
-      patient: { name: "Nina Kartika" },
-      baby: {
-        name: "Zahra",
-        gender: "Female",
-        date_of_birth: "2023-04-18T00:00:00Z",
-      },
-    },
-    weight: 2.9,
-    timestamp: "2025-07-17T11:30:00Z",
-  },
-  {
-    id: "4",
-    patient_handler: {
-      patient: { name: "Rina Mulyani" },
-      baby: {
-        name: "Adam",
-        gender: "Male",
-        date_of_birth: "2023-05-01T00:00:00Z",
-      },
-    },
-    weight: 3.1,
-    timestamp: "2025-07-17T12:00:00Z",
-  },
-  {
-    id: "5",
-    patient_handler: {
-      patient: { name: "Linda Hartati" },
-      baby: {
-        name: "Tiara",
-        gender: "Female",
-        date_of_birth: "2023-07-10T00:00:00Z",
-      },
-    },
-    weight: 3.6,
-    timestamp: "2025-07-17T12:30:00Z",
-  },
-  {
-    id: "6",
-    patient_handler: {
-      patient: { name: "Wulan Sari" },
-      baby: {
-        name: "Bima",
-        gender: "Male",
-        date_of_birth: "2023-06-25T00:00:00Z",
-      },
-    },
-    weight: 3.3,
-    timestamp: "2025-07-17T13:00:00Z",
-  },
-  {
-    id: "7",
-    patient_handler: {
-      patient: { name: "Sari Dewi" },
-      baby: {
-        name: "Kayla",
-        gender: "Female",
-        date_of_birth: "2023-05-20T00:00:00Z",
-      },
-    },
-    weight: 3.0,
-    timestamp: "2025-07-17T13:30:00Z",
-  },
-  {
-    id: "8",
-    patient_handler: {
-      patient: { name: "Maya Putri" },
-      baby: {
-        name: "Rizki",
-        gender: "Male",
-        date_of_birth: "2023-06-15T00:00:00Z",
-      },
-    },
-    weight: 3.4,
-    timestamp: "2025-07-17T14:00:00Z",
-  },
-  {
-    id: "9",
-    patient_handler: {
-      patient: { name: "Yulia Kurnia" },
-      baby: {
-        name: "Nayla",
-        gender: "Female",
-        date_of_birth: "2023-07-01T00:00:00Z",
-      },
-    },
-    weight: 3.7,
-    timestamp: "2025-07-17T14:30:00Z",
-  },
-  {
-    id: "10",
-    patient_handler: {
-      patient: { name: "Dina Amelia" },
-      baby: {
-        name: "Farhan",
-        gender: "Male",
-        date_of_birth: "2023-05-30T00:00:00Z",
-      },
-    },
-    weight: 3.2,
-    timestamp: "2025-07-17T15:00:00Z",
-  },
-];
-
-const dummyRecentDoctor = [
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb1",
-    doctor_name: "Dr. Prabowo Sinegar",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb2",
-    doctor_name: "Dr. Prabowo Budi",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb3",
-    doctor_name: "Dr. Changcuters",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb4",
-    doctor_name: "Dr. Gunawan Dapit",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-];
-
-const dummyMedicalActivity = [
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb1",
-    title: "Budi Sudarso",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb2",
-    title: "Dapit Gunawan",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb3",
-    title: "Ryan D'masive",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb4",
-    title: "Farelia Budiarto",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-];
-
-const device = {
-  name: "Digit Pro Baby",
-  mac: "mac_baby",
-  type: "bluetooth",
-  status: "Connected",
-  device_function: "digitpro_bmi",
-};
 
 export const DetailBluetoothDevice = () => {
   const { device_id } = useParams();
@@ -461,10 +279,38 @@ export const DetailBluetoothDevice = () => {
           <div className="bg-white w-1/3 h-full rounded-2xl border-3 border-gray-200 p-4">
             <p className="font-semibold">Control Device</p>
             <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
-              <div className="flex items-center border border-red-500 text-red-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-red-50">
-                <Unplug className="w-6 h-6" />
-                <p>Disconnect</p>
-              </div>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <div className="flex items-center border border-red-500 text-red-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-red-50">
+                    <Unplug className="w-6 h-6" />
+                    <p>Disconnect</p>
+                  </div>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this item.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="text-black border">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => {
+                        alert("Disconnecting...");
+                      }}
+                      className="bg-red-500 text-white"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <div className="flex items-center border border-green-500 text-green-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-green-50">
                 <RotateCcw className="w-6 h-6" />
                 <p>Reconnect</p>

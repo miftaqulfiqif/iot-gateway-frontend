@@ -31,10 +31,24 @@ function Devices1() {
   const [modalAddDeviceWifiOrLan, setModalAddDeviceWifiOrLan] = useState(false);
   const [modalAddDeviceUsb, setModalAddDeviceUsb] = useState(false);
 
+  const [totalDevices, setTotalDevices] = useState<number>(0);
+  const [onlineDevices, setOnlineDevices] = useState<number>(0);
+  const [offlineDevices, setOfflineDevices] = useState<number>(0);
+  const [maintenanceDevices, setMaintenanceDevices] = useState<number>(0);
+
   // Get devices on mount
   useEffect(() => {
-    getAllDevices();
+    getAllDevices(undefined, undefined, true);
   }, [getAllDevices]);
+
+  useEffect(() => {
+    setTotalDevices(devices.length);
+    setOnlineDevices(devices.filter((d) => d.is_connected).length);
+    setOfflineDevices(devices.filter((d) => !d.is_connected).length);
+    setMaintenanceDevices(
+      devices.filter((d) => d.device_function === "maintenance").length
+    );
+  }, [devices]);
 
   return (
     <MainLayout title="Devices" state="Devices">
@@ -44,28 +58,36 @@ function Devices1() {
             <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
               <div className="">
                 <p className="">Total Devices</p>
-                <p className="font-semibold text-3xl text-blue-500">6</p>
+                <p className="font-semibold text-3xl text-blue-500">
+                  {totalDevices}
+                </p>
               </div>
               <MonitorDot className="w-10 h-10 text-blue-500" />
             </div>
             <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
               <div className="">
                 <p className="">Online</p>
-                <p className="font-semibold text-3xl text-green-500">4</p>
+                <p className="font-semibold text-3xl text-green-500">
+                  {onlineDevices}
+                </p>
               </div>
               <CircleCheck className="w-10 h-10 text-green-500" />
             </div>
             <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
               <div className="">
                 <p className="">Offline</p>
-                <p className="font-semibold text-3xl text-red-500">2</p>
+                <p className="font-semibold text-3xl text-red-500">
+                  {offlineDevices}
+                </p>
               </div>
               <CircleX className="w-10 h-10 text-red-500" />
             </div>
             <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
               <div className="">
                 <p className="">Maintenance</p>
-                <p className="font-semibold text-3xl text-orange-500">2</p>
+                <p className="font-semibold text-3xl text-orange-500">
+                  {maintenanceDevices}
+                </p>
               </div>
               <CircleAlert className="w-10 h-10 text-orange-500" />
             </div>

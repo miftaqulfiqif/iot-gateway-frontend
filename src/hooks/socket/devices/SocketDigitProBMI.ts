@@ -4,7 +4,20 @@ import { SocketManager } from "../SocketManager";
 import { BMIHandler } from "../handlers/BMIHandler";
 import { useAuth } from "@/context/AuthContext";
 
-export const useSocketDigitProBMI = (macDevice: string) => {
+type Props = {
+  gatewayId?: string;
+  macDevice: string;
+  patientHeight: number;
+  patientAge: number;
+  patientGender: string;
+};
+export const useSocketDigitProBMI = ({
+  gatewayId,
+  macDevice,
+  patientHeight,
+  patientAge,
+  patientGender,
+}: Props) => {
   const { user } = useAuth();
   const [data, setData] = useState<BMIModel>();
 
@@ -16,10 +29,17 @@ export const useSocketDigitProBMI = (macDevice: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      user?.gateway?.id!
+      gatewayId ? gatewayId : user?.gateway?.id!
     );
 
-    const handler = new BMIHandler(manager.getSocket(), macDevice, setData);
+    const handler = new BMIHandler(
+      manager.getSocket(),
+      macDevice,
+      setData,
+      Number(patientHeight),
+      patientAge,
+      patientGender
+    );
 
     socketManagerRef.current = manager;
     handlerRef.current = handler;
@@ -29,12 +49,18 @@ export const useSocketDigitProBMI = (macDevice: string) => {
     return () => {
       if (handlerRef.current) {
         manager.unregisterHandler(handlerRef.current);
+        handlerRef.current.updatePatientInfo(
+          patientHeight,
+          patientAge,
+          patientGender
+        );
       }
       manager.disconnect();
     };
-  }, [macDevice]);
+  }, [macDevice, patientHeight, patientAge, patientGender]);
 
   return {
     data,
+    setData,
   };
 };

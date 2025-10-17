@@ -32,7 +32,7 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ListGateways } from "@/models/GatewayModel";
+import { IotGatewayModel } from "@/models/GatewayModel";
 
 // Utility function to format date
 const formatDate = (dateStr: string, showTime = true) => {
@@ -44,14 +44,12 @@ const formatDate = (dateStr: string, showTime = true) => {
 };
 
 type Props = {
-  data: ListGateways[];
+  data: IotGatewayModel;
   goToPreviousPage: () => void;
   goToNextPage: () => void;
   goToPage: (page: number) => void;
   currentPage?: number;
   totalPage?: number;
-  limit?: number;
-  search?: string;
 };
 
 export const TableGateways = ({
@@ -61,8 +59,6 @@ export const TableGateways = ({
   goToPage,
   currentPage,
   totalPage,
-  limit,
-  search,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
   const navigate = useNavigate();
@@ -94,8 +90,8 @@ export const TableGateways = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data && data.length > 0 ? (
-            data.map((item, index) => {
+          {data && data.data.length > 0 ? (
+            data.data.map((item, index) => {
               return (
                 <TableRow
                   key={item.id}
@@ -130,30 +126,29 @@ export const TableGateways = ({
                     {item.network || "-"}
                   </TableCell>
                   <TableCell className="text-center">
-                    <p
-                      className={`font-semibold rounded-full py-2 px-3 flex items-center gap-2 justify-center w-fit mx-auto
+                    {item.status && (
+                      <p
+                        className={`font-semibold rounded-full py-2 px-3 flex items-center gap-2 justify-center w-fit mx-auto
       ${
-        item.status?.toLowerCase() === "online"
-          ? "bg-green-100 text-green-900"
-          : item.status?.toLowerCase() === "offline"
-          ? "bg-red-100 text-red-900"
-          : "bg-gray-100 text-gray-700"
+        item.status ? "bg-green-100 text-green-900" : "bg-red-100 text-red-700"
       }`}
-                    >
-                      <span>
-                        {item.status?.toLowerCase() === "online" ? (
-                          <Wifi className="w-5" />
-                        ) : item.status?.toLowerCase() === "offline" ? (
-                          <WifiOff className="w-5" />
-                        ) : null}
-                      </span>
-                      {item.status?.toUpperCase() || "-"}
-                    </p>
+                      >
+                        {" "}
+                        <span>
+                          {item.status ? (
+                            <Wifi className="w-5" />
+                          ) : (
+                            <WifiOff className="w-5" />
+                          )}
+                        </span>
+                        {item.status ? "Online" : "Offline"}
+                      </p>
+                    )}
                   </TableCell>
 
                   <TableCell className="text-center">
                     <p className="font-bold bg-gray-200 rounded-lg w-8 h-8 flex items-center justify-center mx-auto">
-                      {item.devices_count || "0"}
+                      {item.device_count || "0"}
                     </p>
                   </TableCell>
                   <TableCell className="text-center">
@@ -161,7 +156,7 @@ export const TableGateways = ({
                   </TableCell>
                   <TableCell className="text-center">
                     <p className="border-2 rounded-full">
-                      {item.firmware_version || "-"}
+                      {item.firmware || "-"}
                     </p>
                   </TableCell>
 

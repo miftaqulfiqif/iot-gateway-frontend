@@ -15,14 +15,14 @@ import heartBeatImg from "@/assets/imgs/hear-beat.png";
 import { Activity, Weight } from "lucide-react";
 
 const chartConfig = {
-  heart_rate: {
+  value: {
     label: "Heart rate",
     color: "red",
   },
 } satisfies ChartConfig;
 
 type ChartData = {
-  heart_rate: number;
+  value: number;
 };
 
 type Props = {
@@ -53,7 +53,7 @@ export default function ChartPatientVital({ chartData }: Props) {
               </linearGradient>
             </defs>
             <XAxis
-              dataKey="timestamp"
+              dataKey="recorded_at"
               tickLine={true}
               axisLine={true}
               tickMargin={8}
@@ -83,7 +83,7 @@ export default function ChartPatientVital({ chartData }: Props) {
               }
             />
             <Area
-              dataKey="heart_rate"
+              dataKey="value"
               type="natural"
               fill="url(#fillRed)"
               stroke="red"

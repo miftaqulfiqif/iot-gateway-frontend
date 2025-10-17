@@ -4,6 +4,7 @@ import { useToast } from "@/context/ToastContext";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
+import { PatientInfoMeasurement } from "@/components/ui/patient-info-measurement";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -11,15 +12,17 @@ type Props = {
   isActive: boolean;
   setInactive: () => void;
   patient: any;
-  deviceMac: string;
-  result: any;
+  device: any;
+  room: String;
+  result: number;
 };
 
 export const SaveMeasurementDoppler = ({
   isActive,
   setInactive,
   patient,
-  deviceMac,
+  device,
+  room,
   result,
 }: Props) => {
   const { showToast } = useToast();
@@ -45,17 +48,21 @@ export const SaveMeasurementDoppler = ({
     }
   };
 
+  console.log("Result Doppler : ", result);
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       patient_id: patient?.id,
-      device_mac: deviceMac,
+      device_mac: device?.mac_address,
+      room: room,
       heart_rate: result,
       description: note,
     },
     validationSchema: yup.object().shape({
-      // patient_id: yup.number().required("Patient ID is required"),
+      patient_id: yup.string().required("Patient ID is required"),
       device_mac: yup.string().required("Device MAC is required"),
+      room: yup.string().required("Room is required"),
       heart_rate: yup.number().required("Heart Rate is required"),
       description: yup.string().nullable(),
     }),
@@ -87,24 +94,7 @@ export const SaveMeasurementDoppler = ({
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
           {/* Patient Info */}
           <p>Patient info : </p>
-          <div className="flex flex-col gap-2 w-full rounded-lg p-4  bg-gradient-to-b from-[#4956F4] to-[#6e79f4] text-white">
-            <div className="flex justify-between">
-              <p>Patient ID</p>
-              <p className="font-semibold">{patient?.id}</p>
-            </div>
-            <div className="flex justify-between">
-              <p>Name</p>
-              <p className="font-semibold">{patient?.name}</p>
-            </div>
-            <div className="flex justify-between">
-              <p>Date of Birth</p>
-              <p className="font-semibold">
-                {patient?.date_of_birth
-                  ? formatDate(new Date(patient.date_of_birth), "dd MMMM yyyy")
-                  : ""}
-              </p>
-            </div>
-          </div>
+          <PatientInfoMeasurement patient={patient} />
 
           {/* Result */}
           <p>Result</p>

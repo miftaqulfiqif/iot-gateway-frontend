@@ -1,8 +1,16 @@
 import {
+  Activity,
+  Apple,
   BicepsFlexed,
+  Bone,
+  Calculator,
   CircleHelp,
   Droplet,
+  Droplets,
+  Flame,
   ReceiptText,
+  User,
+  Weight,
 } from "lucide-react";
 import BMIRangeBar from "./bmi-range-bar";
 import { FitnessMetricSection } from "../fitness-metric-section";
@@ -189,11 +197,12 @@ export const BMIResult = ({
 
       {/* BMI Section */}
       <FitnessMetricSection
-        icon={<img src={bmiIcon} className="w-7 h-7" alt="bmi" />}
+        icon={<Calculator className="w-6 h-6 text-green-500" />}
         label="BMI"
         percentage={BMI}
         statusLabel={bmiLabel.label}
         statusColor={bmiLabel.color}
+        unit={"kg/m²"}
       >
         <BMIRangeBar value={BMI} onChangeValue={handleBmiLabel} />
         <div className="flex flex-row gap-1 items-center text-gray-600">
@@ -206,11 +215,12 @@ export const BMIResult = ({
 
       {/* FAT Section */}
       <FitnessMetricSection
-        icon={<img src={fatIcon} className="w-7 h-7" alt="fat" />}
+        icon={<Droplet className="w-6 h-6 text-orange-500" />}
         label="FAT"
         percentage={bodyFat}
         statusLabel={bodFatLabel.label}
         statusColor={bodFatLabel.color}
+        unit={"%"}
       >
         <FatRangeBar value={bodyFat} onChangeValue={handleBodyFatLabel} />
         <div className="flex flex-row gap-1 items-center text-gray-600">
@@ -223,11 +233,12 @@ export const BMIResult = ({
 
       {/* Muscle Section */}
       <FitnessMetricSection
-        icon={<BicepsFlexed className="w-8 h-8" />}
+        icon={<BicepsFlexed className="w-6 h-6 text-red-500" />}
         label="Muscle"
         percentage={muscleMass}
         statusLabel={muscleMassLabel.label}
         statusColor={muscleMassLabel.color}
+        unit={"kg"}
       >
         <MuscleRangeBar
           value={muscleMass}
@@ -243,11 +254,12 @@ export const BMIResult = ({
 
       {/* Water Section */}
       <FitnessMetricSection
-        icon={<Droplet className="w-8 h-8" />}
+        icon={<Droplets className="w-6 h-6 text-blue-500" />}
         label="Water"
         percentage={water}
         statusLabel={waterLabel.label}
         statusColor={waterLabel.color}
+        unit={"%"}
       >
         <WaterRangeBar value={water} onChangeValue={handleWaterLabel} />
         <div className="flex flex-row gap-1 items-center text-gray-600">
@@ -260,9 +272,7 @@ export const BMIResult = ({
 
       {/* Visceral Fat Section */}
       <FitnessMetricSection
-        icon={
-          <img src={visceralFatIcon} className="w-7 h-7" alt="visceral fat" />
-        }
+        icon={<Apple className="w-5 h-5 text-yellow-500" />}
         label="Visceral Fat"
         percentage={visceralFat}
         statusLabel={visceralFatLabel.label}
@@ -282,11 +292,12 @@ export const BMIResult = ({
 
       {/* Bone Mass Section */}
       <FitnessMetricSection
-        icon={<img src={boneMassIcon} className="w-7 h-7" alt="bone mass" />}
+        icon={<Bone className="w-6 h-6" />}
         label="Bone Mass"
         percentage={boneMass}
         statusLabel={boneMassLabel.label}
         statusColor={boneMassLabel.color}
+        unit={"kg"}
       >
         <BoneMassRangeBar
           value={boneMass}
@@ -302,11 +313,12 @@ export const BMIResult = ({
 
       {/* Metabolism Section */}
       <FitnessMetricSection
-        icon={<img src={metabolismIcon} className="w-7 h-7" alt="metabolism" />}
+        icon={<Flame className="w-5 h-5 text-red-500" />}
         label="Metabolism"
         percentage={metabolism}
         statusLabel={metabolismLabel.label}
         statusColor={metabolismLabel.color}
+        unit={"kcal"}
       >
         <MetabolismRangeBar
           value={metabolism}
@@ -322,11 +334,12 @@ export const BMIResult = ({
 
       {/* Protein Section */}
       <FitnessMetricSection
-        icon={<img src={proteinIcon} className="w-7 h-7" alt="protein" />}
+        icon={<Activity className="w-5 h-5 text-green-500" />}
         label="Protein"
         percentage={protein}
         statusLabel={proteinLabel.label}
         statusColor={proteinLabel.color}
+        unit={"%"}
       >
         <ProteinRangeBar value={protein} onChangeValue={handleProteinLabel} />
         <div className="flex flex-row gap-1 items-center text-gray-600">
@@ -339,8 +352,8 @@ export const BMIResult = ({
 
       {/* Obesity Section */}
       <FitnessMetricSection
-        icon={<img src={obesityIcon} className="w-7 h-7" alt="obesity" />}
-        label="Obesity"
+        icon={<Weight className="w-5 h-5 text-blue-500" />}
+        label="Classification"
         percentage={obesity}
         statusLabel={obesityLabel.label}
         statusColor={obesityLabel.color}
@@ -356,11 +369,12 @@ export const BMIResult = ({
 
       {/* Body age Section */}
       <FitnessMetricSection
-        icon={<img src={bodyAgeIcon} className="w-7 h-7" alt="body age" />}
+        icon={<User className="w-5 h-5 text-purple-500" />}
         label="Body Age"
         percentage={bodyAge}
         statusLabel={bodyAgeLabel.label}
         statusColor={bodyAgeLabel.color}
+        unit={"years"}
       >
         <BodyAgeRangeBar
           value={bodyAge}
@@ -379,6 +393,7 @@ export const BMIResult = ({
         icon={<img src={leanBodyMassIcon} className="w-7 h-7" alt="lbm" />}
         label="LBM"
         percentage={lbm}
+        unit={"kg"}
       >
         {/* <BMIRangeBar value={lbm} onChangeValue={handleLbmLabel} /> */}
         <div className="flex flex-row gap-1 items-center text-gray-600">
