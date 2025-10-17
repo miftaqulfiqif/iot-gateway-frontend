@@ -2,6 +2,7 @@ import { Patients } from "../PatientModel";
 
 export type BMIModel = {
   mac?: string;
+  height: number;
   weight: number;
   age: number;
   impedance: number;

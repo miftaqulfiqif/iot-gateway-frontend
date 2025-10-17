@@ -41,8 +41,12 @@ export const PatientMonitorDS001Section = ({
 }: Props) => {
   return (
     <div
-      className={`bg-white flex flex-col gap-2 p-4 rounded-xl w-full h-fit text-sm
-      ${isCrysis ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]" : "border"}`}
+      className={`flex flex-col gap-2 p-4 rounded-xl w-full h-fit text-sm
+      ${
+        isCrysis
+          ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)] bg-red-50"
+          : "border bg-white "
+      }`}
     >
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">

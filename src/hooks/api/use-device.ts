@@ -15,24 +15,52 @@ export const useDevices = () => {
   const { showToast } = useToast();
   const [devices, setDevices] = useState<Devices[]>([]);
   const [devicesConnected, setDevicesConnected] = useState<Devices[]>([]);
+  const [deviceMeasurementParameter, setDeviceMeasurementParameter] = useState<
+    []
+  >([]);
   const [detailDevice, setDetailDevice] = useState<DetailDevice>();
   const [patientMonitoringDevices, setPatientMonitoringDevices] = useState<
     PatientMonitoringDevices[]
   >([]);
 
-  const getAllDevices = useCallback(async () => {
+  const getDeviceMeasurementParameters = useCallback(async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/devices`, {
+      const response = await axios.get(`${apiUrl}/api/measurement-parameter`, {
         withCredentials: true,
-        params: {
-          gateway_id: user?.gateway?.id,
-        },
       });
-      setDevices(response.data.data);
+      setDeviceMeasurementParameter(response.data.data);
     } catch (error) {
-      console.error("Error fetching device connected:", error);
+      console.error("Error fetching device measurement parameters:", error);
     }
   }, []);
+
+  const getAllDevices = useCallback(
+    async (
+      gatewayId?: { id: string }[],
+      measurementType?: string,
+      isBaby?: boolean
+    ) => {
+      try {
+        console.log("Fetching devices with gatewayId:", gatewayId);
+        console.log("Measurement Type:", measurementType);
+
+        const response = await axios.get(`${apiUrl}/api/devices`, {
+          withCredentials: true,
+          params: {
+            gateway_id: gatewayId
+              ? gatewayId.map((g) => g.id)
+              : user?.gateway?.id,
+            params: measurementType,
+            is_baby: isBaby ? "true" : "false",
+          },
+        });
+        setDevices(response.data.data);
+      } catch (error) {
+        console.error("Error fetching device connected:", error);
+      }
+    },
+    []
+  );
 
   const getAllDevicesConnected = useCallback(async () => {
     try {
@@ -131,6 +159,7 @@ export const useDevices = () => {
     devicesConnected,
     detailDevice,
     patientMonitoringDevices,
+    deviceMeasurementParameter,
     getAllDevices,
     getAllDevicesConnected,
     deleteDeviceBluetooth,
@@ -139,5 +168,6 @@ export const useDevices = () => {
     updateDeviceTcpIP,
     getDetailDevice,
     getPatientMonitoringDevices,
+    getDeviceMeasurementParameters,
   };
 };

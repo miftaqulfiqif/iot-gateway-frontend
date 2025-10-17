@@ -4,18 +4,14 @@ import { DigitProIDAModel } from "@/models/Devices/DigitProIDAModel";
 import { SocketManager } from "../SocketManager";
 import { useAuth } from "@/context/AuthContext";
 
-export const useSocketDigitProIDA = (macDevice: string) => {
+type Props = {
+  gatewayId?: string;
+  macDevice: string;
+};
+
+export const useSocketDigitProIDA = ({ gatewayId, macDevice }: Props) => {
   const { user } = useAuth();
-  const gatewaySn = user?.gateway?.id;
-
-  const [data, setData] = useState<DigitProIDAModel>({
-    weight_mother: 0,
-    weight_baby: 0,
-  });
-
-  const [realtime, setRealtime] = useState<
-    { index: number; weight_mother: number; weight_child: number }[]
-  >([]);
+  const [data, setData] = useState<DigitProIDAModel | null>(null);
 
   const socketManagerRef = useRef<SocketManager | null>(null);
   const handlerRef = useRef<DigitProIDAHandler | null>(null);
@@ -25,14 +21,13 @@ export const useSocketDigitProIDA = (macDevice: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      gatewaySn!
+      gatewayId ? gatewayId : user?.gateway?.id!
     );
 
     const handler = new DigitProIDAHandler(
       manager.getSocket(),
       macDevice,
-      setData,
-      setRealtime
+      setData
     );
 
     socketManagerRef.current = manager;
@@ -50,6 +45,6 @@ export const useSocketDigitProIDA = (macDevice: string) => {
 
   return {
     data,
-    realtime,
+    setData,
   };
 };

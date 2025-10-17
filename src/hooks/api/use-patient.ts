@@ -15,7 +15,23 @@ export const usePatient = ({
   closeModal,
   showToast,
 }: CreateNewPatientProps) => {
+  const [patients, setPatients] = useState<Patients[]>([]);
   const [detailPatient, setDetailPatient] = useState<DetailPatient>();
+
+  const getPatients = useCallback(async (query: string, limit: number) => {
+    try {
+      const response = await axios.get(`${apiUrl}/api/patients`, {
+        withCredentials: true,
+        params: {
+          query: query || "",
+          limit: limit || 10,
+        },
+      });
+      setPatients(response.data.data);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    }
+  }, []);
 
   // Update patient
   const updatePatient = async (patient: Patients) => {
@@ -96,10 +112,12 @@ export const usePatient = ({
 
   // Return callback
   return {
+    getPatients,
     updatePatient,
     savePatient,
     updatePatientHeight,
     getDetailPatient,
+    patients,
     detailPatient,
   };
 };

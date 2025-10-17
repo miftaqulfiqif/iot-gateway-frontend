@@ -1,5 +1,10 @@
 import { useToast } from "@/context/ToastContext";
-import { BedsModel, DetailRoom, RoomsModel } from "@/models/RoomModel";
+import {
+  BedsModel,
+  DetailRoom,
+  RoomsModel,
+  RoomWithGateway,
+} from "@/models/RoomModel";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
@@ -8,6 +13,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export const useRooms = () => {
   const { showToast } = useToast();
   const [rooms, setRooms] = useState<RoomsModel[]>([]);
+  const [roomWithGateway, setRoomWithGateway] = useState<RoomWithGateway[]>([]);
   const [totalRooms, setTotalRooms] = useState<number>(0);
   const [beds, setBeds] = useState<BedsModel[]>([]);
   const [detailRoom, setDetailRoom] = useState<DetailRoom | null>(null);
@@ -22,6 +28,18 @@ export const useRooms = () => {
       setTotalRooms(response.data.total_rooms);
     } catch (error) {
       console.error("Error fetching rooms:", error);
+      throw error;
+    }
+  }, []);
+
+  const getRoomWithGateway = useCallback(async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/api/rooms-with-gateway`, {
+        withCredentials: true,
+      });
+      setRoomWithGateway(response.data.data);
+    } catch (error) {
+      console.error("Error fetching rooms with gateway:", error);
       throw error;
     }
   }, []);
@@ -111,12 +129,14 @@ export const useRooms = () => {
 
   return {
     rooms,
+    roomWithGateway,
     totalRooms,
     beds,
     detailRoom,
     patientRoom,
     getBeds,
     getAllRooms,
+    getRoomWithGateway,
     getDetailRoom,
     createNewRoom,
     getPatientRooms,

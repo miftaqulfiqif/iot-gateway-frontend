@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useHistoryMeasurement } from "../UseHistoryMeasurement";
 import { Patients } from "@/models/PatientModel";
 import { debounce } from "lodash";
@@ -54,7 +54,7 @@ export const UsePatientPage = () => {
           console.error("Error deleting patient:", error);
         })
         .finally(() => {
-          fetchPatients();
+          fetchPatients(currentPage, limit);
         });
     } catch (error) {
       console.error("Error deleting patient:", error);
@@ -62,25 +62,28 @@ export const UsePatientPage = () => {
   };
 
   // Get Patient / Fetch Patient
-  const fetchPatients = async () => {
-    try {
-      const response = await axios.get(`${apiUrl}/api/patients`, {
-        withCredentials: true,
-        params: {
-          page: currentPage,
-          limit: limit,
-        },
-      });
+  const fetchPatients = useCallback(
+    async (currentPage: number, limit: number) => {
+      try {
+        const response = await axios.get(`${apiUrl}/api/patients`, {
+          withCredentials: true,
+          params: {
+            page: currentPage,
+            limit: limit,
+          },
+        });
 
-      setPatients(response.data.data);
-      setCountCriticalPatient(response.data.critical_patient);
-      setCurrentPage(response.data.current_page);
-      setTotalItems(response.data.total_items);
-      setTotalPage(response.data.total_pages);
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-    }
-  };
+        setPatients(response.data.data);
+        setCountCriticalPatient(response.data.critical_patient);
+        setCurrentPage(response.data.current_page);
+        setTotalItems(response.data.total_items);
+        setTotalPage(response.data.total_pages);
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    },
+    [currentPage, limit, apiUrl]
+  );
 
   // Search Patients
   const searchPatients = debounce(async (searchQuery: string) => {
@@ -120,7 +123,7 @@ export const UsePatientPage = () => {
       if (search !== "") {
         await searchPatients(search);
       } else {
-        await fetchPatients();
+        await fetchPatients(currentPage, limit);
       }
 
       // Re-fetch detail & measurements if visible
@@ -243,6 +246,7 @@ export const UsePatientPage = () => {
   return {
     isVisible,
     limit,
+    setLimit,
     handleLimitChange,
     filterRef,
     setShowFilter,

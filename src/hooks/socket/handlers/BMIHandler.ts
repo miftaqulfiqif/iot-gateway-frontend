@@ -4,12 +4,25 @@ import { BaseHandler } from "./BaseHandler";
 export class BMIHandler extends BaseHandler {
   private mac: string;
   private setData: any;
+  private patientHeight: number;
+  private patientAge: number;
+  private patientGender: string;
 
-  constructor(socket: Socket, mac: string, setData: (data: any) => void) {
+  constructor(
+    socket: Socket,
+    mac: string,
+    setData: (data: any) => void,
+    patientHeight: number,
+    patientAge: number,
+    patientGender: string
+  ) {
     super(socket);
     this.mac = mac;
     this.setData = setData;
     this.register();
+    this.patientHeight = patientHeight;
+    this.patientAge = patientAge;
+    this.patientGender = patientGender;
   }
 
   register() {
@@ -19,25 +32,22 @@ export class BMIHandler extends BaseHandler {
       if (deviceMac !== this.mac) return;
       if (!payload?.data_bmi) return;
 
-      const patient = JSON.parse(localStorage.getItem("patient") || "{}");
-      const height = patient.height || 0;
-      const age = patient.age || 0;
-      const gender = patient.gender || 0;
-      const impedence = payload?.data_bmi[0]?.impedence || 0;
+      const impedance = payload?.data_bmi[0]?.impedance || 0;
       const bmiWeight = payload?.data_bmi[0]?.weight || 0;
 
       const bmiResult = calculateHealthMetrics({
-        height,
-        age,
-        gender,
+        height: this.patientHeight,
+        age: this.patientAge,
+        gender: this.patientGender,
         bmiWeight,
-        impedence,
+        impedance,
       });
 
       const result = {
         weight: bmiResult.weight,
+        height: bmiResult.height,
         age: bmiResult.age,
-        impedence: bmiResult.impedence,
+        impedance: bmiResult.impedance,
         bmi: bmiResult.bmi,
         bodyFat: bmiResult.bodyFat,
         muscleMass: bmiResult.muscleMass,
@@ -58,21 +68,35 @@ export class BMIHandler extends BaseHandler {
     });
   }
 
+  updatePatientInfo(height: number, age: number, gender: string) {
+    this.patientHeight = height;
+    this.patientAge = age;
+    this.patientGender = gender;
+  }
+
   unregister() {
     this.socket.off("listen_bmi");
   }
 }
 
-export function calculateHealthMetrics(data: any) {
-  const { height, age, gender, bmiWeight, impedence } = data;
-
+export function calculateHealthMetrics({
+  height,
+  age,
+  gender,
+  bmiWeight,
+  impedance,
+}: {
+  height: number;
+  age: number;
+  gender: string;
+  bmiWeight: number;
+  impedance: number;
+}) {
   const heightM = height / 100;
-
   const isMale = gender.toLowerCase() === "male";
 
-  const BMI = bmiWeight / (heightM * heightM);
+  const BMI = heightM > 0 ? bmiWeight / (heightM * heightM) : NaN;
 
-  // Estimasi menggunakan rumus dasar atau pendekatan umum
   const bodyFat = isMale
     ? 1.2 * BMI + 0.23 * age - 16.2
     : 1.2 * BMI + 0.23 * age - 5.4;
@@ -92,26 +116,30 @@ export function calculateHealthMetrics(data: any) {
     ? 88.36 + 13.4 * bmiWeight + 4.8 * height - 5.7 * age
     : 447.6 + 9.2 * bmiWeight + 3.1 * height - 4.3 * age;
 
-  const protein = bmiWeight * 0.16; // gram
-
-  const obesity = (bodyFat / 40) * 100; // % estimasi dari max fat 40%
+  const protein = bmiWeight * 0.16;
+  const obesity = (bodyFat / 40) * 100;
   const bodyAge = age + (BMI - 22) * 0.5;
   const lbm = bmiWeight - (bmiWeight * bodyFat) / 100;
 
+  // Helper untuk ubah Infinity/NaN ke null
+  const safe = (n: number): number | null =>
+    Number.isFinite(n) ? parseFloat(n.toFixed(1)) : null;
+
   return {
-    age: age,
-    impedence: impedence,
-    bmi: parseFloat(BMI.toFixed(1)),
-    weight: parseFloat(bmiWeight.toFixed(1)),
-    bodyFat: parseFloat(bodyFat.toFixed(1)),
-    muscleMass: parseFloat(muscleMass.toFixed(1)),
-    water: parseFloat(water.toFixed(1)),
-    visceralFat: parseFloat(visceralFat.toFixed(1)),
-    boneMass: parseFloat(boneMass.toFixed(1)),
-    metabolism: parseFloat(bmr.toFixed(0)),
-    protein: parseFloat(protein.toFixed(1)),
-    obesity: parseFloat(obesity.toFixed(1)),
-    bodyAge: parseFloat(bodyAge.toFixed(1)),
-    lbm: parseFloat(lbm.toFixed(1)),
+    age,
+    height,
+    impedance,
+    bmi: safe(BMI),
+    weight: safe(bmiWeight),
+    bodyFat: safe(bodyFat),
+    muscleMass: safe(muscleMass),
+    water: safe(water),
+    visceralFat: safe(visceralFat),
+    boneMass: safe(boneMass),
+    metabolism: safe(bmr),
+    protein: safe(protein),
+    obesity: safe(obesity),
+    bodyAge: safe(bodyAge),
+    lbm: safe(lbm),
   };
 }

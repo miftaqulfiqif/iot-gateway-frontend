@@ -6,16 +6,10 @@ export class DigitProIDAHandler extends BaseHandler {
   private setData: any;
   private setRealtime: any;
 
-  constructor(
-    socket: Socket,
-    mac: string,
-    setData: (data: any) => void,
-    setRealtime: (data: any[]) => void
-  ) {
+  constructor(socket: Socket, mac: string, setData: (data: any) => void) {
     super(socket);
     this.mac = mac;
     this.setData = setData;
-    this.setRealtime = setRealtime;
     this.register();
   }
 

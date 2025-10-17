@@ -6,14 +6,15 @@ import { useToast } from "@/context/ToastContext";
 import { useAuth } from "@/context/AuthContext";
 import { set } from "lodash";
 
-export const useSocketDigitProBaby = (macDevice: string) => {
+type Props = {
+  gatewayId: string;
+  macDevice: string;
+};
+
+export const useSocketDigitProBaby = ({ gatewayId, macDevice }: Props) => {
   const { user } = useAuth();
   const { showToast } = useToast();
-  const [data, setData] = useState<DigitProBabyModel>({
-    mac: "",
-    weight: 0,
-  });
-
+  const [data, setData] = useState<DigitProBabyModel | null>(null);
   const [realtime, setRealtime] = useState<{ index: number; weight: number }[]>(
     []
   );
@@ -26,7 +27,7 @@ export const useSocketDigitProBaby = (macDevice: string) => {
 
     const manager = new SocketManager(
       import.meta.env.VITE_SOCKET_URL,
-      user?.gateway?.id!
+      gatewayId ? gatewayId : user?.gateway?.id!
     );
 
     const handler = new DigitProBabyHandler(
@@ -34,7 +35,7 @@ export const useSocketDigitProBaby = (macDevice: string) => {
       macDevice,
       setData,
       setRealtime,
-      user?.gateway?.id!
+      gatewayId ? gatewayId : user?.gateway?.id!
     );
 
     socketManagerRef.current = manager;
@@ -63,6 +64,7 @@ export const useSocketDigitProBaby = (macDevice: string) => {
   return {
     data,
     realtime,
+    setData,
     eventTareDigitProBaby,
   };
 };

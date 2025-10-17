@@ -6,9 +6,7 @@ import {
 } from "lucide-react";
 import spo2Icon from "@/assets/icons/spo2.png";
 import respIcon from "@/assets/icons/resp.png";
-import { ECGChart } from "@/components/heart-beat-chart";
-import { HeartPulseChart } from "@/components/chart-heart-pusle";
-import HeartRateChart from "@/components/heart-rate-chart";
+import rrIcon from "@/assets/icons/lungs.png";
 
 const chartData: { heart_rate: number }[] = [
   { heart_rate: 75 },
@@ -56,8 +54,12 @@ export const PatientMonitorPM9000Section = ({
   return (
     <>
       <div
-        className={`bg-white flex flex-col gap-2 p-4 rounded-xl w-full h-fit text-sm
-    ${isCrysis ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]" : "border"}`}
+        className={` flex flex-col gap-2 p-4 rounded-xl w-full h-fit text-sm
+    ${
+      isCrysis
+        ? "shadow-[0_0_10px_2px_rgba(239,68,68,0.7)] bg-red-50"
+        : "border bg-white"
+    }`}
       >
         {/* Header */}
         <div className="flex flex-row sm:flex-row items-start sm:items-center justify-between gap-2">
@@ -126,11 +128,11 @@ export const PatientMonitorPM9000Section = ({
               {/* ECG */}
               <div className="bg-white rounded-lg flex flex-col p-2 border-2 w-full">
                 <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-green-500" />
+                  <Activity className="w-4 h-4 text-blue-500" />
                   <p className="text-xs sm:text-sm">ECG</p>
                 </div>
                 <div className="flex gap-1 items-end">
-                  <p className="text-lg sm:text-xl font-bold text-green-500">
+                  <p className="text-lg sm:text-xl font-bold text-blue-500">
                     {ecg}
                   </p>
                   <span className="text-xs sm:text-base">rpm</span>
@@ -140,11 +142,11 @@ export const PatientMonitorPM9000Section = ({
               {/* RESP */}
               <div className="bg-white rounded-lg flex flex-col p-2 border-2 w-full">
                 <div className="flex items-center gap-2">
-                  <img src={respIcon} className="w-4 h-4" />
+                  <img src={rrIcon} className="w-4 h-4" />
                   <p className="text-xs sm:text-sm">RESP</p>
                 </div>
                 <div className="flex gap-1 items-end">
-                  <p className="text-lg sm:text-xl font-bold text-blue-600">
+                  <p className="text-lg sm:text-xl font-bold text-green-600">
                     {resp}
                   </p>
                   <span className="text-xs sm:text-base">rpm</span>

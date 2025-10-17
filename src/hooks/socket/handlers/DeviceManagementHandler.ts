@@ -45,7 +45,7 @@ export class DeviceManagementHandler extends BaseHandler {
     this.socket.emit("scan", {
       user_id: this.gatewayId,
       data: {
-        topic: `iotgateway/${this.gatewayId}/bluetooth/scan`,
+        topic: `iotgateway/${this.gatewayId}/bluetooth/scan/set`,
         payload: "start",
       },
     });

@@ -181,7 +181,7 @@ const DeviceBMIPage = () => {
   const { mac } = useParams();
   // const { weightBMI, setWeightBMI } = useSocketHandler({ macDevice: mac });
 
-  const { data } = useSocketDigitProBMI(mac!);
+  const { data } = useSocketDigitProBMI({ macDevice: mac! });
   const [saveModal, setSaveModal] = useState(false);
 
   const [variabel, setVariabel] = useState<string[]>([]);

@@ -35,9 +35,11 @@ export const useAuthHook = () => {
             error.response.data.message || "Invalid credentials"
           );
         } else {
+          showToast(null, "Network error, please try again.", "error");
           formik.setStatus("Network error, please try again.");
         }
       } else {
+        showToast(null, "Unexpected error occurred.", "error");
         formik.setStatus("Unexpected error occurred.");
       }
     }

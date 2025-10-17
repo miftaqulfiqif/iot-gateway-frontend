@@ -49,7 +49,7 @@ export const Header = ({ className, title }: NavbarProps) => {
 
   // fetch gateway when dropdown isOpen
   useEffect(() => {
-    if (isOpen) getGateways();
+    if (isOpen) getGateways({ page: 1, limit: 10, query: query });
   }, [isOpen, query]);
 
   // Save selectedGateway to localStorage when it change
@@ -134,7 +134,7 @@ export const Header = ({ className, title }: NavbarProps) => {
               tempSelectedGateway={tempSelectedGateway}
               setTempSelectedGateway={setTempSelectedGateway}
               setCurrentGateway={setSelectedGateway}
-              gateways={gateways}
+              gateways={gateways.data}
               setQuery={setQuery}
               changeGateway={() => changeGateway(tempSelectedGateway)}
             />

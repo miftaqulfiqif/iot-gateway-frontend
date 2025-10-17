@@ -8,201 +8,55 @@ import {
   Droplets,
   Flame,
   Funnel,
-  GlassWater,
-  Heart,
-  HeartPlus,
   HeartPulse,
-  Mars,
   PersonStanding,
   Search,
   Thermometer,
   User,
-  Users,
-  Venus,
   Weight,
   Zap,
 } from "lucide-react";
-import { use, useEffect, useRef, useState } from "react";
-import { TableHistoryDigitProBaby } from "@/components/tables/history-digit-pro-baby";
-import { TableHistoryDigitProIDA } from "@/components/tables/history-digit-pro-ida";
-import { TableHistoryBMI } from "@/components/tables/history-digit-pro-bmi";
-import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
-import { useDigitProBaby } from "@/hooks/api/devices/use-digit-pro-baby";
-import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
+import { useEffect, useRef, useState } from "react";
+
 import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/main-layout";
-import { TableHistoryDoppler } from "@/components/tables/history-doppler";
-import { useDoppler } from "@/hooks/api/devices/use-doppler";
+
 import { usePatient } from "@/hooks/api/use-patient";
-import HistoriesDigitProBaby from "@/components/charts/chart-histories-digitpro-baby";
 import ChartPatientWeightTrend from "@/components/charts/chart-patient-weight-trend";
 import ChartPatientVital from "@/components/charts/chart-patient-vital";
 import { format } from "date-fns";
-import { ca, vi } from "date-fns/locale";
 import ChartBiaBodyComposition from "@/components/charts/chart-bia-body-composition";
 import { RecentMeasurementsPatientTable } from "@/components/tables/recent-measurements-patient-table";
-import { times } from "lodash";
 import spo2Icon from "@/assets/icons/spo2-1.png";
+import leanBodyMassIcon from "@/assets/icons/lean-body-mass.png";
+
 import weightScaleIcon from "@/assets/icons/weight-scale.png";
-
-const state = [
-  {
-    value: "digit-pro-baby",
-    label: "Digit Pro Baby",
-  },
-  {
-    value: "bmi",
-    label: "BMI",
-  },
-  {
-    value: "doppler",
-    label: "Doppler",
-  },
-  {
-    value: "digit-pro-ida",
-    label: "Digit Pro IDA",
-  },
-];
-
-const dummyPatient = {
-  id: "PATL230000000000001",
-  nik: "3517172100000000",
-  barcode_img:
-    "data:image/png;base64,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",
-  name: "Abdulloh Khasimiri",
-  gender: "male",
-  address: "Surabaya",
-  phone: "01281023018291",
-  work: "Software Engineer",
-  last_education: "S1",
-  place_of_birth: "Surabaya",
-  date_of_birth: "2001-09-21",
-  religion: null,
-  height: null,
-  age: 23,
-};
-
-const dummyListBaby = [
-  {
-    id: "35b29da2-e59e-43d3-9486-8668c916acb6",
-    name: "Test",
-    gender: "male",
-    date_of_birth: "2001-09-01",
-    place_of_birth: null,
-    patient_id: "PATL230000000000001",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9416-86686916acb6",
-    name: "Prabowo Sinegar",
-    gender: "female",
-    date_of_birth: "2001-09-01",
-    place_of_birth: null,
-    patient_id: "PATL230000000000001",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-866y6916acb6",
-    name: "Prabowo Sinegar",
-    gender: "female",
-    date_of_birth: "2001-09-01",
-    place_of_birth: null,
-    patient_id: "PATL230000000000001",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-866c86916acb6",
-    name: "Prabowo Sinegar",
-    gender: "female",
-    date_of_birth: "2001-09-01",
-    place_of_birth: null,
-    patient_id: "PATL230000000000001",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-866g6916acb6",
-    name: "Prabowo Sinegar",
-    gender: "female",
-    date_of_birth: "2001-09-01",
-    place_of_birth: null,
-    patient_id: "PATL230000000000001",
-  },
-];
-
-const dummyRecentDoctor = [
-  {
-    id: "35b29da2-e59e-43d3-9486-86a86916acb6",
-    doctor_name: "Dr. Prabowo Sinegar",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb1",
-    doctor_name: "Dr. Prabowo Sinegar",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb2",
-    doctor_name: "Dr. Prabowo Sinegar",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb9",
-    doctor_name: "Dr. Prabowo Sinegar",
-    speciality: "Dokter Umum",
-    date: "2023-06-01",
-  },
-];
-
-const dummyMedicalActivity = [
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916acb6",
-    title: "Pemeriksaan Fisik",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-86686916ac16",
-    title: "Pemeriksaan Fisik",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-8668691gacb6",
-    title: "Pemeriksaan Fisik",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-  {
-    id: "35b29da2-e59e-43d3-9486-866869x6acb6",
-    title: "Pemeriksaan Fisik",
-    date: "2023-06-01",
-    note: "Pemeriksaan fisik dengan hasil normal",
-  },
-];
+import { useHistoriesMeasurement } from "@/hooks/api/devices/use-histories-measurement";
 
 const historiesData = [
-  { weight: 55.2, timestamp: "2023-01-01T08:00:00.000Z" },
-  { weight: 55.5, timestamp: "2023-01-02T08:00:00.000Z" },
-  { weight: 55.8, timestamp: "2023-01-03T08:00:00.000Z" },
-  { weight: 56.1, timestamp: "2023-01-04T08:00:00.000Z" },
-  { weight: 56.4, timestamp: "2023-01-05T08:00:00.000Z" },
-  { weight: 56.7, timestamp: "2023-01-06T08:00:00.000Z" },
-  { weight: 57.0, timestamp: "2023-01-07T08:00:00.000Z" },
-  { weight: 57.3, timestamp: "2023-01-08T08:00:00.000Z" },
-  { weight: 57.6, timestamp: "2023-01-09T08:00:00.000Z" },
-  { weight: 57.9, timestamp: "2023-01-10T08:00:00.000Z" },
+  { value: 55.2, recorded_at: "2023-01-01T08:00:00.000Z" },
+  { value: 55.5, recorded_at: "2023-01-02T08:00:00.000Z" },
+  { value: 55.8, recorded_at: "2023-01-03T08:00:00.000Z" },
+  { value: 56.1, recorded_at: "2023-01-04T08:00:00.000Z" },
+  { value: 56.4, recorded_at: "2023-01-05T08:00:00.000Z" },
+  { value: 56.7, recorded_at: "2023-01-06T08:00:00.000Z" },
+  { value: 57.0, recorded_at: "2023-01-07T08:00:00.000Z" },
+  { value: 57.3, recorded_at: "2023-01-08T08:00:00.000Z" },
+  { value: 57.6, recorded_at: "2023-01-09T08:00:00.000Z" },
+  { value: 57.9, recorded_at: "2023-01-10T08:00:00.000Z" },
 ];
 
 const historiesDataVital = [
-  { heart_rate: 65, timestamp: "2023-01-01T08:00:00.000Z" },
-  { heart_rate: 68, timestamp: "2023-01-02T08:00:00.000Z" },
-  { heart_rate: 71, timestamp: "2023-01-03T08:00:00.000Z" },
-  { heart_rate: 74, timestamp: "2023-01-04T08:00:00.000Z" },
-  { heart_rate: 77, timestamp: "2023-01-05T08:00:00.000Z" },
-  { heart_rate: 80, timestamp: "2023-01-06T08:00:00.000Z" },
-  { heart_rate: 83, timestamp: "2023-01-07T08:00:00.000Z" },
-  { heart_rate: 86, timestamp: "2023-01-08T08:00:00.000Z" },
-  { heart_rate: 89, timestamp: "2023-01-09T08:00:00.000Z" },
-  { heart_rate: 92, timestamp: "2023-01-10T08:00:00.000Z" },
+  { value: 65, recorded_at: "2023-01-01T08:00:00.000Z" },
+  { value: 68, recorded_at: "2023-01-02T08:00:00.000Z" },
+  { value: 71, recorded_at: "2023-01-03T08:00:00.000Z" },
+  { value: 74, recorded_at: "2023-01-04T08:00:00.000Z" },
+  { value: 77, recorded_at: "2023-01-05T08:00:00.000Z" },
+  { value: 80, recorded_at: "2023-01-06T08:00:00.000Z" },
+  { value: 83, recorded_at: "2023-01-07T08:00:00.000Z" },
+  { value: 86, recorded_at: "2023-01-08T08:00:00.000Z" },
+  { value: 89, recorded_at: "2023-01-09T08:00:00.000Z" },
+  { value: 92, recorded_at: "2023-01-10T08:00:00.000Z" },
 ];
 
 const dummyBia = {
@@ -251,102 +105,35 @@ const dummyBia = {
   classification: "Normal",
 };
 
-const dummyRecentPatientMeasurements = [
-  {
-    id: "1",
-    parameter: "Weight",
-    value: "70 kg",
-    device: "Digit Pro Baby",
-    room: "ICU-101",
-    timestamp: "2023-01-10T08:00:00.000Z",
-  },
-  {
-    id: "2",
-    parameter: "Height",
-    value: "170 cm",
-    device: "Digit Pro BMI",
-    room: "ICU-102",
-    timestamp: "2023-01-11T08:00:00.000Z",
-  },
-  {
-    id: "3",
-    parameter: "Body Temperature",
-    value: "36.4 C",
-    device: "Digit Pro Doppler",
-    room: "ICU-103",
-    timestamp: "2023-01-12T08:00:00.000Z",
-  },
-  {
-    id: "4",
-    parameter: "Blood Pressure",
-    value: "120/80 mmHg",
-    device: "Digit Pro Doppler",
-    room: "ICU-104",
-    timestamp: "2023-01-13T08:00:00.000Z",
-  },
-  {
-    id: "5",
-    parameter: "Heart Rate",
-    value: "120 bpm",
-    device: "Digit Pro BMI",
-    room: "ICU-105",
-    timestamp: "2023-01-14T08:00:00.000Z",
-  },
-  {
-    id: "6",
-    parameter: "Oxygen Saturation",
-    value: "99%",
-    device: "Digit Pro Doppler",
-    room: "ICU-106",
-    timestamp: "2023-01-15T08:00:00.000Z",
-  },
-  {
-    id: "7",
-    parameter: "Respiratory Rate",
-    value: "16 breaths/min",
-    device: "Digit Pro BMI",
-    room: "ICU-107",
-    timestamp: "2023-01-16T08:00:00.000Z",
-  },
-  {
-    id: "8",
-    parameter: "Body Fat",
-    value: "18.5%",
-    device: "Digit Pro Doppler",
-    room: "ICU-108",
-    timestamp: "2023-01-17T08:00:00.000Z",
-  },
-  {
-    id: "9",
-    parameter: "Muscle Mass",
-    value: "45.0 kg",
-    device: "Digit Pro BMI",
-    room: "ICU-109",
-    timestamp: "2023-01-18T08:00:00.000Z",
-  },
-  {
-    id: "10",
-    parameter: "Visceral Fat",
-    value: "10",
-    device: "Digit Pro Doppler",
-    room: "ICU-110",
-    timestamp: "2023-01-19T08:00:00.000Z",
-  },
-];
-
 const DetailPatientPage = () => {
   const { patientId } = useParams();
+  const { historiesMeasurement, getHistoriesMeasurement } =
+    useHistoriesMeasurement();
   const { getDetailPatient, detailPatient } = usePatient({});
-  const [search, setSearch] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
   const [showFilter, setShowFilter] = useState(false);
   const [patientImage, setPatientImage] = useState("");
+
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState("");
+
+  const biaBodyComposition = detailPatient?.last_body_composition_analysis;
 
   useEffect(() => {
     if (patientId) {
       getDetailPatient(patientId);
     }
   }, [patientId, getDetailPatient]);
+
+  useEffect(() => {
+    getHistoriesMeasurement({
+      page: page,
+      limit: limit,
+      query: search,
+      patientId: patientId || "",
+    });
+  }, [page, limit, search]);
 
   useEffect(() => {
     if (detailPatient) {
@@ -422,7 +209,13 @@ const DetailPatientPage = () => {
                       <p className="text-sm">Age / Gender</p>
                       {detailPatient?.detail.age && (
                         <p className="font-bold">{`${
-                          detailPatient?.detail.age
+                          detailPatient?.detail.age.years !== 0
+                            ? detailPatient?.detail.age.years
+                            : detailPatient?.detail.age.months
+                        } ${
+                          detailPatient?.detail.age.years !== 0
+                            ? "years"
+                            : "months"
                         } / ${
                           detailPatient?.detail?.gender
                             ?.charAt(0)
@@ -479,96 +272,82 @@ const DetailPatientPage = () => {
               )}
             </div>
           </div>
-          {/* Detail Info */}
-          {/* <div className="bg-white w-full min-h-full rounded-2xl shadow-lg p-4">
-            <p className="text-lg font-bold">Detail info patient</p>
-            <div className="mt-4">
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between">
-                  <p className="font-semibold">IHS Number :</p>
-                  <p>{detailPatient?.detail.ihs_number ?? " -- "}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">NIK :</p>
-                  <p>{detailPatient?.detail.nik}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Name :</p>
-                  <p>{detailPatient?.detail.name}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Age :</p>
-                  <p>{detailPatient?.detail.age} years</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Gender :</p>
-                  <p>
-                    {detailPatient?.detail.gender
-                      ? dummyPatient.gender.charAt(0).toUpperCase() +
-                        dummyPatient.gender.slice(1)
-                      : "Unknown"}
-                  </p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Place of Birth :</p>
-                  <p>{detailPatient?.detail.place_of_birth}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Date of Birth :</p>
-                  <p>
-                    {detailPatient?.detail.date_of_birth
-                      ? new Intl.DateTimeFormat("en-GB", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        }).format(new Date(detailPatient.detail.date_of_birth))
-                      : "Unknown"}
-                  </p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Phone :</p>
-                  <p>{detailPatient?.detail.phone}</p>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
 
         {/* Last Measurement */}
         <div className="flex gap-4 h-fit">
           {lastMeasurement({
             label: "Blood Pressure",
-            value: "120/80",
+            value: `${
+              detailPatient?.last_measurement?.blood_pressure ?? " -- "
+            }`,
             unit: "mmHg",
-            timestamp: "22 September 2023 23:59",
+            timestamp: `${
+              detailPatient?.last_measurement?.timestamp_blood_pressure
+                ? format(
+                    detailPatient.last_measurement?.timestamp_blood_pressure,
+                    "dd MMMM yyyy"
+                  )
+                : " -- "
+            }`,
             icon: <Activity className="w-10 h-10 text-red-500" />,
           })}
           {lastMeasurement({
             label: "Sp02",
-            value: 99,
+            value: `${detailPatient?.last_measurement?.spo2 ?? " -- "}`,
             unit: "%",
-            timestamp: "23 September 2023 23:59",
+            timestamp: `${
+              detailPatient?.last_measurement?.timestamp_spo2
+                ? format(
+                    detailPatient.last_measurement?.timestamp_spo2,
+                    "dd MMMM yyyy"
+                  )
+                : " -- "
+            }`,
             icon: spo2Icon,
           })}
           {lastMeasurement({
             label: "Temperature",
-            value: 36.4,
+            value: `${
+              detailPatient?.last_measurement?.body_temperature ?? " -- "
+            }`,
             unit: "°C",
-            timestamp: "23 September 2023 23:59",
+            timestamp: `${
+              detailPatient?.last_measurement?.timestamp_body_temperature
+                ? format(
+                    detailPatient.last_measurement?.timestamp_body_temperature,
+                    "dd MMMM yyyy"
+                  )
+                : " -- "
+            }`,
             icon: <Thermometer className="w-10 h-10 text-orange-500" />,
           })}
           {lastMeasurement({
             label: "Body Weight",
-            value: 70,
+            value: `${detailPatient?.last_measurement?.body_weight ?? " -- "}`,
             unit: "kg",
-            timestamp: "23 September 2023 23:59",
+            timestamp: `${
+              detailPatient?.last_measurement?.timestamp_body_weight
+                ? format(
+                    detailPatient.last_measurement?.timestamp_body_weight,
+                    "dd MMMM yyyy"
+                  )
+                : " -- "
+            }`,
             icon: weightScaleIcon,
           })}
           {lastMeasurement({
             label: "Body Height",
-            value: 170,
+            value: `${detailPatient?.last_measurement?.body_height ?? " -- "}`,
             unit: "cm",
-            timestamp: "23 September 2023 23:59",
+            timestamp: `${
+              detailPatient?.last_measurement?.timestamp_body_height
+                ? format(
+                    detailPatient.last_measurement?.timestamp_body_height,
+                    "dd MMMM yyyy"
+                  )
+                : " -- "
+            }`,
             icon: <PersonStanding className="w-10 h-10 text-purple-500" />,
           })}
         </div>
@@ -582,49 +361,49 @@ const DetailPatientPage = () => {
             </p>
           </div>
           <p className="text-gray-500">{`Latest scan : ${format(
-            dummyBia.last_measurement,
+            biaBodyComposition?.recorded_at || new Date(),
             "dd MMMM yyyy"
-          )} | Device : ${dummyBia.device}`}</p>
+          )} | Device : Digit Pro BMI`}</p>
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <LastBiaMeasurement
               label="BMI"
-              value={dummyBia.bmi.value}
+              value={biaBodyComposition?.bmi ?? " -- "}
               category={dummyBia.bmi.category}
               unit="kg/m²"
               icon={<Calculator className="w-5 h-5 text-green-500" />}
             />
             <LastBiaMeasurement
               label="Fat"
-              value={dummyBia.body_fat.value}
-              category={dummyBia.body_fat.category}
+              value={biaBodyComposition?.body_fat ?? " -- "}
+              // category={dummyBia.body_fat.category}
               unit="%"
               icon={<Droplet className="w-5 h-5 text-orange-500" />}
             />
             <LastBiaMeasurement
               label="Muscle"
-              value={dummyBia.muscle_mass.value}
-              category={dummyBia.muscle_mass.category}
+              value={biaBodyComposition?.muscle_mass ?? " -- "}
+              // category={dummyBia.muscle_mass.category}
               unit="kg"
               icon={<BicepsFlexed className="w-5 h-5 text-red-500" />}
             />
             <LastBiaMeasurement
               label="Water Content"
-              value={dummyBia.water_content.value}
-              category={dummyBia.water_content.category}
+              value={biaBodyComposition?.water ?? " -- "}
+              // category={dummyBia.water_content.category}
               unit="%"
               icon={<Droplets className="w-5 h-5 text-blue-500" />}
             />
             <LastBiaMeasurement
               label="Visceral Fat"
-              value={dummyBia.visceral_fat.value}
-              category={dummyBia.visceral_fat.category}
+              value={biaBodyComposition?.visceral_fat ?? " -- "}
+              // category={dummyBia.visceral_fat.category}
               unit="level"
               icon={<Apple className="w-5 h-5 text-yellow-500" />}
             />
             <LastBiaMeasurement
               label="Bone Mass"
-              value={dummyBia.bone_mass.value}
-              category={dummyBia.bone_mass.category}
+              value={biaBodyComposition?.bone_mass ?? " -- "}
+              // category={dummyBia.bone_mass.category}
               unit="kg"
               icon={<Bone className="w-5 h-5 text-black-500" />}
             />
@@ -632,44 +411,54 @@ const DetailPatientPage = () => {
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             <LastBiaMeasurement
               label="BMR"
-              value={dummyBia.bmr_kcal.value}
+              value={biaBodyComposition?.metabolism ?? " -- "}
               unit="kcal"
               icon={<Flame className="w-5 h-5 text-red-500" />}
             />
             <LastBiaMeasurement
               label="Protein"
-              value={dummyBia.protein.value}
+              value={biaBodyComposition?.protein ?? " -- "}
               unit="%"
               icon={<Activity className="w-5 h-5 text-green-500" />}
             />
             <LastBiaMeasurement
               label="Classification"
-              value={dummyBia.classification}
+              value={biaBodyComposition?.obesity ?? " -- "}
               icon={<Weight className="w-5 h-5 text-blue-500" />}
             />
             <LastBiaMeasurement
               label="Body Age"
-              value={dummyBia.body_age.value}
+              value={biaBodyComposition?.body_age ?? " -- "}
               unit="years"
               icon={<User className="w-5 h-5 text-purple-500" />}
             />
             <LastBiaMeasurement
               label="LBM"
-              value={dummyBia.lbm.value}
+              value={biaBodyComposition?.lbm ?? " -- "}
               unit="kg"
-              icon={<Users className="w-5 h-5 text-blue-500" />}
+              icon={
+                <img src={leanBodyMassIcon} className="w-6 h-6" alt="lbm" />
+              }
             />
           </div>
           <div className="flex w-full mt-2 gap-4">
             <ChartBiaBodyComposition
               label="Body Fat Trend"
               color="#17cfb9"
-              chartData={historiesData.slice(0, 8)}
+              chartData={
+                biaBodyComposition?.body_fat_trend.slice(0, 8)
+                  ? biaBodyComposition?.body_fat_trend.slice(0, 8)
+                  : []
+              }
             />
             <ChartBiaBodyComposition
               label="Muscle Mass Trend"
               color="#1095c1"
-              chartData={historiesData.slice(0, 8)}
+              chartData={
+                biaBodyComposition?.muscle_mass_trend.slice(0, 8)
+                  ? biaBodyComposition?.muscle_mass_trend.slice(0, 8)
+                  : []
+              }
             />
           </div>
           <hr className="my-4 border-gray-300" />
@@ -683,10 +472,10 @@ const DetailPatientPage = () => {
         {/* Charts */}
         <div className="flex gap-4 h-fit">
           <div className="w-1/2 h-full">
-            <ChartPatientWeightTrend chartData={historiesData} />
+            <ChartPatientWeightTrend chartData={historiesData.slice(0, 9)} />
           </div>
           <div className="w-1/2 h-full">
-            <ChartPatientVital chartData={historiesDataVital} />
+            <ChartPatientVital chartData={historiesDataVital.slice(0, 9)} />
           </div>
         </div>
 
@@ -851,12 +640,11 @@ const DetailPatientPage = () => {
         </div>
         <div className="">
           <RecentMeasurementsPatientTable
-            data={dummyRecentPatientMeasurements}
-            goToPreviousPage={() => {}}
-            goToNextPage={() => {}}
-            goToPage={() => {}}
+            data={historiesMeasurement}
+            goToPreviousPage={() => setPage((prev) => prev - 1)}
+            goToNextPage={() => setPage((prev) => prev + 1)}
+            goToPage={setPage}
             currentPage={1}
-            totalPage={2}
             isDetailPatient
           />
         </div>

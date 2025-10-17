@@ -2,6 +2,7 @@ import {
   Bluetooth,
   EllipsisVertical,
   EthernetPort,
+  Settings2,
   Trash,
   Usb,
   Wifi,
@@ -164,7 +165,22 @@ export const DevicesConnected = ({
             ))}
           <p className="font-bold text-xl">{deviceName}</p>
         </div>
-        <div className="mt-4 flex flex-row justify-end">
+        <div className="mt-4 flex flex-row justify-between items-center">
+          <div
+            className="flex items-center bg-gray-200 rounded-lg px-3 py-1 mr-4 cursor-pointer hover:bg-gray-300"
+            onClick={() => {
+              deviceConnection === "bluetooth"
+                ? navigate("/device/bluetooth/" + deviceId)
+                : null;
+
+              deviceConnection !== "bluetooth"
+                ? navigate("/device/tcpip/" + deviceId)
+                : null;
+            }}
+          >
+            <Settings2 className="w-5 h-5 mr-2" />
+            <p>Manage</p>
+          </div>
           <p
             className="text-sm bg-blue-200 text-blue-800 px-3 py-2 rounded-lg font-bold cursor-pointer hover:bg-blue-300"
             onClick={() => {

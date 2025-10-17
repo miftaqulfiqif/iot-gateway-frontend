@@ -6,97 +6,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MainLayout from "../components/layouts/main-layout";
-import { Funnel, Search } from "lucide-react";
+import { CircleAlert, CircleCheck, Funnel, Search, Users } from "lucide-react";
 import { RecentMeasurementsPatientTable } from "@/components/tables/recent-measurements-patient-table";
-import { useState } from "react";
-
-const dummyRecentPatientMeasurements = [
-  {
-    id: "1",
-    parameter: "Weight",
-    value: "70 kg",
-    device: "Digit Pro Baby",
-    room: "ICU-101",
-    timestamp: "2023-01-10T08:00:00.000Z",
-  },
-  {
-    id: "2",
-    parameter: "Height",
-    value: "170 cm",
-    device: "Digit Pro BMI",
-    room: "ICU-102",
-    timestamp: "2023-01-11T08:00:00.000Z",
-  },
-  {
-    id: "3",
-    parameter: "Body Temperature",
-    value: "36.4 C",
-    device: "Digit Pro Doppler",
-    room: "ICU-103",
-    timestamp: "2023-01-12T08:00:00.000Z",
-  },
-  {
-    id: "4",
-    parameter: "Blood Pressure",
-    value: "120/80 mmHg",
-    device: "Digit Pro Doppler",
-    room: "ICU-104",
-    timestamp: "2023-01-13T08:00:00.000Z",
-  },
-  {
-    id: "5",
-    parameter: "Heart Rate",
-    value: "120 bpm",
-    device: "Digit Pro BMI",
-    room: "ICU-105",
-    timestamp: "2023-01-14T08:00:00.000Z",
-  },
-  {
-    id: "6",
-    parameter: "Oxygen Saturation",
-    value: "99%",
-    device: "Digit Pro Doppler",
-    room: "ICU-106",
-    timestamp: "2023-01-15T08:00:00.000Z",
-  },
-  {
-    id: "7",
-    parameter: "Respiratory Rate",
-    value: "16 breaths/min",
-    device: "Digit Pro BMI",
-    room: "ICU-107",
-    timestamp: "2023-01-16T08:00:00.000Z",
-  },
-  {
-    id: "8",
-    parameter: "Body Fat",
-    value: "18.5%",
-    device: "Digit Pro Doppler",
-    room: "ICU-108",
-    timestamp: "2023-01-17T08:00:00.000Z",
-  },
-  {
-    id: "9",
-    parameter: "Muscle Mass",
-    value: "45.0 kg",
-    device: "Digit Pro BMI",
-    room: "ICU-109",
-    timestamp: "2023-01-18T08:00:00.000Z",
-  },
-  {
-    id: "10",
-    parameter: "Visceral Fat",
-    value: "10",
-    device: "Digit Pro Doppler",
-    room: "ICU-110",
-    timestamp: "2023-01-19T08:00:00.000Z",
-  },
-];
+import { useEffect, useState } from "react";
+import { useHistoriesMeasurement } from "@/hooks/api/devices/use-histories-measurement";
 
 const MeasurementHistoriesPage1 = () => {
-  const [search, setSearch] = useState("");
+  const { getHistoriesMeasurement, historiesMeasurement } =
+    useHistoriesMeasurement();
+
+  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState("");
   const [showFilter, setShowFilter] = useState(false);
+
+  useEffect(() => {
+    getHistoriesMeasurement({
+      page: page,
+      limit: limit,
+      query: search,
+    });
+  }, [page, limit, search]);
 
   const handleLimitChange = (value: string) => {
     setLimit(Number(value));
@@ -111,6 +41,31 @@ const MeasurementHistoriesPage1 = () => {
       <div className="flex flex-col">
         <div className="sticky top-0 z-10 bg-[#ededf9] mb-2">
           <div className="flex flex-col w-full gap-4">
+            <div className="flex gap-4 mb-4">
+              <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+                <div className="">
+                  <p className="">Total Patient </p>
+                  <p className="font-semibold text-3xl text-blue-500">
+                    {historiesMeasurement.total_items}
+                  </p>
+                </div>
+                <Users className="w-10 h-10 text-blue-500" />
+              </div>
+              <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+                <div className="">
+                  <p className="">Total Measurement Today</p>
+                  <p className="font-semibold text-3xl text-green-500">{1}</p>
+                </div>
+                <CircleCheck className="w-10 h-10 text-green-500" />
+              </div>
+              {/* <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
+                <div className="">
+                  <p className="">Critical</p>
+                  <p className="font-semibold text-3xl text-red-500">{1}</p>
+                </div>
+                <CircleAlert className="w-10 h-10 text-red-500" />
+              </div> */}
+            </div>
             <div className="flex gap-6 w-full justify-between">
               <div className="flex items-center gap-2">
                 <p>Showing</p>
@@ -207,13 +162,11 @@ const MeasurementHistoriesPage1 = () => {
           <div className="flex flex-row gap-4">
             <div className="w-full">
               <RecentMeasurementsPatientTable
-                data={dummyRecentPatientMeasurements}
-                goToPreviousPage={() => {}}
-                goToNextPage={() => {}}
-                goToPage={() => {}}
+                data={historiesMeasurement}
+                goToPreviousPage={() => setPage((prev) => prev - 1)}
+                goToNextPage={() => setPage((prev) => prev + 1)}
+                goToPage={setPage}
                 currentPage={1}
-                totalPage={2}
-                isDetailPatient
               />
             </div>
           </div>

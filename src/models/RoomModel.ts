@@ -12,6 +12,16 @@ export type RoomsModel = {
   patients: any[];
 };
 
+export type RoomWithGateway = {
+  id: string;
+  name: string;
+  number: string;
+  type: string;
+  iot_gateway: {
+    id: string;
+  }[];
+};
+
 export type DetailRoom = {
   detail: {
     name: string;
