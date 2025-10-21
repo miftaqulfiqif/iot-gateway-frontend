@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Devices } from "@/models/DeviceModel";
 import { Patients } from "@/models/PatientModel";
-import { PersonStanding } from "lucide-react";
-import { useSocketPTBDigi } from "@/hooks/socket/devices/SocketPTBDigi";
+import { Baby, PersonStanding } from "lucide-react";
 import { SaveMeasurementPTBDigi } from "@/components/modals/save_measurement/save-measurement-ptb-digi";
+import { useSocketMTRBaby002 } from "@/hooks/socket/devices/SocketMTRBaby002";
+import { SaveMeasurementMTRBaby002 } from "@/components/modals/save_measurement/save-measurement-mtr-baby002";
 
 type Props = {
   patientSelected?: Patients;
@@ -14,7 +15,7 @@ type Props = {
   saveTrigger?: boolean;
 };
 
-export const PTBDigi = ({
+export const MTRBaby002 = ({
   patientSelected,
   deviceSelected,
   roomSelected,
@@ -56,7 +57,7 @@ export const PTBDigi = ({
   );
 
   // get real-time data from socket
-  const { data: socketData } = useSocketPTBDigi({
+  const { data: socketData } = useSocketMTRBaby002({
     gatewayId,
     macDevice,
   });
@@ -72,16 +73,16 @@ export const PTBDigi = ({
         {/* Body Height */}
         <div className="flex flex-col border-2 rounded-2xl p-4 w-full gap-2">
           <div className="flex flex-row items-center gap-3">
-            <PersonStanding className="w-8 h-8" />
-            <p className="text-base">Body Height</p>
+            <Baby className="w-8 h-8" />
+            <p className="text-base">Baby Height</p>
           </div>
           <p className="text-3xl font-bold mx-auto">
-            {data?.distance ?? "--"} <span className="text-lg"> cm</span>
+            {data?.baby_height ?? "--"} <span className="text-lg"> cm</span>
           </p>
         </div>
       </div>
       {/* Save Modal */}
-      <SaveMeasurementPTBDigi
+      <SaveMeasurementMTRBaby002
         isActive={saveModal}
         setInactive={() => setSaveModal(false)}
         patient={patientSelected}

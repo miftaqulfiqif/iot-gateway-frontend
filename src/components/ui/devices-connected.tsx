@@ -76,7 +76,7 @@ export const DevicesConnected = ({
               Disconnect
             </p>
           )}
-          {/* Button Action */}
+          {/* Button Action
           <div className="relative">
             <button
               className="flex items-center gap-1 cursor-pointer transition duration-150"
@@ -145,7 +145,7 @@ export const DevicesConnected = ({
                 </AlertDialog>
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex flex-col h-full justify-between mt-4">

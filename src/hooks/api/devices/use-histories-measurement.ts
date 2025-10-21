@@ -10,6 +10,8 @@ export const useHistoriesMeasurement = () => {
       current_page: 1,
       total_items: 0,
       total_pages: 1,
+      total_patient: 0,
+      total_today: 0,
       data: [],
     });
 
@@ -46,6 +48,8 @@ export const useHistoriesMeasurement = () => {
           current_page: response.data.current_page,
           total_items: response.data.total_items,
           total_pages: response.data.total_pages,
+          total_patient: response.data.total_patient,
+          total_today: response.data.total_today,
           data: response.data.data || [],
         });
       } catch (error) {

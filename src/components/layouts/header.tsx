@@ -36,7 +36,7 @@ export const Header = ({ className, title }: NavbarProps) => {
     setQuery,
     changeGateway,
   } = useGateway();
-  const { evetGetIpAddressIotGateway } = useSocketDeviceManagement();
+  const { eventGetIpAddressIotGateway } = useSocketDeviceManagement();
 
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState("");
@@ -92,7 +92,7 @@ export const Header = ({ className, title }: NavbarProps) => {
   }, []);
 
   const handleOpen = () => {
-    evetGetIpAddressIotGateway();
+    eventGetIpAddressIotGateway();
     setIsOpen(!isOpen);
   };
 
@@ -120,7 +120,7 @@ export const Header = ({ className, title }: NavbarProps) => {
                       {selectedGateway?.id ? selectedGateway?.id : " -- "}
                     </p>
                     <p>|</p>
-                    <p>{selectedGateway?.ip_address}</p>
+                    <p>{selectedGateway?.network}</p>
                   </div>
                 </div>
               </div>

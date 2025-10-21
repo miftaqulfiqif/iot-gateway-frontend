@@ -9,6 +9,7 @@ import { Mft01 } from "./device_model/mft-01";
 import { TensiOne } from "./device_model/tensione";
 import { PulseOximeterFox1 } from "./device_model/pulse-oximeter-fox1";
 import { PTBDigi } from "./device_model/ptb-digi";
+import { MTRBaby002 } from "./device_model/mtr-baby002";
 
 interface Props {
   patientSelected: Patients;
@@ -118,6 +119,17 @@ export const MeasurementSection: React.FC<Props> = ({
     case "height_gauge":
       return (
         <PTBDigi
+          patientSelected={patientSelected}
+          deviceSelected={deviceSelected}
+          roomSelected={roomName}
+          setDataMeasurement={setDataMeasurement}
+          clearTrigger={clearTrigger}
+          saveTrigger={saveTrigger}
+        />
+      );
+    case "mtr_baby002":
+      return (
+        <MTRBaby002
           patientSelected={patientSelected}
           deviceSelected={deviceSelected}
           roomSelected={roomName}
