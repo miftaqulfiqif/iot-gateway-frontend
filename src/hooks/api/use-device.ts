@@ -47,9 +47,7 @@ export const useDevices = () => {
         const response = await axios.get(`${apiUrl}/api/devices`, {
           withCredentials: true,
           params: {
-            gateway_id: gatewayId
-              ? gatewayId.map((g) => g.id)
-              : user?.gateway?.id,
+            gateway_id: gatewayId?.[0]?.id || user?.gateway?.id, // SEMENTARA
             params: measurementType,
             is_baby: isBaby ? "true" : "false",
           },

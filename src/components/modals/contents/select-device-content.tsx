@@ -6,7 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MeasurementParameter } from "@/constants/measurement-parameter";
 import { useDevices } from "@/hooks/api/use-device";
 
 type Props = {

@@ -24,6 +24,7 @@ import {
 function Gateways() {
   const { gateways, gatewayOnlineCount, gatewayOfflineCount, getGateways } =
     useGateway();
+
   const [addGateway, setAddGateway] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);

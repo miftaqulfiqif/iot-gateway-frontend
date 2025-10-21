@@ -46,7 +46,7 @@ const MeasurementHistoriesPage1 = () => {
                 <div className="">
                   <p className="">Total Patient </p>
                   <p className="font-semibold text-3xl text-blue-500">
-                    {historiesMeasurement.total_items}
+                    {historiesMeasurement.total_patient}
                   </p>
                 </div>
                 <Users className="w-10 h-10 text-blue-500" />
@@ -54,7 +54,9 @@ const MeasurementHistoriesPage1 = () => {
               <div className="w-full flex items-center justify-between p-6 rounded-xl bg-white border gap-2">
                 <div className="">
                   <p className="">Total Measurement Today</p>
-                  <p className="font-semibold text-3xl text-green-500">{1}</p>
+                  <p className="font-semibold text-3xl text-green-500">
+                    {historiesMeasurement.total_today}
+                  </p>
                 </div>
                 <CircleCheck className="w-10 h-10 text-green-500" />
               </div>

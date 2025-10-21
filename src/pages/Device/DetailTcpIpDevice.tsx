@@ -3,10 +3,24 @@ import { SettingTcpIpDeviceModal } from "@/components/modals/setting-tcpip-devic
 import { TableHistoryDS001 } from "@/components/tables/history-ds001";
 import { TableHistoryPM9000 } from "@/components/tables/history-pm9000";
 import { useDevices } from "@/hooks/api/use-device";
+import { useSocketDeviceManagement } from "@/hooks/socket/utils/SocketDeviceManagement";
 import { format } from "date-fns";
 import { RotateCcw, Settings, Unplug } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@radix-ui/react-alert-dialog";
+import {
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
 
 const historiesDataPM9000 = [
   {
@@ -383,6 +397,8 @@ export const DetailTcpIpDevice = () => {
   const { detailDevice, getDetailDevice } = useDevices();
   const [settingModal, setSettingModal] = useState(false);
 
+  const { eventDisconnectTcpipDevice } = useSocketDeviceManagement();
+
   useEffect(() => {
     if (device_id) {
       getDetailDevice(device_id);
@@ -543,22 +559,56 @@ export const DetailTcpIpDevice = () => {
           </div>
           <div className="bg-white w-1/3 h-full rounded-2xl border-3 border-gray-200 p-4">
             <p className="font-semibold">Control Device</p>
-            <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
-              <div className="flex items-center border border-red-500 text-red-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-red-50">
+            <div className="flex flex-col gap-4 mt-4 overflow-y-auto pr-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <div className="flex items-center border border-red-500 text-red-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-red-50">
+                    <Unplug className="w-6 h-6" />
+                    <p>Disconnect</p>
+                  </div>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="font-bold">
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will disconnect this
+                      device.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="mt-4">
+                    <AlertDialogCancel className="border border-blue-500 text-blue-500 px-2 py-1 rounded-xl">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => {
+                        eventDisconnectTcpipDevice(
+                          detailDevice?.detail?.ip_address || "",
+                          detailDevice?.detail?.device_function || ""
+                        );
+                      }}
+                      className="border border-red-500 text-red-500 px-2 py-1 rounded-xl"
+                    >
+                      Disconnect
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              {/* <div className="flex items-center border border-red-500 text-red-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-red-50">
                 <Unplug className="w-6 h-6" />
                 <p>Disconnect</p>
-              </div>
+              </div> */}
               <div className="flex items-center border border-green-500 text-green-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-green-50">
                 <RotateCcw className="w-6 h-6" />
                 <p>Reconnect</p>
               </div>
-              <div
-                className="flex items-center border border-blue-500 text-blue-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-blue-50"
-                onClick={() => setSettingModal(true)}
-              >
-                <Settings className="w-6 h-6" />
-                <p>Setting</p>
-              </div>
+              {detailDevice?.detail?.connection === "tcpip" && (
+                <div className="flex items-center border border-blue-500 text-blue-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-blue-50">
+                  <Settings className="w-6 h-6" />
+                  <p>Setting</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

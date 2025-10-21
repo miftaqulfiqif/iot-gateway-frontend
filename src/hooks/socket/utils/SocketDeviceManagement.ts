@@ -46,14 +46,27 @@ export const useSocketDeviceManagement = () => {
     handlerRef.current?.handleScan();
   };
 
-  const evetGetIpAddressIotGateway = () => {
+  const eventGetIpAddressIotGateway = () => {
     handlerRef.current?.handleGetIpAddressIotGateway();
+  };
+
+  const eventDisconnectBluetoothDevice = (
+    mac: string,
+    deviceFunction: string
+  ) => {
+    handlerRef.current?.handleDisconnectBluetooth(mac, deviceFunction);
+  };
+
+  const eventDisconnectTcpipDevice = (mac: string, deviceFunction: string) => {
+    handlerRef.current?.handleDisconnectBluetooth(mac, deviceFunction);
   };
 
   return {
     devices,
     isScanning,
     eventScanBluetoothDevice,
-    evetGetIpAddressIotGateway,
+    eventDisconnectBluetoothDevice,
+    eventDisconnectTcpipDevice,
+    eventGetIpAddressIotGateway,
   };
 };

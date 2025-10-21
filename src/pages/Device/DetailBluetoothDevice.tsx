@@ -13,6 +13,7 @@ import { useDigitProBMI } from "@/hooks/api/devices/use-digit-pro-bmi";
 import { useDigitProIDA } from "@/hooks/api/devices/use-digit-pro-ida";
 import { useDoppler } from "@/hooks/api/devices/use-doppler";
 import { useDevices } from "@/hooks/api/use-device";
+import { useSocketDeviceManagement } from "@/hooks/socket/utils/SocketDeviceManagement";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,13 +24,14 @@ import {
   AlertDialogTrigger,
 } from "@radix-ui/react-alert-dialog";
 import { format } from "date-fns";
-import { RotateCcw, Settings, Trash, Unplug } from "lucide-react";
+import { RotateCcw, Settings, Unplug } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const DetailBluetoothDevice = () => {
   const { device_id } = useParams();
   const { detailDevice, getDetailDevice } = useDevices();
+  const { eventDisconnectBluetoothDevice } = useSocketDeviceManagement();
 
   const {
     dataDigitProBMI,
@@ -278,7 +280,7 @@ export const DetailBluetoothDevice = () => {
           </div>
           <div className="bg-white w-1/3 h-full rounded-2xl border-3 border-gray-200 p-4">
             <p className="font-semibold">Control Device</p>
-            <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[270px] pr-2">
+            <div className="flex flex-col gap-4 mt-4 overflow-y-auto pr-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <div className="flex items-center border border-red-500 text-red-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-red-50">
@@ -288,29 +290,36 @@ export const DetailBluetoothDevice = () => {
                 </AlertDialogTrigger>
                 <AlertDialogContent className="bg-white">
                   <AlertDialogHeader>
-                    <AlertDialogTitle>
+                    <AlertDialogTitle className="font-bold">
                       Are you absolutely sure?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      this item.
+                      This action cannot be undone. This will disconnect this
+                      device.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="text-black border">
+                  <AlertDialogFooter className="mt-4">
+                    <AlertDialogCancel className="border border-blue-500 text-blue-500 px-2 py-1 rounded-xl">
                       Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
                       onClick={() => {
-                        alert("Disconnecting...");
+                        eventDisconnectBluetoothDevice(
+                          detailDevice?.detail?.mac_address || "",
+                          detailDevice?.detail?.device_function || ""
+                        );
                       }}
-                      className="bg-red-500 text-white"
+                      className="border border-red-500 text-red-500 px-2 py-1 rounded-xl"
                     >
-                      Delete
+                      Disconnect
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
+              {/* <div className="flex items-center border border-red-500 text-red-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-red-50">
+                <Unplug className="w-6 h-6" />
+                <p>Disconnect</p>
+              </div> */}
               <div className="flex items-center border border-green-500 text-green-500 p-4 rounded-2xl gap-2 cursor-pointer hover:bg-green-50">
                 <RotateCcw className="w-6 h-6" />
                 <p>Reconnect</p>

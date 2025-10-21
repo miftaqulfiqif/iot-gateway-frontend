@@ -8,7 +8,7 @@ import MainLayout from "@/components/layouts/main-layout";
 import { SelectRoomContent } from "@/components/modals/contents/select-room-content";
 import { SelectDeviceContent } from "@/components/modals/contents/select-device-content";
 import { useToast } from "@/context/ToastContext";
-import { MeasurementSection } from "@/components/measurement/measurment-section";
+import { MeasurementSection } from "@/components/measurement/measurement-section";
 import refreshIcon from "@/assets/icons/refresh.png";
 import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";
 import { save } from "@lucide/lab";
@@ -46,15 +46,8 @@ const MeasurementPage1 = () => {
 
   // Log step changes
   useEffect(() => {
-    if (indexStep === 0) {
-      console.log("Step 1: Select Patient");
-    } else if (indexStep === 1) {
-      console.log("Step 2: Select Room", patientSelected);
+    if (indexStep === 1) {
       getAllRooms();
-    } else if (indexStep === 2) {
-      console.log("Step 3: Select Device", roomSelected);
-    } else {
-      console.log("Measurement setup complete", deviceSelected);
     }
   }, [indexStep]);
 
@@ -112,8 +105,6 @@ const MeasurementPage1 = () => {
     setSaveTrigger(true);
     setTimeout(() => setSaveTrigger(false), 100); // reset ke false
   };
-
-  console.log("dataMeasurement", dataMeasurement);
 
   return (
     <MainLayout title="New Measurement" state="Measurement">

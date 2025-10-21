@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { PatientInfoMeasurement } from "@/components/ui/patient-info-measurement";
-import { PTBDigiModel } from "@/models/Devices/PTBDigiModel";
+import { MTRBaby002Model } from "@/models/Devices/MTRBaby002Model";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -14,10 +14,10 @@ type Props = {
   patient: any;
   device: any;
   room: String;
-  result?: PTBDigiModel;
+  result?: MTRBaby002Model;
 };
 
-export const SaveMeasurementPTBDigi = ({
+export const SaveMeasurementMTRBaby002 = ({
   isActive,
   setInactive,
   patient,
@@ -32,7 +32,7 @@ export const SaveMeasurementPTBDigi = ({
   const handleSave = async (data: any) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/measurement-histories-ptb-digi`,
+        `${apiUrl}/api/measurement-histories-mtr-baby002`,
         data,
         { withCredentials: true }
       );
@@ -54,14 +54,14 @@ export const SaveMeasurementPTBDigi = ({
       patient_id: patient?.id,
       device_mac: device?.mac_address,
       room: room,
-      distance: result?.distance ?? 0,
+      baby_height: result?.baby_height ?? 0,
       description: note,
     },
     validationSchema: yup.object().shape({
       patient_id: yup.string().required(),
       device_mac: yup.string().required(),
       room: yup.string().required(),
-      distance: yup.number().required(),
+      baby_height: yup.number().required(),
       description: yup.string().nullable(),
     }),
     onSubmit: (values) => {
@@ -99,7 +99,7 @@ export const SaveMeasurementPTBDigi = ({
             <div className="bg-gray-100 p-4 rounded-lg text-center">
               <p className="text-sm text-gray-500">Body Height</p>
               <p className="text-6xl font-bold text-blue-600">
-                {formik.values.distance ?? "--"}{" "}
+                {formik.values.baby_height ?? "--"}{" "}
                 <span className="text-xl font-normal">cm</span>
               </p>
             </div>

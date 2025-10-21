@@ -8,7 +8,6 @@ import { useCallback, useState } from "react";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useGateway = () => {
-  const { showToast } = useToast();
   const { user } = useAuth();
   const currentGateway = JSON.parse(
     localStorage.getItem("current_gateway") || "null"
@@ -89,19 +88,6 @@ export const useGateway = () => {
     }
   };
 
-  const createGateway = async (data: any) => {
-    try {
-      const response = await axios.post(`${apiUrl}/api/iot-gateways`, data, {
-        withCredentials: true,
-      });
-      if (response.status !== 201) {
-        showToast("Error", response.data.errors, "error");
-      }
-    } catch (error) {
-      console.error("Error creating gateway:", error);
-    }
-  };
-
   return {
     selectedGateway,
     setSelectedGateway,
@@ -112,6 +98,5 @@ export const useGateway = () => {
     query,
     setQuery,
     changeGateway,
-    createGateway,
   };
 };

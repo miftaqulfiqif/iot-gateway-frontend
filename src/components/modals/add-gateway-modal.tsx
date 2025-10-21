@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { InputText } from "../ui/input-text";
 import { useFormik } from "formik";
+import axios from "axios";
 import { InputLongtext } from "../ui/input-longtext";
 import * as yup from "yup";
-import { useToast } from "@/context/ToastContext";
 import RoomSelect, { RoomOption } from "../forms/input/room-select";
+import { useToast } from "@/context/ToastContext";
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 type Props = {
   isActive: boolean;
@@ -28,26 +31,43 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
     };
   }, []);
 
+  const handleSave = async (data: any) => {
+    try {
+      const response = await axios.post(`${apiUrl}/api/iot-gateways`, data, {
+        withCredentials: true,
+      });
+
+      if (response.status === 201) {
+        showToast("Success", "Gateway created successfully", "success");
+        setInactive();
+      }
+      if (response.status === 401) {
+        showToast("Error", "Failed to create gateway", "error");
+      }
+    } catch (error) {
+      console.error("Error creating gateway:", error);
+      showToast("Error", "Something went wrong", "error");
+    }
+  };
+
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues: {
-      gateway_sn: "",
+      id: "",
       ip_address: "",
-      gateway_name: "",
-      location: selectedRoom?.value || "",
+      name: "",
+      room_id: selectedRoom?.value || "",
       description: "",
     },
     validationSchema: yup.object().shape({
-      gateway_sn: yup.string().required("Gateway serial number is required"),
+      id: yup.string().required("Gateway serial number is required"),
       ip_address: yup.string().required("IP address is required"),
-      gateway_name: yup.string().required("Gateway name is required"),
-      location: yup.string().nullable(),
+      name: yup.string().required("Gateway name is required"),
+      room_id: yup.string().nullable(),
       description: yup.string().nullable(),
     }),
     onSubmit: (values) => {
       console.log(values);
-      showToast("Add Gateway", "Gateway added successfully", "success");
-      setInactive();
+      handleSave(values);
     },
   });
 
@@ -74,22 +94,22 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
           <div className="flex gap-4">
             <InputText
               label="Gateway ID / Serial Number"
-              name="gateway_sn"
+              name="id"
               placeholder="Input Gateway Serial Number"
               onChange={formik.handleChange}
-              value={formik.values.gateway_sn}
-              onTouch={formik.touched.gateway_sn}
-              onError={formik.errors.gateway_sn}
+              value={formik.values.id}
+              onTouch={formik.touched.id}
+              onError={formik.errors.id}
               isRequired
             />
             <InputText
-              name="gateway_name"
+              name="name"
               label="Gateway Name"
               placeholder="Input Gateway Name"
               onChange={formik.handleChange}
-              value={formik.values.gateway_name}
-              onTouch={formik.touched.gateway_name}
-              onError={formik.errors.gateway_name}
+              value={formik.values.name}
+              onTouch={formik.touched.name}
+              onError={formik.errors.name}
               isRequired
             />
           </div>
@@ -109,13 +129,13 @@ export const AddGatewayModal = ({ isActive, setInactive }: Props) => {
             <div className="w-1/2">
               <p className="mb-2">Location</p>
               <RoomSelect
-                name="location"
+                name="room_id`"
                 value={selectedRoom}
                 onChange={(option) => {
                   setSelectedRoom(option);
-                  formik.setFieldValue("location", option?.value || "");
+                  formik.setFieldValue("room_id", option?.value || "");
                 }}
-                onBlur={() => formik.setFieldTouched("location", true)}
+                onBlur={() => formik.setFieldTouched("room_id", true)}
               />
             </div>
           </div>
