@@ -1,14 +1,11 @@
-import { ArrowLeft, BedSingle, EllipsisVertical, User, X } from "lucide-react";
+import { ArrowLeft, BedSingle, User, X } from "lucide-react";
 import Sidebar from "../layouts/sidebar";
 
 import barcodeImg from "@/assets/gif/scan-barcode.gif";
 import { SelectPatientContent } from "./contents/select-patient-content";
-import { CreatePatientContent } from "./contents/create-patient-content";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRooms } from "@/hooks/api/use-room";
 import { BedsModel, RoomsModel } from "@/models/RoomModel";
-import { RoomItems } from "../sections/rooms-page/room-item";
-import { be } from "date-fns/locale";
 import { InputSelect } from "../ui/input-select";
 import { useDevices } from "@/hooks/api/use-device";
 import { useCentralMonitor } from "@/hooks/api/use-central-monitor";
@@ -68,9 +65,7 @@ export const AddDevicePatientMonitorModal = ({
   const openSelectPatientContent = () => {
     setState("select");
   };
-  const openCreatePatientContent = () => {
-    setState("create");
-  };
+
   const handleSelectPatient = (patient: any) => {
     setPatientSelected(patient);
     if (patient.patient_room) {
@@ -162,7 +157,6 @@ export const AddDevicePatientMonitorModal = ({
                   state,
                   openBarcodeContent,
                   openSelectPatientContent,
-                  openCreatePatientContent,
                   handleSelectPatient
                 )}
               </>
@@ -253,7 +247,6 @@ const selectPatient = (
   state: string,
   openBarcodeContent: () => void,
   openSelectPatientContent: () => void,
-  openCreatePatientContent: () => void,
   patientSelected: React.Dispatch<React.SetStateAction<any>>
 ) => {
   return (
@@ -286,18 +279,6 @@ const selectPatient = (
             >
               <p className="text-blue-700 font-semibold">Select Patient</p>
             </div>
-
-            {/* Create Patient */}
-            <div
-              className={
-                state === "create"
-                  ? `bg-white items-center px-4 py-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.2)]`
-                  : ` items-center px-4 py-2 rounded-xl cursor-pointer `
-              }
-              onClick={openCreatePatientContent}
-            >
-              <p className="text-blue-700 font-semibold">Create Patient</p>
-            </div>
           </div>
         </div>
       </div>
@@ -314,14 +295,10 @@ const selectPatient = (
         {/* Select Patient Content */}
         {state === "select" && (
           <div className="h-full">
-            <SelectPatientContent patientSelected={patientSelected} />
-          </div>
-        )}
-
-        {/* Create new patient content */}
-        {state === "create" && (
-          <div className="h-full">
-            <CreatePatientContent patientSelected={patientSelected} />
+            <SelectPatientContent
+              patientSelected={patientSelected}
+              setPatientSelected={patientSelected}
+            />
           </div>
         )}
       </div>

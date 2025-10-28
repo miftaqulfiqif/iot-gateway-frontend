@@ -5,6 +5,8 @@ export class MqttManager {
 
   constructor(private url: string) {
     this.client = mqtt.connect(this.url, {
+      username: import.meta.env.VITE_MQTT_USERNAME,
+      password: import.meta.env.VITE_MQTT_PASSWORD,
       clientId: "mqtt-client-" + Math.random().toString(16).slice(2),
     });
 
