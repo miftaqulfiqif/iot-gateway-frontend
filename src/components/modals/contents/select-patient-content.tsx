@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   patientSelected: any;
-  setPatientSelected: (patient: any) => void;
+  setPatientSelected?: (patient: any) => void;
 };
 
 const calculateAge = (dateString: string) => {
@@ -97,7 +97,9 @@ export const SelectPatientContent = ({
                       ? "bg-blue-100"
                       : "hover:bg-gray-100 "
                   }`}
-                  onClick={() => setPatientSelected(patient)}
+                  onClick={() =>
+                    setPatientSelected && setPatientSelected(patient)
+                  }
                 >
                   <td className="p-2 text-center">{patient.id}</td>
                   <td className="p-2 text-center hidden md:table-cell lg:table-cell">

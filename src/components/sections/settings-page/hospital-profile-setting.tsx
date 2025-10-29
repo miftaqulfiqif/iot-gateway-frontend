@@ -22,9 +22,6 @@ export const HospitalProfileSetting = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [longitude, setLongitude] = useState(0);
-  const [latitude, setLatitude] = useState(0);
-
   const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {

@@ -234,7 +234,6 @@ const Patients = () => {
         form={form}
         closeModal={closeForm}
         setPatient={setPatients}
-        fetchPatients={fetchPatients}
         patient={patientEdit}
         showToast={showToast}
       />

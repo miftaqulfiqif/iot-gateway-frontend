@@ -17,16 +17,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
-
-const formatDate = (dateStr: string, showTime = true) => {
-  if (showTime) {
-    return format(new Date(dateStr), "d MMMM yyyy, HH:mm", { locale: id });
-  }
-
-  return format(new Date(dateStr), "d MMMM yyyy", { locale: id });
-};
 
 type Props = {
   data: any[];

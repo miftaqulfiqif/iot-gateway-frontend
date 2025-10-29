@@ -162,10 +162,10 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
         </div>
 
         {/* Administration */}
-        <div className="flex flex-col gap-1">
-          {!isHide && <p className="text-gray-500 text-sm">Administration</p>}
-          <div className="flex flex-col gap-1 w-full">
-            {user?.role === "admin" && (
+        {user?.role === "admin" && (
+          <div className="flex flex-col gap-1">
+            {!isHide && <p className="text-gray-500 text-sm">Administration</p>}
+            <div className="flex flex-col gap-1 w-full">
               <AppSidebar
                 icon={<UsersRound />}
                 title={!isHide ? "Users management" : ""}
@@ -173,9 +173,9 @@ const Sidebar = ({ state, cannotHide }: SidebarProps) => {
                 url="/users"
                 isHide={isHide}
               />
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Tools */}
         <div className="flex flex-col gap-1 mt-4">

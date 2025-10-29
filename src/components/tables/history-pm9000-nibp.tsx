@@ -28,8 +28,6 @@ export function HistoryPM9000Nibp({ historiesData }: Props) {
     });
   };
 
-  const formatNumber = (value: number) => value.toFixed(1);
-
   return (
     <div className="h-full flex flex-col bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
       <div className="overflow-x-auto rounded-2xl h-full">

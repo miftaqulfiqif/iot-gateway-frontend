@@ -34,13 +34,13 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
   //Digit Pro IDA
   const [weightDigitProIDA, setWeightDigitProIDA] = useState<DigitProIDAModel>({
     weight_mother: 0,
-    weight_child: 0,
+    weight_baby: 0,
   });
   const [weightDigitProIDARealtime, setWeightDigitProIDARealtime] = useState<
     {
       index: number;
       weight_mother: number;
-      weight_child: number;
+      weight_baby: number;
     }[]
   >([]);
 
@@ -56,8 +56,9 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
   //BMI
   const [weightBMI, setWeightBMI] = useState<BMIModel>({
     weight: 0,
+    height: 0,
     age: 0,
-    impedence: 0,
+    impedance: 0,
     bmi: 0,
     bodyFat: 0,
     muscleMass: 0,
@@ -169,7 +170,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
               console.log("DigitProIDA(s) received:", payload.data_digitproida);
               setWeightDigitProIDA({
                 weight_mother: payload.data_digitproida[0].weight_mother,
-                weight_child: payload.data_digitproida[0].weight_child,
+                weight_baby: payload.data_digitproida[0].weight_baby,
               });
             }
           }
@@ -192,7 +193,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
                   {
                     index: prev.length,
                     weight_mother: latest.weight_mother,
-                    weight_child: latest.weight_child,
+                    weight_baby: latest.weight_baby,
                   },
                 ];
                 return next.slice(-100);
@@ -251,7 +252,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
             const height = patient.height || 0;
             const age = patient.age || 0;
             const gender = patient.gender || "";
-            const impedence = payload.data_bmi[0].impedence;
+            const impedence = payload.data_bmi[0].impedance;
             const bmiWeight = payload.data_bmi[0].weight;
 
             const bmiData = calculateHealthMetrics({
@@ -284,7 +285,7 @@ export const useSocketHandler = ({ macDevice, ipDevice }: Props = {}) => {
                 lbm: bmiData.lbm,
               };
 
-              setWeightBMI((prev) => {
+              setWeightBMI((prev: any) => {
                 const isEqual = JSON.stringify(prev) === JSON.stringify(newBMI);
                 return isEqual ? prev : newBMI;
               });
