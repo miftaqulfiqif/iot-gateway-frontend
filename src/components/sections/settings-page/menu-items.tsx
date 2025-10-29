@@ -1,94 +1,15 @@
-import { useEffect, useState } from "react";
-import { SettingGateway } from "./gateway-setting";
 import { PasswordSetting } from "./password-setting";
 import { UserProfileSetting } from "./user-profile-setting";
 import { HospitalProfileSetting } from "./hospital-profile-setting";
 import { LanguageSetting } from "./language-setting";
 import { SatusehatSetting } from "./satusehat-setting";
-import { useGateway } from "@/hooks/api/use-gateway";
-
-const dummyCurrentGateway = {
-  id: "GW001",
-  name: "Gateway 1",
-  description: "Gateway utama ruang IGD",
-  status: "active",
-};
-
-const dummyGateways = [
-  {
-    id: "GW001",
-    name: "Gateway 1",
-    description: "Gateway utama ruang IGD",
-    status: "active",
-  },
-  {
-    id: "GW002",
-    name: "Gateway 2",
-    description: "Backup gateway ruang ICU",
-    status: "inactive",
-  },
-  {
-    id: "GW003",
-    name: "Gateway 3",
-    description: "Gateway rawat inap lantai 3",
-    status: "active",
-  },
-  {
-    id: "GW004",
-    name: "Gateway 4",
-    description: "Gateway untuk keperluan lab & diagnostik",
-    status: "maintenance",
-  },
-  {
-    id: "GW005",
-    name: "Gateway 4",
-    description: "Gateway untuk keperluan lab & diagnostik",
-    status: "maintenance",
-  },
-  {
-    id: "GW006",
-    name: "Gateway 4",
-    description: "Gateway untuk keperluan lab & diagnostik",
-    status: "maintenance",
-  },
-  {
-    id: "GW007",
-    name: "Gateway 4",
-    description: "Gateway untuk keperluan lab & diagnostik",
-    status: "maintenance",
-  },
-  {
-    id: "GW008",
-    name: "Gateway 4",
-    description: "Gateway untuk keperluan lab & diagnostik",
-    status: "maintenance",
-  },
-];
 
 type MenuItemsProps = {
   state: string;
   animationKey: number;
-  setAddGatewayModal: React.Dispatch<React.SetStateAction<boolean>>;
   setConfirmModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export const MenuItems = ({
-  state,
-  animationKey,
-  setAddGatewayModal,
-}: MenuItemsProps) => {
-  // Gateways
-  const {
-    gateways,
-    getGateways,
-    selectedGateway,
-    setSelectedGateway,
-    changeGateway,
-  } = useGateway();
-
-  useEffect(() => {
-    getGateways();
-  }, []);
-
+export const MenuItems = ({ state, animationKey }: MenuItemsProps) => {
   return (
     <div
       key={animationKey}
@@ -103,14 +24,6 @@ export const MenuItems = ({
       {/* Language */}
       {state === "Language" && <LanguageSetting />}
       {/* Gateways */}
-      {state === "Gateways" && (
-        <SettingGateway
-          setAddGatewayModal={setAddGatewayModal}
-          setCurrentGateway={changeGateway}
-          currentGateway={selectedGateway}
-          gateways={gateways}
-        />
-      )}
       {state === "SATUSEHAT" && <SatusehatSetting />}
     </div>
   );

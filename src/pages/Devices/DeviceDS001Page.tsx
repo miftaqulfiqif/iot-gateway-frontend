@@ -337,34 +337,12 @@ const dummyPlethData = [
 
 const SAMPLE_INTERVAL = 10; // ms, sama kayak di handler kamu
 
-const dummyPleth: { time: number; value: number } = dummyPlethData.map(
-  (v, i) => ({
-    time: i * SAMPLE_INTERVAL,
-    value: v,
-  })
-);
-
 const DeviceDS001Page = () => {
   const { ip } = useParams();
   // const { dataDS001 } = useSocketHandler({ ipDevice: ip });
   const { data, dataPleth, dataNibp } = useSocketDS001(ip!);
 
-  const [patient, setPatient] = useState<Patients>({
-    id: "",
-    nik: "",
-    barcode_image: "",
-    name: "",
-    gender: "",
-    address: "",
-    phone: "",
-    work: "",
-    last_education: "",
-    place_of_birth: "",
-    date_of_birth: "",
-    religion: "",
-    height: 0,
-    age: 0,
-  });
+  const [patient, setPatient] = useState<Patients>();
 
   // Get patient from local storage
   useEffect(() => {

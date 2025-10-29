@@ -39,8 +39,6 @@ export const TableHistoryDigitProBaby = ({
   goToPage,
   currentPage,
   totalPage,
-  limit,
-  search,
   isDetailPatient,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);

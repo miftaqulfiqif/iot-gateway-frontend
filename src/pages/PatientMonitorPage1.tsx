@@ -11,7 +11,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import MainLayout from "../components/layouts/main-layout";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowDownUp,
@@ -222,9 +222,18 @@ const checkDs001Crysis = (item: any) => {
   );
 };
 
+type FilterPopoverProps = {
+  deviceType: string;
+  sortBy: string;
+  sortOrder: string;
+  setDeviceType: (v: string) => void;
+  setSortBy: (v: string) => void;
+  setSortOrder: (v: string) => void;
+  handleSubmit: (deviceType: string, sortBy: string, sortOrder: string) => void;
+};
+
 const PatientMonitorPage1 = () => {
   const [search, setSearch] = useState("");
-  const [showFilter, setShowFilter] = useState(false);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [limit, setLimit] = useState(10);
   const [mobile, setMobile] = useState(false);
@@ -247,10 +256,7 @@ const PatientMonitorPage1 = () => {
     sortBy: string,
     sortOrder: string
   ) => {
-    alert(
-      `Filter applied with deviceType: ${deviceType}, sortBy: ${sortBy}, sortOrder: ${sortOrder}`
-    );
-    setShowFilter(false);
+    console.log("Filter submitted:", deviceType, sortBy, sortOrder);
   };
 
   useEffect(() => {
@@ -375,15 +381,15 @@ const PatientMonitorPage1 = () => {
                 {/* Actions */}
                 <div className="flex flex-wrap gap-3 items-center">
                   {/* Filter */}
-                  {showFilterModal(
-                    deviceType,
-                    sortBy,
-                    sortOrder,
-                    setDeviceType,
-                    setSortBy,
-                    setSortOrder,
-                    handleFilterSubmit
-                  )}
+                  <FilterPopover
+                    deviceType={deviceType}
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                    setDeviceType={setDeviceType}
+                    setSortBy={setSortBy}
+                    setSortOrder={setSortOrder}
+                    handleSubmit={handleFilterSubmit}
+                  />
 
                   {/* Add Patient */}
                   <button
@@ -491,26 +497,29 @@ const PatientMonitorPage1 = () => {
   );
 };
 
-const showFilterModal = (
-  deviceType: string,
-  sortBy: string,
-  sortOrder: string,
-  setDeviceType: (value: string) => void,
-  setSortBy: (value: string) => void,
-  setSortOrder: (value: string) => void,
-  handleSubmit: (deviceType: string, sortBy: string, sortOrder: string) => void
-) => {
+export const FilterPopover = ({
+  deviceType,
+  sortBy,
+  sortOrder,
+  setDeviceType,
+  setSortBy,
+  setSortOrder,
+  handleSubmit,
+}: FilterPopoverProps) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
-      {/* Trigger */}
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="flex cursor-pointer bg-white items-center gap-2 px-4 py-2 rounded-lg shadow">
+        <div
+          className="flex cursor-pointer bg-white items-center gap-2 px-4 py-2 rounded-lg shadow"
+          onClick={() => setOpen(true)}
+        >
           <Funnel className="w-5 h-5" />
           <p className="text-sm">Filter</p>
         </div>
       </PopoverTrigger>
 
-      {/* Content */}
       <PopoverContent className="w-[300px] lg:w-[400px] p-4 rounded-xl shadow">
         <div className="flex flex-col gap-3 w-full">
           {/* Header + Sort */}
@@ -576,6 +585,7 @@ const showFilterModal = (
           <button
             className="text-white bg-[#0D00FF] px-4 py-1.5 rounded-lg"
             onClick={() => {
+              setOpen(false); // ✅ tutup popover setelah apply
               handleSubmit(deviceType, sortBy, sortOrder);
             }}
           >

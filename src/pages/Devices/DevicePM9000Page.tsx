@@ -317,22 +317,7 @@ const DevicePM9000Page = () => {
   // const { dataPM9000, dataPM9000Nibp } = useSocketHandler({ ipDevice: ip });
   const { data, dataNibp } = useSocketPM9000(ip!);
 
-  const [patient, setPatient] = useState<Patients>({
-    id: "",
-    nik: "",
-    barcode_image: "",
-    name: "",
-    gender: "",
-    address: "",
-    phone: "",
-    work: "",
-    last_education: "",
-    place_of_birth: "",
-    date_of_birth: "",
-    religion: "",
-    height: 0,
-    age: 0,
-  });
+  const [patient, setPatient] = useState<Patients>();
 
   // Get patient from local storage
   useEffect(() => {

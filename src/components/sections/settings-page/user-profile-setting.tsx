@@ -1,5 +1,3 @@
-import avatarIcon from "@/assets/icons/avatar.png";
-import person from "@/assets/icons/profile-icon.png";
 import { InputText } from "@/components/ui/input-text";
 import { useAuth } from "@/context/AuthContext";
 import { useModal } from "@/context/ConifmModalContext";
@@ -22,8 +20,6 @@ export const UserProfileSetting = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const [ihsNumber, setIhsNumber] = useState("");
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

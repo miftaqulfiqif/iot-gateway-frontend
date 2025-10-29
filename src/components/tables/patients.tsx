@@ -34,7 +34,6 @@ type Props = {
 const conditionClass = {
   critical: "text-red-900 bg-red-200 font-bold",
   stable: "text-greny-900 bg-green-200 font-bold",
-  "under observation": "text-yellow-900 bg-yellow-200 font-bold",
   recovered: "text-green-900 bg-green-200 font-bold",
 };
 
@@ -42,7 +41,6 @@ export const TablePatients = ({
   patients,
   animateRows,
   buttonAction,
-  setPatientSelected,
   goToPreviousPage,
   goToNextPage,
   goToPage,
@@ -60,7 +58,7 @@ export const TablePatients = ({
             <TableHead className="text-center font-bold">Age</TableHead>
             <TableHead className="text-center font-bold">Gender</TableHead>
             <TableHead className="text-center font-bold">Room</TableHead>
-            <TableHead className="text-center font-bold">Condition</TableHead>
+            {/* <TableHead className="text-center font-bold">Condition</TableHead> */}
             <TableHead className="text-center font-bold">
               Admission Date
             </TableHead>
@@ -72,7 +70,7 @@ export const TablePatients = ({
         </TableHeader>
         <TableBody>
           {patients && patients.length > 0 ? (
-            patients.map((item, index) => (
+            patients.map((item: any, index: number) => (
               <TableRow
                 key={item.id}
                 onClick={() => {
@@ -95,7 +93,7 @@ export const TablePatients = ({
                     ? `${item?.patient_room?.room?.name} - ${item?.patient_room?.room?.number} - ${item?.patient_room?.room?.type}`
                     : "-"}
                 </TableCell>
-                <TableCell className="text-center">
+                {/* <TableCell className="text-center">
                   <p
                     className={`text-center rounded-full py-1 ${
                       conditionClass[item.condition] || "-"
@@ -103,7 +101,7 @@ export const TablePatients = ({
                   >
                     {item.condition ?? "-"}
                   </p>
-                </TableCell>
+                </TableCell> */}
                 <TableCell className="text-center">
                   {format(item.created_at, "yyyy-MM-dd")}
                 </TableCell>

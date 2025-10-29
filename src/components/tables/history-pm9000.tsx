@@ -17,7 +17,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -40,7 +39,6 @@ export const TableHistoryPM9000 = ({
   currentPage,
   totalPage,
   limit,
-  search,
   isDetailPatient,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);

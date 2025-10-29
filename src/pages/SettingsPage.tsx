@@ -6,12 +6,10 @@ import { MenuSettings } from "@/components/ui/settings-page/menu-setting";
 import profileIcon from "@/assets/icons/profile-icon.png";
 import hospitalIcon from "@/assets/icons/hospital-icon.png";
 import passwordIcon from "@/assets/icons/password-icon.png";
-import gatewayIcon from "@/assets/icons/gateway-icon.png";
 import languageIcon from "@/assets/icons/language.png";
 import satuSehatLogo from "@/assets/imgs/logo-satusehat.png";
 import { MenuItems } from "@/components/sections/settings-page/menu-items";
 import { ConfirmChangeSettingModal } from "@/components/modals/confirm-change-setting-modal";
-import { AddGatewayModal } from "@/components/modals/add-gateway-modal";
 
 const SettingsPage = () => {
   const { user } = useAuth();
@@ -20,7 +18,6 @@ const SettingsPage = () => {
     user?.role === "admin" ? "Edit Hospital Profile" : "Edit Profile"
   );
 
-  const [addGatewayModal, setAddGatewayModal] = useState(false);
   const [confifmModal, setConfirmModal] = useState(false);
 
   const [animationKey, setAnimationKey] = useState(0);
@@ -75,12 +72,6 @@ const SettingsPage = () => {
                     isActive={state === "Language"}
                     onClick={() => handleMenuChange("Language")}
                   />
-                  <MenuSettings
-                    title="Gateways"
-                    icon={gatewayIcon}
-                    isActive={state === "Gateways"}
-                    onClick={() => handleMenuChange("Gateways")}
-                  />
                 </div>
               </div>
               <div className="">
@@ -99,16 +90,11 @@ const SettingsPage = () => {
               <MenuItems
                 state={state}
                 animationKey={animationKey}
-                setAddGatewayModal={setAddGatewayModal}
                 setConfirmModal={setConfirmModal}
               />
             </div>
           </div>
         </div>
-        <AddGatewayModal
-          isActive={addGatewayModal}
-          setInactive={() => setAddGatewayModal(false)}
-        />
         <ConfirmChangeSettingModal
           isActive={confifmModal}
           setInactive={() => setConfirmModal(false)}

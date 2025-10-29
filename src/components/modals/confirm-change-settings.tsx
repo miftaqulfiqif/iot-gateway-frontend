@@ -39,9 +39,9 @@ export const ConfirmChangeSettingModal = ({
         password: values.password,
       };
       if (state === "Edit Profile") {
-        user && changeProfil(user.id, dataUpdate);
+        // user && changeProfil(user.id, dataUpdate);
       } else if (state === "Edit Hospital Profile") {
-        user && changeHospitalProfil(user.id, dataUpdate);
+        // user && changeHospitalProfil(user.id, dataUpdate);
       }
     },
   });

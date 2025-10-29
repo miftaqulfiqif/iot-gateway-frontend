@@ -61,8 +61,6 @@ export const TableAdminUsers = ({
   goToPage,
   currentPage,
   totalPage,
-  limit,
-  search,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
   const navigate = useNavigate();
@@ -123,7 +121,9 @@ export const TableAdminUsers = ({
                     {item.phone || "-"}
                   </TableCell>
                   <TableCell className="text-center">{item.username}</TableCell>
-                  <TableCell className="text-center">{item.role.name}</TableCell>
+                  <TableCell className="text-center">
+                    {item.role.name}
+                  </TableCell>
 
                   <TableCell className="text-center">
                     {formatDate(item.created_at)}

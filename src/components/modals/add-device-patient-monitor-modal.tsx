@@ -71,9 +71,6 @@ export const AddDevicePatientMonitorModal = ({
     if (patient.patient_room) {
       setRoomSelected(patient.patient_room.room);
       setBedSelected(patient.patient_room.bed);
-      setIndexStep(2);
-    } else {
-      setIndexStep(1);
     }
   };
 
@@ -157,7 +154,8 @@ export const AddDevicePatientMonitorModal = ({
                   state,
                   openBarcodeContent,
                   openSelectPatientContent,
-                  handleSelectPatient
+                  patientSelected,
+                  setPatientSelected
                 )}
               </>
             )}
@@ -247,7 +245,8 @@ const selectPatient = (
   state: string,
   openBarcodeContent: () => void,
   openSelectPatientContent: () => void,
-  patientSelected: React.Dispatch<React.SetStateAction<any>>
+  patientSelected: any,
+  setPatientSelected: React.Dispatch<React.SetStateAction<any>>
 ) => {
   return (
     <div className="flex flex-col gap-4 h-[600px]">
@@ -297,7 +296,7 @@ const selectPatient = (
           <div className="h-full">
             <SelectPatientContent
               patientSelected={patientSelected}
-              setPatientSelected={patientSelected}
+              setPatientSelected={setPatientSelected}
             />
           </div>
         )}

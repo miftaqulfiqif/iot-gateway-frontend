@@ -29,15 +29,6 @@ type Props = {
 };
 
 export function HistoryBMI({ historiesData }: Props) {
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
-
   const formatNumber = (value: number) => value.toFixed(1);
 
   return (

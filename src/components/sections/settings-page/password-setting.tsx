@@ -19,6 +19,7 @@ export const PasswordSetting = () => {
     }),
     onSubmit: (values) => {
       alert("Password changed successfully!");
+      console.log(values);
     },
   });
 

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AlertCircle, Trash2, Wifi, WifiOff } from "lucide-react";
+import { Trash2, Wifi, WifiOff } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -28,20 +28,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IotGatewayModel } from "@/models/GatewayModel";
-
-// Utility function to format date
-const formatDate = (dateStr: string, showTime = true) => {
-  if (showTime) {
-    return format(new Date(dateStr), "d MMMM yyyy, HH:mm", { locale: id });
-  }
-
-  return format(new Date(dateStr), "d MMMM yyyy", { locale: id });
-};
 
 type Props = {
   data: IotGatewayModel;
@@ -61,7 +50,6 @@ export const TableGateways = ({
   totalPage,
 }: Props) => {
   const [animateRows, setAnimateRows] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setAnimateRows(false);
