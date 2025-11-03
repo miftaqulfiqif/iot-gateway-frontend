@@ -237,6 +237,7 @@ const MeasurementPage1 = () => {
                         deviceSelected={deviceSelected}
                         setDeviceSelected={handleSelectDevice}
                         isBaby={!patientSelected.nik}
+                        isMeasurement
                       />
                     </div>
                   </div>
@@ -324,6 +325,7 @@ const MeasurementPage1 = () => {
               />
             </div>
           )}
+
           {/* Navigation Buttons */}
           {indexStep >= 3 ? (
             <div className="flex justify-between items-center">

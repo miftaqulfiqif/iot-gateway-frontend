@@ -15,6 +15,7 @@ type Props = {
   deviceSelected: any;
   setDeviceSelected: (device: any) => void;
   isBaby?: boolean;
+  isMeasurement?: boolean;
 };
 
 export const SelectDeviceContent = ({
@@ -22,10 +23,12 @@ export const SelectDeviceContent = ({
   deviceSelected,
   setDeviceSelected,
   isBaby,
+  isMeasurement,
 }: Props) => {
   const {
     devices,
     deviceMeasurementParameter,
+    deviceMonitoringParameter,
     getAllDevices,
     getDeviceMeasurementParameters,
   } = useDevices();
@@ -41,8 +44,10 @@ export const SelectDeviceContent = ({
 
   // create device types options from deviceMeasurementParameter
   const deviceTypes = [
-    { value: "all", label: "All" },
-    ...Object.keys(deviceMeasurementParameter)
+    // { value: "all", label: "All" },
+    ...Object.keys(
+      isMeasurement ? deviceMeasurementParameter : deviceMonitoringParameter
+    )
       .sort((a, b) => a.localeCompare(b))
       .map((key) => ({
         value: key,
@@ -66,7 +71,7 @@ export const SelectDeviceContent = ({
     <div className="flex flex-col h-full">
       {/* Select Measurement Type */}
       <p className="font-bold mb-2 pl-1 text-sm md:text-lg lg:text-lg">
-        Select Measurement Type
+        {isMeasurement ? "Select measurement type" : "Select device"}
       </p>
       <div className="flex justify-between items-center">
         <Select

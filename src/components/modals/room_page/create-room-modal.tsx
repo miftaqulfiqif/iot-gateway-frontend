@@ -1,8 +1,13 @@
 import { InputSelect } from "@/components/ui/input-select";
 import { InputText } from "@/components/ui/input-text";
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
+
+const step = [
+  { id: 1, title: "Input Room" },
+  { id: 2, title: "Input Bed" },
+];
 
 interface CreateRoomModalProps {
   isOpen: boolean;
@@ -68,7 +73,7 @@ export default function CreateRoomModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-2xl h-fit transition-all duration-300 ease-in-out
+        className={`fixed top-1/2 left-1/2 transform bg-white rounded-xl p-8 z-50 w-5xl h-fit transition-all duration-300 ease-in-out
         ${
           isOpen
             ? "opacity-100 scale-100 translate-x-[-50%] translate-y-[-50%]"
@@ -79,47 +84,51 @@ export default function CreateRoomModal({
         <h2 className="text-xl font-bold mb-4">Create Room</h2>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div className="flex w-full gap-3">
-            <InputText
-              label="Room Name"
-              name="name"
-              placeholder="Room Name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              onTouch={formik.touched.name}
-              onError={formik.errors.name}
-              isRequired
-            />
             <div className="w-1/2">
               <InputText
-                label="Room Number"
-                name="number"
-                placeholder="Room Number"
-                value={formik.values.number}
+                label="Room Name"
+                name="name"
+                placeholder="Room Name"
+                value={formik.values.name}
                 onChange={formik.handleChange}
-                onTouch={formik.touched.number}
-                onError={formik.errors.number}
+                onTouch={formik.touched.name}
+                onError={formik.errors.name}
                 isRequired
               />
             </div>
-            <div className="w-1/4">
-              <InputSelect
-                name="type"
-                label="Room Type"
-                placeholder="Room Type"
-                option={[
-                  { value: "ICU", label: "ICU" },
-                  { value: "PICU", label: "PICU" },
-                  { value: "NICU", label: "NICU" },
-                  { value: "ICCU", label: "ICCU" },
-                  { value: "HCU", label: "HCU" },
-                  { value: "Recovery Room", label: "Recovery Room" },
-                ]}
-                onChange={(value) => formik.setFieldValue("type", value)}
-                value={formik.values.type}
-                onTouch={formik.touched.type}
-                onError={formik.errors.type}
-                isRequired
-              />
+            <div className="flex w-1/2 gap-2">
+              <div className="flex w-1/2">
+                <InputText
+                  label="Room Number"
+                  name="number"
+                  placeholder="Room Number"
+                  value={formik.values.number}
+                  onChange={formik.handleChange}
+                  onTouch={formik.touched.number}
+                  onError={formik.errors.number}
+                  isRequired
+                />
+              </div>
+              <div className="w-1/2">
+                <InputSelect
+                  name="type"
+                  label="Room Type"
+                  placeholder="Room Type"
+                  option={[
+                    { value: "ICU", label: "ICU" },
+                    { value: "PICU", label: "PICU" },
+                    { value: "NICU", label: "NICU" },
+                    { value: "ICCU", label: "ICCU" },
+                    { value: "HCU", label: "HCU" },
+                    { value: "Recovery Room", label: "Recovery Room" },
+                  ]}
+                  onChange={(value) => formik.setFieldValue("type", value)}
+                  value={formik.values.type}
+                  onTouch={formik.touched.type}
+                  onError={formik.errors.type}
+                  isRequired
+                />
+              </div>
             </div>
           </div>
 
@@ -147,7 +156,7 @@ export default function CreateRoomModal({
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
-              Save
+              Next
             </button>
           </div>
         </form>

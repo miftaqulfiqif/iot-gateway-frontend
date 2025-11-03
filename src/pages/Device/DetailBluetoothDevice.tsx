@@ -305,6 +305,7 @@ export const DetailBluetoothDevice = () => {
                     <AlertDialogAction
                       onClick={() => {
                         eventDisconnectBluetoothDevice(
+                          detailDevice?.detail?.gateway_id || "",
                           detailDevice?.detail?.mac_address || "",
                           detailDevice?.detail?.device_function || ""
                         );

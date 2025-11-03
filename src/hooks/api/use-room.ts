@@ -111,6 +111,32 @@ export const useRooms = () => {
     }
   };
 
+  const addPatientRoom = useCallback(async (data: any) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/add-patient-room`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        showToast(null, "Patient added to room successfully", "success");
+      } else {
+        showToast(
+          null,
+          `Failed to add patient to room, status: ${response.status}`,
+          "error"
+        );
+        throw new Error("Failed to add patient to room");
+      }
+    } catch (error) {
+      showToast(null, "Failed to add patient to room", "error");
+      console.error("Error adding patient to room:", error);
+      throw error;
+    }
+  }, []);
+
   const getBeds = useCallback(async (roomId: string, isAvailable: string) => {
     try {
       const response = await axios.get(
@@ -140,5 +166,6 @@ export const useRooms = () => {
     getDetailRoom,
     createNewRoom,
     getPatientRooms,
+    addPatientRoom,
   };
 };

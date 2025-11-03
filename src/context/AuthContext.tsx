@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     console.log(user);
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
-    window.location.reload;
+    window.location.reload();
     setIsAuthenticated(true);
   };
 
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setIsAuthenticated(false);
             setUser(null);
             clearAllLocalStorage();
-            window.location.href = "/login";
+            // window.location.href = "/login";
           })
           .finally(() => {
             setIsLoading(false);

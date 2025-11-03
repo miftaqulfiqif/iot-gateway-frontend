@@ -22,6 +22,10 @@ export const useDevices = () => {
   const [patientMonitoringDevices, setPatientMonitoringDevices] = useState<
     PatientMonitoringDevices[]
   >([]);
+  const deviceMonitoringParameter = {
+    PATIENT_MONITOR: "PATIENT MONITOR",
+    VITAL_SIGN_MONITOR: "VITAL SIGN MONITOR",
+  };
 
   const getDeviceMeasurementParameters = useCallback(async () => {
     try {
@@ -158,6 +162,7 @@ export const useDevices = () => {
     detailDevice,
     patientMonitoringDevices,
     deviceMeasurementParameter,
+    deviceMonitoringParameter,
     getAllDevices,
     getAllDevicesConnected,
     deleteDeviceBluetooth,

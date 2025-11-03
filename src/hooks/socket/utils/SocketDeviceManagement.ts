@@ -51,14 +51,19 @@ export const useSocketDeviceManagement = () => {
   };
 
   const eventDisconnectBluetoothDevice = (
+    gatewaySn: string,
     mac: string,
     deviceFunction: string
   ) => {
-    handlerRef.current?.handleDisconnectBluetooth(mac, deviceFunction);
+    handlerRef.current?.handleDisconnectBluetooth(
+      gatewaySn,
+      mac,
+      deviceFunction
+    );
   };
 
   const eventDisconnectTcpipDevice = (mac: string, deviceFunction: string) => {
-    handlerRef.current?.handleDisconnectBluetooth(mac, deviceFunction);
+    handlerRef.current?.handleDisconnectTcpIp(mac, deviceFunction);
   };
 
   return {

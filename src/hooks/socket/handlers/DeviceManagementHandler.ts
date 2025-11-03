@@ -54,13 +54,17 @@ export class DeviceManagementHandler extends BaseHandler {
     this.resetScanTimeout();
   }
 
-  handleDisconnectBluetooth(mac: string, deviceFunction: string) {
-    this.socket.emit("disconnect_device", {
-      gateway_sn: this.gatewayId,
+  handleDisconnectBluetooth(
+    gatewaySn: string,
+    mac: string,
+    deviceFunction: string
+  ) {
+    this.socket.emit("disconnect_bluetooth_device", {
+      gateway_sn: gatewaySn,
       data: {
-        topic: `iotgateway/${this.gatewayId}/bluetooth/remove_device`,
+        topic: `iotgateway/${gatewaySn}/bluetooth/remove_device`,
         payload: {
-          mac: mac,
+          mac_address: mac,
           device_function: deviceFunction,
         },
       },
@@ -73,7 +77,7 @@ export class DeviceManagementHandler extends BaseHandler {
       data: {
         topic: `iotgateway/${this.gatewayId}/bluetooth/remove_device`,
         payload: {
-          ip: ip,
+          ip_address: ip,
           device_function: deviceFunction,
         },
       },

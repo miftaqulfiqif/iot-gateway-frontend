@@ -1,4 +1,6 @@
 import MainLayout from "@/components/layouts/main-layout";
+import { AddBedModal } from "@/components/modals/room_page/add-bed-modal";
+import { AddmissionPatientModal } from "@/components/modals/room_page/addmission-patient-modal";
 import UpdateRoomModal from "@/components/modals/room_page/update-room-modal";
 import { useRooms } from "@/hooks/api/use-room";
 import { format } from "date-fns";
@@ -12,6 +14,7 @@ import {
   Users,
   History,
   SquarePen,
+  Plus,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -54,6 +57,9 @@ const dummyData = {
 
 export default function DetailRoomPage() {
   const { room, stats, patients, activityLog } = dummyData;
+  const [showAddmissionPatientModal, setShowAddmissionPatientModal] =
+    useState(false);
+  const [showAddBedModal, setShowAddBedModal] = useState(false);
 
   const { roomId } = useParams();
 
@@ -77,16 +83,25 @@ export default function DetailRoomPage() {
               {detailRoom?.detail?.type}
             </p>
           </div>
-          <span
-            className={`px-4 py-1 rounded-full font-semibold text-white 
-          ${
-            detailRoom?.detail?.status === "full"
-              ? "bg-red-500"
-              : "bg-green-500"
-          }`}
-          >
-            {detailRoom?.detail?.status}
-          </span>
+          <div className="flex gap-4 items-center">
+            <div
+              className="flex gap-2 items-center bg-blue-500 text-white px-3 py-1 rounded-lg font-bold cursor-pointer"
+              onClick={() => setShowAddmissionPatientModal(true)}
+            >
+              <Plus className="w-6 h-6" />
+              Addmission Patient
+            </div>
+            <span
+              className={`px-4 py-1 rounded-full font-semibold text-white 
+              ${
+                detailRoom?.detail?.status === "full"
+                  ? "bg-red-500"
+                  : "bg-green-500"
+              }`}
+            >
+              {detailRoom?.detail?.status}
+            </span>
+          </div>
         </div>
 
         {/* Stats */}
@@ -134,9 +149,20 @@ export default function DetailRoomPage() {
 
             {/* Patients */}
             <div>
-              <div className="flex flex-row gap-2 items-center mb-4 mt-10">
-                <Users className="w-6 h-6 text-blue-600" />
-                <h2 className="text-lg font-semibold">Bed List</h2>
+              <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row gap-2 items-center mb-4 mt-10">
+                  <Users className="w-6 h-6 text-blue-600" />
+                  <h2 className="text-lg font-semibold">Bed List</h2>
+                </div>
+                <div
+                  className="flex items-center gap-1 bg-blue-500 text-white px-2 py-1 rounded-xl cursor-pointer"
+                  onClick={() => {
+                    setShowAddBedModal(true);
+                  }}
+                >
+                  <Plus className="w-6 h-6" />
+                  <p>Add Bed</p>
+                </div>
               </div>
               <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4 bg-white p-8 rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
                 {detailRoom?.patients.length ? (
@@ -213,10 +239,20 @@ export default function DetailRoomPage() {
           </div>
         </div>
       </div>
+      <AddmissionPatientModal
+        isActive={showAddmissionPatientModal}
+        setNonactive={() => setShowAddmissionPatientModal(false)}
+        roomId={roomId!}
+      />
       <UpdateRoomModal
         isOpen={updateRoomModal}
         onClose={() => setUpdateRoomModal(false)}
         room={room}
+      />
+      <AddBedModal
+        isActive={showAddBedModal}
+        setNonactive={() => setShowAddBedModal(false)}
+        roomId={roomId!}
       />
     </MainLayout>
   );
