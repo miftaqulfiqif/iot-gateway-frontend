@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push: # Saat merge ke main, kirim notif Slack
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install uplot
+          npm install mqtt
+          npm install -D @types/mqtt
+
+      - name: Build frontend
+        run: npm run build
+
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_SOCKET_URL=${{ secrets.VITE_SOCKET_URL }}
+            VITE_MQTT_BROKER_URL=${{ secrets.VITE_MQTT_BROKER_URL }}
+            VITE_MQTT_USERNAME=${{ secrets.VITE_MQTT_USERNAME }}
+            VITE_MQTT_PASSWORD=${{ secrets.VITE_MQTT_PASSWORD }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/iot-gateway-frontend:${{ steps.get_version.outputs.version }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/iot-gateway-frontend:latest
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 2222
+          script: |
+            set -e
+
+            DOCKER_USER="${{ secrets.DOCKERHUB_USERNAME }}"
+            NEW_TAG="${{ steps.get_version.outputs.version }}"
+            APP_NAME="iot-gateway-frontend"
+            CONTAINER_NAME="frontend"
+
+            echo ">>> Login Docker Hub"
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "$DOCKER_USER" --password-stdin
+
+            echo ">>> Pull image terbaru"
+            docker pull $DOCKER_USER/$APP_NAME:$NEW_TAG
+
+            echo ">>> Stop & remove container lama"
+            docker stop $CONTAINER_NAME || true
+            docker rm $CONTAINER_NAME || true
+
+            # -------------------------------
+            # Jalankan container baru
+            # -------------------------------
+            echo ">>> Run container baru"
+            docker run -d \
+              --name $CONTAINER_NAME \
+              --network nginx-shared \
+              $DOCKER_USER/$APP_NAME:$NEW_TAG
+
+  notify:
+    name: Notify to Slack
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set commit message as a multiline environment variable
+        id: get_commit_message
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:%B | sed ':a;N;$!ba;s/"/\\"/g;s/\n/\\n/g')
+          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+
+      - name: Random emoji
+        run: |
+          EMOJIS=("🚀" "🔥" "🔧" "✅" "📢" "💡" "🐛" "🎉")
+          RAND_EMOJI=${EMOJIS[$RANDOM % ${#EMOJIS[@]}]}
+          echo "RANDOM_EMOJI=$RAND_EMOJI" >> $GITHUB_ENV
+
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+                "text" : "${{ env.RANDOM_EMOJI }} FE: Ada update baru dari `${{ github.actor }}`:\n> `${{ env.COMMIT_MESSAGE }}`\n\n"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
