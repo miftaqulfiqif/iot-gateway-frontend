@@ -8,6 +8,7 @@ import { Devices } from "@/models/DeviceModel";
 import { Patients } from "@/models/PatientModel";
 import { SaveMeasurementBMI } from "@/components/modals/save_measurement/save-measurement-bmi";
 import { usePatient } from "@/hooks/api/use-patient";
+import { set } from "lodash";
 
 type Props = {
   patientSelected: Patients;
@@ -27,6 +28,8 @@ export const DigitProBMI = ({
   saveTrigger,
 }: Props) => {
   const { getDetailPatient, detailPatient } = usePatient({});
+  const [patientAge, setPatientAge] = useState<number>(patientSelected?.age);
+  const [debouncedAge, setDebouncedAge] = useState<number>(0);
   const [patientHeight, setPatientHeight] = useState<number>(0);
   const [debouncedHeight, setDebouncedHeight] = useState<number>(0);
   const [data, setData] = useState<any>(null);
@@ -48,12 +51,13 @@ export const DigitProBMI = ({
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedHeight(patientHeight);
+      setDebouncedAge(patientAge);
     }, 1000); // 1 second debounce
 
     return () => {
       clearTimeout(handler);
     };
-  }, [patientHeight]);
+  }, [patientHeight, patientAge]);
 
   // Reset data
   useEffect(() => {
@@ -86,10 +90,10 @@ export const DigitProBMI = ({
     () => deviceSelected?.mac_address ?? "",
     [deviceSelected]
   );
-  const patientAge = useMemo(
-    () => patientSelected?.age ?? 0,
-    [patientSelected]
-  );
+  // const patientAge = useMemo(
+  //   () => patientSelected?.age ?? 0,
+  //   [patientSelected]
+  // );
   const patientGender = useMemo(
     () => patientSelected?.gender ?? "unknown",
     [patientSelected]
@@ -100,7 +104,7 @@ export const DigitProBMI = ({
     gatewayId,
     macDevice,
     patientHeight: debouncedHeight,
-    patientAge,
+    patientAge: debouncedAge,
     patientGender,
   });
 
@@ -112,22 +116,42 @@ export const DigitProBMI = ({
   return (
     <div className="flex flex-col gap-4 w-full pt-3">
       {/* Input Height */}
-      <div className="flex flex-col border-2 rounded-2xl p-4 w-full gap-2">
-        <div className="flex flex-row items-center gap-3">
-          <PersonStandingIcon className="w-6 h-6" />
-          <p className="text-base">Height</p>
+      <div className="flex flex-row gap-2">
+        <div className="flex flex-col border-2 rounded-2xl p-4 w-full gap-2">
+          <div className="flex flex-row items-center gap-3">
+            <PersonStandingIcon className="w-6 h-6" />
+            <p className="text-base">Height</p>
+          </div>
+          <div className="flex flex-col gap-2">
+            <input
+              type="number"
+              value={patientHeight || ""}
+              className="bg-gray-100 text-sm px-4 py-2 rounded-lg w-full focus:outline-blue-400"
+              placeholder="Enter height (cm)"
+              onChange={(e) => setPatientHeight(Number(e.target.value))}
+            />
+            {patientHeight !== debouncedHeight && (
+              <p className="text-xs text-gray-500 italic">Updating height...</p>
+            )}
+          </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <input
-            type="number"
-            value={patientHeight || ""}
-            className="bg-gray-100 text-sm px-4 py-2 rounded-lg w-full focus:outline-blue-400"
-            placeholder="Enter height (cm)"
-            onChange={(e) => setPatientHeight(Number(e.target.value))}
-          />
-          {patientHeight !== debouncedHeight && (
-            <p className="text-xs text-gray-500 italic">Updating height...</p>
-          )}
+        <div className="flex flex-col border-2 rounded-2xl p-4 w-full gap-2">
+          <div className="flex flex-row items-center gap-3">
+            <PersonStandingIcon className="w-6 h-6" />
+            <p className="text-base">Age</p>
+          </div>
+          <div className="flex flex-col gap-2">
+            <input
+              type="number"
+              value={patientAge || ""}
+              className="bg-gray-100 text-sm px-4 py-2 rounded-lg w-full focus:outline-blue-400"
+              placeholder="Enter height (cm)"
+              onChange={(e) => setPatientAge(Number(e.target.value))}
+            />
+            {patientAge !== debouncedAge && (
+              <p className="text-xs text-gray-500 italic">Updating age...</p>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-2">
